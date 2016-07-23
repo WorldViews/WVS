@@ -63,16 +63,16 @@ WV.Robots.handleRecs = function(data, name)
 	}
 	var h = 50000;
         var id = "robot_"+rec.id;
-	var imageUrl = "images/BeamRobot.png";
+	var imageUrl = WV.getIconUrl("BeamRobot.png");
 	var scale = 0.2;
 	if (layer.imageUrl)
 	    imageUrl = layer.imageUrl;
 	if (rec.robotType == "double") {
-	    imageUrl = "images/double-robotics-2.png";
+	    imageUrl = WV.getIconUrl("double-robotics-2.png");
 	    scale = 0.1;
 	}
 	if (rec.robotType == "beam") {
-	    imageUrl = "images/BeamRobot.png";
+	    imageUrl = WV.getIconUrl("BeamRobot.png");
 	    scale = 0.2;
 	}
         layer.recs[id] = rec;

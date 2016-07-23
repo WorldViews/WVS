@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    {% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}{% endblock %} - My Webpage</title>
+    {% endblock %}
+  </head>
+  <body>
+    {% block tabs %}
+    <a href="/WV/about">About</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/Viewer/TV">TeleViewer</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/WV/projects">Projects</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+     {% if current_user.email %}
+        {{ current_user.name }} {{ current_user.email }}
+        <a href="/logout?next=/WV/about">logout</a>
+     {% else %}
+     <a href="/log">login</a>
+     {% endif %}
+
+    {% endblock %}
+    <div id="content">{% block content %}{% endblock %}</div>
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2016 by WorldViews.
+      {% endblock %}
+    </div>
+  </body>
+</html>

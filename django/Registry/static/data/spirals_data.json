@@ -1,0 +1,63 @@
+{
+    "name": "spirals",
+    "records": [
+       {
+          "type": "CoordinateSystem",
+	  "coordSys": "PAL",
+          "lat":  37.40583,
+	  "lon": -122.15080,
+	  "alt": 41.0,
+	  "heading": 32.0
+       },
+       {
+         "type": "robot",
+         "robotType": "beam",
+         "description": "FXPAL Beam 1",
+	 "coordSys": "PAL",
+	 "position": [25,15,0],
+         "id": "pal_robot_beam1",
+         "lat": 44.404459,
+         "lon": -70.789881,
+         "url": "/static/suitable.html"
+       },
+       {
+          "type": "robot",
+          "robotType": "double",
+          "description": "FXPAL Double 1",
+          "id": "pal_robot_double1",
+	  "coordSys": "PAL",
+          "lat": 43.938128,
+          "lon": -70.908677,
+          "url": "http://www.doublerobotics.com/"
+       },
+       {
+          "id": "blimp1",
+	  "type": "model",
+	  "modelUrl": "../static/models/FXBlimp.glb",
+          "lat":  37.40581,
+	  "lon": -122.15080,
+	  "scale": 5000,
+	  "height": 200000,
+	  "heading": 33.2,
+	  "flyTo": 3
+       },
+       {
+          "id": "8",
+	  "type": "xmodel",
+	  "modelUrl": "../static/models/PorterPALCutaway.glb",
+          "xlat":  37.40581,
+	  "xlon": -122.15080,
+          "lat":  37.40583,
+	  "lon": -122.15080,
+	  "xalt": 41.0,
+	  "alt": 400000.0,
+	  "xheading": 32.0,
+	  "xscale": 1.0,
+	  "scale": 1000.0,
+	  "height": 0.2,
+	  "heading": 90.2,
+	  "track": true
+       }
+    ]
+}
+

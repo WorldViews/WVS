@@ -1,0 +1,19 @@
+{
+    "name": "Zilong",
+    "records": [
+       {
+	 "title": "FXPAL",
+         "id": "1", 
+         "lat": 25.0126816,
+         "lon": 51.7208941,
+         "url": "http://www.journeye.org/pilgrimage.html"
+       },
+       {
+          "title": "Xerox",
+          "id": "2", 
+          "lat": 37.8651011,
+          "lon": -117.5383294,
+          "url": "http://www.journeye.org/pilgrimage.html"
+       }
+    ]
+}

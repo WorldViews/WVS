@@ -1,0 +1,21 @@
+{
+   "records": [
+      {
+         "datetime": "2016-05-27 15:59", 
+         "geotag": [
+            42.7195, 
+            -122.4411
+         ], 
+         "has_image": false, 
+         "has_map": true, 
+         "id": "5603980457", 
+         "name": "A clean private room for rent", 
+         "price": "$655", 
+         "recType": "housing", 
+         "url": "http://sfbay.craigslist.org/sfc/roo/5603980457.html", 
+         "where": "ingleside / SFSU / CCSF"
+      }
+  ], 
+   "t": 1464390639.435, 
+   "type": "craigslist"
+}

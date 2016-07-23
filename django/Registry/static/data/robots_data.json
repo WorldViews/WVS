@@ -1,0 +1,117 @@
+{
+    "name": "robots",
+    "records": [
+       {
+          "type": "CoordinateSystem",
+	  "coordSys": "PAL",
+          "lat":  37.40583,
+	  "lon": -122.15080,
+	  "alt": 41.0,
+	  "heading": 32.0
+       },
+       {
+          "type": "CoordinateSystem",
+	  "coordSys": "PAL2",
+          "lat":  37.40587,
+	  "lon": -122.15082,
+	  "alt": 41.0,
+	  "heading": 32.0
+       },
+       {
+         "type": "robot",
+         "robotType": "beam",
+         "description": "FXPAL Beam 1",
+	 "coordSys": "PAL",
+	 "position": [25,15,0],
+         "id": "pal_robot_beam1",
+         "lat": 44.404459,
+         "lon": -70.789881,
+         "xurl": "https://suitabletech.com/",
+         "url": "/static/suitable.html"
+       },
+       {
+          "type": "robot",
+          "robotType": "double",
+          "description": "FXPAL Double 1",
+          "id": "pal_robot_double1",
+	  "coordSys": "PAL",
+          "lat": 43.938128,
+          "lon": -70.908677,
+          "url": "http://www.doublerobotics.com/"
+       },
+       {
+          "type": "robot",
+          "robotType": "jarvis",
+          "description": "Jarvis",
+          "id": "3",
+          "lat": 37.748536,
+          "lon": -119.559886,
+          "url": "https://fxpal.com"
+       },
+       {
+          "id": "4",
+          "type": "robotTrail",
+          "robotType": "panobot",
+          "description": "PanoBot tour",
+	  "tourName": "porter_outdoor_1",
+	  "dataUrl": "/static/data/paths/porter_outside1.json",
+	  "height": 0.3,
+	  "coordSys": "PAL",
+          "xurl": "https://fxpal.com"
+       },
+       {
+          "id": "5",
+          "type": "robotTrail",
+          "robotType": "panobot",
+          "description": "PanoBot tour inside PAL.",
+	  "tourName": "porter_tour_3",
+	  "dataUrl": "/static/data/paths/porter_tour_3.json",
+	  "coordSys": "PAL2",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+       },
+       {
+          "id": "FXPALoutsideWalk1",
+          "type": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Walkaround by Enock.",
+	  "tourName": "porter_tour_3",
+	  "dataUrl": "/static/data/paths/FXPAL_Outside_Walkaround_1.json",
+	  "youtubeId": "ixvaAOAuqBs",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+       },
+       {
+          "id": "7",
+	  "type": "model",
+	  "name": "PORTER_MAP",
+	  "modelUrl": "/static/models/PorterPAL.glb",
+          "lat":  37.40587,
+	  "lon": -122.15082,
+	  "xscale": 53,
+	  "scale": 48,
+	  "height": 0.2,
+	  "heading": 33.2,
+	  "coordSys": "PAL2",
+	  "flyTo": 3
+       },
+       {
+          "id": "9",
+	  "type": "xmodel",
+	  "xmodelUrl": "/static/models/YMMBuilding.glb",
+	  "modelUrl": "/static/models/YMM.glb",
+          "lat":  37.40583,
+	  "lon": -122.15080,
+	  "alt": 41.0,
+	  "heading": 32.0,
+	  "scale": 1,
+	  "height": 0.2,
+	  "heading": 33.2,
+	  "flyTo": 6
+       }
+    ]
+}
+

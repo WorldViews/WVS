@@ -1,0 +1,82 @@
+{
+"name": "Blogs",
+    "records": [
+       {
+	 "title": "Beginning of the Road to Adventure",
+         "id": "1", 
+         "lat": 44.404459,
+         "lon": -70.789881,
+         "url": "https://gobeyondthefence.com/2015/09/01/the-beginning-of-the-road-to-adventure/"
+       },
+       {
+          "title": "Preparing for Yosemite",
+          "id": "2", 
+          "lat": 43.938128,
+          "lon": -70.908677,
+          "url": "https://gobeyondthefence.com/2015/09/04/41/"
+       },
+	   {
+          "title": "Making Connections with People, El Cap and The Valley",
+          "id": "3", 
+          "lat": 46.007420,
+          "lon": -114.396759,
+          "url": "https://gobeyondthefence.com/2015/09/13/making-connections-with-people-el-cap-and-the-valley/"
+       },
+	    {
+          "title": "Shared Experiences",
+          "id": "4", 
+          "lat": 37.865101,
+          "lon": -119.538329,
+          "url": "https://gobeyondthefence.com/2015/09/26/shared-experiences/"
+       },
+	   {
+          "title": "It Takes a Community",
+          "id": "5", 
+          "lat": 37.748536,
+          "lon": -119.559886,
+          "url": "https://gobeyondthefence.com/2015/10/02/it-takes-a-community/"
+       },
+	   {
+          "title": "You Might Not Get What You Want but You Might Just Get What You Need",
+          "id": "6", 
+          "lat": 37.865101,
+          "lon": -119.538329,
+          "url": "https://gobeyondthefence.com/2015/10/05/you-might-not-get-what-you-want-but-you-might-just-get-what-you-need/"
+       },
+	   {
+          "title": "Thank You Just isn't Enough",
+          "id": "7", 
+          "lat": 37.865101,
+          "lon": -119.538329,
+          "url": "https://gobeyondthefence.com/2015/10/09/thank-you-just-isnt-enough/"
+       },
+	   {
+          "title": "Paradox Rocks the Gunks 2015",
+          "id": "8", 
+          "lat": 41.724816,
+          "lon": -74.204592,
+          "url": "https://gobeyondthefence.com/2015/10/21/paradox-rocks-the-gunks-2015/"
+       },
+	   {
+          "title": "Maine Adaptive Adventures",
+          "id": "9", 
+          "lat": 44.475959,
+          "lon": -70.855932,
+          "url": "https://gobeyondthefence.com/2016/01/22/maine-adaptive-adventures/"
+       },
+	    {
+          "title": "Paradox Ice 2016",
+          "id": "10", 
+          "lat": 44.06233,
+          "lon": -51.7208941,
+          "url": "https://gobeyondthefence.com/2016/02/02/paradox-ice-north-conway-nh-2016/"
+       },
+	   {
+          "title": "Big News",
+          "id": "11", 
+          "lat": 37.441883,
+          "lon": -122.143019,
+          "url": "https://gobeyondthefence.com/2016/03/16/winter-wrap-up-and-big-news/"
+       }
+    ]
+}

@@ -22,6 +22,14 @@ WV.layers = {};
  */
 WV.modules = {};
 
+WV.getIconUrl = function(url)
+{
+    if (url.startsWith("/") || url.startsWith("http")) {
+	return url;
+    }
+    return "/static/img/billboards/"+url;
+}
+
 WV.LayerType = function(name, opts)
 {
     report("new LayerType "+name);
@@ -198,7 +206,7 @@ WV.handleVideoRecs = function(data, layerName)
         }
         if (layer.numObjs > layer.maxNum)
             return;
-        var imageUrl = layer.iconUrl;
+        var imageUrl = WV.getIconUrl(layer.iconUrl);
         var lon = rec.lon;
         var lat = rec.lat;
         id = layerName+"_"+rec.id;
@@ -319,9 +327,17 @@ WV.registerModule = function(name)
 }
 
 
-WV.requireModule = function(jsURL, done)
+WV.requireModule = function(jsName, done)
 {
-    report("************ requireModule: "+jsURL+" **********");
+    var jsURL;
+    if (jsName.startsWith("/") || jsName.startsWith("http")){
+	jsURL = jsName;
+    }
+    else {
+	jsURL = "/static/js/"+jsName;
+    }
+    report("************ requireModule: "+jsName+" **********");
+    report("jsURL: "+jsURL);
     var name = WV.getModuleName(jsURL);
     if (WV.modules[name]) {
 	report("already have module "+jsURL);
