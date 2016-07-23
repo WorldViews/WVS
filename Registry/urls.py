@@ -37,6 +37,7 @@ urlpatterns = patterns('',
     url(r'^reg_delNotification/$', 'Registry.views.reg_delNotification'),
     url(r'^mapview/$', 'Registry.views.mapview', name='mapview'),
     url(r'^globeview/$', 'Registry.views.globeview', name='globeview'),
+    url(r'^televiewer/$', 'Registry.views.televiewer', name='televiewer'),
 
     url(r'^admin/', include(admin.site.urls)),
 

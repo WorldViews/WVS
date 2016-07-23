@@ -104,6 +104,11 @@ def globeview(request):
 #    return render_to_response("cesium.html", locals(), RequestContext(request))
 
 @csrf_exempt
+def televiewer(request):
+    return render_to_response("televiewer.html", locals(), RequestContext(request))
+#    return render_to_response("cesium.html", locals(), RequestContext(request))
+
+@csrf_exempt
 def reg_remove(request):
     q = request.GET
     params = {'room': '', 'type': 'random', 'serverName': settings.JUMPCHAT_SERVER, 'apiKey': settings.API_KEY  }

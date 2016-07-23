@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}WorldViews{% endblock %}
+{% block navtitle %}WorldViews{% endblock %}
+{% block jsext %}
+{% endblock %}
+{% block content %}
+<script src="/static/Cesium/1.7.1/Build/Cesium/Cesium.js"></script>
+<style>
+      @import url(/static/Cesium/1.7.1/Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+</style>
+
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+var REQUESTS_URL = "/reg_getrequests/"
+var GUIDES_URL = "/reg_getguides/"
+var MONACAT_URL = '/static/img/monacat.jpg';
+var CHERRIES_URL = '/static/img/cherries.png';
+var scene = null;
+var cesiumTerrainProviderMeshes = null;
+var requestObjs = {};
+var guideObjs = {};
+// Create a billboard collection with two billboards
+var billboards = null;
+var pinBuilder = null;
+
+function getLocation() {
+    if (navigator.geolocation) {
+        var ret = navigator.geolocation.getCurrentPosition(handleLocation);
+        report("ret: "+ret);
+    } else {
+        report("Geolocation is not supported by this browser.");
+    }
+}
+
+function handleLocation(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    ourPos = [lat,lon];
+    report("lat: " + lat + "lon: " + lon);
+    report("pos: "+JSON.stringify(position));
+    if (viewer) {
+       report("panning to "+ourPos);
+       //map.setView(ourPos, 12);
+    }
+}
+
+
+function timerFun()
+{
+    //$.get(CAMS_URL, gotCams, 'json');
+    $.get(REQUESTS_URL, gotRequests, 'json');
+    $.get(GUIDES_URL, gotGuides, 'json');
+    setTimeout(timerFun, 2000);
+}
+
+function addBox(lat, lon) {
+    var box = viewer.entities.add({
+        name : 'Blue box',
+        //position: Cesium.Cartesian3.fromDegrees(lon, lat, 300000.0),
+        position: Cesium.Cartesian3.fromDegrees(lon, lat, 0.0),
+        box : {
+            dimensions : new Cesium.Cartesian3(1000.0, 1000.0, 1000.0),
+            material : Cesium.Color.RED
+        }
+    });
+    viewer.entities.add(box);
+    return box;
+}
+
+function addBillboard(lat, lon, imgUrl, scale)
+{
+// Example 1:  Add a billboard, specifying all the default values.
+  if (!imgUrl)
+     imgUrl = MONACAT_URL;
+  if (!scale)
+     scale = 0.1;
+  var b = billboards.add({
+  show : true,
+  position : Cesium.Cartesian3.fromDegrees(lon, lat, 50),
+  pixelOffset : Cesium.Cartesian2.ZERO,
+  eyeOffset : Cesium.Cartesian3.ZERO,
+  horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+  verticalOrigin : Cesium.VerticalOrigin.CENTER,
+  'scale' : scale,
+  image : imgUrl,
+  color : Cesium.Color.WHITE,
+  id : undefined
+});
+   report("addBillboard "+b);
+}
+
+var _reqNo = 0;
+
+function addGuideMarker(lat, lon, guide)
+{
+//    return addBox(lat, lon);
+//    return addBillboard(lat, lon);
+    var name = guide.name;
+    var str = "G "+name;
+    var guidePin = viewer.entities.add({
+       name: name,
+       position: Cesium.Cartesian3.fromDegrees(lon, lat),
+       scale: 0.5,
+       billboard: {
+          image : pinBuilder.fromText(str, Cesium.Color.GREEN, 48).toDataURL(),
+          verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+       }
+   });
+   return guidePin;
+}
+
+function addRequestMarker(lat, lon, req)
+{
+//    return addBox(lat, lon);
+//    return addBillboard(lat, lon);
+    var name = req.name+" "+_reqNo++;
+    //var str = name;
+    var str = "?";
+    var reqPin = viewer.entities.add({
+       name: name,
+       position: Cesium.Cartesian3.fromDegrees(lon, lat),
+       scale: 0.5,
+       billboard: {
+          image : pinBuilder.fromText(str, Cesium.Color.BLACK, 48).toDataURL(),
+          verticalOrigin : Cesium.VerticalOrigin.BOTTOM
+       }
+   });
+}
+
+function gotRequests(reqs)
+{
+    //report("gotRequests: "+JSON.stringify(reqs));
+    report("gotRequests");
+    for (var i=0; i<reqs.length; i++) {
+       var req = reqs[i];
+       var id = req.id;
+       if (requestObjs[id]) {
+          //report("skipping req id "+id);
+          continue;
+       }
+       requestObjs[id] = req;
+       if (req.latitude && req.longitude) {
+          latLng = [req.latitude, req.longitude];
+          report("latLng: "+latLng);
+          addRequestMarker(req.latitude, req.longitude, req);
+       }
+    }
+}
+
+function gotGuides(guides)
+{
+    //report("gotRequests: "+JSON.stringify(guides));
+    report("gotRequests");
+    for (var i=0; i<guides.length; i++) {
+       var guide = guides[i];
+       var name = guide.name;
+       if (guideObjs[name]) {
+          continue;
+       }
+       guideObjs[name] = name;
+       if (guide.latitude && guide.longitude) {
+          addGuideMarker(guide.latitude, guide.longitude, guide);
+       }
+    }
+}
+
+var newest_photo_hash = "";
+var hashes = {};
+
+function get_recent(){
+    var fetchRecentUrl = "https://sharedcam.paldeploy.com/recent/" +
+                               newest_photo_hash + "?json=true";
+    $.getJSON( fetchRecentUrl, function( objs ) {
+       for(var i=0; i<objs.length; i++) {
+          var obj = objs[i];
+          var hash = obj.hash;
+          if (hashes[hash])
+              continue;
+          hashes[hash] = obj;
+          var metadata = obj.metadata;
+          //report("metadata: "+metadata);
+          try {
+              metadata = JSON.parse(metadata);
+          }
+          catch (e) {
+	     report("error for obj "+i+" hash: "+hash);
+             continue;
+          }
+          var lat = metadata.latitude;
+          var lng = metadata.longitude;
+          report("obj "+i+": "+JSON.stringify(obj));
+          //report("meta: " + JSON.stringify(metadata));
+          //report("latLng: "+lat+" "+lng);
+          if (!lat || !lng)
+             continue;
+          report("obj "+i+" lat: "+lat+" lon: "+lng+" hash: "+hash);
+          var imgUrl = CHERRIES_URL;
+          imgUrl = "https://sharedcam.paldeploy.com/thumb/" + hash;
+          report("imgUrl "+imgUrl);
+          addBillboard(lat, lng, imgUrl, 0.3);
+       }
+       //console.log( "Load was performed. New max content id", newest_photo_hash );
+    });
+}
+
+
+function setupCesium()
+{
+    var opts = {timeline : false, animation : false}
+    viewer = new Cesium.Viewer('cesiumContainer', opts);
+    pinBuilder = new Cesium.PinBuilder();
+    cesiumTerrainProviderMeshes = new Cesium.CesiumTerrainProvider({
+        url : '//assets.agi.com/stk-terrain/world',
+        requestWaterMask : true,
+        requestVertexNormals : true
+    });
+    viewer.terrainProvider = cesiumTerrainProviderMeshes;
+    var scene = viewer.scene;				 
+    billboards = scene.primitives.add(new Cesium.BillboardCollection());
+    scene.globe.depthTestAgainstTerrain = true;
+}
+
+$(document).ready(function() {
+    setupCesium();
+    setInterval(get_recent, 5000);
+    timerFun();
+});
+
+
+</script>
+
+<style type="text/css">
+   
+</style>
+
+<div id="cesiumContainer"></div>
+<script>
+</script>
+
+
+{% endblock %}
