@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}SharedCam Become Guide{% endblock %}
+{% block navtitle %}SharedCam Become Guide{% endblock %}
+{% block jsext %}
+
+<script type="text/javascript">
+
+function report(str) { console.log(str); }
+
+function formatNumber(num, length)
+{
+    var r = "" + num;
+    while (r.length < length) {
+        r = "0" + r;
+    }
+    return r;
+}
+
+function getRandRoom() {
+    var n = Math.floor(Math.random() * 10000000000);
+    return formatNumber(n, 10);
+}
+
+function getTagsStr(tags)
+{
+//TODO: map multiple tags to safe string
+    report("tags: "+tags);
+    return tags;
+}
+
+$(document).ready(function() {
+   $("#room").val(getRandRoom());
+   $("#go").click(function() {
+      report("click");
+      var room = $("#room").val();
+      var name = $("#name").val();
+      var tagStr = getTagsStr($("#tags").val());
+      var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+room;
+      url += "&clientType=web";
+      url += "&name="+name;
+      if (tagStr)
+          url += "&tagStr="+tagStr;
+      url += "&registryServer="+window.location.host;
+      //window.open(url);
+      window.location.href = url;
+   });
+});
+</script>
+
+<style type="text/css">
+   
+</style>
+
+{% endblock %}
+{% block content %}
+
+<h3>Enter into JumpChat room as a guide</h3>
+
+<table>
+<tr>
+<td>Name:</td>
+<td><input id="name" type="text" value="{{ user.username }}"></td>
+</tr>
+<tr>
+<td>Tags:</td>
+<td><input id="tags" type="text" value="dogs"></td>
+<tr>
+<tr>
+<td>Room:</td>
+<td><input id="room" type="text" value="1234567890"></td>
+<tr>
+<td>Max Guests:</td>
+<td><input id="maxNum" type="text" value="2"></td>
+<tr>
+</table>
+&nbsp;
+<p>
+<input id="go" type="button" value="Go">
+
+<!--
+{% if user and not user.is_anonymous %}
+  <p>
+  <h3>Hello, {{ user.get_full_name }}!</h3>
+{% else %}
+  <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
+{% endif %}
+-->
+
+{% endblock %}

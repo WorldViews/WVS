@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}About WorldViews{% endblock %}
+{% block navtitle %}WorldViews{% endblock %}
+{% block jsext %}
+
+<link rel="stylesheet" href="{% static "css/grid.css" %}" type="text/css" />
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function() {
+   $("#newProj").click(function(e) {
+       $("#addProj").show();
+   });
+   $("#addButton").click(function(e) {
+       var url = "/addproj/";
+       var obj = {};
+       obj.name = $("#name").val();
+       obj.title = $("#title").val();
+       obj.description = $("#description").val();
+       obj.username = "{{ user }}";
+       report("Obj: "+JSON.stringify(obj));
+       $.ajax({type: "POST",
+               url: url,
+               dataType: "json",
+               data: obj,
+               success: function(res) {
+                   report("Sent it. got: "+JSON.stringify(res));
+                   window.location.href = window.location.href;
+               }});
+       $("#addProj").show();
+   });
+   $(".join-button").click(function(e) {
+       report("join-button click");
+       var url = "/joinproj/";
+       var obj = {name: e.target.id, username: "{{user}}"};
+       report("Obj: "+JSON.stringify(obj));
+       $.ajax({type: "POST",
+               url: url,
+               dataType: "json",
+               data: obj,
+               success: function(res) {
+                   report("Sent it. got: "+JSON.stringify(res));
+                   window.location.href = window.location.href;
+               }});
+   });
+   $(".follow-button").click(function(e) {
+       report("follow-button click");
+       var url = "/followproj/";
+       var obj = {name: e.target.id, username: "{{user}}"};
+       report("Obj: "+JSON.stringify(obj));
+       $.ajax({type: "POST",
+               url: url,
+               dataType: "json",
+               data: obj,
+               success: function(res) {
+                   report("Sent it. got: "+JSON.stringify(res));
+                   window.location.href = window.location.href;
+               }});
+    });
+});
+</script>
+
+<style type="text/css">
+</style>
+
+{% endblock %}
+{% block content %}
+
+{% for proj in projs %}
+<!--
+<h3>{{proj.name}}: {{proj.title}} </h3>
+-->
+<h3>{{proj.title}} </h3>
+{{proj.description}}<br>
+{% if proj.members.all %}
+  Members: 
+     {% for member in proj.members.all %}
+        {{member}}
+     {% endfor %}
+  <br>
+{% endif %}
+{% if proj.followers.all %}
+  Followers: 
+     {% for follower in proj.followers.all %}
+        {{follower}}
+     {% endfor %}
+  <br>
+{% endif %}
+{% if user.is_authenticated %}
+   {% if user in proj.members.all %}
+     <!-- You are in project.  Edit -->
+   {% else %}
+      <span class="join-button" id="{{proj.name}}">Join</span>
+   {% endif %}
+   {% if user in proj.followers.all %}
+     <!-- You are following project. -->
+   {% else %}
+      <span class="follow-button" id="{{proj.name}}">Follow</span>
+   {% endif %}
+{% endif %}
+&nbsp;
+<p>
+
+{% endfor %}
+
+{% if user.is_authenticated %}
+&nbsp;
+<p>
+<input type="button" id="newProj" value="New Project">
+{% endif %}
+
+<div id="addProj" hidden>
+<h4>Create New Project</h4>
+&nbsp;
+<p>
+Name: <input id="name" type="text" value="" size=50><br>
+Title: <input id="title" type="text" value="" size=90><br>
+Description:<br>
+<textarea id="description" rows="20" cols="100"></textarea><br>
+<input id="addButton" type="button" value="Add">
+&nbsp;
+<p>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+#DEPLOY_SERVER = 'sharedcam.paldeploy.com:8080'
+#JUMPCHAT_SERVER = 'jumpchat.paldeploy.com'
+#API_KEY = 'db763c63-8e61-43a1-9f8c-f6c9ec9d27f8'
+
+import os
+SOCIAL_AUTH_TWITTER_KEY = os.environ['SOCIAL_AUTH_TWITTER_KEY']
+SOCIAL_AUTH_TWITTER_SECRET = os.environ['SOCIAL_AUTH_TWITTER_SECRET']
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_URL = '/'

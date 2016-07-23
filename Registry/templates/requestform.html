@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}WorldViews Request{% endblock %}
+{% block navtitle %}WorldViews Request{% endblock %}
+{% block jsext %}
+
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+
+function getTagsStr(tags)
+{
+//TODO: map multiple tags to safe string
+    report("tags: "+tags);
+    return tags;
+}
+
+
+$(document).ready(function() {
+   $("#go").click(function() {
+      report("click");
+      var name = $("#name").val();
+      var text = $("#text").val();
+      var tagStr = getTagsStr($("#tags").val());
+      var req = {'name': name, 'text': text, tags: tagStr};
+      WVR.addRequest(req, function(obj) {
+          //window.location.href = "/";
+          window.location.href = "/reg_getrequests";
+      });
+   });
+});
+
+</script>
+
+<style type="text/css">
+   
+</style>
+
+{% endblock %}
+{% block content %}
+
+<h3>Make Request or Ask Question</h3>
+
+<table>
+<tr>
+<td>Request:</td>
+<td><input id="name" type="text" value="" size="60"></td>
+</tr>
+<tr>
+<td>Description:</td>
+<td><input id="text" type="text" value="" size="60"></td>
+<tr>
+</table>
+&nbsp;
+<p>
+<input id="go" type="button" value="Go">
+
+<!--
+{% if user and not user.is_anonymous %}
+  <p>
+  <h3>Hello, {{ user.get_full_name }}!</h3>
+{% else %}
+  <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
+{% endif %}
+-->
+
+{% endblock %}

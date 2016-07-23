@@ -1,0 +1,47 @@
+{% if not no_js %}
+
+<script type="text/javascript">
+
+    $(function (){ 
+        $(".pop").tooltip();
+    });
+
+
+    function flag(content_id){
+        console.log("flagging content id", content_id);
+        var flagUrl = "xxx";        
+        $.ajax({
+            url: flagUrl,  //server script to process data
+            type: 'POST',
+            data: {"content_id": content_id, csrfmiddlewaretoken: '{{ csrf_token }}'},
+            success: function(data){
+                if (data){
+                    console.log("flag result", data);
+                    $("#" + content_id).hide();
+                }
+            }
+        });
+
+    }
+
+</script>
+{% endif %}
+
+{% for c in photos %}
+    <div class="one_tag text-center" id="{{newest_photo_hash}}" style="background: url({{ MEDIA_URL }}{{c.thumbnail}}); background-size: 100%;  background-repeat: no-repeat; background-color: #eee; background-position:center;">
+        <a href="{% url 'photo' c.hexdigest %}"><div class="clickable"></div></a>
+        <div class="tag_text" id="tag{{c.hexdigest}}">
+
+
+            {% for t in c.tags.all %}
+            <a href="{% url 'tag' t.text %}" class="btn btn-xs btn-default rating">
+                <span class="count">#{{t.text}}</span>
+            </a>
+            {% endfor %}
+
+            <div class="btn btn-xs btn-default pop rating" data-title="<small>Flag for Removal</small>" data-placement="top" data-html="true" data-toggle="tooltip" onclick="flag('{{c.hexdigest}}')">
+                <span class="glyphicon glyphicon-flag"></span>
+            </div>
+        </div>
+    </div>
+{% endfor %}

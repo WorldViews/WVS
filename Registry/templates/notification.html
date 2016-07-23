@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}SharedCam Notification{% endblock %}
+{% block navtitle %}SharedCam Notification{% endblock %}
+{% block jsext %}
+
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+//function report(str) { console.log(str); }
+
+/*
+objToQueryStr = function(obj) {
+  var str = [];
+  for(var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+}
+
+//http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+function qsToObj(a) {
+    if (a == "") return {};
+    a = a.split("&");
+    var b = {};
+    for (var i = 0; i < a.length; ++i)
+    {
+        var p=a[i].split('=', 2);
+        if (p.length == 1)
+            b[p[0]] = "";
+        else
+            b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+    }
+    return b;
+}
+*/
+
+function getTagsStr(tags)
+{
+//TODO: map multiple tags to safe string
+    report("tags: "+tags);
+    return tags;
+}
+
+function saveNotification()
+{
+      report("save");
+      var params = {};
+      params.name = $("#name").val();
+      params.pattern_tags = getTagsStr($("#tags").val());
+      params.active = $("#active").is(':checked');
+      params.notifyByEmail = $("#byEmail").is(':checked');
+      params.email = $("#email").val();
+      params.notifyBySMS = $("#bySMS").is(':checked');
+      params.phone = $("#phone").val();
+      params.sms_carrier = $("#carrier :selected").val();
+      report("params: "+JSON.stringify(params));
+      var url = "http://sharedcam.paldeploy.com/registry/reg_setNotification?";
+      var qs = WVR.objToQueryStr(params);
+      url += qs;
+      report("url: "+url);
+      $.getJSON(url, function(obj) {
+          report("got back: "+JSON.stringify(obj));
+      });
+}
+
+function deleteNotification()
+{
+      report("delete");
+      var name = $("#name").val();
+      var url = "http://sharedcam.paldeploy.com/registry/reg_delNotification?";
+      url += "name="+name;
+      report("url: "+url);
+      $.getJSON(url, function(obj) {
+          report("deleted");
+          window.location.href = "/";
+      });
+}
+
+function loadNotification(obj)
+{
+   report("Loaded Notification data obj: "+JSON.stringify(obj));
+   $("#active").attr('checked', obj.active);
+   $("#name").val(obj.name);
+   $("#tags").val(obj.pattern_tags);
+   $("#byEmail").attr('checked', obj.notifyByEmail);
+   $("#email").val(obj.email);
+   $("#bySMS").attr('checked', obj.notifyBySMS);
+   $("#phone").val(obj.phone);
+   $("#carrier").val(obj.sms_carrier);
+}
+
+$(document).ready(function() {
+   $("#save").click(saveNotification);
+   $("#delete").click(deleteNotification);
+   var name = "{{ user.username }}";
+   var qs = window.location.href.slice(window.location.href.indexOf('?') + 1);
+   var qsObj = WVR.queryStringToObj(qs);
+   if (qsObj.name)
+      name = qsObj.name;
+   var url = "http://sharedcam.paldeploy.com/registry/reg_getNotification?";
+   url += ("name="+name);
+   report("getting url: "+url);
+   $.getJSON(url, loadNotification);
+});
+
+</script>
+
+<style type="text/css">
+   
+</style>
+
+{% endblock %}
+{% block content %}
+
+<h3>Setup notification</h3>
+
+Active: <input id="active" type="checkbox">
+<p>
+<table>
+<tr>
+<td>Name:&nbsp;</td>
+<td><input id="name" type="text" size="30" value="{{ user.username }}"></td>
+</tr>
+<tr>
+<td>Tags:</td>
+<td><input id="tags" type="text" size="30" value="dogs"></td>
+</tr>
+</table>
+
+&nbsp;
+<p>
+Notify by email: <input id="byEmail" type="checkbox">
+<br>
+email: &nbsp <input id="email" type="text" size="30" value="">
+<br>
+
+&nbsp;
+<p>
+Notify by SMS: <input id="bySMS" type="checkbox" value=""><br>
+Phone:&nbsp;
+ <input id="phone" type="text" value="650-4567890" size="12"> &nbsp;
+ Carrier:
+  <select id="carrier">
+    <option value="att">ATT</option>
+    <option value="verizon">Verizon</option>
+    <option value="tmobile">T-mobile</option>
+    <option value="sprint">Sprint</option>
+    <option value="uscellular">U.S. Cellular</option>
+    <option value="cricket">Cricket</option>
+    <option value="virgin">Virgin</option>
+ </select>
+&nbsp;
+<p>
+&nbsp;
+<p>
+<input id="save" type="button" value="Save">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input id="delete" type="button" value="Delete">
+
+<!--
+{% if user and not user.is_anonymous %}
+  <p>
+  <h3>Hello, {{ user.get_full_name }}!</h3>
+{% else %}
+  <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
+{% endif %}
+-->
+
+{% endblock %}

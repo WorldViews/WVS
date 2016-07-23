@@ -1,0 +1,470 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}WorldViews{% endblock %}
+{% block navtitle %}WorldViews{% endblock %}
+{% block jsext %}
+
+<!--
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.css' rel='stylesheet' />
+-->
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+
+<style>
+      #xmap { position:absolute; top:100px; height:60%; width:80%; }
+      #ymap { position:static; height:60%; width:80%; }
+      #map { position:static; height:400px; width:100%; }
+</style>
+
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+//mapboxgl.accessToken = 'pk.eyJ1IjoiZG9ua2ltYmVyIiwiYSI6Ijc0NzFjYWUwM2E4NzgyNDc4M2Y1NTI3OTJlNWMyYjc5In0.xBSRvdl0XIy8SXDOIxRoCA';
+L.mapbox.accessToken = 'pk.eyJ1IjoiZG9ua2ltYmVyIiwiYSI6Ijc0NzFjYWUwM2E4NzgyNDc4M2Y1NTI3OTJlNWMyYjc5In0.xBSRvdl0XIy8SXDOIxRoCA';
+
+var map = null;
+var myLayer = null;
+var ourPos = null;
+var defaultPos = [40, -74.50];
+var selectedPos = null;
+var requestObjs = {};
+var guideObjs = {};
+var sessionObjs = {};
+var activeSessionObjs = {};
+var newRequestMarker = null;
+
+report("Got report");
+
+var CAMS_URL = "/reg_query/"
+var REQUESTS_URL = "/reg_getrequests/"
+var GUIDES_URL = "/reg_getguides/"
+var SESSIONS_URL = "/reg_getsessions/"
+
+function getLocation() {
+    if (navigator.geolocation) {
+        var ret = navigator.geolocation.getCurrentPosition(handleLocation);
+        report("ret: "+ret);
+    } else {
+        report("Geolocation is not supported by this browser.");
+    }
+}
+
+function handleLocation(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    ourPos = [lat,lon];
+    report("lat: " + lat + "lon: " + lon);
+    report("pos: "+JSON.stringify(position));
+    if (map) {
+       report("panning to "+ourPos);
+       //map.panTo(ourPos);
+       map.setView(ourPos, 12);
+       getPosMarker(ourPos);
+    }
+}
+
+function timerFun()
+{
+    $.get(CAMS_URL, gotCams, 'json');
+    $.get(REQUESTS_URL, gotRequests, 'json');
+    $.get(SESSIONS_URL, gotSessions, 'json');
+    $.get(GUIDES_URL, gotGuides, 'json');
+    setTimeout(timerFun, 3000);
+}
+
+function guideHtml(g)
+{
+   return g.name+"<br><i>"+g.text+"<p>";
+}
+
+function reqHtml(req)
+{
+   return req.text+"<br><i>"+req.user+"</i>&nbsp;&nbsp"+req.request_time+"<p>";
+}
+
+function gotSessions(sessions)
+{
+    report("gotSessions"+JSON.stringify(sessions));
+}
+
+function gotGuides(guides)
+{
+    for (var i=0; i<guides.length; i++) {
+       var guide = guides[i];
+       var name = guide.name;
+       if (guideObjs[name]) {
+          continue;
+       }
+       guideObjs[name] = guide;
+       if (guide.latitude && guide.longitude) {
+          report("latLng: "+guide.latitude +" "+ guide.longitude);
+          getGuideMarker(guide.text, guide.latitude, guide.longitude);
+       }
+       report("**** writing to guides dif...");
+       $("#guidesListDiv").append(guideHtml(guide));
+    }
+    report("gotGuides: "+JSON.stringify(guides));
+}
+
+function gotRequests(reqs)
+{
+    //report("gotRequests: "+JSON.stringify(reqs));
+    report("gotRequests");
+    for (var i=0; i<reqs.length; i++) {
+       var req = reqs[i];
+       var id = req.id;
+       if (requestObjs[id]) {
+          continue;
+       }
+       requestObjs[id] = req;
+       if (req.latitude && req.longitude) {
+          latLng = [req.latitude, req.longitude];
+          report("latLng: "+latLng);
+          getRequestMarker(req.text, req.latitude, req.longitude);
+       }
+       $("#requestsListDiv").append(reqHtml(req));
+    }
+}
+
+
+function addActiveSessionMarkers(cams)
+{
+   report("addActiveSessionMarkers");
+   for (var i in cams.rooms) {
+      var cam = cams.rooms[i];
+      if (!(cam.latitude && cam.longitude))
+	 continue;
+      if (activeSessionObjs[cam.room])
+          continue;
+      activeSessionObjs[cam.room] = cam;
+      lat = cam.latitude;
+      lon = cam.longitude;
+      report("activeSession at "+lat+" "+lon);
+      var marker = getSessionMarker(cam, lat, lon);
+      cam.marker = marker;
+   }
+}
+
+function gotCams(cams)
+{
+   addActiveSessionMarkers(cams);
+   var t0 = Date.now()/1000.0;
+   //console.log("cams: ", JSON.stringify(cams));
+   var tstr = "<table class='table table-border'>\n"+
+                 "<thead>\n"+
+                 " <tr>\n"+
+                 "  <th>status</th>\n" +
+                 "  <th>name</th>\n" +
+                 "  <th>tags</th>\n" +
+                 "  <th>room</th>\n" +
+                 "  <th>dt</th>\n" +
+                 "  <th>state</th>\n"+
+                 " </tr>\n" +
+                 "</thead>\n" +
+                 "<tbody>\n";
+   for (var i in cams.rooms) {
+      var cam = cams.rooms[i];
+      if (cam.room !== "null"){
+        var dt = t0 - cam.lastTime;
+        var delta = Math.floor(dt);
+        var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+cam.room;
+        var link = '<a href="'+url+'" target="_blank">'+cam.name+'</a>';
+        var join_button = "<a href='"+url+"' target='_blank' class='btn btn-info'>join</a>";
+        
+        var tags = "";
+        for (var t_id in cam.tags){
+          var t = cam.tags[t_id];
+          tags += "<a href=''>#" + t + "</a> "
+        }
+
+        if (cam.state > 1){
+           link = cam.name;
+           join_button = "<a href='"+url+"' class='btn btn-info' disabled>join</a>";
+        }
+
+        var row = " <tr>\n" +
+                  "  <td> "+join_button+"</td>\n" +
+                  "  <td> "+link+     " </td>\n" +
+                  "  <td> "+tags+ " </td>\n" +
+                  "  <td> "+cam.room+ " </td>\n" +
+                  "  <td> "+delta+    " </td>\n" +
+                  "  <td> "+cam.state+" </td>\n"+
+                  " </tr>\n";
+        tstr += row;
+      }
+   }
+   tstr += "</tbody>\n</table>";
+   $("#cams").html(tstr)
+}
+
+// MIT-licensed code by Benjamin Becquet
+// https://github.com/bbecquet/Leaflet.PolylineDecorator
+L.RotatedMarker = L.Marker.extend({
+  options: { angle: 0 },
+  _setPos: function(pos) {
+    L.Marker.prototype._setPos.call(this, pos);
+    if (L.DomUtil.TRANSFORM) {
+      // use the CSS transform rule if available
+      this._icon.style[L.DomUtil.TRANSFORM] += ' rotate(' + this.options.angle + 'deg)';
+    } else if (L.Browser.ie) {
+      // fallback for IE6, IE7, IE8
+      var rad = this.options.angle * L.LatLng.DEG_TO_RAD,
+      costheta = Math.cos(rad),
+      sintheta = Math.sin(rad);
+      this._icon.style.filter += ' progid:DXImageTransform.Microsoft.Matrix(sizingMethod=\'auto expand\', M11=' +
+        costheta + ', M12=' + (-sintheta) + ', M21=' + sintheta + ', M22=' + costheta + ')';
+    }
+  }
+});
+
+L.rotatedMarker = function(pos, options) {
+    return new L.RotatedMarker(pos, options);
+};
+
+function getMarker(text, lat, lon, iconUrl, draggable)
+{
+   var marker = L.rotatedMarker(new L.LatLng(lat, lon), {
+      icon: L.icon({
+         iconUrl: iconUrl,
+         iconSize: [24, 24],
+      }),
+      draggable: draggable
+   });
+   marker.addTo(map);
+   return marker;
+}
+
+function getNewRequestMarker(lat, lon)
+{
+   hideNewRequestMarker();
+   var iconUrl = '/static/img/question-mark.png';
+   return getMarker(null, lat, lon, iconUrl, true);
+}
+
+function hideNewRequestMarker()
+{
+   if (newRequestMarker) {
+      //TODO:  Help!  I can't find how to delete marker!
+      newRequestMarker.setOpacity(0);
+      //newRequestMarker.removeFrom(map);
+      newRequestMarker = null;
+   }
+}
+
+
+function getRequestMarker(text, lat, lon)
+{
+   var iconUrl = '/static/img/red-question-mark.png';
+   return getMarker(text, lat, lon, iconUrl, false);
+}
+
+function getGuideMarker(text, lat, lon)
+{
+   var iconUrl = '/static/img/info-icon.png';
+   return getMarker(text, lat, lon, iconUrl, false);
+}
+
+function getPosMarker(pos)
+{
+   var iconUrl = '/static/img/black-marker.png';
+   return getMarker("You are here", pos[0], pos[1], iconUrl, false);
+}
+
+function getSessionMarker(s, lat, lon)
+{
+   report("*** addSessionMarker *** "+lat+" "+lon);
+   //var iconUrl = '/static/img/green-flag-icon.png';
+   var iconUrl = '/static/img/monacat.jpg';
+   return getMarker("session", lat, lon, iconUrl, false);
+}
+
+function mapClick(e)
+{
+   report("mapClick "+e);
+   var latLng = e.latlng;
+   report("latLng: "+latLng);
+   selectedPos = [latLng.lat, latLng.lng];
+   report("selectedPos: "+selectedPos);
+   newRequestMarker = getNewRequestMarker(latLng.lat, latLng.lng);
+   $("#reqStatDiv").html("Have Precise Location");
+   $("#guideStatDiv").html("Have Precise Location");
+}
+
+function setupMap() {
+   args = {
+      container: 'map', // container id
+      style: 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v7.json', //stylesheet location
+      center: defaultPos,
+      zoom: 9 // starting zoom
+   };
+   if (ourPos)
+      args.center = ourPos;
+   //map = new mapboxgl.Map(args);
+   //map = L.mapbox.map('map', 'mapbox.light');
+   map = L.mapbox.map('map', 'mapbox.streets');
+   //map = L.mapbox.map('map', 'mapbox.basic');
+   myLayer = L.mapbox.featureLayer().addTo(map);
+   map.on('click', mapClick);
+}
+
+$(document).ready(function() {
+    getLocation();
+    setupMap();
+    timerFun();
+//  window.setInterval(get_recent, 2000);
+    $("#recenter").click(function(e) {
+        map.panTo(ourPos, 14);
+    });
+    $("#newRequestButton").click(function(e) {
+        $("#newRequestDiv").toggle();
+    });
+    $("#addRequestButton").click(function(e) {
+        report("add request");
+        var obj = {'text': $("#requestText").val()}
+        if (selectedPos) {
+           obj.latitude = selectedPos[0];
+           obj.longitude = selectedPos[1];
+        }
+        report("obj: "+JSON.stringify(obj));
+        WVR.addRequest(obj, function(obj) {
+            $("#requestText").val("");
+            hideNewRequestMarker();
+        });
+    });
+    $("#registerGuideButton").click(function(e) {
+        $("#registerGuideDiv").toggle();
+    });
+    $("#addGuideButton").click(function(e) {
+        report("add request");
+        var obj = {'name': $("#guideName").val(),
+                   'tags': $("#guideTags").val(),
+                   'text': $("#guideText").val()}
+        if (selectedPos) {
+           obj.latitude = selectedPos[0];
+           obj.longitude = selectedPos[1];
+        }
+        report("obj: "+JSON.stringify(obj));
+        WVR.addGuide(obj, function(obj) {
+            $("#guideText").val("");
+            hideNewRequestMarker();
+        });
+    });
+    $("#createSessionButton").click(function(e) {
+        $("#sessionRoom").val(WVR.getRandRoom());
+        $("#createSessionDiv").toggle();
+    });
+    $("#addSessionButton").click(function(e) {
+        report("addSession click");
+        var room = $("#sessionRoom").val();
+        var name = $("#sessionGuideName").val();
+        var tagStr = WVR.getTagsStr($("#sessionTags").val());
+        var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+room;
+        url += "&clientType=web";
+        url += "&name="+name;
+        if (tagStr)
+            url += "&tagStr="+tagStr;
+        if (selectedPos) {
+            url += "&latitude="+selectedPos[0];
+            url += "&longitude="+selectedPos[1];
+        }
+	else if (ourPos) {
+            url += "&latitude="+ourPos[0];
+            url += "&longitude="+ourPos[1];
+        }
+        url += "&registryServer="+window.location.host;
+        window.open(url, "WebSession");
+        //window.location.href = url;
+    });
+});
+
+
+</script>
+
+<!-- <style type="text/css">
+</style>
+-->
+
+{% endblock %}
+{% block content %}
+
+
+<div id="map"></div>
+<input id="recenter" type="Button" value="Recenter">
+
+<table>
+<col width="49%">
+<col width="2%">
+<col width="49%">
+<tr>
+<td valign="top" width="40%">
+
+<div id="sessionsDiv">
+<h3>Sessions</h3>
+
+<div id="cams"></div>
+
+<b id="createSessionButton">Create session as JumpChat Web Guide</b><br>
+<div id="createSessionDiv" hidden>
+
+Name: <input id="sessionGuideName" type="text" size="40" value=""><br>
+Tags: <input id="sessionTags" type="text" size="40" value=""><br>
+Description:<br>
+<textarea id="sessionText" rows="5" cols="50"></textarea><br>
+Jumpchat Room: <input id="sessionRoom" type="text" size="12" value=""><br>
+Max Guests: <input id="sessionTags" type="text" size="3" value="5"><br>
+<input id="addSessionButton" type="button" value="Post">
+</div>
+<div id="sessionsListDiv">
+</div>
+</div>
+
+<div id="guidesDiv">
+<h3>Guides</h3>
+<b id="registerGuideButton">Register as Guide</b><br>
+<div id="registerGuideDiv" hidden>
+&nbsp;&nbsp;
+<span id="guideStatDiv"></span><br>
+
+Name: <input id="guideName" type="text" size="40" value=""><br>
+Tags: <input id="guideTags" type="text" size="40" value=""><br>
+Description:<br>
+<textarea id="guideText" rows="5" cols="50"></textarea><br>
+<input id="addGuideButton" type="button" value="Post">
+</div>
+<p>
+<div id="guidesListDiv">
+</div>
+</div>
+
+</td>
+<td>
+&nbsp;&nbsp;&nbsp;&nbsp;
+</td>
+
+<td width="40%">
+
+<div id="requestDiv">
+<h3>Requests</h3>
+
+<b id="newRequestButton">New Request or Question</b><br>
+<div id="newRequestDiv" hidden>
+ &nbsp;&nbsp;
+<span id="reqStatDiv"></span>
+</h4>
+<br>
+<textarea id="requestText" rows="5" cols="50"></textarea><br>
+<input id="addRequestButton" type="button" value="Post">
+</div>
+&nbsp;
+
+<h4>Existing Requests</h4>
+<div id="requestsListDiv">
+</div>
+</div>
+
+</td>
+</tr>
+</table>
+
+{% endblock %}

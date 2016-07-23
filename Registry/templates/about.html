@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}About WorldViews{% endblock %}
+{% block navtitle %}WorldViews{% endblock %}
+{% block jsext %}
+
+<link rel="stylesheet" href="{% static "css/grid.css" %}" type="text/css" />
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+</script>
+
+<style type="text/css">
+</style>
+
+{% endblock %}
+{% block content %}
+
+<div class="span pull-right" style="text-align:right">
+   <img src="{% static "img/blue-marble.png" %}" width="200" height="200">
+</div>
+
+<h2>Mission</h2>
+To support Humanity in peacefully sharing our world by making it easier to
+connect, organize, share views of the world, and see ourselves as one family living
+together on Earth.
+
+&nbsp;<p>
+&nbsp;<p>
+This involves providing easy access to technologies that allow us to easily see other
+parts of the world, and to share our own, in many exciting ways, such as live or recorded
+images, video, and virtual models.   More importantly, it involves using those technologies
+to help us connect, and to share our stories, concerns and dreams.
+
+{% endblock %}

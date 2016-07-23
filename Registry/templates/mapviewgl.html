@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}WorldViews{% endblock %}
+{% block navtitle %}WorldViews{% endblock %}
+{% block jsext %}
+
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.8.1/mapbox-gl.css' rel='stylesheet' />
+<!--
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.2.1/mapbox.css' rel='stylesheet' />
+-->
+
+<style>
+      #xmap { position:absolute; top:100px; height:60%; width:80%; }
+      #ymap { position:static; height:60%; width:80%; }
+      #map { position:static; height:400px; width:100%; }
+</style>
+
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZG9ua2ltYmVyIiwiYSI6Ijc0NzFjYWUwM2E4NzgyNDc4M2Y1NTI3OTJlNWMyYjc5In0.xBSRvdl0XIy8SXDOIxRoCA';
+//L.mapbox.accessToken = 'pk.eyJ1IjoiZG9ua2ltYmVyIiwiYSI6Ijc0NzFjYWUwM2E4NzgyNDc4M2Y1NTI3OTJlNWMyYjc5In0.xBSRvdl0XIy8SXDOIxRoCA';
+
+var map = null;
+
+var ourPos = null;
+var defaultPos = [40, -74.50];
+var requests = {}
+
+report("Got report");
+
+var CAMS_URL = "/reg_query/"
+var REQUESTS_URL = "/reg_getrequests/"
+
+// var x = document.getElementById("demo");
+
+function getLocation() {
+    if (navigator.geolocation) {
+        var ret = navigator.geolocation.getCurrentPosition(showPosition);
+        report("ret: "+ret);
+    } else {
+        report("Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    ourPos = [lat,lon];
+    report("lat: " + lat + "lon: " + lon);
+    report("pos: "+JSON.stringify(position));
+    if (map) {
+       report("panning to "+ourPos);
+       map.panTo(ourPos);
+    }
+}
+
+function timerFun()
+{
+//    $.get(CAMS_URL, gotCams, 'json');
+    $.get(REQUESTS_URL, gotRequests, 'json');
+    setTimeout(timerFun, 2000);
+}
+
+function gotRequests(reqs)
+{
+    //report("gotRequests: "+JSON.stringify(reqs));
+    report("gotRequests");
+    for (var i=0; i<reqs.length; i++) {
+       var req = reqs[i];
+       var id = req.id;
+       if (requests[id]) {
+          //report("skipping req id "+id);
+          continue;
+       }
+       requests[id] = req;
+       if (req.latitude && req.longitude) {
+          latLng = [req.latitude, req.longitude];
+          report("latLng: "+latLng);
+          //var marker = getFeatureMarker(req.name, req.text, req.latitude, req.longitude);
+          //map.addLayer(marker);
+       }
+    }
+}
+
+function gotCams(cams)
+{
+   var t0 = Date.now()/1000.0;
+   console.log("cams: ", JSON.stringify(cams));
+   var tstr = "<table class='table table-border'>\n"+
+                 "<thead>\n"+
+                 " <tr>\n"+
+                 "  <th>status</th>\n" +
+                 "  <th>name</th>\n" +
+                 "  <th>tags</th>\n" +
+                 "  <th>room</th>\n" +
+                 "  <th>dt</th>\n" +
+                 "  <th>state</th>\n"+
+                 " </tr>\n" +
+                 "</thead>\n" +
+                 "<tbody>\n";
+   for (var i in cams.rooms) {
+      var cam = cams.rooms[i];
+      if (cam.room !== "null"){
+        var dt = t0 - cam.lastTime;
+        var delta = Math.floor(dt);
+        var url = "http://jumpchat.paldeploy.com/sharedcam/?room="+cam.room;
+        var link = '<a href="'+url+'" target="_blank">'+cam.name+'</a>';
+        var join_button = "<a href='"+url+"' target='_blank' class='btn btn-info'>join</a>";
+        
+        var tags = "";
+        for (var t_id in cam.tags){
+          var t = cam.tags[t_id];
+          tags += "<a href=''>#" + t + "</a> "
+        }
+
+        if (cam.state > 1){
+           link = cam.name;
+           join_button = "<a href='"+url+"' class='btn btn-info' disabled>join</a>";
+        }
+
+        var row = " <tr>\n" +
+                  "  <td> "+join_button+"</td>\n" +
+                  "  <td> "+link+     " </td>\n" +
+                  "  <td> "+tags+ " </td>\n" +
+                  "  <td> "+cam.room+ " </td>\n" +
+                  "  <td> "+delta+    " </td>\n" +
+                  "  <td> "+cam.state+" </td>\n"+
+                  " </tr>\n";
+        tstr += row;
+      }
+   }
+   tstr += "</tbody>\n</table>";
+   $("#cams").html(tstr)
+}
+
+
+function getFeatureMarker(name, text, lat, lon) {
+    return {
+        // this feature is in the GeoJSON format: see geojson.org
+        // for the full specification
+       type: 'Feature',
+       geometry: {
+            type: 'Point',
+            // coordinates here are in longitude, latitude order because
+            // x, y is the standard for GeoJSON and many formats
+            coordinates: [
+              -77.03221142292,
+              38.913371603574 
+            ]
+        },
+        properties: {
+            title: name,
+            description: text,
+            // one can customize markers by adding simplestyle properties
+            // https://www.mapbox.com/guides/an-open-platform/#simplestyle
+            'marker-size': 'large',
+            'marker-color': '#BE9A6B',
+            'marker-symbol': 'cafe'
+        }
+   };
+}
+
+function mapClick(e)
+{
+   report("mapClick "+e);
+   var latLng = e.latLng;
+   report("turkeys here....");
+   var obj = {'latitude': latLng.lat,
+              'longitude': latLng.lng,
+              'name': 'another request',
+              'text': 'where is the drone?'};
+   report("obj: "+JSON.stringify(obj));
+   WVR.addRequest(obj);
+}
+
+function setupMap() {
+   args = {
+      container: 'map', // container id
+      style: 'https://www.mapbox.com/mapbox-gl-styles/styles/outdoors-v7.json', //stylesheet location
+      center: defaultPos,
+      zoom: 9 // starting zoom
+   };
+   if (ourPos)
+      args.center = ourPos;
+   map = new mapboxgl.Map(args);
+   //map = L.mapbox.map('map', 'mapbox.streets');
+   map.on('click', mapClick);
+}
+
+$(document).ready(function() {
+    getLocation();
+    setupMap();
+    timerFun();
+//  window.setInterval(get_recent, 2000);
+    $("#recenter").click(function(e) {
+        map.panTo(ourPos);
+    });
+});
+
+
+</script>
+
+<!-- <style type="text/css">
+</style>
+-->
+
+{% endblock %}
+{% block content %}
+
+
+<div id="map"></div>
+<input id="recenter" type="Button" value="Recenter">
+
+<h2>
+    Available Guides
+    <br /><small>People available right now to show you a view into their world</small>
+</h2>
+<div id="cams"></div>
+
+
+<h2>Recent Photos
+    <br /><small>Photos taken by remote viewers</small>
+</h2>
+
+<p> &nbsp; <p> &nbsp; <p> &nbsp;
+<p> &nbsp; <p> &nbsp; <p> &nbsp;
+<p> &nbsp; <p> &nbsp; <p> &nbsp;
+<p> &nbsp; <p> &nbsp; <p> &nbsp;
+<p> &nbsp; <p> &nbsp; <p> &nbsp;
+
+
+{% endblock %}
