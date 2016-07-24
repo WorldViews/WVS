@@ -87,7 +87,7 @@ WV.DynYouTube.handleRecs = function(data, layerName)
         if (layer.numObjs > layer.maxNum)
             return;
         //var imageUrl = layer.iconUrl;
-        var imageUrl = "images/videoLogo.png";
+        var imageUrl = WV.getIconUrl("videoLogo.png");
 	if (0) {
 	    var imgStr = '<img src="'+rec.thumbNailURL+'">';
 	    report("imgStr: "+imgStr);
