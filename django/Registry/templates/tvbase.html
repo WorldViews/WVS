@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "/static/css/bootstrap.min.css" %}" type="text/css" />
+<!--
+    <script src="{% static "js/jquery-1.11.2.js" %}"></script>
+-->
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+</head>
+
+<body>
+<!--
+<body style="margin-top: 60px;">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    {% if user.is_authenticated %}
+
+                        <li><a href="{% url 'index' %}">Logged in as {{ user }}</a></li>
+
+                        <li><a href="{% url 'index' %}">{{ user }}</a></li>
+                        <li><a href="{% url 'logout' %}">Log out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<div class="container">
+-->
+
+
+{% block content %}{% endblock %}
+
+</body>
+</html>
+
