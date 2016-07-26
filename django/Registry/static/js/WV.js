@@ -34,6 +34,11 @@ var wvCom = null;
 
 Cesium.BingMapsApi.defaultKey = "ApkF-vdI2ix3rcw-JCklfZG98zznVZfuAzRGf1khbyRZrev_qYq032B23YtYa-eX";
 
+var cesiumContainer = document.getElementById('cesiumContainer');
+//var viewer = new Cesium.Viewer(cesiumContainer, {
+//  
+//});
+
 WV.viewer = new Cesium.Viewer('cesiumContainer', {
 	//    imageryProvider : new Cesium.ArcGisMapServerImageryProvider({
 	//        url : 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer',
@@ -43,6 +48,7 @@ WV.viewer = new Cesium.Viewer('cesiumContainer', {
     timeline : false,
     //animation: true,
     //timeline : true,
+    //    fullscreenElement : cesiumContainer,
     baseLayerPicker : true
 });
 WV.entities = WV.viewer.entities;

@@ -37,6 +37,9 @@ def toBool(val):
 def index(request):
     return render_to_response('index.html', locals(), RequestContext(request))
 
+def photos(request):
+    return render_to_response('photos.html', locals(), RequestContext(request))
+
 def about(request):
     return render_to_response('about.html', locals(), RequestContext(request))
 
@@ -107,6 +110,14 @@ def globeview(request):
 def televiewer(request):
     return render_to_response("televiewer.html", locals(), RequestContext(request))
 #    return render_to_response("cesium.html", locals(), RequestContext(request))
+
+@csrf_exempt
+def tv(request):
+    return render_to_response("tv.html", locals(), RequestContext(request))
+
+@csrf_exempt
+def tv2(request):
+    return render_to_response("tv2.html", locals(), RequestContext(request))
 
 @csrf_exempt
 def reg_remove(request):

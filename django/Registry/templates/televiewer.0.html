@@ -1,46 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>WorldViews TeleViewer</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
-    <script src="/static/js/jquery-1.11.2.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-</head>
-<body style="margin-top: 0px">
-
-    <div class="navbar navbar-default navbar-fixed-top" style="display: block">
-        <div class="container">
-            <div class="navbar-header" style="height:10px;">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-		    <span class="icon-bar">ABC</span>
-                </button>
-                <a class="navbar-brand" href="{% url 'about' %}"> WorldViews </a>
-                <a class="navbar-brand" href="{% url 'televiewer' %}">TeleViewer</a>
-                <a class="navbar-brand" href="{% url 'photos' %}">Photos</a>
-                <a class="navbar-brand" href="{% url 'projects' %}">Projects</a>
-                <a class="navbar-brand" href="{% url 'members' %}">Members</a>
-                <a class="navbar-brand" href="{% url 'inspirations' %}">Inspirations</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav pull-right">
-                    {% if user.is_authenticated %}
-                        <li><a href="{% url 'index' %}">{{ user }}</a></li>
-                        <li><a href="{% url 'logout' %}">Log out</a></li>
-                    {% else %}
-                        <li><a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a></li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </div>
-
+{% extends 'tvbase.html' %}
+{% block title %}WorldViews TeleViewer{% endblock %}
 <!--
-<div class="fullSize" style="height:98%">
-</div>
+{ % block navtitle % }WorldViews{ % endblock % }
+{ % load staticfiles % }
+{ % block jsext % } { % endblock % }
 -->
-<div class="fullSize" style="height:30px"></div>
+{% block content %}
 
+  <xmeta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>WorldViews Viewer</title>
   <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
   <script src="/static/js/socket.io-1.4.5.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -51,9 +19,8 @@
   </style>
   <link rel="stylesheet" type="text/css" href="/static/css/televiewer.css">
 
-  <div id="cesiumContainer" class="toolbar-left">
-  </div>
-     <div class="toolbar-left" id="layersDiv" style="color:white;">
+  <div id="cesiumContainer" class="fullSize"></div>
+  <div class="toolbar-left" id="layersDiv" style="color:white;">
      <span id="layersLabel">Hide Layers</span>
 
                     {% if user.is_authenticated %}
@@ -62,8 +29,11 @@
                     {% else %}
                         <a href="{% url 'social:begin' 'twitter' %}?next={{ request.path }}">Login with Twitter</a>
                     {% endif %}
-     </div>
-  <div class="video-window" id="ytplayer" style="color:white;"></div>
+
+  </div>
+  <div class="video-window" id="ytplayer" style="color:white;">
+  </div>
+
   <div id="toolbar"></div>
   <div id="notesLayerDiv"></div>
 
@@ -72,8 +42,10 @@
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
   ga('create', 'UA-80828450-1', 'auto');
   ga('send', 'pageview');
+
 </script>
 
 <script src="/static/js/WV.js"></script>
@@ -106,8 +78,4 @@ WV.useSocketIO = true;
 WV.statusInterval = 500;
 </script>
 
-<!-- </div> -->
-
-</body>
-</html>
-
+{% endblock %}

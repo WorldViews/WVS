@@ -12,32 +12,27 @@
 
 </head>
 
-<body style="margin-top: 60px;">
+<body style="margin-top: 40px">
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
+            <div class="navbar-header" style="height:10px;">
+	      <!--
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                    <span class="icon-bar">A</span>
+                    <span class="icon-bar">B</span>
+                    <span class="icon-bar">C</span>
                 </button>
-                <a class="navbar-brand" href="{% url 'about' %}">{% block navtitle %}{% endblock %}</a>
+		-->
+                <a class="navbar-brand" href="{% url 'index' %}">{% block navtitle %}WorldViews{% endblock %}</a>
 <!--
                 <a class="navbar-brand" href="{% url 'about' %}">About</a>
                 <a class="navbar-brand" href="{% url 'mapview' %}">Map</a>
-                <a class="navbar-brand" href="{% url 'globeview' %}">Globe</a>
-                <a class="navbar-brand" href="{% url 'televiewer' %}">TV</a>
-                <a class="navbar-brand" href="{% url 'televiewer' %}">TeleViewer</a>
-                <a class="navbar-brand" href="/static/TeleViewer.html">TV</a>
 -->
                 <a class="navbar-brand" href="{% url 'televiewer' %}">TeleViewer</a>
-                <a class="navbar-brand" href="{% url 'photos' %}">Photos</a>
+                <a class="navbar-brand" href="/static/TeleViewer.html">TV</a>
                 <a class="navbar-brand" href="{% url 'projects' %}">Projects</a>
                 <a class="navbar-brand" href="{% url 'members' %}">Members</a>
                 <a class="navbar-brand" href="{% url 'inspirations' %}">Inspirations</a>
-<!--
-                <a class="navbar-brand" href="/static/Cesium/1.7.1/Apps/HelloWorld.html">Globe</a>
--->
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
@@ -55,7 +50,7 @@
         </div>
     </div>
 
-<div class="container">
+<div class="fullSize" style="height:98%">
 {% block content %}{% endblock %}
 </div>
 

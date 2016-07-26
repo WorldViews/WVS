@@ -6,10 +6,15 @@ from django.conf.urls.static import static
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^$', 'Registry.views.index', name='index'),
+#    url(r'^$', 'Registry.views.index', name='index'),
+    url(r'^$', 'Registry.views.about', name='about'),
     url(r'^about/', 'Registry.views.about', name='about'),
+    url(r'^photos/', 'Registry.views.photos', name='photos'),
     url(r'^projects/', 'Registry.views.projects', name='projects'),
     url(r'^members/', 'Registry.views.members', name='members'),
+    url(r'^televiewer/$', 'Registry.views.televiewer', name='televiewer'),
+    url(r'^tv/$', 'Registry.views.tv', name='tv'),
+    url(r'^tv2/$', 'Registry.views.tv2', name='tv2'),
     url(r'^inspirations/', 'Registry.views.inspirations', name='inspirations'),
     url(r'^addproj/', 'Registry.views.addproj', name='addproj'),
     url(r'^joinproj/', 'Registry.views.joinproj', name='joinproj'),
@@ -37,7 +42,6 @@ urlpatterns = patterns('',
     url(r'^reg_delNotification/$', 'Registry.views.reg_delNotification'),
     url(r'^mapview/$', 'Registry.views.mapview', name='mapview'),
     url(r'^globeview/$', 'Registry.views.globeview', name='globeview'),
-    url(r'^televiewer/$', 'Registry.views.televiewer', name='televiewer'),
 
     url(r'^admin/', include(admin.site.urls)),
 
