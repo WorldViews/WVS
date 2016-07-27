@@ -15,7 +15,8 @@ WV.WVCom = function()
     this.types = {};
     if (WV.useSocketIO) {
 	report("Getting socket.io socket");
-	WV.socket = io();
+	WV.socket = io("http://platonia:3000");
+	//WV.socket = io(3000);
 	WV.socket.on('register', function(msg){
 	    });
 	WV.socket.on('sharecam', WV.sharecamHandler);

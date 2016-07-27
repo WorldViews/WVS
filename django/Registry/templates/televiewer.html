@@ -95,7 +95,7 @@
 -->
   <div id="cesiumContainer" class="cesium-container-style" style="height:100%;"></div>
      <div class="layers-style" id="layersDiv" style="color:white;">
-        <a href="{% url 'index' %}">WV</a>&nbsp;
+        <a href="{% url 'index' %}"><img src="/static/img/blue-marble-logo.png" width="25" height="25"></a>&nbsp;
         <span id="layersLabel">Hide Layers</span>
                     {% if user.is_authenticated %}
                         <a href="{% url 'index' %}">{{ user }}</a></li>
