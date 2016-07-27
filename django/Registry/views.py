@@ -40,6 +40,9 @@ def index(request):
 def photos(request):
     return render_to_response('photos.html', locals(), RequestContext(request))
 
+def index(request):
+    return render_to_response('about.html', locals(), RequestContext(request))
+
 def about(request):
     return render_to_response('about.html', locals(), RequestContext(request))
 

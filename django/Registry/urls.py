@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     # Examples:
 #    url(r'^$', 'Registry.views.index', name='index'),
     url(r'^$', 'Registry.views.about', name='about'),
+    url(r'^index/', 'Registry.views.index', name='index'),
     url(r'^about/', 'Registry.views.about', name='about'),
     url(r'^photos/', 'Registry.views.photos', name='photos'),
     url(r'^projects/', 'Registry.views.projects', name='projects'),

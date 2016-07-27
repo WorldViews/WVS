@@ -35,9 +35,6 @@ var wvCom = null;
 Cesium.BingMapsApi.defaultKey = "ApkF-vdI2ix3rcw-JCklfZG98zznVZfuAzRGf1khbyRZrev_qYq032B23YtYa-eX";
 
 var cesiumContainer = document.getElementById('cesiumContainer');
-//var viewer = new Cesium.Viewer(cesiumContainer, {
-//  
-//});
 
 WV.viewer = new Cesium.Viewer('cesiumContainer', {
 	//    imageryProvider : new Cesium.ArcGisMapServerImageryProvider({

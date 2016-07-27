@@ -8,16 +8,7 @@
           display: block;
           position: absolute;
           padding: 10px;
-          top: 5px;
-          left: 5px;
-          background-color: rgba(50,50,150,0.3);
-      }
-
-      .toolbar-left2 {
-          display: block;
-          position: absolute;
-          padding: 10px;
-          top: 5px;
+          top: 15px;
           left: 5px;
           background-color: rgba(50,50,150,0.3);
       }
