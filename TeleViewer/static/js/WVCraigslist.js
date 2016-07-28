@@ -40,16 +40,16 @@ WV.Craigslist.handleRecs = function(data, name)
 	lon = geotag[1];
 	var h = 5000;
         var id = "craigslist_"+rec.id;
-	var imageUrl = "images/BeamRobot.png";
+	var imageUrl = "/static/img/billboards/BeamRobot.png";
 	var scale = 0.2;
 	if (layer.imageUrl)
 	    imageUrl = layer.imageUrl;
 	if (rec.recType == "housing") {
-	    imageUrl = "images/houseIcon.png";
+	    imageUrl = "/static/img/billboards/houseIcon.png";
 	    scale = 0.1;
 	}
 	if (rec.recType == "event") {
-	    imageUrl = "images/eventIcon.png";
+	    imageUrl = "/static/img/billboards/eventIcon.png";
 	    scale = 0.04;
 	}
         layer.recs[id] = rec;
