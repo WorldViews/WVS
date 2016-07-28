@@ -1,0 +1,15 @@
+Django==1.8.6
+feedparser==5.2.1
+django-blog-zinnia==0.15.2
+django-contrib-comments==1.6.1
+django-mptt==0.7.4
+django-scheduler==0.7.2
+django-tagging==0.4
+django-xmlrpc==0.1.5
+zinnia-wysiwyg-tinymce==1.3
+python-social-auth==0.2.12
+mots-vides==2015.5.11
+pyparsing==2.0.3
+pytz==2015.6
+beautifulsoup4==4.4.1
+pillow==2.8.2
