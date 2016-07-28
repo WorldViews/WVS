@@ -25,7 +25,7 @@
           "name": "climbing",
           "description": "Rock climbing",
 	  "visible": false,
-	  "iconUrl": "climber.png",
+	  "iconUrl": "/static/img/billboards/climber.png",
 	  "showTethers": true,
 	  "scale": 0.05,
 	  "mediaType": "youtube",
@@ -36,7 +36,7 @@
           "description": "Hiking",
 	  "maxNum": 5000,
 	  "visible": false,
-	  "iconUrl": "hiking.png",
+	  "iconUrl": "/static/img/billboards/hiking.png",
 	  "scale": 0.1,
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/hiking_data.json"
@@ -68,7 +68,7 @@
 	  "visible": false,
 	  "xxxheight": 10000,
 	  "scale": 0.06,
-	  "iconUrl": "temple_trans.png",
+	  "iconUrl": "/static/img/billboards/temple_trans.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/temples_data.json"
        },
@@ -78,7 +78,7 @@
 	  "maxNum": 8000,
 	  "visible": false,
 	  "scale": 0.06,
-	  "iconUrl": "surfing.png",
+	  "iconUrl": "/static/img/billboards/surfing.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/surfing_data.json"
        },
@@ -108,7 +108,7 @@
           "description": "3D Water fun videos",
 	  "maxNum": 8000,
 	  "visible": false,
-	  "iconUrl": "surfing.png",
+	  "iconUrl": "/static/img/billboards/surfing.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/waterSports3D_data.json"
        },
@@ -130,14 +130,14 @@
        {
           "name": "sharecam",
           "description": "Shared Camera Guides",
-	  "iconUrl": "jumpChat.png",
+	  "iconUrl": "/static/img/billboards/jumpChat.png",
 	  "maxNum": 100,
 	  "visible": false
        },
        {
           "name": "zilong",
           "description": "Zilong's Journey",
-	  "iconUrl": "yinyang.png",
+	  "iconUrl": "/static/img/billboards/yinyang.png",
 	  "mediaType": "html",
 	  "dataFile": "/static/data/zilong_data.json",
 	  "visible": false
@@ -247,7 +247,7 @@
 	  "visible": false
        },
 	   {
-          "name": "beyondthefence",
+          "name": "wikipedia entries",
           "description": "Wikipedia Entries",
 	  "iconUrl": "/static/img/billboards/Wikipedia.png",
 	  "height": 1000,
