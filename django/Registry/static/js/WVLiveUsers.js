@@ -27,7 +27,7 @@ WV.LiveUsers.handleData = function(data, name)
     //WV.LiveUsers.setVisibility(true);
     var originImageUrl = "person0.png";
     //var curPosImageUrl = "eagle1.png";
-    var curPosImageUrl = "eye3.png";
+    var curPosImageUrl = "/static/img/eye3.png";
     var recs = data;
     var t = WV.getClockTime();
     for (var i=0; i<recs.length; i++) {
