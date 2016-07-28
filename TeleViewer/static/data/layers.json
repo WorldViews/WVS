@@ -6,7 +6,7 @@
 	  "maxNum": 3000,
 	  "visible": false,
 	  "scale": 0.25,
-	  "iconUrl": "tbd_drone_icon.png",
+	  "iconUrl": "/static/img/billboards/tbd_drone_icon.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/tbd_data.json"
        },
@@ -16,8 +16,8 @@
 	  "maxNum": 3000,
 	  "visible": false,
 	  "scale": 0.09,
-	  "xxxiconUrl": "orangeDrone.png",
-	  "iconUrl": "twd_logo.png",
+	  "xxxiconUrl": "/static/img/billboards/orangeDrone.png",
+	  "iconUrl": "/static/img/billboards/twd_logo.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/twd_data.json"
        },
@@ -48,7 +48,7 @@
           "visible": false,
           "xxheight": 10000,
 	  "scale": 0.07,
-          "iconUrl": "kite.png",
+          "iconUrl": "/static/img/billboards/kite.png",
           "mediaType": "youtube",
           "dataFile": "/static/data/FlyingKite_data.json"
        },
@@ -57,7 +57,7 @@
           "description": "Dancing",
           "maxNum": 6000,
 	  "scale": 0.07,
-          "iconUrl": "dancing_0.png",
+          "iconUrl": "/static/img/billboards/dancing_0.png",
           "mediaType": "youtube",
           "dataFile": "/static/data/dance_data.json"
        },
@@ -98,8 +98,8 @@
 	  "maxNum": 8000,
 	  "visible": false,
 	  "scale": 0.1,
-	  "iconUrl": "virtualPhotoWalk.png",
-          "xiconUrl": "kite.png",
+	  "iconUrl": "/static/img/billboards/virtualPhotoWalk.png",
+          "xiconUrl": "/static/img/billboards/kite.png",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/virtualphotowalks_data.json"
        },
@@ -145,7 +145,7 @@
        {
           "name": "beyondthefence",
           "description": "Enock's Blog",
-	  "iconUrl": "enockicon.png",
+	  "iconUrl": "/static/img/billboards/enockicon.png",
 	  "height": 500000,
 	  "scale": 0.15,
 	  "showTethers": true,
@@ -156,7 +156,7 @@
        {
           "name": "tripitinerary",
           "description": "Enock's Cross Country Trip",
-	  "iconUrl": "roadtrip1.png",
+	  "iconUrl": "/static/img/billboards/roadtrip1.png",
 	  "mediaType": "html",
 	  "scale": 0.1,
 	  "dataFile": "/static/data/tripitinerary_data.json",
@@ -166,7 +166,7 @@
        {
           "name": "periscope",
           "description": "Periscope",
-	  "iconUrl": "periscopeIcon.png",
+	  "iconUrl": "/static/img/billboards/periscopeIcon.png",
 	  "scale": 0.06,
 	  "height": 500000,
 	  "showTethers": true,
@@ -233,17 +233,28 @@
           "description": "Garden Videos",
 	  "maxNum": 8000,
 	  "visible": false,
-	  "iconUrl": "flowers.ico",
+	  "iconUrl": "/static/img/billboards/flowers.ico",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/gardens_data.json"
        },
        {
           "name": "localwiki",
           "description": "LocalWiki Entries",
-	  "iconUrl": "LocalWiki_Logo.png",
+	  "iconUrl": "/static/img/billboards/LocalWiki_Logo.png",
 	  "mediaType": "html",
 	  "scale": 0.1,
 	  "dataFile": "/static/data/localWikiRegions_data.json",
+	  "visible": false
+       },
+	   {
+          "name": "beyondthefence",
+          "description": "Wikipedia Entries",
+	  "iconUrl": "/static/img/billboards/Wikipedia.png",
+	  "height": 1000,
+	  "scale": 0.05,
+	  "showTethers": true,
+	  "mediaType": "html",
+	  "dataFile": "/static/data/wikipedia_data.json",
 	  "visible": false
        }
     ]

@@ -85,10 +85,34 @@
           "xurl": "https://fxpal.com"
        },
        {
+          "id": "PresidioWalk1",
+          "type": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Walkaround Presidio by Enock.",
+	  "tourName": "presidio_tour_1",
+	  "dataUrl": "/static/data/paths/Golden_Gate_Presidio.json",
+	  "youtubeId": "Xg6Op_UEXbk",
+	  "youtubeDeltaT": -35,
+	  "coordSys": "GEO",
+	  "height": 0.3
+       },
+       {
+          "id": "VasonaWalk1",
+          "type": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Walkaround Vasona by Mark.",
+	  "tourName": "vasona_1",
+	  "dataUrl": "/static/data/paths/Mark_Vasona.json",
+	  "youtubeId": "AoCFLyan_uI",
+	  "youtubeDeltaT": -35,
+	  "coordSys": "GEO",
+	  "height": 0.3
+       },
+       {
           "id": "7",
 	  "type": "model",
 	  "name": "PORTER_MAP",
-	  "modelUrl": "/static/models/PorterPAL.glb",
+	  "modelUrl": "../static/models/PorterPAL.glb",
           "lat":  37.40587,
 	  "lon": -122.15082,
 	  "xscale": 53,
@@ -101,8 +125,8 @@
        {
           "id": "9",
 	  "type": "xmodel",
-	  "xmodelUrl": "/static/models/YMMBuilding.glb",
-	  "modelUrl": "/static/models/YMM.glb",
+	  "xmodelUrl": "../static/models/YMMBuilding.glb",
+	  "modelUrl": "../static/models/YMM.glb",
           "lat":  37.40583,
 	  "lon": -122.15080,
 	  "alt": 41.0,
