@@ -76,6 +76,12 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
+STATIC_DIR = os.path.join(BASE_DIR, "../TeleViewer/static")
+print "STATIC_DIR:", STATIC_DIR
+STATICFILES_DIRS = [
+   STATIC_DIR
+]
+
 ROOT_URLCONF = 'Registry.urls'
 
 WSGI_APPLICATION = 'Registry.wsgi.application'

@@ -1,0 +1,37 @@
+body { 
+
+text-align: right; 
+
+}
+body.background{
+	background-image: url(../images/golden-gate-bridge-at-sunset-blur.jpg);
+	background-size: 1555px 1166px;
+}
+#container
+	{
+		width: 90%;
+		margin: 0 auto 0 auto;
+		
+		
+	}
+#main
+	{
+		width: 1000px;
+		height: relative;
+		
+		margin-right: auto;
+		margin-left: auto;
+		
+		
+	}
+#middle
+	{
+		width: 1000px;
+		
+		
+		
+		
+	}
+a:link{
+	color: blue;
+}

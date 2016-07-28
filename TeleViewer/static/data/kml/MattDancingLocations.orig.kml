@@ -1,0 +1,1537 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kml xmlns='http://www.opengis.net/kml/2.2'>
+	<Document>
+		<name>All Dancing Locations</name>
+		<description><![CDATA[]]></description>
+		<Folder>
+			<name>Untitled layer</name>
+			<Placemark>
+				<name>Bangkok, Thailand</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>100.56238600000002,13.736926,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Hanoi, Vietnam</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>105.851028,21.031351,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Delhi, India</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.217781,28.642658,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Agra, India</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>78.042152,27.172804,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bengal Jungle, India</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>86.35005200000002,21.531214,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Yangon, Myanmar</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>96.148933,16.797945,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Angkor Wat, Cambodia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>103.859055,13.44114,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Beijing, China</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>116.398216,39.917816,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sühbaatar, Mongolia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>106.19886,50.236572,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Moscow, Russia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>37.624649,55.751999,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Prague, Czech Republic</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>14.412619,50.086433,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>New York, New York</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-73.985077,40.758804,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Westport, Connecticut</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-73.361816,41.119583,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Monte Alban, Mexico</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-96.768166,17.041758,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Los Angeles, California</name>
+				<styleUrl>#icon-ci-2-nodesc</styleUrl>
+				<Point>
+					<coordinates>-118.340935,34.101509,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seattle, Washington</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.34140799999999,47.609077,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Walked</name>
+				<styleUrl>#line-000099-4-nodesc</styleUrl>
+				<LineString>
+					<tessellate>1</tessellate>
+					<coordinates>-106.446877,31.747730000000004,0.0 -106.487488,31.759158999999997,0.0</coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name>Mount Kilimanjaro, Tanzania</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>37.354023,-3.076409,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Siberia, Russia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>89.25293,55.998383,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tsavo, Kenya</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>37.916565,-3.413354,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Impenetrable Forest, Uganda</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>29.63665,-1.365995,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seattle, Washington</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.370361,47.63147,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Neko Harbor, Antarctica</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-61.578369,-64.619171,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Half Moon Caye, Belize</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-87.798355,17.577595,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tikal, Guatemala</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-89.623253,17.217140000000004,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>La Galapaguera, Ecuador</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-89.313354,-0.730571,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Machu Picchu, Peru</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-72.545998,-13.16416,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Salar de Uyuni, Bolivia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-67.047493,-20.330753,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Easter Island, Chile</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-109.342491,-27.130829,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Routeburn Trek, New Zealand</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>168.236389,-44.972572,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sydney, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>151.20253,-33.869839,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Brisbane, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>153.040802,-27.462471000000004,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Guam</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>144.755859,13.421681,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jellyfish Lake, Palau</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>134.282303,7.287829,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Chuuk, Micronesia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>151.84288,7.412953000000001,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tokyo, Japan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>139.700562,35.659477,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mutianyu, China</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>116.42864200000001,40.430225,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bandar Seri Begawan, Brunei</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>115.056557,5.004335,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Luang Prabang, Laos</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>102.134247,19.883238,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dubai, United Arab Emirates</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>55.198124,25.117504,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mulindi, Rwanda</name>
+				<description><![CDATA[Visited: April 13, 2006]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>29.882812000000005,-1.966338,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mokolodi, Botswana</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>25.815817,-24.739,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sossusvlei, Namibia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>15.29314,-24.760082,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Abu Simbel, Egypt</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>31.625557,22.336847,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Petra, Jordan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>35.45134,30.322327,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ephesus, Turkey</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>27.341022,37.939087,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Venice, Italy</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>12.327046,45.437534,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Haute-Picardie, France</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>2.355795,48.879929,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Berlin, Germany</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>13.411494,52.523479,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kjeragbolten, Norway</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>6.652007,59.04594000000001,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>London, England</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-0.137887,51.505009,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>New York, New York</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-73.986351,40.756458,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>San Francisco, California</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.42008999999999,37.77916,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Area 51, Nevada</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-115.642303,37.349861,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Monumental Valley, Arizona</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-110.087395,36.953945,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Very Large Array, New Mexico</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-107.618378,34.078896,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Taipei, Taiwan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>121.56406400000002,25.033350000000002,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tokyo, Japan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>139.696426,35.668961,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seoul, South Korea</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>126.97516600000002,37.559696,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Singapore</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>103.836632,1.288253,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Paro, Bhutan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>89.415482,27.440531,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tel Aviv, Israel</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>34.767010000000006,32.077484,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Thimphu, Bhutan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>89.672997,27.4405,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Demilitarized Zone, South Korea</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>126.67753600000002,37.956295,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sanaa, Yemen</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>44.208099,15.355600000000003,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kuwait City, Kuwait</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>47.98914,29.378735000000002,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Wadi Rum, Jordan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>35.420288,29.576836,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mumbai, India</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>72.856178,19.017656,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Gurgaon, India</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>77.08859300000002,28.501108,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mexico City, Mexico</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-99.133286,19.432741,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Teotihuacán, Mexico</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-98.845345,19.692678,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ala Archa Gorge, Kyrgyzstan</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>74.480865,42.514515,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rio de Janeiro, Brazil</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-43.205322,-22.987238,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Panama City, Panama</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-79.563072,8.945954,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sao Paulo, Brazil</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-46.610332,-23.579189,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seattle, Washington</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.370033,47.631489,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Amsterdam, The Netherlands</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>4.887092,52.368618,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ait Benhaddou, Morocco</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-7.115707,31.042124000000005,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Timbuktu, Mali</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-3.014065,16.775711,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Stone Town, Zanzibar</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>39.187965,-6.162572,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Soweto, South Africa</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>27.872801,-26.2733,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Mfuwe, Zambia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>31.931076000000004,-12.934299,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cape of Good Hope, South Africa</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>18.496984,-34.357182,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>London, England</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-0.12821,51.508308,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Reserve Speciale D'Analamazaotra</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>48.416748,-18.937059,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seljalandsfoss, Iceland</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-19.987564,63.628268999999996,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dublin, Ireland</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-6.260297,53.339363,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Giant's Causeway, Northern Ireland</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-6.532933,55.23053,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lisbon, Portugal</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-9.136548,38.707581,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Madrid, Spain</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-3.70736,40.415249,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Paris, France</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>2.288697,48.861969,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Brussels, Belgium</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>4.341466,50.89632,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cologne, Germany</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>6.957951,50.941555,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Munich, Germany</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>11.590919,48.149769,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Warsaw, Poland</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>21.012104,52.249813,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Stockholm, Sweden</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>18.064838,59.332336,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>East Jerusalem, West Bank</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>35.233059,31.784737,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Vancouver, British Columbia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-123.143768,49.284309,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Chicago, Illinois</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-87.62326,41.882656,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Montreal, Quebec</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-73.566299,45.507729,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>New York, New York</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-73.97098500000001,40.773926,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Washington D.C.</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-77.009048,38.893745,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Atlanta, Georgia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-84.392967,33.759445,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Miami, Florida</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-80.129097,25.777258,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Austin, Texas</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-97.750671,30.2631,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Los Angeles, California</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-118.49929800000001,34.009911,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>San Francisco, California</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.433495,37.775799,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Nuku'Alofa, Tonga</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-175.186279,-21.138626,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Neiafu, Tonga</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-173.983505,-18.651968,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Suva, Fiji</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>177.736816,-18.33367,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Auki, Solomon Islands</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>160.699081,-8.770403,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tari, Papua New Guinea</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>142.948608,-5.842045,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Brisbane, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>153.028717,-27.475645,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Sydney, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>151.216904,-33.859852,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Auckland, New Zealand</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>174.767975,-36.850616,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lancelin, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>115.331551,-31.001006999999998,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Christmas Island, Australia</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>105.67749,-10.477009,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Istanbul, Turkey</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>28.984896,41.036503,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lisse, The Netherlands</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>4.54834,52.27483,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Buenos Aires, Argentina</name>
+				<description><![CDATA[May, 2008]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-58.362656,-34.639721,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Alhambra, California</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-118.135803,34.078033,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kalifasia, Solomon Islands</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>160.89984100000004,-8.527364,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tari, Papua New Guinea</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>142.933853,-5.908043,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Melbourne, Australia</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>144.968033,-37.817616,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Milln Reef, Australia</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>146.266479,-16.732222,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Beijing, China</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>116.447304,39.930283,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Pyongyang, North Korea</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>125.75183100000001,38.998909,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Hong Kong, China</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>114.169601,22.293047000000005,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Taoyuan, Taiwan</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>121.20614599999999,24.940460000000005,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kyoto, Japan</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>135.774216,34.967079,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Gorkhi Terelj National Park, Mongolia</name>
+				<description><![CDATA[April]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>107.323723,47.804394,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seville, Spain</name>
+				<description><![CDATA[April]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-5.993155000000001,37.387318,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Boise, Idaho</name>
+				<description><![CDATA[June]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-116.19716599999998,43.601921,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Denver, Colorado</name>
+				<description><![CDATA[June]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-104.99955,39.74284,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>San Diego, California</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-117.17962600000001,32.680511,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Oakland, California</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-122.259148,37.809052,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Detroit, Michigan</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-83.043968,42.326897,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cleveland, Ohio</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-81.692375,41.505108,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Toronto, Ontario</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-79.38413200000001,43.654137,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Philadelphia, Pennsylvania</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-75.179909,39.964722,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Baltimore, Maryland</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-76.58445,39.287998,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>New Orleans, Louisiana</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-90.098427,29.984062000000005,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Houston, Texas</name>
+				<description><![CDATA[August]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-95.372108,29.754328,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>League City, Texas</name>
+				<description><![CDATA[August]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-95.093666,29.516605000000002,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Manchester, England</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-2.236678,53.481052,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Edinburgh, Scotland</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-3.161434,55.950874,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Tallinn, Estonia</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>24.750584,59.436588,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Helsinki, Finland</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>24.914047,60.181793,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>St. Petersburg, Russia</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>30.315506,59.939148,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Moscow, Russia</name>
+				<description><![CDATA[September]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>37.63134,55.830124,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Dresden, Germany</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>13.741332,51.051567,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Prague, Czech Republic</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>14.405699,50.091057,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Vienna, Austria</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>16.370316,48.207973,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bratislava, Slovakia</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>17.108158000000003,48.143456,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Budapest, Hungary</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>19.03504,47.502014,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Belgrade, Serbia</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>20.447996,44.823421,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Athens, Greece</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>23.785175,38.041473,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rome, Italy</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>12.476403,41.910553,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Milan, Italy</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>9.189575,45.464008,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Zurich, Switzerland</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>8.54673,47.376244,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Lyon, France</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>4.831946,45.757896,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Barcelona, Spain</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>2.152365,41.370068,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Jerusalem, Israel</name>
+				<description><![CDATA[November]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>35.227474,31.776583000000002,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kapong, Thailand</name>
+				<description><![CDATA[December]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>98.439583,8.676891,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Bali, Indonesia</name>
+				<description><![CDATA[December]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>115.26599899999998,-8.497479,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Quezon City, Philippines</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>121.062576,14.651443,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rangali Island, Maldives</name>
+				<description><![CDATA[December]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>72.723358,3.616411,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>USS Abraham Lincoln, Somewhere in the Pacific Ocean</name>
+				<description><![CDATA[August]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-121.26709000000001,32.583851,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cambridge, Massachusetts</name>
+				<description><![CDATA[May]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-71.087799,42.360924000000004,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cape Town, South Africa</name>
+				<description><![CDATA[January]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>18.411659,-33.899841,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Opuwo, Namibia</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>13.840027,-18.060108,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Ruwa, Zimbabwe</name>
+				<description><![CDATA[February]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>31.229323999999995,-17.889233,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Damascus, Syria</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>36.296768,33.509052,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Beirut, Lebanon</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>35.496826,33.856731,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Erbil, Iraq</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>44.009342,36.190952,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Karachi, Pakistan</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>67.026299,24.813459,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Kabul, Afghanistan</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>69.16992200000001,34.527843,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Riyadh, Saudi Arabia</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>46.716614,24.661995,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Rafah, Gaza</name>
+				<description><![CDATA[July]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>34.276657,31.241571,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Port Au Prince, Haiti</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-72.310219,18.546221,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Medellin, Colombia</name>
+				<description><![CDATA[October]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-75.572342,6.246012,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Caracas, Venezuela</name>
+				<description><![CDATA[October, November]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-66.918587,10.493382,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Port of Spain, Trinidad and Tobago</name>
+				<description><![CDATA[November]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-61.517773,10.661451,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>San Juan, Puerto Rico</name>
+				<description><![CDATA[November]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-66.10817,18.462675,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>San Jose, Costa Rica</name>
+				<description><![CDATA[November]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>-84.095535,9.939093,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Toulon, France</name>
+				<description><![CDATA[February, 2012]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>5.931182,43.120544,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Cairo, Egypt</name>
+				<description><![CDATA[March, 2012]]></description>
+				<styleUrl>#icon-ci-1</styleUrl>
+				<Point>
+					<coordinates>31.23535,30.045462000000004,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Seattle, Washington</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-122.340141,47.607319,0.0</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark>
+				<name>Maui, Hawaii</name>
+				<styleUrl>#icon-ci-1-nodesc</styleUrl>
+				<Point>
+					<coordinates>-156.457415,20.767149,0.0</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Style id='icon-ci-1-normal'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-1.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+		</Style>
+		<Style id='icon-ci-1-highlight'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-1.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>2.1</scale>
+			</LabelStyle>
+		</Style>
+		<StyleMap id='icon-ci-1'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-ci-1-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-ci-1-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='icon-ci-1-nodesc-normal'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-1.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='icon-ci-1-nodesc-highlight'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-1.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>2.1</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='icon-ci-1-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-ci-1-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-ci-1-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='icon-ci-2-nodesc-normal'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-2.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>0.0</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='icon-ci-2-nodesc-highlight'>
+			<IconStyle>
+				<scale>2.1</scale>
+				<Icon>
+					<href>MattDancingLocationsIcons/icon-2.png</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<scale>2.1</scale>
+			</LabelStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='icon-ci-2-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#icon-ci-2-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#icon-ci-2-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id='line-000099-4-nodesc-normal'>
+			<LineStyle>
+				<color>ff990000</color>
+				<width>4</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<Style id='line-000099-4-nodesc-highlight'>
+			<LineStyle>
+				<color>ff990000</color>
+				<width>6.0</width>
+			</LineStyle>
+			<BalloonStyle>
+				<text><![CDATA[<h3>$[name]</h3>]]></text>
+			</BalloonStyle>
+		</Style>
+		<StyleMap id='line-000099-4-nodesc'>
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#line-000099-4-nodesc-normal</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#line-000099-4-nodesc-highlight</styleUrl>
+			</Pair>
+		</StyleMap>
+	</Document>
+</kml>

@@ -1,0 +1,155 @@
+{
+    "layers": [
+       {
+          "name": "drones",
+          "description": "Drone videos",
+	  "maxNum": 501,
+	  "visible": false,
+	  "scale": 0.12,
+	  "iconUrl": "images/orangeDrone.png",
+	  "mediaType": "youtube",
+	  "dataFile": "data/tbd_data.json"
+       },
+       {
+          "name": "climbing",
+          "description": "Rock climbing",
+	  "visible": false,
+	  "iconUrl": "climber.png",
+	  "showTethers": true,
+	  "scale": 0.05,
+	  "mediaType": "youtube",
+	  "dataFile": "data/climbing_data.json"
+       },
+       {
+          "name": "hiking",
+          "description": "Hiking",
+	  "maxNum": 5000,
+	  "visible": false,
+	  "iconUrl": "hiking.png",
+	  "scale": 0.1,
+	  "mediaType": "youtube",
+	  "dataFile": "data/hiking_data.json"
+       },
+       {
+          "name": "flyingKite",
+          "description": "Flying Kites",
+          "maxNum": 5000,
+          "visible": false,
+          "xxheight": 10000,
+	  "scale": 0.07,
+          "iconUrl": "images/kite.png",
+          "mediaType": "youtube",
+          "dataFile": "data/FlyingKite_data.json"
+       },
+       {
+          "name": "temples",
+          "description": "Temples",
+	  "maxNum": 5000,
+	  "visible": false,
+	  "xxxheight": 10000,
+	  "scale": 0.06,
+	  "iconUrl": "temple_trans.png",
+	  "mediaType": "youtube",
+	  "dataFile": "data/temples_data.json"
+       },
+       {
+          "name": "surfing",
+          "description": "Surfing videos",
+	  "maxNum": 8000,
+	  "visible": false,
+	  "scale": 0.06,
+	  "iconUrl": "surfing.png",
+	  "mediaType": "youtube",
+	  "dataFile": "data/surfing_data.json"
+       },
+       {
+          "name": "waterSports3D",
+          "description": "3D Water fun videos",
+	  "maxNum": 8000,
+	  "visible": false,
+	  "iconUrl": "surfing.png",
+	  "mediaType": "youtube",
+	  "dataFile": "data/waterSports3D_data.json"
+       },
+       {
+          "name": "photos",
+          "description": "Recently tweeted images",
+	  "maxNum": 100,
+	  "scale": 0.2,
+	  "height": 4000000,
+	  "showTethers": false,
+	  "imageServer": "/"
+       },
+       {
+          "name": "people",
+          "description": "People watching now",
+	  "maxNum": 100,
+	  "visible": false
+       },
+       {
+          "name": "sharecam",
+          "description": "Shared Camera Guides",
+	  "iconUrl": "jumpchat.png",
+	  "maxNum": 100,
+	  "visible": false
+       },
+       {
+          "name": "zilong",
+          "description": "Zilong's Journey",
+	  "iconUrl": "yinyang.png",
+	  "mediaType": "html",
+	  "dataFile": "data/zilong_data.json",
+	  "visible": false
+       },
+       {
+          "name": "beyondthefence",
+          "description": "Enock's Blog",
+	  "iconUrl": "images/enockicon.png",
+	  "height": 500000,
+	  "scale": 0.15,
+	  "showTethers": true,
+	  "mediaType": "html",
+	  "dataFile": "data/beyondthefence_data.json",
+	  "visible": false
+       },
+       {
+          "name": "periscope",
+          "description": "Periscope",
+	  "iconUrl": "images/periscopeIcon.png",
+	  "scale": 0.06,
+	  "height": 500000,
+	  "showTethers": true,
+	  "mediaType": "html",
+	  "xxxdataFile": "data/periscope_data.json",
+	  "visible": false
+       },
+       {
+          "name": "indoorMaps",
+	  "dataFile": "data/indoormaps_data.json",
+          "description": "Indoor maps"
+       },
+       {
+          "name": "robots",
+	  "dataFile": "data/robots_data.json",
+          "description": "Telepresence Robots"
+       },
+       {
+          "name": "craigslist",
+	  "dataFile": "data/craigslist_data.json",
+          "description": "Craigslist Events & Housing"
+       },
+       {
+          "name": "dynYouTube",
+          "description": "YouTube Query"
+       },
+       {
+          "name": "chat",
+          "description": "Chat"
+       },
+       {
+          "name": "notes",
+          "description": "Notes",
+	  "visible": false
+       }
+    ]
+}

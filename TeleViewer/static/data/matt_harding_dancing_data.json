@@ -1,0 +1,10 @@
+{
+    "name": "DanceAroundTheWorld",
+    "records": [
+       {
+	 "title": "Matt Harding Dance Locations",
+	 "recType": "KML",
+         "url": "data/kml/MattDancingLocations.kml"
+       }
+    ]
+}

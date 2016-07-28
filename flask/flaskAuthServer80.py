@@ -50,7 +50,8 @@ def releaseConn(conn):
     return
 
 #app = Flask(__name__, static_url_path='')
-app = Flask(__name__, static_url_path='/static', static_folder="../django/Registry/static")
+app = Flask(__name__, static_url_path='/static',
+            static_folder="../TeleViewer/static")
 app.debug = True
 #app.debug = False
 app.config['SECRET_KEY'] = 'secret!'

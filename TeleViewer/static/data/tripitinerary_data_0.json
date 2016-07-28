@@ -1,0 +1,82 @@
+{
+"name": "Stops",
+    "records": [
+       {
+	 "title": "Niagara Falls",
+         "id": "1", 
+         "lat": 43.092679,
+         "lon": -79.011612,
+         "url": "https://gobeyondthefence.com"
+       },
+       {
+          "title": "National Museum of the Air Force",
+          "id": "2", 
+          "lat": 39.8185888,
+          "lon": -84.048460,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "TVX 2016",
+          "id": "3", 
+          "lat": 41.878114,
+          "lon": -87.629798,
+          "url": "https://gobeyondthefence.com"
+       },
+	    {
+          "title": "MT Rushmore",
+          "id": "4", 
+          "lat": 43.879102,
+          "lon": -103.459067,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Devils Tower",
+          "id": "5", 
+          "lat": 44.588646,
+          "lon": -104.698546,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Petzl Headquarters",
+          "id": "6", 
+          "lat": 40.760779,
+          "lon": -111.891047,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Parasailing Draper Utah",
+          "id": "7", 
+          "lat": 40.524671,
+          "lon": -111.863823,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Lake Tahoe",
+          "id": "8", 
+          "lat": 39.096849,
+          "lon": -120.032351,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Lassen Volcanic National Park",
+          "id": "9", 
+          "lat": 40.497660,
+          "lon": -121.420655,
+          "url": "https://gobeyondthefence.com"
+       },
+	    {
+          "title": "Final Destination Santa Clara, CA",
+          "id": "10", 
+          "lat": 37.354108,
+          "lon": -121.955236,
+          "url": "https://gobeyondthefence.com"
+       },
+	   {
+          "title": "Start Bethel, ME",
+          "id": "11", 
+          "lat": 44.404459,
+          "lon": -70.789881,
+          "url": "https://gobeyondthefence.com"
+       }
+    ]
+}

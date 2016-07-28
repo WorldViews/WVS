@@ -1,0 +1,32 @@
+{
+    "layers": [
+       {
+          "name": "climbing",
+          "description": "rock climbing",
+	  "maxNum": 100,
+	  "visible": true,
+	  "iconUrl": "climber.png",
+	  "mediaType": "youtube",
+	  "dataFile": "climbing_data.json"
+       },
+       {
+          "name": "hiking",
+          "description": "hiking",
+	  "maxNum": 5000,
+	  "visible": false,
+	  "height": 10000,
+	  "iconUrl": "hiking.png",
+	  "mediaType": "youtube",
+	  "dataFile": "hiking_data.json"
+       },
+       {
+          "name": "surfing",
+          "description": "surfing videos",
+	  "maxNum": 8000,
+	  "visible": false,
+	  "iconUrl": "surfing.png",
+	  "mediaType": "youtube",
+	  "dataFile": "surfing_data.json"
+       }
+    ]
+}

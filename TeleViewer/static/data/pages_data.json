@@ -1,0 +1,19 @@
+{
+    "name": "Pages",
+    "records": [
+       {
+	 "title": "FXPAL",
+         "id": "1", 
+         "lat": 22.0126816,
+         "lon": 51.7208941,
+         "url": "http://fxpal.com"
+       },
+       {
+          "title": "Xerox",
+          "id": "2", 
+          "lat": 36.8651011,
+          "lon": -119.5383294,
+          "url": "http://xerox.com"
+       }
+    ]
+}

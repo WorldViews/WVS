@@ -1,0 +1,49 @@
+{
+   "name": "periscope", 
+   "records": [
+      {
+         "id": "0000001", 
+         "lat": 50.248964, 
+         "lon": 3.297521, 
+         "t": 1463516534.446, 
+         "title": "Regardez sur #Periscope : Raid https://t.co/PUaQAyawDU", 
+         "url": "https://www.periscope.tv/w/agojaDF4TmphWU9SbmVQamJ8MUJSSmpsT09qZ1JLdzbMg5Himp0oJ4Pk2gDpMJbdr9O8YObRQsMNtCOWLOCU", 
+         "userGeo": {
+            "address": "Estrun, France", 
+            "bounds": {
+               "northeast": {
+                  "lat": 50.2555999, 
+                  "lng": 3.3063041
+               }, 
+               "southwest": {
+                  "lat": 50.234598, 
+                  "lng": 3.278383
+               }
+            }, 
+            "lat": 50.248964, 
+            "lon": 3.297521, 
+            "query": {
+               "lat": 50.248964, 
+               "lng": 3.297521
+            }
+         }
+      },
+      {
+         "id": "0000001", 
+	 "lon": 130.37859158671344,
+	 "lat": 33.58387683189415,
+         "t": 1463516534.446, 
+         "title": "Fukuoka Art Walk",
+         "url": "https://www.periscope.tv/w/1DXxyZbwWgVKM"
+      },
+      {
+         "id": "x0000002", 
+	 "lat": 43.08013544109897,
+         "lon": -79.07424175395334,
+         "t": 1463516534.446, 
+         "title": "Niagara Falls",
+         "url": "https://www.periscope.tv/adaptive_adventures/1DXxyZbOnnkKM"
+      }
+   ]
+}
+
