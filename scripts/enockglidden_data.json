@@ -1,0 +1,676 @@
+{
+    "query": "channelSearch: username=enockglidden", 
+    "records": [
+        {
+            "id": "7", 
+            "lat": 37.34215, 
+            "lon": -121.97438, 
+            "publishedAt": "2016-07-05T22:41:07.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/ZntJbZBxIzQ/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/ZntJbZBxIzQ/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/ZntJbZBxIzQ/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "July 4th Central Park Santa Clara CA", 
+            "youtubeId": "ZntJbZBxIzQ"
+        }, 
+        {
+            "id": "10", 
+            "lat": 36.98418, 
+            "lon": -122.09912, 
+            "publishedAt": "2016-07-05T22:27:49.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/TDf0Alp7KMI/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/TDf0Alp7KMI/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/TDf0Alp7KMI/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Wilder Ranch State Park", 
+            "youtubeId": "TDf0Alp7KMI"
+        }, 
+        {
+            "id": "17", 
+            "lat": 40.44814, 
+            "lon": -121.53581, 
+            "publishedAt": "2016-07-04T03:34:45.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/66KGZnMxNK4/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/66KGZnMxNK4/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/66KGZnMxNK4/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/66KGZnMxNK4/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/66KGZnMxNK4/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Sulfur works lassen volcanic national park", 
+            "youtubeId": "66KGZnMxNK4"
+        }, 
+        {
+            "id": "19", 
+            "lat": 43.08641, 
+            "lon": -79.06813, 
+            "publishedAt": "2016-06-20T04:45:36.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/NiTPCIgrfbw/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/NiTPCIgrfbw/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/NiTPCIgrfbw/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/NiTPCIgrfbw/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/NiTPCIgrfbw/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Niagara falls observation deck", 
+            "youtubeId": "NiTPCIgrfbw"
+        }, 
+        {
+            "id": "21", 
+            "lat": 41.73624, 
+            "lon": -74.19236, 
+            "publishedAt": "2016-06-16T10:45:59.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/VX1nYwwEaW8/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/VX1nYwwEaW8/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/VX1nYwwEaW8/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/VX1nYwwEaW8/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/VX1nYwwEaW8/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Last Part Climbing in the Gunks", 
+            "youtubeId": "VX1nYwwEaW8"
+        }, 
+        {
+            "id": "2", 
+            "lat": 37.81056, 
+            "lon": -122.47709, 
+            "publishedAt": "2016-07-26T00:00:39.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/Xg6Op_UEXbk/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/Xg6Op_UEXbk/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/Xg6Op_UEXbk/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "360 video tour of San Francisco Bay Trail from Crissy Field to Fort Point", 
+            "youtubeId": "Xg6Op_UEXbk"
+        }, 
+        {
+            "id": "13", 
+            "lat": 39.78187, 
+            "lon": -84.10978, 
+            "publishedAt": "2016-07-05T22:17:04.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/oMJf_fnmBaA/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/oMJf_fnmBaA/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/oMJf_fnmBaA/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/oMJf_fnmBaA/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/oMJf_fnmBaA/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Airplane Walkthrough", 
+            "youtubeId": "oMJf_fnmBaA"
+        }, 
+        {
+            "id": "5", 
+            "lat": 37.34215, 
+            "lon": -121.97438, 
+            "publishedAt": "2016-07-05T23:31:39.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/W6PxQpXn5Vg/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/W6PxQpXn5Vg/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/W6PxQpXn5Vg/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/W6PxQpXn5Vg/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/W6PxQpXn5Vg/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "July 4th Central Park Santa Clara CA", 
+            "youtubeId": "W6PxQpXn5Vg"
+        }, 
+        {
+            "id": "6", 
+            "lat": 43.87747, 
+            "lon": -103.45604, 
+            "publishedAt": "2016-07-05T23:21:53.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/3GNgcViYftU/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/3GNgcViYftU/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/3GNgcViYftU/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Mt Rushmore Memorial 360 Degree Video  Walkthrough", 
+            "youtubeId": "3GNgcViYftU"
+        }, 
+        {
+            "id": "18", 
+            "lat": 36.98418, 
+            "lon": -122.09912, 
+            "publishedAt": "2016-07-04T02:02:18.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/JwSDCFSTkgw/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/JwSDCFSTkgw/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/JwSDCFSTkgw/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/JwSDCFSTkgw/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/JwSDCFSTkgw/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Wilder ranch state park", 
+            "youtubeId": "JwSDCFSTkgw"
+        }, 
+        {
+            "id": "3", 
+            "lat": 37.2856, 
+            "lon": -121.81107, 
+            "publishedAt": "2016-07-18T21:40:22.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/AbwrQcPtiCQ/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/AbwrQcPtiCQ/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/AbwrQcPtiCQ/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/AbwrQcPtiCQ/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/AbwrQcPtiCQ/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Hellyer Park", 
+            "youtubeId": "AbwrQcPtiCQ"
+        }, 
+        {
+            "id": "4", 
+            "lat": 40.47819, 
+            "lon": -111.88544, 
+            "publishedAt": "2016-07-11T21:19:05.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/uf1OZNkOT4I/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/uf1OZNkOT4I/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/uf1OZNkOT4I/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Full Flight", 
+            "youtubeId": "uf1OZNkOT4I"
+        }, 
+        {
+            "id": "12", 
+            "lat": 36.98758, 
+            "lon": -122.09533, 
+            "publishedAt": "2016-07-05T22:22:46.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/qhzrINeHCi0/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/qhzrINeHCi0/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/qhzrINeHCi0/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Wilder Ranch State Park", 
+            "youtubeId": "qhzrINeHCi0"
+        }, 
+        {
+            "id": "20", 
+            "lat": 43.08641, 
+            "lon": -79.06813, 
+            "publishedAt": "2016-06-20T02:12:35.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/rPKAJ-0pZHU/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/rPKAJ-0pZHU/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/rPKAJ-0pZHU/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/rPKAJ-0pZHU/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/rPKAJ-0pZHU/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Niagara falls Samsung gear 360", 
+            "youtubeId": "rPKAJ-0pZHU"
+        }, 
+        {
+            "id": "15", 
+            "lat": 39.78187, 
+            "lon": -84.10978, 
+            "publishedAt": "2016-07-05T22:05:50.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/nCEAvs04jS8/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/nCEAvs04jS8/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/nCEAvs04jS8/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/nCEAvs04jS8/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/nCEAvs04jS8/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "JFK Air Force One Walkthrough", 
+            "youtubeId": "nCEAvs04jS8"
+        }, 
+        {
+            "id": "14", 
+            "lat": 39.78187, 
+            "lon": -84.10978, 
+            "publishedAt": "2016-07-05T22:10:39.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/pM9k1zZB1Jc/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/pM9k1zZB1Jc/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/pM9k1zZB1Jc/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/pM9k1zZB1Jc/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/pM9k1zZB1Jc/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Airplane Walkthrough", 
+            "youtubeId": "pM9k1zZB1Jc"
+        }, 
+        {
+            "id": "22", 
+            "lat": 41.73624, 
+            "lon": -74.19236, 
+            "publishedAt": "2016-06-14T02:13:03.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/tnH7uoMFq0A/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/tnH7uoMFq0A/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/tnH7uoMFq0A/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/tnH7uoMFq0A/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/tnH7uoMFq0A/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Start of my sit climbing in the Gunk's", 
+            "youtubeId": "tnH7uoMFq0A"
+        }, 
+        {
+            "id": "1", 
+            "lat": 37.24099, 
+            "lon": -121.97008, 
+            "publishedAt": "2016-07-27T19:02:07.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/AoCFLyan_uI/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/AoCFLyan_uI/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/AoCFLyan_uI/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "360 Tour of Vasona Lake Park accessible trail", 
+            "youtubeId": "AoCFLyan_uI"
+        }, 
+        {
+            "id": "16", 
+            "lat": 40.47818, 
+            "lon": -111.88543, 
+            "publishedAt": "2016-07-04T10:08:35.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/_iaoF_8vxWs/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/_iaoF_8vxWs/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/_iaoF_8vxWs/maxresdefault.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/_iaoF_8vxWs/mqdefault.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/_iaoF_8vxWs/sddefault.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Paragliding with project airtime draper utah", 
+            "youtubeId": "_iaoF_8vxWs"
+        }, 
+        {
+            "id": "8", 
+            "lat": 37.34215, 
+            "lon": -121.97438, 
+            "publishedAt": "2016-07-05T22:37:01.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/9r0aZOubPO8/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/9r0aZOubPO8/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/9r0aZOubPO8/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "July 4th Central Park Santa Clara CA", 
+            "youtubeId": "9r0aZOubPO8"
+        }, 
+        {
+            "id": "9", 
+            "lat": 36.98418, 
+            "lon": -122.09912, 
+            "publishedAt": "2016-07-05T22:30:32.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/PpMNOYLZW1A/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/PpMNOYLZW1A/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/PpMNOYLZW1A/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Wilder Ranch State Park", 
+            "youtubeId": "PpMNOYLZW1A"
+        }, 
+        {
+            "id": "11", 
+            "lat": 36.98418, 
+            "lon": -122.09912, 
+            "publishedAt": "2016-07-05T22:25:37.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/M3LucUbHMtU/default.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/M3LucUbHMtU/hqdefault.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/M3LucUbHMtU/mqdefault.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Wilder Ranch State Park", 
+            "youtubeId": "M3LucUbHMtU"
+        }
+    ], 
+    "time": 1469753315.95
+}

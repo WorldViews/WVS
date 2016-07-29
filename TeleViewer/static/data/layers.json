@@ -256,6 +256,16 @@
 	  "mediaType": "html",
 	  "dataFile": "/static/data/wikipedia_data.json",
 	  "visible": false
+       },
+       {
+          "name": "EnocksYoutubeChannel",
+          "description": "Enocks YouTube Channel",
+	  "maxNum": 8000,
+	  "visible": false,
+	  "iconUrl": "/static/img/billboards/youtube.png",
+	  "mediaType": "youtube",
+      "scale": 0.1,
+	  "dataFile": "/static/data/enockglidden_data.json"
        }
     ]
 }

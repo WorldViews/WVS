@@ -215,6 +215,7 @@ class YouTubeScraper:
       recs = []
       for id in self.recs.keys():
          recs.append(self.recs[id])
+      UTF8Writer = codecs.getwriter('utf8')
       f = UTF8Writer(file(jsonPath, "w"))
       obj = {'query': self.query,
              'time': time.time(),
@@ -271,9 +272,9 @@ if __name__ == "__main__":
 #    fetch("test", username="enockglidden", loc="us")
 #    fetch("test", username="enockglidden", loc=["36.98,-122.00"])
 #    fetch("test", query="Wilder Ranch State Park", loc=["36.98418,-122.09912"])
-#   testChannels()
-#   saveEnocksVideoLayer()
-   testGetMetaData()
+   #testChannels()
+   saveEnocksVideoLayer()
+   #testGetMetaData()
 
 
 
