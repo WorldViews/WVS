@@ -9,6 +9,7 @@
     //var app = require('express')();
     var express = require('express');
     var app = express();
+    var path = require('path');
     var http = require('http').Server(app);
     var io = require("socket.io")(http);
     var compression = require('compression');
@@ -146,8 +147,20 @@
     });
 
     app.use(compression());
-    app.use(express.static(__dirname));
+    //app.use(express.static(__dirname));
+    //var staticDir = __dirname;
+    var staticDir = __dirname+'\\..\\TeleViewer\\static';
+    //var staticDir = "C:\\GitHub\\WorldViews\\WVS";
+    console.log("__dirname: "+__dirname);
+    console.log("staticDir: "+staticDir);
+    app.use('/static', express.static(staticDir));
 
+    app.get('/', function(req, res) {
+	    //res.sendFile(path.join(__dirname, '/intro.html'));
+        res.sendfile(path.join(__dirname, '/intro.html'));
+    });
+
+    //app.use(express.static(__dirname));
 
     function getRemoteUrlFromParam(req) {
         var remoteUrl = req.params[0];
