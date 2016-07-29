@@ -7,7 +7,8 @@ Setup
 
 After copying or cloning, Cesium must be installed.
 Copy or add symbolic link from the Cesium distribution
-Build/Cesium to TeleViewer/static/Cesium.
+Build/Cesium directory to the TeleViewer/static/Cesium.  Then
+choose and setup one or more server configurations.
 
 Server Configurations
 ---------------------
@@ -29,14 +30,14 @@ the necessary packages.
 
 Then it can be run with a command like
 
-  node server.js --port 3000
+  > node server.js --port 3000
 
 there are bat files for a few configurations (different port
 assignments.)
 
 To run just the SocketIO server part of the system use
 
-  node socketIOServer.js -- port 3000
+  > node socketIOServer.js -- port 3000
 
 or launch it with runSocketServer.bat or a .sh script.
 
@@ -52,10 +53,10 @@ If you don't have the necessary modules, you can create a virtual
 environment and use requirements to get the modules.  Do something
 like:
 
-   pip install virtualenv
-   virtualenv venv
-   venv\scripts\activate
-   pip install -r requirements
+   > pip install virtualenv
+   > virtualenv venv
+   > venv\scripts\activate
+   (venv)> pip install -r requirements
 
 and you should have an appropriate environment.
 
@@ -69,11 +70,11 @@ described above.
 
 Then you must run
 
-   python manage.py syncdb
+  > python manage.py syncdb
 
 to get the DB set up, and then
 
-   python manage.py runserver
+  > python manage.py runserver
 
-to run server.
+to run the django server.
 
