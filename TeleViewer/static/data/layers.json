@@ -262,7 +262,7 @@
           "description": "Enocks YouTube Channel",
 	  "maxNum": 8000,
 	  "visible": false,
-	  "iconUrl": "/static/img/billboards/youtube.png",
+	  "iconUrl": "/static/img/billboards/Youtube.png",
 	  "mediaType": "youtube",
       "scale": 0.1,
 	  "dataFile": "/static/data/enockglidden_data.json"
