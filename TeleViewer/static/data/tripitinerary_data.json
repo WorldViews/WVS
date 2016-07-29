@@ -90,7 +90,7 @@
           "title": "Trip Route",
           "recType": "KML",
           "id": "k1", 
-          "url": "data/kml/EnocksCrossCountryTrip.kml"
+          "url": "/static/data/kml/EnocksCrossCountryTrip.kml"
        }
     ]
 }
