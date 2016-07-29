@@ -53,13 +53,13 @@ If you don't have the necessary modules, you can create a virtual
 environment and use requirements to get the modules.  Do something
 like:
 
-   > pip install virtualenv
+   > > pip install virtualenv
 
-   > virtualenv venv
+   > > virtualenv venv
 
-   > venv\scripts\activate
+   > > venv\scripts\activate
 
-   (venv)> pip install -r requirements
+   > > (venv)> pip install -r requirements
 
 and you should have an appropriate environment.
 
