@@ -81,3 +81,9 @@ to get the DB set up, and then
 
 to run the django server.
 
+LICENSE
+-------
+TeleViewer and the WorldViews server software is MIT License
+free for both commercial and non-commercial use.
+Copyright 2016, WorldViews.
+

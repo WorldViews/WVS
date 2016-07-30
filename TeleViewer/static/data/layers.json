@@ -246,7 +246,7 @@
 	  "dataFile": "/static/data/localWikiRegions_data.json",
 	  "visible": false
        },
-	   {
+       {
           "name": "wikipedia entries",
           "description": "Wikipedia Entries",
 	  "iconUrl": "/static/img/billboards/Wikipedia.png",
@@ -258,6 +258,17 @@
 	  "visible": false
        },
        {
+          "name": "wikipedia lake entries",
+          "description": "Wikipedia Lake Entries",
+	  "iconUrl": "/static/img/billboards/Wikipedia.png",
+	  "height": 1000,
+	  "scale": 0.05,
+	  "showTethers": true,
+	  "mediaType": "html",
+	  "dataFile": "/static/data/wikipediaLakes_data.json",
+	  "visible": false
+       },
+       {
           "name": "EnocksYoutubeChannel",
           "description": "Enocks YouTube Channel",
 	  "maxNum": 8000,
@@ -266,6 +277,11 @@
 	  "mediaType": "youtube",
       "scale": 0.1,
 	  "dataFile": "/static/data/enockglidden_data.json"
+       },
+       {
+          "name": "dynWiki",
+	  "require": "WVDynWiki.js",
+          "description": "Dynamic Wikipedia"
        }
     ]
 }

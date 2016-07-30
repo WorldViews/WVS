@@ -19,3 +19,17 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+Third-Party Code
+----------------
+
+TeleViewer includes Google math3d files with Apache License, Version 2.0.
+Other files from
+
+jquery v1.11.2 used under MIT license
+Bootstrap v3.3.4 used under MIT license
+k-d Tree JavaScript - V 1.01 MIT licence
+socket.io-1.4.5 MIT license
+
+

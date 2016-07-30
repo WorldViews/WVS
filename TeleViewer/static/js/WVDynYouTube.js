@@ -1,4 +1,8 @@
-
+/*
+This code was inspired by and based on
+geo-search-tool by Steve Nicholls, which
+is distributed under Apache License 2.0.
+*/
 
 WV.DynYouTube = {}
 WV.DynYouTube.uiHtml = "\
