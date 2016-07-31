@@ -1,18 +1,23 @@
 /*
-  In TeleViewer, a layer is a collection of information that is logically grouped together
-  and may be turned on (made visible) or off as a collection.  When on, items of data in
-  the layer may be visually presented as billboards, images, etc.  Those depitons may have
-  some behaviors, such as enlargement on mouse over, launching video windows on click, etc.
+  In TeleViewer, a layer is a collection of information that is
+  logically grouped together and may be turned on (made visible)
+  or off as a collection.   When on, items of data in the layer
+  may be visually presented as billboards, images, etc.  Those
+  depictions may have some behaviors, such as enlargement on mouse
+  over, launching video windows on click, etc.
 
-  Each type of layer is implemented as a LayerType, which is a set of handlers and functions
-  for presenting the items and handling UI interactions.  The LayerType also has a data
-  handler for processing records in files or incoming streams of objects associated with
-  that type of layer.
+  Each type of layer is implemented as a LayerType, which is a set
+  of handlers and functions for presenting the items and handling
+  UI interactions.  The LayerType also has a data handler for
+  processing records in files or incoming streams of objects
+  associated with that type of layer.
 
-  Each layer is assigned a type, which handles interactions for that layer.
+  Each layer is assigned a type, which handles interactions for
+  that layer.
 
-  When TeleViewer is run, a layers file is read which defines the layers that the user
-  can choose from.  The each layer has a name and a type (maybe implicit).
+  When TeleViewer is run, a layers file is read which defines the
+  layers that the user can choose from.  The each layer has a name
+  and a type (maybe implicit).
 */
 
 WV.layerTypes = {};
@@ -301,13 +306,24 @@ WV.setupLayers = function(layerData)
 		cbList.show(100);
 	    }
     });
+    WV.recurseLayers(layers, cbList, prefix="");
+}
 
+WV.recurseLayers = function(layers, cbList, prefix)
+{
     layers.forEach(function(spec) {
+        report("---------------------------------------------------");
+	if (spec.type == 'folder') {
+	    var div = WV.addLayerFolder(spec, cbList, prefix);
+	    layers = spec['layers'];
+	    WV.recurseLayers(layers, div, prefix+"&nbsp;");
+	    return;
+	};
 	if (spec.require) {
-	    WV.requireModule(spec.require, function() { WV.addLayer(spec); });
+	    WV.requireModule(spec.require, function() { WV.addLayer(spec, cbList, prefix); });
 	}
 	else {
-	    WV.addLayer(spec);
+	    WV.addLayer(spec, cbList, prefix);
 	}
     });
 }
@@ -381,9 +397,10 @@ WV.requireModule = function(jsName, done)
 	});
 }
 
-WV.addLayer = function(layerSpec)
+WV.addLayer = function(layerSpec, cbList, prefix)
 {
-    var cbList = WV.layersCBList;
+    if (!cbList)
+        cbList = WV.layersCBList;
     var layer = new WV.Layer(layerSpec);
     var name = layer.name;
     var id = "cb_"+layer.name;
@@ -391,6 +408,9 @@ WV.addLayer = function(layerSpec)
     layer.uiDivId = uiDivId;
     //report("setupLayers layer: "+WV.toJSON(layer));
     var desc = layer.description;
+    if (prefix) {
+        $('<span />', { html: prefix}).appendTo(cbList);
+    }
     $('<input />',
         { type: 'checkbox', id: id, value: desc,
 	  click: WV.Layer.toggleCB}).appendTo(cbList);
@@ -404,6 +424,43 @@ WV.addLayer = function(layerSpec)
     }
 }
 
+WV.addLayerFolder = function(spec, cbList, prefix)
+{
+    report("=================================================");
+    report("addLayerFolder spec: "+WV.toJSON(spec));
+    var name = spec.name;
+    var open = true;
+    if (spec.open != null)
+	open = spec.open;
+    var id = "cb_"+spec.name;
+    var folderDivId = "folder_div"+name;
+    var folderSpanId = "folder_span"+name;
+    spec.folderDivId = folderDivId;
+    var desc = spec.name + "...<br>";
+    if (open)
+	desc = spec.name + "/";
+    report("desc: "+desc);
+    var folderSpan = $('<span />',
+        { html: desc, style: "color:white" }).appendTo(cbList);
+    var folderDiv = $('<div />',
+        { id: folderDivId, show: 0, style: "color:white;" }).appendTo(cbList);
+    if (!open)
+	folderDiv.hide();
+    folderSpan.click(function(e) {
+	    report("******** click *******");
+            var str = folderSpan.html();
+            report("str: "+str);
+	    if (str == name+"/") {
+		folderDiv.hide();
+		folderSpan.html(name+"...<br>");
+	    }
+	    else {
+		folderDiv.show();
+		folderSpan.html(name+"/");
+	    }
+    });
+    return folderDiv;
+}
 
 WV.Layer.toggleCB = function(e)
 {

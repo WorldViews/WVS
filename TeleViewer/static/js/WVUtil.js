@@ -4,6 +4,13 @@ function report(str)
     console.log(str);
 }
 
+// http://stackoverflow.com/questions/1144783/replacing-all-occurrences-of-a-string-in-javascript
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
+
+
 WV.getClockTime = function()
 {
     return new Date().getTime()/1000.0;

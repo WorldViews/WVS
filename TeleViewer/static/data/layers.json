@@ -1,27 +1,6 @@
 {
     "layers": [
        {
-          "name": "drones",
-          "description": "Drone videos (Travel By Drone)",
-	  "maxNum": 3000,
-	  "visible": false,
-	  "scale": 0.25,
-	  "iconUrl": "/static/img/billboards/tbd_drone_icon.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/tbd_data.json"
-       },
-       {
-          "name": "drones_twd",
-          "description": "Drone videos (Travel with Drone)",
-	  "maxNum": 3000,
-	  "visible": false,
-	  "scale": 0.09,
-	  "xxxiconUrl": "/static/img/billboards/orangeDrone.png",
-	  "iconUrl": "/static/img/billboards/twd_logo.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/twd_data.json"
-       },
-       {
           "name": "climbing",
           "description": "Rock climbing",
 	  "visible": false,
@@ -122,12 +101,6 @@
 	  "imageServer": "/"
        },
        {
-          "name": "people",
-          "description": "People watching now",
-	  "maxNum": 100,
-	  "visible": false
-       },
-       {
           "name": "sharecam",
           "description": "Shared Camera Guides",
 	  "iconUrl": "/static/img/billboards/jumpChat.png",
@@ -175,25 +148,6 @@
 	  "visible": false
        },
        {
-          "name": "indoorMaps",
-	  "dataFile": "/static/data/indoormaps_data.json",
-          "description": "Indoor maps"
-       },
-       {
-          "name": "robots",
-	  "require": "WVRobots.js",
-          "mediaType": "robots",
-	  "dataFile": "/static/data/robots_data.json",
-          "description": "Telepresence Robots"
-       },
-       {
-          "name": "porterModel",
-	  "require": "WVRobots.js",
-	  "mediaType": "robots",
-	  "dataFile": "/static/data/porter_data.json",
-          "description": "Porter Model"
-       },
-       {
           "name": "craigslist",
 	  "require": "WVCraigslist.js",
 	  "dataFile": "/static/data/craigslist_data.json",
@@ -202,31 +156,6 @@
        {
           "name": "dynYouTube",
           "description": "YouTube Search"
-       },
-       {
-          "name": "chat",
-          "description": "Chat",
-	  "visible": false
-       },
-       {
-          "name": "notes",
-          "description": "Notes",
-	  "visible": false
-       },
-       {
-	  "mediaType": "html",
-	  "dataFile": "/static/data/GDP_data.json",
-          "name": "GDP",
-          "description": "Per Capita GDP",
-	  "visible": false
-       },
-       {
-	  "mediaType": "spirals",
-	  "require": "WVSpirals.js",
-	  "dataFile": "/static/data/spirals_data.json",
-          "name": "Spirals",
-          "description": "Spirals Art Play",
-	  "visible": false
        },
        {
           "name": "gardens",
@@ -238,50 +167,146 @@
 	  "dataFile": "/static/data/gardens_data.json"
        },
        {
-          "name": "localwiki",
-          "description": "LocalWiki Entries",
-	  "iconUrl": "/static/img/billboards/LocalWiki_Logo.png",
-	  "mediaType": "html",
-	  "scale": 0.1,
-	  "dataFile": "/static/data/localWikiRegions_data.json",
-	  "visible": false
-       },
-       {
-          "name": "wikipedia entries",
-          "description": "Wikipedia Entries",
-	  "iconUrl": "/static/img/billboards/Wikipedia.png",
-	  "height": 1000,
-	  "scale": 0.05,
-	  "showTethers": true,
-	  "mediaType": "html",
-	  "dataFile": "/static/data/wikipedia_data.json",
-	  "visible": false
-       },
-       {
-          "name": "wikipedia lake entries",
-          "description": "Wikipedia Lake Entries",
-	  "iconUrl": "/static/img/billboards/Wikipedia.png",
-	  "height": 1000,
-	  "scale": 0.05,
-	  "showTethers": true,
-	  "mediaType": "html",
-	  "dataFile": "/static/data/wikipediaLakes_data.json",
-	  "visible": false
-       },
-       {
           "name": "EnocksYoutubeChannel",
           "description": "Enocks YouTube Channel",
 	  "maxNum": 8000,
 	  "visible": false,
 	  "iconUrl": "/static/img/billboards/Youtube.png",
 	  "mediaType": "youtube",
-      "scale": 0.1,
+          "scale": 0.1,
 	  "dataFile": "/static/data/enockglidden_data.json"
        },
        {
-          "name": "dynWiki",
-	  "require": "WVDynWiki.js",
-          "description": "Dynamic Wikipedia"
+           "name": "Drones",
+	   "type": "folder",
+	   "layers": [
+             {
+              "name": "drones",
+              "description": "Drone videos (Travel By Drone)",
+    	      "maxNum": 3000,
+	      "visible": false,
+              "scale": 0.25,
+              "iconUrl": "/static/img/billboards/tbd_drone_icon.png",
+              "mediaType": "youtube",
+              "dataFile": "/static/data/tbd_data.json"
+            },
+            {
+              "name": "drones_twd",
+              "description": "Drone videos (Travel with Drone)",
+    	      "maxNum": 3000,
+              "visible": false,
+              "scale": 0.09,
+              "xxxiconUrl": "/static/img/billboards/orangeDrone.png",
+              "iconUrl": "/static/img/billboards/twd_logo.png",
+              "mediaType": "youtube",
+              "dataFile": "/static/data/twd_data.json"
+            }
+	   ]
+       },
+       {
+           "name": "Wiki",
+	   "type": "folder",
+	   "layers": [
+	       {
+                  "name": "localwiki",
+		  "description": "LocalWiki Entries",
+                  "iconUrl": "/static/img/billboards/LocalWiki_Logo.png",
+                  "mediaType": "html",
+                  "scale": 0.1,
+                  "dataFile": "/static/data/localWikiRegions_data.json",
+                  "visible": false
+              },
+              {
+                 "name": "dynWiki",
+                 "require": "WVDynWiki.js",
+                 "description": "Dynamic Wikipedia"
+              },
+              {
+                 "name": "wikipedia entries",
+       		 "description": "Wikipedia Entries",
+	         "iconUrl": "/static/img/billboards/Wikipedia.png",
+	         "height": 1000,
+	         "scale": 0.05,
+	         "showTethers": true,
+	         "mediaType": "html",
+	         "dataFile": "/static/data/wikipedia_data.json",
+	         "visible": false
+              },
+              {
+                 "name": "wikipedia lake entries",
+                 "description": "Wikipedia Lake Entries",
+	         "iconUrl": "/static/img/billboards/Wikipedia.png",
+	         "height": 1000,
+	         "scale": 0.05,
+	         "showTethers": true,
+	         "mediaType": "html",
+	         "dataFile": "/static/data/wikipediaLakes_data.json",
+	         "visible": false
+              }
+           ]
+       },
+       {
+           "name": "Social Interactive",
+	   "type": "folder",
+	   "layers": [
+              {
+                  "name": "chat",
+                  "description": "Chat",
+	          "visible": false
+              },
+              {
+                  "name": "notes",
+                  "description": "Notes",
+                  "visible": false
+              },
+              {
+                  "name": "people",
+                  "description": "People watching now",
+         	  "maxNum": 100,
+	          "visible": false
+              }
+           ]
+       },
+       {
+           "name": "Experimental",
+	   "type": "folder",
+	   "open": false,
+	   "layers": [
+               {
+                  "mediaType": "spirals",
+                  "require": "WVSpirals.js",
+                  "dataFile": "/static/data/spirals_data.json",
+                  "name": "Spirals",
+                  "description": "Spirals Art Play",
+                  "visible": false
+               },
+               {
+                  "name": "robots",
+                  "require": "WVRobots.js",
+                  "mediaType": "robots",
+	          "dataFile": "/static/data/robots_data.json",
+                  "description": "Telepresence Robots"
+               },
+               {
+                  "mediaType": "html",
+                  "dataFile": "/static/data/GDP_data.json",
+                  "name": "GDP",
+                  "description": "Per Capita GDP",
+                  "visible": false
+               },
+               {
+                  "name": "indoorMaps",
+         	  "dataFile": "/static/data/indoormaps_data.json",
+                  "description": "Indoor maps"
+               },
+               {
+                  "name": "porterModel",
+	          "require": "WVRobots.js",
+                  "mediaType": "robots",
+                  "dataFile": "/static/data/porter_data.json",
+                  "description": "Porter Model"
+               }
+           ]
        }
     ]
 }

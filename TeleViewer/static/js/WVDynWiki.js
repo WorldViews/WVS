@@ -2,7 +2,7 @@
 WV.DynWiki = {}
 WV.DynWiki.uiHtml = "\
 <form class='dynWiki'>\
-   Topic: <input id='dynWikiTopic' type=text size=12>\
+<!--   Topic: <input id='dynWikiTopic' type=text size=12> -->\
    <button class='abc'>Go</button>\
 </form>\
 ";
@@ -40,9 +40,12 @@ WV.DynWiki.wikiSearchCallback = function(obj)
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];
 	rec.url = "https://en.wikipedia.org/wiki/" + rec.title;
+	/*
 	rec.url = rec.url.replace(' ', '_');
 	rec.url = rec.url.replace(' ', '_');
 	rec.url = rec.url.replace(' ', '_');
+	*/
+	rec.url = rec.url.replaceAll(' ', '_');
         rec.id = ""+rec.pageid;
 	report("rec: "+WV.toJSON(rec));
 	precs.push(rec);
@@ -69,9 +72,7 @@ WV.DynWiki.initLayer = function(layer)
 		var range = "1000km";
 		var lat = WV.curPos[0];
 		var lon = WV.curPos[1];
-		WV.DynWiki.wikiSearch(query, lat, lon, range,
-			   WV.DynWiki.wikiResultsHandler,
-			   WV.DynWiki.wikiErrorHandler);
+		WV.DynWiki.wikiSearch(query, lat, lon, range);
 		event.preventDefault();
 		$("#dynWikiTopic").val(query);
 		return true;
