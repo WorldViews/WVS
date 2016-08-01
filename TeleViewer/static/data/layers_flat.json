@@ -116,6 +116,27 @@
 	  "visible": false
        },
        {
+          "name": "beyondthefence",
+          "description": "Enock's Blog",
+	  "iconUrl": "/static/img/billboards/enockicon.png",
+	  "height": 500000,
+	  "scale": 0.15,
+	  "showTethers": true,
+	  "mediaType": "html",
+	  "dataFile": "/static/data/beyondthefence_data.json",
+	  "visible": false
+       },
+       {
+          "name": "tripitinerary",
+          "description": "Enock's Cross Country Trip",
+	  "iconUrl": "/static/img/billboards/roadtrip1.png",
+	  "mediaType": "html",
+	  "scale": 0.1,
+	  "dataFile": "/static/data/tripitinerary_data.json",
+	  "visible": false
+       },
+
+       {
           "name": "periscope",
           "description": "Periscope",
 	  "iconUrl": "/static/img/billboards/periscopeIcon.png",
@@ -144,6 +165,16 @@
 	  "iconUrl": "/static/img/billboards/flowers.ico",
 	  "mediaType": "youtube",
 	  "dataFile": "/static/data/gardens_data.json"
+       },
+       {
+          "name": "EnocksYoutubeChannel",
+          "description": "Enocks YouTube Channel",
+	  "maxNum": 8000,
+	  "visible": false,
+	  "iconUrl": "/static/img/billboards/Youtube.png",
+	  "mediaType": "youtube",
+          "scale": 0.1,
+	  "dataFile": "/static/data/enockglidden_data.json"
        },
        {
            "name": "Drones",
@@ -233,42 +264,6 @@
                   "description": "People watching now",
          	  "maxNum": 100,
 	          "visible": false
-              }
-           ]
-       },
-       {
-           "name": "Enock",
-	   "type": "folder",
-	   "layers": [
-	      {
-                 "name": "beyondthefence",
-                 "description": "Enock's Blog",
-                 "iconUrl": "/static/img/billboards/enockicon.png",
-                 "height": 500000,
-                 "scale": 0.15,
-                 "showTethers": true,
-                 "mediaType": "html",
-                 "dataFile": "/static/data/beyondthefence_data.json",
-                 "visible": false
-              },
-              {
-                 "name": "tripitinerary",
-                 "description": "Enock's Cross Country Trip",
-                 "iconUrl": "/static/img/billboards/roadtrip1.png",
-                 "mediaType": "html",
-                 "scale": 0.1,
-                 "dataFile": "/static/data/tripitinerary_data.json",
-                 "visible": false
-              },
-              {
-       	         "name": "EnocksYoutubeChannel",
-                 "description": "Enocks YouTube Channel",
-	         "maxNum": 8000,
-	         "visible": false,
-	         "iconUrl": "/static/img/billboards/Youtube.png",
-	         "mediaType": "youtube",
-                 "scale": 0.1,
-	         "dataFile": "/static/data/enockglidden_data.json"
               }
            ]
        },
