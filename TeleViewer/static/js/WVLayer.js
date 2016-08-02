@@ -250,7 +250,7 @@ WV.handleHTMLRecs = function(data, layerName)
 	    report("flyHome "+dur);
 	    WV.viewer.camera.flyHome(dur);
 	}
-	if (rec.recType.toLowerCase() == "kml") {
+	if (rec.recType && rec.recType.toLowerCase() == "kml") {
 	    var url = rec.url;
 	    report("Adding KML "+url);
 	    var dsPromise = WV.addKML(url);
@@ -259,7 +259,7 @@ WV.handleHTMLRecs = function(data, layerName)
 		});
 	    continue;
 	}
-	if (rec.recType.toLowerCase() == "geojson") {
+	if (rec.recType && rec.recType.toLowerCase() == "geojson") {
 	    var url = rec.url;
 	    report("Adding GeoJSON "+url);
 	    var dsPromise = WV.addGeoJSON(url);

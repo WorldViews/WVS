@@ -229,6 +229,17 @@
 	         "mediaType": "html",
 	         "dataFile": "/static/data/wikipediaLakes_data.json",
 	         "visible": false
+              },
+              {
+                 "name": "wikipediaMuseums",
+                 "description": "Wikipedia Museum Entries",
+	         "iconUrl": "/static/img/billboards/W.png",
+	         "height": 2000,
+	         "scale": 0.05,
+	         "showTethers": true,
+	         "mediaType": "html",
+	         "dataFile": "/static/data/wiki_museum_data.json",
+	         "visible": false
               }
            ]
        },

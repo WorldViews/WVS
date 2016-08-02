@@ -19,12 +19,15 @@ for entry in d.entries:
     uos = urllib2.urlopen(url)
     str = uos.read()
     idx = str.find("https://www.google.com/maps/place/")
+    print "idx:", idx
     if idx > 0:
         idx2 = str.find("/@",idx)
-        locstr = str[idx+10:idx2]
-        parts = locstr.split()
-        lat = float(parts[1])
-        lon = float(parts[3])
+        endIdx = str.find("z", idx2)
+        locstr = str[idx2+2:endIdx]
+        print "locstr:", locstr
+        parts = locstr.split(",")
+        lat = float(parts[0])
+        lon = float(parts[1])
         print "lat:", lat, "lon:", lon
     else:
         print "no location found"
