@@ -18,7 +18,7 @@ for entry in d.entries:
     print "url:", url
     uos = urllib2.urlopen(url)
     str = uos.read()
-    idx = str.find("Map")
+    idx = str.find("https://www.google.com/maps/place/")
     if idx > 0:
         idx2 = str.find("/@",idx)
         locstr = str[idx+10:idx2]
