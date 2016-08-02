@@ -146,6 +146,17 @@
 	  "dataFile": "/static/data/gardens_data.json"
        },
        {
+          "name": "geovide",
+          "description": "GeoVid Project",
+          "iconUrl": "/static/img/billboards/geovid_logo.png",
+          "height": 5000,
+          "scale": 0.10,
+          "showTethers": true,
+          "mediaType": "html",
+          "dataFile": "/static/data/geovid_data.json",
+          "visible": false
+       },
+       {
            "name": "Drones",
 	   "type": "folder",
 	   "layers": [
