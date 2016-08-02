@@ -96,12 +96,13 @@ WV.toTimeStr = function(t)
 
 WV.toJSON = function(obj) { return JSON.stringify(obj, null, 3); }
 
-WV.getUniqueId = function(name)
+WV.getUniqueId = function(name, id)
 {
     if (!name)
 	name = "obj";
-    var id = name+"_"+ new Date().getTime()+"_"+Math.floor(10000*Math.random());
-    return id;
+    if (!id)
+	id = new Date().getTime()+"_"+Math.floor(10000*Math.random());
+    return name+"_"+ id;
 }
 
 

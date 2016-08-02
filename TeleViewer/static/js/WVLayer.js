@@ -243,10 +243,26 @@ WV.handleHTMLRecs = function(data, layerName)
         layer.numObjs++;
         if (layer.numObjs > layer.maxNum)
             return;
-	if (rec.recType == "KML") {
+	if (rec.recType == "flyHome") {
+	    var dur = 5;
+	    if (rec.duration)
+		dur = rec.duration;
+	    report("flyHome "+dur);
+	    WV.viewer.camera.flyHome(dur);
+	}
+	if (rec.recType.toLowerCase() == "kml") {
 	    var url = rec.url;
 	    report("Adding KML "+url);
 	    var dsPromise = WV.addKML(url);
+	    dsPromise.then(function(ds) {
+		    layer.dataSources.push(ds);
+		});
+	    continue;
+	}
+	if (rec.recType.toLowerCase() == "geojson") {
+	    var url = rec.url;
+	    report("Adding GeoJSON "+url);
+	    var dsPromise = WV.addGeoJSON(url);
 	    dsPromise.then(function(ds) {
 		    layer.dataSources.push(ds);
 		});

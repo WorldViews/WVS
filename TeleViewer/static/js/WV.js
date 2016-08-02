@@ -500,9 +500,20 @@ WV.addKML = function(url, opts)
 	camera : WV.viewer.scene.camera,
 	canvas : WV.viewer.scene.canvas
     };
-    WV.viewer.camera.flyHome(5);
+    //WV.viewer.camera.flyHome(5);
     //WV.viewer.dataSources.add(Cesium.KmlDataSource.load('data/kml/Enocks Cross Country Trip.kml', options));
     var ds = WV.viewer.dataSources.add(Cesium.KmlDataSource.load(url, options));
+    return ds;
+}
+
+WV.addGeoJSON = function(url, opts)
+{
+    report("addGeoJSON "+url);
+    var options = {
+	camera : WV.viewer.scene.camera,
+	canvas : WV.viewer.scene.canvas
+    };
+    var ds = WV.viewer.dataSources.add(Cesium.GeoJsonDataSource.load(url, options));
     return ds;
 }
 

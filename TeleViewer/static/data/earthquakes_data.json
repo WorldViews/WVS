@@ -1,0 +1,16 @@
+{
+    "name": "Earthquakes",
+    "sourceURL": "http://earthquake.usgs.gov",
+    "records": [
+       {
+	 "title": "All earthquakes in last week",
+	 "recType": "GeoJSON",
+         "id": "1",
+         "url": "http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
+       },
+       {
+          "recType": "flyHome",
+          "duration": 5
+       }
+    ]
+}

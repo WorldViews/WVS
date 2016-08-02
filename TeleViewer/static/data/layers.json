@@ -146,7 +146,7 @@
 	  "dataFile": "/static/data/gardens_data.json"
        },
        {
-          "name": "geovide",
+          "name": "geovid",
           "description": "GeoVid Project",
           "iconUrl": "/static/img/billboards/geovid_logo.png",
           "height": 5000,
@@ -155,6 +155,13 @@
           "mediaType": "html",
           "dataFile": "/static/data/geovid_data.json",
           "visible": false
+       },
+       {
+          "name": "hikes",
+          "require": "WVRobots.js",
+          "mediaType": "robots",
+	  "dataFile": "/static/data/tours_data.json",
+          "description": "Tours and Hikes"
        },
        {
            "name": "Drones",
@@ -304,6 +311,13 @@
                   "description": "Telepresence Robots"
                },
                {
+                  "name": "hikes",
+                  "require": "WVRobots.js",
+                  "mediaType": "robots",
+	          "dataFile": "/static/data/tours_data.json",
+                  "description": "Tours and Hikes"
+               },
+               {
                   "mediaType": "html",
                   "dataFile": "/static/data/GDP_data.json",
                   "name": "GDP",
@@ -314,6 +328,13 @@
                   "name": "indoorMaps",
          	  "dataFile": "/static/data/indoormaps_data.json",
                   "description": "Indoor maps"
+               },
+               {
+                  "name": "Earthquakes",
+                  "mediaType": "html",
+                  "dataFile": "/static/data/earthquakes_data.json",
+                  "description": "Recent Earthquakes",
+                  "visible": false
                },
                {
                   "name": "porterModel",

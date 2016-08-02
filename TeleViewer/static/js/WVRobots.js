@@ -28,7 +28,7 @@ WV.Robots.handleRecs = function(data, name)
     //var polylines = WV.getTetherPolylines();
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];
-	rec.layerName = "robots";
+	rec.layerName = name;
 	if (rec.type == "CoordinateSystem") {
 	    var csName = rec.coordSys;
 	    report("**** adding CoordinateSystem "+csName);
@@ -62,7 +62,7 @@ WV.Robots.handleRecs = function(data, name)
 	    lon = rec.lon;
 	}
 	var h = 50000;
-        var id = "robot_"+rec.id;
+        var id = WV.getUniqueId(name, rec.id);
 	var imageUrl = WV.getIconUrl("BeamRobot.png");
 	var scale = 0.2;
 	if (layer.imageUrl)
@@ -99,44 +99,6 @@ WV.Robots.handleRecs = function(data, name)
 	}
     }
 }
-
-/*
-// moved to WVBillboards.js
-
-WV.Robots.addModel = function(layer, rec)
-{
-    var id = rec.id;
-    if (!id)
-	id = WV.getUniqueId("model");
-    report(">>>>> addModel "+id);
-    var opts = {
-	name: rec.name,
-	//id: id,
-	url: rec.modelUrl,
-	lat: rec.lat,
-	lon: rec.lon,
-	height: rec.height,
-	scale: rec.scale
-    };
-    WV.recs[id] = rec;
-    if (rec.heading != null)
-	opts.heading = WV.toRadians(rec.heading - 90);
-    if (rec.pitch != null)
-	opts.pitch = WV.toRadians(rec.pitch);
-    if (rec.roll != null)
-	opts.roll = WV.toRadians(rec.roll);
-    var e = WV.createModel(WV.viewer.entities, opts);
-    e._wvRec = rec;
-    LAST_MODEL = e;
-    if (rec.flyTo) {
-	//WV.viewer.trackedEntity = e;
-	var dur = rec.flyTo;
-	report("flyTo dur: "+dur);
-	WV.viewer.flyTo(e, {duration: dur});
-    }
-    layer.models.push(e)
-}
-*/
 
 WV.Robots.addTrail = function(layer, rec)
 {
@@ -181,13 +143,14 @@ WV.Robots.handleTrailData = function(layer, rec, data)
     //route = polylines.add({polyline: opts});
     route = polylines.add({polyline: opts, id: pathId});
     route = route.polyline;
-    var obj = {layerName: 'robots', id: pathId, data: data,
+    var obj = {layerName: layer.name, id: pathId, data: data,
 	       pathRec: rec, tourName: rec.tourName,
                points: points};
     WV.recs[pathId] = obj;
     layer.recs[pathId] = obj;
     return route;
 }
+
 /*
 WV.findNearestPoint = function(pt, points)
 {
