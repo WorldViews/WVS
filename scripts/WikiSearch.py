@@ -104,7 +104,7 @@ def getItems(sterm, maxNum=None, opath="wiki.json"):
 
 
 #getItems("lake", maxNum=250)
-getItems("museum", maxNum=3000, opath="wiki_museum_data.json")
+getItems("museum", maxNum=12000, opath="wiki_museum_data.json")
 
 
 
