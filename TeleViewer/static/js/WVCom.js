@@ -156,6 +156,7 @@ WV.WVCom.prototype.sendStatus = function(status)
     var sStr = JSON.stringify(status);
     //report("sStr: "+sStr);
     if (WV.socket) {
+        //report("socket.emit sStr: "+sStr);
 	try {
 	    WV.socket.emit('people', sStr);
 	}
@@ -164,6 +165,7 @@ WV.WVCom.prototype.sendStatus = function(status)
 	}
     }
     else {
+        //report("post /register/ sStr: "+sStr);
 	jQuery.post("/register/", sStr, function() {
 		report("registered");
 	    }, "json");
