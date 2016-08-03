@@ -15,7 +15,8 @@ WV.WVCom = function()
     this.types = {};
     if (WV.useSocketIO) {
 	report("Getting socket.io socket");
-	var sioUrl = "http://"+location.hostname+":3000";
+	//var sioUrl = "http://"+location.hostname+":3000";
+	var sioUrl = "http://"+location.hostname;
 	report("socketIO url "+sioUrl)
 	//WV.socket = io("http://platonia:3000");
         WV.socket = io(sioUrl);
