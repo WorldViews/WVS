@@ -151,7 +151,8 @@ WV.WVCom.prototype.subscribe = function(evType, handler, opts)
     }
 }
 
-WV.debugMsgs = true;
+//WV.debugMsgs = true;
+WV.debugMsgs = false;
 
 WV.WVCom.prototype.sendStatus = function(status)
 {
