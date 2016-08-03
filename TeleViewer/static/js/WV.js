@@ -420,7 +420,7 @@ WV.getStatusObj = function()
 
 WV.reportStatus = function()
 {
-//  report("reportStatus");
+    //report("reportStatus");
     var status = WV.getStatusObj();
     wvCom.sendStatus(status);
     setTimeout(WV.reportStatus, WV.statusInterval);
