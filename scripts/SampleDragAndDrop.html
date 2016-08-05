@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=620">
+<title>HTML5 Demo: Simple Drag and Drop</title>
+</head>
+<body>
+
+<h1>Simple Drag and Drop</h1>
+
+<style>
+/* for safari */
+*[draggable=true] {
+  -khtml-user-drag: element;
+  cursor: move;
+}
+</style>
+        
+<p>Instructions: grab <em>anything</em> and drag it in to the drop zone below.
+
+<p>Try also dropping a few files from your desktop on the drop zone
+and notice the content-type: text/uri-list</p>
+
+<script>
+
+WV = {};
+
+WV.addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+
+function report(str)
+{
+    console.log(str);
+}
+
+WV.cancel = function(e) {
+  if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+  e.dataTransfer.dropEffect = 'copy'; // tells the browser what drop effect is allowed here
+  return false; // required by IE
+}
+
+// Tells the browser that we *can* drop on this target
+var el = window;
+WV.addEvent(el, 'dragover', WV.cancel);
+WV.addEvent(el, 'dragenter', WV.cancel);
+WV.addEvent(el, 'drop', function (e) {
+  if (e.preventDefault) e.preventDefault(); // stops the browser from redirecting off to the text.
+
+  report("drop.....");
+  var dataTrans = e.dataTransfer;
+  if (0) {
+     report("types: "+dataTrans.types);
+     for (var i=0; i<dataTrans.types.length; i++) {
+        var tp = dataTrans.types[i];
+        report("type: "+tp);
+     }
+  }
+  var url = dataTrans.getData('Text');
+  if (url) {			    
+     report("got url: "+url);
+     // handle URL
+     return false;
+  }
+  for (var i=0; i<dataTrans.files.length; i++) {
+     var file = dataTrans.files[i];
+     var fname = file.name;
+     var ftype = file.type;
+     report("file: "+fname+" "+ftype);					  
+  }
+  return false;
+});
+</script>
+
+</body>
+</html>
