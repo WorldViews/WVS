@@ -138,3 +138,81 @@ WV.getRecords = function(v)
     return v.records;
 }
 
+
+/*******************************************************
+*  Drag and Drop related code
+*******************************************************/
+
+WV.DnD = {}
+
+WV.DnD.addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+
+WV.DnD.cancel = function(e) {
+  if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+  e.dataTransfer.dropEffect = 'copy'; // tells the browser what drop effect is allowed here
+  return false; // required by IE
+}
+
+// Tells the browser that we *can* drop on this target
+
+WV.DnD.setup = function(urlHandler, fileHandler) {
+    var el = window;
+    WV.DnD.addEvent(el, 'dragover', WV.DnD.cancel);
+    WV.DnD.addEvent(el, 'dragenter', WV.DnD.cancel);
+    WV.DnD.addEvent(el, 'drop', function (e) {
+       if (e.preventDefault) e.preventDefault(); // stops the browser from
+                                                      // redirecting off to the text.
+
+       report("drop.....");
+       var dataTrans = e.dataTransfer;
+       if (0) {
+	   report("types: "+dataTrans.types);
+	   for (var i=0; i<dataTrans.types.length; i++) {
+	       var tp = dataTrans.types[i];
+	       report("type: "+tp);
+	   }
+       }
+       var url = dataTrans.getData('Text');
+       if (url) {			    
+	   report("got url: "+url);
+	   if (urlHandler)
+	       urlHandler(e, url);
+	   // handle URL
+	   return false;
+       }
+       for (var i=0; i<dataTrans.files.length; i++) {
+	   var file = dataTrans.files[i];
+	   var fname = file.name;
+	   var ftype = file.type;
+	   report("file: "+fname+" "+ftype);
+	   if (fileHandler)
+	       fileHandler(e, file);
+       }
+       return false;
+	});
+}
+
+
