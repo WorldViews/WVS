@@ -62,6 +62,6 @@ def scrapeBlog(feedUrl,opath):
     print "I'm done now"
     
 scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
-scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
+#scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
 
 
