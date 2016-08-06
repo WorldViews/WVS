@@ -4,14 +4,19 @@ program for dji drones and produces KML files.
 """
 import sys, csv
 
+FLIGHT_LOG = "FLIGHT_LOG"
+MISSION = "MISSION"
+
 METERS_PER_FOOT = 0.3048
 
+"""
 FIELDS = [
     "time(millisecond)", 
     "longitude", 
     "latitude", 
     "altitude(feet)"
 ]
+"""
 
 KML_TEMPLATE = \
 """<?xml version="1.0" encoding="UTF-8"?>
@@ -23,7 +28,7 @@ KML_TEMPLATE = \
       (or edited) directly in KML.</description>
     <Style id="yellowLineGreenPoly">
       <LineStyle>
-        <color>7f00ffff</color>
+        <color>%(color)s</color>
         <width>4</width>
       </LineStyle>
       <PolyStyle>
@@ -96,8 +101,7 @@ def dumpFields(path, fields):
         print
 """
 
-def getTups(path):
-    header, rows = getFullData(path)
+def getFlightLogTups(header, rows):
     tups = []
     for row in rows:
         lat =   float(row['latitude'])
@@ -112,6 +116,25 @@ def getTups(path):
         tups.append(tup)
     return tups
 
+def getMissionTups(header, rows):
+    tups = []
+    for row in rows:
+        lat =   float(row['latitude'])
+        lon =   float(row['longitude'])
+        alt =   float(row['altitude(m)'])
+        tup = lat, lon, alt
+        tups.append(tup)
+    return tups
+
+def getTups(path):
+    header, rows = getFullData(path)
+    print "len(header)", len(header)
+    if len(header) == 79:
+        return FLIGHT_LOG, getFlightLogTups(header, rows)
+    if len(header) == 38:
+        return MISSION, getMissionTups(header, rows)
+    return None
+
 def dumpTup(tup, f=sys.stdout):
     t, ct, lat, lon, alt, yaw, pitch, roll = tup
     f.write("%s %s %s %s %s %s %s %s\n" % \
@@ -121,22 +144,60 @@ def dumpTups(tups, f=sys.stdout):
     for tup in tups:
         dumpTup(tup, f)
 
-def dumpKML(tups, f=sys.stdout):
+def dumpFlightLogKML(tups, f=sys.stdout):
     coordsStr = ""
     for tup in tups:
         t, ct, lat, lon, alt, yaw, pitch, roll = tup
         cstr = "              %s,%s,%s\n" % (lon, lat, alt)
         coordsStr += cstr
-    kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr}
+    color = "7f00ffff"
+    kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
+    f.write(kmlStr)
+
+def dumpMissionKML(tups, f=sys.stdout):
+    coordsStr = ""
+    closed = True
+    if closed:
+        tups.append(tups[0])
+    for tup in tups:
+        lat, lon, alt = tup
+        cstr = "              %s,%s,%s\n" % (lon, lat, alt)
+        coordsStr += cstr
+    color = "7f0000ff"
+    kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
     f.write(kmlStr)
 
 def csvToKml(csvPath, kmlPath):
-    tups = getTups(csvPath)
-    dumpKML(tups, file(kmlPath, "w"))
+    ret = getTups(csvPath)
+    if not ret:
+        print "Unrecongized CSV file"
+        return
+    ftype, tups = ret
+    print "FileType:", ftype
+    if ftype == FLIGHT_LOG:
+        dumpFlightLogKML(tups, file(kmlPath, "w"))
+    elif ftype == MISSION:
+        dumpMissionKML(tups, file(kmlPath, "w"))
+    else:
+        print "Unknown file type"
 
-path = "//palnas2/vol1/panobot/videos/Enock/Phantom_4_Flightlogs/2016-08-03_18-53-20_v2.csv"
 
-#dump(path, FIELDS)
-csvToKml(path, "foo.kml")
+def run():
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/Phantom_4_Flightlogs/2016-08-03_18-53-20_v2.csv"
+    csvToKml(path, "flight1.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Flight_Logs/2016-08-05_17-29-05_v2.csv"
+    csvToKml(path, "laganita1.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Flight_Logs/2016-08-05_17-37-42_v2.csv"
+    csvToKml(path, "laganita2.kml")
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Missions/Lake_Lagunita_Short.csv"
+    csvToKml(path, "laganita_mission_long.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Missions/Lagunita_Lake_Long.csv"
+    csvToKml(path, "laganita_mission_long.kml")
+
+if __name__ == "__main__":
+    run()
+
 
 
