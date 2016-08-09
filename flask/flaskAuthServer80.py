@@ -14,6 +14,8 @@ from flask import Flask, render_template, send_file, redirect, \
                   jsonify, send_from_directory, request
 from flask_socketio import SocketIO, emit
 from flask_mail import Mail
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
 
 TABLE_NAMES = ["chat", "notes", "periscope"]
 
@@ -70,6 +72,7 @@ app.config['MAIL_USERNAME'] = 'flycam'
 app.config['MAIL_PASSWORD'] = 'flyspec'
 mail = Mail(app)
 
+
 socketio = SocketIO(app)
 
 # Create database connection object
@@ -105,6 +108,10 @@ class User(db.Model, UserMixin):
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
+
+admin = Admin(app)
+admin.add_view(ModelView(User, db.session))
+
 
 # Create a user to test with
 @app.before_first_request

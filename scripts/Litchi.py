@@ -2,7 +2,7 @@
 This program reads csv files produced by the Litchi
 program for dji drones and produces KML files.
 """
-import sys, csv
+import os, sys, csv
 
 FLIGHT_LOG = "FLIGHT_LOG"
 MISSION = "MISSION"
@@ -150,7 +150,7 @@ def dumpFlightLogKML(tups, f=sys.stdout):
         t, ct, lat, lon, alt, yaw, pitch, roll = tup
         cstr = "              %s,%s,%s\n" % (lon, lat, alt)
         coordsStr += cstr
-    color = "7f00ffff"
+    color = "ef00ffff"
     kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
     f.write(kmlStr)
 
@@ -167,7 +167,7 @@ def dumpMissionKML(tups, f=sys.stdout):
     kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
     f.write(kmlStr)
 
-def csvToKml(csvPath, kmlPath):
+def csvToKml(csvPath, kmlPath, runIt=True):
     ret = getTups(csvPath)
     if not ret:
         print "Unrecongized CSV file"
@@ -180,6 +180,8 @@ def csvToKml(csvPath, kmlPath):
         dumpMissionKML(tups, file(kmlPath, "w"))
     else:
         print "Unknown file type"
+    if runIt:
+        os.system(kmlPath)
 
 
 def run():
@@ -190,11 +192,17 @@ def run():
     csvToKml(path, "laganita1.kml")
     path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Flight_Logs/2016-08-05_17-37-42_v2.csv"
     csvToKml(path, "laganita2.kml")
-    """
     path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Missions/Lake_Lagunita_Short.csv"
     csvToKml(path, "laganita_mission_long.kml")
     path = "//palnas2/vol1/panobot/videos/Enock/Lagunita_Lake_Missions/Lagunita_Lake_Long.csv"
     csvToKml(path, "laganita_mission_long.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/FXPAL_POI_Mission2.csv"
+    csvToKml(path, "FXPAL_POI_Mission2.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/FXPAL_POI_Mission3.csv"
+    csvToKml(path, "FXPAL_POI_Mission3.kml")
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/2016-08-06_16-24-43_v2.csv"
+    csvToKml(path, "flightLog.kml")
 
 if __name__ == "__main__":
     run()
