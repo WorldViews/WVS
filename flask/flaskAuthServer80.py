@@ -6,16 +6,24 @@ import json, time, traceback, socket
 import flask
 import Queue
 
+#from wtforms import Form, BooleanField, StringField, PasswordField, validators
+from wtforms import Form, BooleanField, StringField, PasswordField, validators
+
 from flask.ext.sqlalchemy import SQLAlchemy
+
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required
+    UserMixin, RoleMixin, login_required, current_user
+from flask_security.forms import RegisterForm
 
 from flask import Flask, render_template, send_file, redirect, \
-                  jsonify, send_from_directory, request
+                  jsonify, send_from_directory, request, url_for
 from flask_socketio import SocketIO, emit
 from flask_mail import Mail
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+
+execfile("../config/ADMIN_CONFIG.py")
+print "MAIL_USERNAME:", MAIL_USERNAME
 
 TABLE_NAMES = ["chat", "notes", "periscope"]
 
@@ -62,14 +70,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wv.db'
 
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
-app.config['SECURITY_EMAIL_SENDER'] = 'no-reply@pollywss.paldeploy.com'
+app.config['SECURITY_CONFIRMABLE'] = True
+app.config['SECURITY_RECOVERABLE'] = True
+app.config['SECURITY_CHANGEABLE'] = True
+#app.config['SECURITY_EMAIL_SENDER'] = 'no-reply@pollywss.paldeploy.com'
+app.config['SECURITY_EMAIL_SENDER'] = 'no-reply@paldeploy.com'
 
-app.config['MAIL_SERVER'] = '192.168.20.18'
-app.config['MAIL_PORT'] = 25
-#app.config['MAIL_USE_SSL'] = True
-app.config['MAIL_USE_SSL'] = False
-app.config['MAIL_USERNAME'] = 'flycam'
-app.config['MAIL_PASSWORD'] = 'flyspec'
+app.config['MAIL_SERVER'] = MAIL_SERVER
+app.config['MAIL_PORT'] = MAIL_PORT
+app.config['MAIL_USE_SSL'] = MAIL_USE_SSL
+app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
+app.config['MAIL_USERNAME'] = MAIL_USERNAME
+app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 mail = Mail(app)
 
 
@@ -92,6 +104,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(255))
+    #first_name = db.Column(db.String(255))
+    #last_name = db.Column(db.String(255))
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
@@ -107,10 +121,36 @@ class User(db.Model, UserMixin):
 
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+
+class ExtendedRegisterForm(RegisterForm):
+    #first_name = StringField('First Name', [validators.Required()])
+    #last_name = StringField('Last Name', [validators.Required()])
+    #name = StringField('Name', [validators.Required()])
+    name = StringField('Name', [validators.Required()])
+
+class ExtendedConfirmRegisterForm(RegisterForm):
+    name = StringField('Name', [validators.Required()])
+
+#security = Security(app, user_datastore)
+security = Security(app, user_datastore,
+                    register_form=ExtendedRegisterForm,
+                    confirm_register_form=ExtendedConfirmRegisterForm)
 
 admin = Admin(app)
-admin.add_view(ModelView(User, db.session))
+
+class MyModelView(ModelView):
+    def is_accessible(self):
+        #return login.current_user.is_authenticated()
+        #return current_user.is_authenticated()
+        return current_user.has_role('admin')
+
+    def inaccessible_callback(self, name, **kwargs):
+        # redirect to login page if user doesn't have access
+        print "****** redirect for login ******"
+        return redirect(url_for('login', next=request.url))
+
+admin.add_view(MyModelView(User, db.session))
+admin.add_view(MyModelView(Role, db.session))
 
 
 # Create a user to test with
@@ -122,6 +162,10 @@ def create_user():
     if User.query.count() > 0:
         print ">>>>>>>>>> Tables already initialized.... <<<<<<<<<<<"
         return
+    user_datastore.find_or_create_role(name='admin',
+                                       description='Administrator')
+    user_datastore.find_or_create_role(name='end-user',
+                                       description='End user')
     user_datastore.create_user(email='donkimber@gmail.com',
                                password='xxx',
                                name="Don")
@@ -140,6 +184,11 @@ def create_user():
     user_datastore.create_user(email='indrajeet.khater@gmail.com',
                                password='xxx',
                                name="Teddy")
+
+    user_datastore.add_role_to_user('doczeno@yahoo.com', 'end-user')
+    user_datastore.add_role_to_user('donkimber@gmail.com', 'end-user')
+    user_datastore.add_role_to_user('donkimber@gmail.com', 'admin')
+
     db.session.commit()
     print "------------------------------------------"
 

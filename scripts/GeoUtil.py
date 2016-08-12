@@ -172,10 +172,17 @@ def test3():
     print "xyz:", xyz
     print "lla:", lla
 
+def test4():
+    cs = CoordSys('Lagunita',37.4219003,-122.1775678, 41, 0)
+    xyz = [20,20,0]
+    lla = cs.xyzToLatLonAlt([20,20,0])
+    print "xyz:", xyz
+    print "lla:", lla
+
 
 if __name__ == '__main__':
     #test1()
-    test2()
     #test3()
+    test4()
 
 

@@ -54,6 +54,22 @@
           "xurl": "https://fxpal.com"
        },
        {
+          "id": "PAL_FlyAround_1",
+          "type": "dronePath",
+          "robotType": "Phantom4",
+          "description": "FlyAround PAL.",
+	  "tourName": "porter_flyaround_1",
+	  "xxdataUrl": "/static/data/paths/PAL_FlyAround_1.json",
+	  "dataUrl": "/static/data/paths/PAL_FlyAround_1hack.json",
+	  "youtubeId": "s1qy-R-71-s",
+	  "xxxyoutubeDeltaT": 40,
+	  "youtubeDeltaT": 43,
+	  "videoDur": 90,
+	  "coordSys": "GEO",
+	  "height": 100.0,
+          "xurl": "https://fxpal.com"
+       },
+       {
           "id": "PresidioWalk1",
           "type": "robotTrail",
           "robotType": "wheelchair",

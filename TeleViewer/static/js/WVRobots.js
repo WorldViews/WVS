@@ -39,6 +39,10 @@ WV.Robots.handleRecs = function(data, name)
 	    WV.Robots.addTrail(layer, rec);
 	    continue;
 	}
+	if (rec.type == "dronePath") {
+	    WV.Robots.addDroneTrail(layer, rec);
+	    continue;
+	}
 	if (rec.type == "model") {
 	    WV.addModel(layer, rec);
 	    continue;
@@ -151,6 +155,106 @@ WV.Robots.handleTrailData = function(layer, rec, data)
     return route;
 }
 
+WV.Robots.addDroneTrail = function(layer, rec)
+{
+    report("WV.Robots.addDroneTrail "+layer.name);
+    var url = rec.dataUrl;
+    WV.getJSON(url, function(data) {
+	    WV.Robots.handleDroneTrailData(layer, rec, data);
+    });
+}
+
+/*
+WV.Robots.handleDroneTrailData = function(layer, rec, data)
+{
+    var recs = data.recs;
+    var coordSys = rec.coordSys;
+    report("handleDroneTrailData "+rec.dataUrl+" coordSys: "+coordSys);
+    var points = [];
+    var pathId = "drone_path_"+rec.id
+    for (var i=0; i<recs.length; i++) {
+	var tr = recs[i];
+	var pos = tr.pos;
+	var lla = WV.xyzToLla(tr.pos, coordSys);
+	//report(" "+i+"  "+pos+"  "+lla);
+	//var xyz = Cesium.Cartesian3.fromDegrees(lla[1], lla[0], h);
+	//points.push(xyz);
+	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], lla[2]));
+    }
+    var color = Cesium.Color.RED;
+    if (rec.youtubeId)
+	color = Cesium.Color.GREEN;
+    var material = new Cesium.PolylineGlowMaterialProperty({
+	    color : color,
+	    glowPower : 0.15});
+    var opts = { positions : points,
+		 // id: pathId,
+		 width : 5.0,
+		 material : material };
+    var route = null;
+    var polylines = WV.getTetherPolylines();
+    //route = polylines.add({polyline: opts});
+    route = polylines.add({polyline: opts, id: pathId});
+    route = route.polyline;
+    var obj = {layerName: layer.name, id: pathId, data: data,
+	       pathRec: rec, tourName: rec.tourName,
+               points: points};
+    WV.recs[pathId] = obj;
+    layer.recs[pathId] = obj;
+    return route;
+}
+*/
+WV.Robots.handleDroneTrailData = function(layer, rec, data)
+{
+    var recs = data.recs;
+    var coordSys = rec.coordSys;
+    report("handleDroneTrailData "+rec.dataUrl+" coordSys: "+coordSys);
+    var deltaT = rec.youtubeDeltaT;
+    data.startTime = 0;
+    rec.videoDeltaT = rec.youtubeDeltaT;
+    var videoDur = rec.videoDur;
+    report("deltaT: "+deltaT);
+    report("videoDur: "+videoDur);
+    var points = [];
+    var pathId = "drone_path_"+rec.id
+    for (var i=0; i<recs.length; i++) {
+	var tr = recs[i];
+	tr.vt = null;
+	var pos = tr.pos;
+	var t = tr.time;
+	var vt = t - deltaT;
+	report("vt: "+vt);
+	if (vt < 0 || vt > videoDur) {
+	    report("rejecting i at: "+vt);
+	    continue;
+	}
+	tr.vt = vt;
+	var lla = WV.xyzToLla(tr.pos, coordSys);
+	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], lla[2]));
+    }
+    var color = Cesium.Color.RED;
+    if (rec.youtubeId)
+	color = Cesium.Color.GREEN;
+    var material = new Cesium.PolylineGlowMaterialProperty({
+	    color : color,
+	    glowPower : 0.15});
+    var opts = { positions : points,
+		 // id: pathId,
+		 width : 5.0,
+		 material : material };
+    var route = null;
+    var polylines = WV.getTetherPolylines();
+    //route = polylines.add({polyline: opts});
+    route = polylines.add({polyline: opts, id: pathId});
+    route = route.polyline;
+    var obj = {layerName: layer.name, id: pathId, data: data,
+	       pathRec: rec, tourName: rec.tourName,
+               points: points};
+    WV.recs[pathId] = obj;
+    layer.recs[pathId] = obj;
+    return route;
+}
+
 /*
 WV.findNearestPoint = function(pt, points)
 {
@@ -201,13 +305,16 @@ WV.Robots.handleClick = function(rec, xy, xyz)
     var frameRate = 29.97;
     var idx = 0;
     var dt = 0;
+    var t = 0;
+    var vt = null;
     if (res) {
 	var data = rec.data;
 	var startTime = data.startTime;
-	var t = data.recs[res.i].time;
+	t = data.recs[res.i].time;
+	vt = data.recs[res.i].vt;
 	dt = t - startTime;
 	idx = Math.floor(dt * frameRate);
-	report("dt: "+dt+"   idx: "+idx);
+	report("t: "+t+"   dt: "+dt+"   idx: "+idx+"   d: "+res.d);
     }
     else {
 	report("Cannot find estimate of t:");
@@ -217,7 +324,16 @@ WV.Robots.handleClick = function(rec, xy, xyz)
     if (rec.pathRec && rec.pathRec.youtubeId) {
 	// We have a youtube video and a time to seek to
 	var t = dt;
-	if (rec.pathRec.youtubeDeltaT) {
+	if (vt != null) {
+	    report("**** vt: "+vt);
+	    t = vt;
+	}
+	else if (rec.pathRec.videoDeltaT) {
+	    report("**** videoDeltaT: "+rec.pathRec.videoDeltaT);
+	    t -= rec.pathRec.videoDeltaT;
+	    report("t: "+t);
+	}
+	else if (rec.pathRec.youtubeDeltaT) {
 	    report("**** youtubeDeltaT: "+rec.pathRec.youtubeDeltaT);
 	    t += rec.pathRec.youtubeDeltaT;
         }

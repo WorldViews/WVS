@@ -195,6 +195,16 @@
               "iconUrl": "/static/img/billboards/twd_logo.png",
               "mediaType": "youtube",
               "dataFile": "/static/data/twd_data.json"
+            },
+            {
+              "name": "drones_writing",
+              "description": "Drone writing",
+    	      "maxNum": 3000,
+              "visible": false,
+              "scale": 0.09,
+              "iconUrl": "/static/img/billboards/twd_logo.png",
+              "mediaType": "html",
+              "dataFile": "/static/data/dronewriting_data.json"
             }
 	   ]
        },

@@ -2,7 +2,8 @@
 This program reads csv files produced by the Litchi
 program for dji drones and produces KML files.
 """
-import os, sys, csv
+import os, sys, csv, json
+import KMLUtil
 
 FLIGHT_LOG = "FLIGHT_LOG"
 MISSION = "MISSION"
@@ -121,7 +122,14 @@ def getMissionTups(header, rows):
     for row in rows:
         lat =   float(row['latitude'])
         lon =   float(row['longitude'])
-        alt =   float(row['altitude(m)'])
+        if 'altitude(m)' in row:
+            alt =   float(row['altitude(m)'])
+        elif 'altitude(ft)' in row:
+            alt =   float(row['altitude(ft)'])*METERS_PER_FOOT
+        else:
+            print "No altitude found in row"
+            print "row:"
+            raise ValueError
         tup = lat, lon, alt
         tups.append(tup)
     return tups
@@ -154,10 +162,29 @@ def dumpFlightLogKML(tups, f=sys.stdout):
     kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
     f.write(kmlStr)
 
-def dumpMissionKML(tups, f=sys.stdout):
+
+def dumpFlightJSON(tups, f):
+    recs = []
+    t0 = None
+    for tup in tups:
+        mt, ct, lat, lon, alt, yaw, pitch, roll = tup
+        t = mt
+        if t0 == None:
+            t0 = t
+            ct0 = ct
+        pt = {'pos': [lat, lon, alt], 'time': t, 'rt': t-t0}
+        recs.append(pt)
+    obj = {'recs': recs,
+           'datetime': ct0,
+           'startTime': t0,
+           'endTime': t,
+           'duration': t-t0}
+    json.dump(obj, f, indent=4)
+
+def dumpMissionKML(tups, f=sys.stdout, closed=False):
     coordsStr = ""
-    closed = True
     if closed:
+        print "Closing path"
         tups.append(tups[0])
     for tup in tups:
         lat, lon, alt = tup
@@ -167,6 +194,7 @@ def dumpMissionKML(tups, f=sys.stdout):
     kmlStr = KML_TEMPLATE % {'coordinateRows': coordsStr, 'color': color}
     f.write(kmlStr)
 
+"""
 def csvToKml(csvPath, kmlPath, runIt=True):
     ret = getTups(csvPath)
     if not ret:
@@ -181,7 +209,88 @@ def csvToKml(csvPath, kmlPath, runIt=True):
     else:
         print "Unknown file type"
     if runIt:
-        os.system(kmlPath)
+        com = "start "+kmlPath
+        os.system(com)
+"""
+
+def csvToKml(csvPath, kmlPath, jsonPath=None, runIt=True):
+    if jsonPath == None:
+        jsonPath = kmlPath.replace(".kml", ".json")
+        print "jsonPath:", jsonPath
+    ret = getTups(csvPath)
+    if not ret:
+        print "Unrecongized CSV file"
+        return
+    ftype, tups = ret
+    print "FileType:", ftype
+    if ftype == FLIGHT_LOG:
+        dumpFlightLogKML(tups, file(kmlPath, "w"))
+        if jsonPath:
+            print "Saving to", jsonPath
+            dumpFlightJSON(tups, file(jsonPath, "w"))
+    elif ftype == MISSION:
+        dumpMissionKML(tups, file(kmlPath, "w"), False)
+    else:
+        print "Unknown file type"
+    if runIt:
+        com = "start "+kmlPath
+        os.system(com)
+
+
+def csvToKmlPic(csvPath, kmlPath, showUp=False, showDown=True, runIt=True):
+    kml = KMLUtil.KML()
+    ret = getTups(csvPath)
+    if not ret:
+        print "Unrecongized CSV file"
+        return
+    ftype, tups = ret
+    print "FileType:", ftype
+    recs = []
+    if ftype == FLIGHT_LOG:
+        for tup in tups:
+            t, ct, lat, lon, alt, yaw, pitch, roll = tup
+            rec = (lat, lon, alt)
+            recs.append(rec)
+    elif ftype == MISSION:
+        for tup in tups:
+            lat, lon, alt = tup
+            rec = (lat, lon, alt)
+            recs.append(rec)
+    else:
+        print "Unknown file type"
+    h0 = 7
+    #h0 = 90
+    path = []
+    prevState = None
+    UP = "UP"
+    DOWN = "DOWN"
+    downStyle = "#whiteStyle"
+    upStyle = "#redGhost"
+    for rec in recs:
+        h = rec[2]
+        state = UP if h > h0 else DOWN
+        #print rec, state
+        if state != prevState:
+            if prevState == DOWN and showDown and len(path) > 0:
+                #print "DOWN:\n", path
+                kml.addPath(path, lineStyle=downStyle)
+            if prevState == UP and showUp and len(path) > 0:
+                #print "DOWN:\n", path
+                kml.addPath(path, lineStyle=upStyle)
+                pass
+            path = []
+        path.append(rec)
+        prevState = state
+    if prevState == DOWN and showDown and len(path) > 0:
+        #print "DOWN:\n", path
+        kml.addPath(path, lineStyle=downStyle)
+    if prevState == UP and showUp and len(path) > 0:
+        #print "DOWN:\n", path
+        kml.addPath(path, lineStyle=upStyle)
+    kml.save(kmlPath)
+    if runIt:
+        com = "start "+kmlPath
+        os.system(com)
 
 
 def run():
@@ -200,9 +309,17 @@ def run():
     csvToKml(path, "FXPAL_POI_Mission2.kml")
     path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/FXPAL_POI_Mission3.csv"
     csvToKml(path, "FXPAL_POI_Mission3.kml")
-    """
     path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/2016-08-06_16-24-43_v2.csv"
     csvToKml(path, "flightLog.kml")
+    path = "//palnas2/vol1/panobot/videos/Enock/Write_FXPAL/Write_FXPAL.csv"
+    csvToKml(path, "Write_FXPAL.kml")
+    csvToKml2(path, "Write_FXPAL_.kml", runIt=False)
+    path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/2016-08-06_16-24-43_v2.csv"
+    csvToKml2(path, "PAL_FlyAround_1.kml", runIt=False)
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/Write_FXPAL_Flightlog/2016-08-10_17-59-05_v2.csv"
+    csvToKmlPic(path, "Write_FXPAL_flight_down.kml", showUp=False)
+    csvToKmlPic(path, "Write_FXPAL_flight_all.kml", showUp=True)
 
 if __name__ == "__main__":
     run()
