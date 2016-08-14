@@ -3,6 +3,7 @@ This is a version of the flask server with users and
 authentication, and also it is registerable or trackable.
 """
 import json, time, traceback, socket
+from datetime import datetime
 import flask
 import Queue
 
@@ -12,7 +13,7 @@ from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from flask.ext.security import Security, SQLAlchemyUserDatastore, \
-    UserMixin, RoleMixin, login_required, current_user
+    UserMixin, RoleMixin, login_required, current_user, login_user
 from flask_security.forms import RegisterForm
 
 from flask import Flask, render_template, send_file, redirect, \
@@ -21,6 +22,10 @@ from flask_socketio import SocketIO, emit
 from flask_mail import Mail
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+
+from flask.ext.social import Social, login_failed
+from flask.ext.social.utils import get_connection_values_from_oauth_response
+from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
 
 execfile("../config/ADMIN_CONFIG.py")
 print "MAIL_USERNAME:", MAIL_USERNAME
@@ -82,6 +87,17 @@ app.config['MAIL_USE_SSL'] = MAIL_USE_SSL
 app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
 app.config['MAIL_USERNAME'] = MAIL_USERNAME
 app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
+
+app.config['SOCIAL_TWITTER'] = {
+    'consumer_key': ckey,
+    'consumer_secret': csecret
+}
+
+app.config['SOCIAL_FACEBOOK'] = {
+    'consumer_key': fb_app_id,
+    'consumer_secret': fb_app_secret
+}
+
 mail = Mail(app)
 
 
@@ -104,6 +120,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(255), unique=True)
     name = db.Column(db.String(255))
+    full_name = db.Column(db.String(255))
     #first_name = db.Column(db.String(255))
     #last_name = db.Column(db.String(255))
     password = db.Column(db.String(255))
@@ -119,22 +136,37 @@ class User(db.Model, UserMixin):
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
+class Connection(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    provider_id = db.Column(db.String(255))
+    provider_user_id = db.Column(db.String(255))
+    access_token = db.Column(db.String(255))
+    secret = db.Column(db.String(255))
+    full_name = db.Column(db.String(255))
+    display_name = db.Column(db.String(255))
+    profile_url = db.Column(db.String(512))
+    image_url = db.Column(db.String(512))
+    rank = db.Column(db.Integer)
+
 # Setup Flask-Security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 
 class ExtendedRegisterForm(RegisterForm):
     #first_name = StringField('First Name', [validators.Required()])
     #last_name = StringField('Last Name', [validators.Required()])
-    #name = StringField('Name', [validators.Required()])
     name = StringField('Name', [validators.Required()])
+    #full_name = StringField('Full Name', [validators.Required()])
 
 class ExtendedConfirmRegisterForm(RegisterForm):
     name = StringField('Name', [validators.Required()])
+    #full_name = StringField('Full Name', [validators.Required()])
 
 #security = Security(app, user_datastore)
 security = Security(app, user_datastore,
                     register_form=ExtendedRegisterForm,
                     confirm_register_form=ExtendedConfirmRegisterForm)
+social = Social(app, SQLAlchemyConnectionDatastore(db, Connection))
 
 admin = Admin(app)
 
@@ -151,11 +183,46 @@ class MyModelView(ModelView):
 
 admin.add_view(MyModelView(User, db.session))
 admin.add_view(MyModelView(Role, db.session))
+admin.add_view(MyModelView(Connection, db.session))
+
+def addUser(email, full_name):
+    print "**** addUser", email, full_name
+    name = full_name.split()[0]
+    user = user_datastore.create_user(email=email,
+                               full_name=full_name,
+                               name=name,
+                               password='xxxxxx',
+                               confirmed_at = datetime.utcnow())
+    user_datastore.add_role_to_user(email, 'end-user')
+    return user
+
+def findOrAddUser(email, full_name):
+    print "**** findOrAddUser", email, full_name
+    try:
+        user = User.query.filter_by(email=email).first()
+        if user:
+            print "**** found user"
+            return user
+    except:
+        print traceback.print_exc()
+        pass
+    return addUser(email, full_name)
+
+def getUserById(id):
+    """
+    Adding this is a hack to get social auth to work.
+    """
+    print "=================================="
+    return User.query.filter_by(id=id).first()
+
+# Hack to get this visible in flask_social
+flask.ext.social.views.getUserById = getUserById
+
 
 
 # Create a user to test with
 @app.before_first_request
-def create_user():
+def create_users():
     print "------------------------------------------"
     print "Creating tables and user entries"
     db.create_all()
@@ -166,27 +233,13 @@ def create_user():
                                        description='Administrator')
     user_datastore.find_or_create_role(name='end-user',
                                        description='End user')
-    user_datastore.create_user(email='donkimber@gmail.com',
-                               password='xxx',
-                               name="Don")
-    user_datastore.create_user(email='enockglidden@hotmail.com',
-                               password='xxx',
-                               name="Enock")
-    user_datastore.create_user(email='sinasareth@yahoo.com',
-                               password='xxx',
-                               name="Sina")
-    user_datastore.create_user(email='doczeno@yahoo.com',
-                               password='xxx',
-                               name="doczeno")
-    user_datastore.create_user(email='vaughan@fxpal.com',
-                               password='xxx',
-                               name="Jim")
-    user_datastore.create_user(email='indrajeet.khater@gmail.com',
-                               password='xxx',
-                               name="Teddy")
+    addUser('donkimber@gmail.com',       'Don Kimber')
+    addUser('doczeno@yahoo.com',         'Don')
+    addUser('enockglidden@hotmail.com',  'Enock Glidden')
+    addUser('sinasareth@yahoo.com',      'Sina')
+    addUser('vaughan@fxpal.com',         'Jim Vaughan')
+    addUser('indrajeet.khater@gmail.com','Teddy')
 
-    user_datastore.add_role_to_user('doczeno@yahoo.com', 'end-user')
-    user_datastore.add_role_to_user('donkimber@gmail.com', 'end-user')
     user_datastore.add_role_to_user('donkimber@gmail.com', 'admin')
 
     db.session.commit()
@@ -209,12 +262,67 @@ def getNote(id):
     
 @app.route('/')
 def index():
+    """
     print "index ****"
     #page = "index.html"
     page = "worldviews.html"
     if socket.gethostname() == "tours.xcloud.fxpal.net":
         page = "landing.html"
     return send_file(page)
+    """
+    return render_template("worldviews.html")
+
+
+#@login_failed.connect_via(app):
+@login_failed.connect_via(app)
+def on_login_failed(sender, provider, oauth_response):
+    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+    connection_values = get_connection_values_from_oauth_response(provider, oauth_response)
+    print "provider:", provider
+    print connection_values
+    provider_id = connection_values.get('provider_id', None)
+    if provider_id == 'facebook':
+        full_name = connection_values['full_name']
+        email = connection_values.get('email', None)
+    elif provider_id == 'twitter':
+        full_name = connection_values['full_name']
+        display_name = connection_values['display_name']
+        email = "unknown_%s@unknown.com" % display_name[1:]
+    else:
+        print "***** Unknown provider id"
+    print "**** Getting user"
+    if email == None:
+        email = "unknown_%s@unknown.com" % time.time()
+        print "**** assigning unknown email", email
+    user = findOrAddUser(email, full_name)
+    db.session.commit()
+    connection_values['user_id'] = user.id
+    # Todo: add connection object to remember this
+    # provider info for this user...
+    #connect_handler(connection_values, provider)
+    login_user(user)
+    db.session.commit()
+    """
+    ds = current_app.security.datastore
+    user = ds.create_user( ... ) #fill in relevant stuff here
+    ds.commit()
+    connection_values['user_id'] = user.id
+    connect_handler(connection_values, provider)
+    login_user(user)
+    db.commit()
+    """
+    return render_template("worldviews.html")
+
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template(
+        'profile.html',
+        content='Profile Page',
+        twitter_conn=social.twitter.get_connection(),
+        facebook_conn=social.facebook.get_connection(),
+        #foursquare_conn=social.foursquare.get_connection()
+    )
 
 @app.route('/TeleViewer')
 @app.route('/televiewer')

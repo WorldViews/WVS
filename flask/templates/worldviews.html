@@ -55,7 +55,16 @@
 -->
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav pull-right">
-                  xxx
+		  <div class="navbar-header">
+		    <br>
+		      {% if current_user.name %}
+		      {{ current_user.name }}
+		      <a href="/logout">logout</a>
+		      {% else %}
+		      <a href="/log">login</a>
+		      {% endif %}
+
+		  </div>
                 </ul>
             </div>
         </div>
