@@ -15,7 +15,10 @@ WV.WVCom = function()
     this.types = {};
     if (WV.useSocketIO) {
 	report("Getting socket.io socket");
-	var sioUrl = "http://"+location.hostname+":3000";
+	report("location.server:"+location.protocol);
+	//var sioUrl = "http://"+location.hostname+":3000";
+	//var sioUrl = "http://"+location.hostname;
+	var sioUrl = location.protocol+"//"+location.hostname;
 	report("socketIO url "+sioUrl)
 	//WV.socket = io("http://platonia:3000");
         WV.socket = io(sioUrl);
@@ -148,11 +151,17 @@ WV.WVCom.prototype.subscribe = function(evType, handler, opts)
     }
 }
 
+//WV.debugMsgs = true;
+WV.debugMsgs = false;
+
 WV.WVCom.prototype.sendStatus = function(status)
 {
     var sStr = JSON.stringify(status);
     //report("sStr: "+sStr);
     if (WV.socket) {
+	if (WV.debugMsgs) {
+	    report("socket.emit sStr: "+sStr);
+	}
 	try {
 	    WV.socket.emit('people', sStr);
 	}
@@ -161,6 +170,9 @@ WV.WVCom.prototype.sendStatus = function(status)
 	}
     }
     else {
+	if (WV.debugMsgs) {
+	    report("post /register/ sStr: "+sStr);
+	}
 	jQuery.post("/register/", sStr, function() {
 		report("registered");
 	    }, "json");
@@ -174,17 +186,28 @@ WV.WVCom.prototype.sendNote = function(note)
 
 WV.WVCom.prototype.sendMsg = function(mtype, msg)
 {
-    var str = JSON.stringify(msg);
+    try {
+        WV.WVCom.sendMsg_(mtype, msg);
+    }
+    catch (err) {
+	report("sendMsg: err: "+err);
+    }
+}
+
+WV.WVCom.sendMsg_ = function(mtype, msg)
+{
+    var sStr = JSON.stringify(msg);
     //report("sStr: "+sStr);
     if (WV.socket) {
-	try {
-	    WV.socket.emit(mtype, str);
+	if (WV.debugMsgs) {
+	    report("sio sStr: "+sStr);
 	}
-	catch (err) {
-	    report(""+err);
-	}
+	WV.socket.emit(mtype, str);
     }
     else {
+	if (WV.debugMsgs) {
+	    report("post /msg/ sStr: "+sStr);
+	}
 	jQuery.post("/msg/"+mtype+"/", str, function() {
 		report("sent mtype");
 	    }, "json");

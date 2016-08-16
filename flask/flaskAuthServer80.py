@@ -154,10 +154,21 @@ def getNote(id):
 @app.route('/')
 def index():
     print "index ****"
-    page = "index.html"
+    #page = "index.html"
+    page = "worldviews.html"
     if socket.gethostname() == "tours.xcloud.fxpal.net":
         page = "landing.html"
     return send_file(page)
+
+@app.route('/TeleViewer')
+@app.route('/televiewer')
+def televiewer():
+    return render_template("TV.html")
+    """
+    path = "TeleViewer.html"
+    print "path:", path
+    return send_from_directory('static', path)
+    """
 
 
 """

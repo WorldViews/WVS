@@ -66,11 +66,13 @@ WV.Note.handleData = function(data, layerName)
 	WV.recs[id] = rec;
 	scale = WV.bbScaleUnselected;
         //var imageUrl = "images/note.png";
-        var imageUrl = "images/redQmark.png";
+        //var imageUrl = "images/redQmark.png";
+        var imageUrl = "/static/img/redQmark.png";
 	if (rec.comments) {
 	    //report("comments:" + JSON.stringify(rec.comments));
 	    //scale *= rec.comments.length;
-	    var imageUrl = "images/orangeQmark.png";
+	    //var imageUrl = "images/orangeQmark.png";
+	    var imageUrl = "/static/img/orangeQmark.png";
 	    //scale *= 2;
 	}
 	h = 100000;

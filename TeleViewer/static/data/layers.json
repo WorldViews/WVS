@@ -116,6 +116,14 @@
 	  "visible": false
        },
        {
+          "name": "marksBlog",
+          "description": "Mark's Blog",
+	  "iconUrl": "/static/img/billboards/purplePlacemark.png",
+	  "mediaType": "html",
+	  "dataFile": "/static/data/Marks_Blog_data.json",
+	  "visible": false
+       },
+       {
           "name": "periscope",
           "description": "Periscope",
 	  "iconUrl": "/static/img/billboards/periscopeIcon.png",
