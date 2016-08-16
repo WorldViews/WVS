@@ -2,6 +2,11 @@
 This is a version of the flask server with users and
 authentication, and also it is registerable or trackable.
 """
+import sys
+#FLASK_SOCIAL_DIR = "C:/GitHub/WorldViews/flask-social"
+FLASK_SOCIAL_DIR = "../../flask-social"
+sys.path.insert(0, FLASK_SOCIAL_DIR)
+
 import json, time, traceback, socket
 from datetime import datetime
 import flask
@@ -23,9 +28,13 @@ from flask_mail import Mail
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-from flask.ext.social import Social, login_failed
-from flask.ext.social.utils import get_connection_values_from_oauth_response
-from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
+#from flask.ext.social import Social, login_failed
+#from flask.ext.social.utils import get_connection_values_from_oauth_response
+#from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
+import flask_social
+from flask_social import Social, login_failed
+from flask_social.utils import get_connection_values_from_oauth_response
+from flask_social.datastore import SQLAlchemyConnectionDatastore
 
 execfile("../config/ADMIN_CONFIG.py")
 print "MAIL_USERNAME:", MAIL_USERNAME
@@ -222,7 +231,8 @@ def getUserById(id):
     return User.query.filter_by(id=id).first()
 
 # Hack to get this visible in flask_social
-flask.ext.social.views.getUserById = getUserById
+#flask.ext.social.views.getUserById = getUserById
+flask_social.views.getUserById = getUserById
 
 
 
