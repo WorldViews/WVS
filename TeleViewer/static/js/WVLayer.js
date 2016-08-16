@@ -75,6 +75,7 @@ WV.Layer = function(spec)
 	this[key] = spec[key];
     }
     this.initializedLoad = false;
+    this.localData = null; // could be used if local files are dragged.
     this.showFun = null;
     this.hideFun = null;
     this.spec = spec;
@@ -122,7 +123,12 @@ WV.Layer = function(spec)
 	    layer.clickHandler = layerType.clickHandler;
 	    layer.moveHandler = layerType.moveHandler;
 	    report(">>>>>>>> subscribe "+name+" "+this.layerType.name);
-	    wvCom.subscribe(name, layerType.dataHandler, {dataFile: layer.dataFile});
+	    if (layer.localData == null) {
+		wvCom.subscribe(name, layerType.dataHandler, {dataFile: layer.dataFile});
+	    }
+	    else {
+		report("*********** skipping local subscribe for local data *********");
+	    }
 	}
 	else {
 	    report("**** no LayerType for "+name);
@@ -130,6 +136,17 @@ WV.Layer = function(spec)
 	if (name == "photos")
 	    WV.getTwitterImages();
 	this.initializedLoad = true;
+    }
+
+    this.handleLocalData = function(obj) {
+	report("handleLocalData");
+	var layer = WV.layers[this.name];
+	layer.localData = obj;
+	report("**** attached obj");
+	if (!this.initializedLoad)
+	    this.loaderFun();
+	this.setVisibility(true);
+	this.layerType.dataHandler(obj, name);
     }
 
     this.setVisibility = function(visible) {

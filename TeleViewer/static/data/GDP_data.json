@@ -1,5 +1,6 @@
 {
     "name": "GDP",
+    "type": "Layer",
     "records": [
        {
 	 "title": "Per Capita GDP per nation",

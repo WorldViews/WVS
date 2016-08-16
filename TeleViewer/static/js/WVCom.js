@@ -202,13 +202,13 @@ WV.WVCom.sendMsg_ = function(mtype, msg)
 	if (WV.debugMsgs) {
 	    report("sio sStr: "+sStr);
 	}
-	WV.socket.emit(mtype, str);
+	WV.socket.emit(mtype, sStr);
     }
     else {
 	if (WV.debugMsgs) {
 	    report("post /msg/ sStr: "+sStr);
 	}
-	jQuery.post("/msg/"+mtype+"/", str, function() {
+	jQuery.post("/msg/"+mtype+"/", sStr, function() {
 		report("sent mtype");
 	    }, "json");
     }

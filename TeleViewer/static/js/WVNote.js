@@ -160,11 +160,15 @@ WV.Note.showNoteInWidget = function(rec)
     WV.noteWidget.show();
 }
 
-WV.Note.initNote = function(lon, lat)
+WV.Note.initNote = function(lon, lat, url)
 {
     var w = WV.Note.getNoteWidget();
-    w.setText("");
+    txt = "";
+    if (url)
+	txt = url+"\n";
+    w.setText(txt);
     w.noteId = null;
+    w.url = url;
     w.lon = lon;
     w.lat = lat;
     w.show();

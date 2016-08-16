@@ -1,0 +1,12 @@
+{
+    "type": "Layer",
+    "name": "Stops",
+    "records": [
+       {
+          "title": "Trip Route",
+          "recType": "KML",
+          "id": "k1", 
+          "url": "/static/data/kml/Write_FXPAL_flight_all.kml"
+       }
+    ]
+}

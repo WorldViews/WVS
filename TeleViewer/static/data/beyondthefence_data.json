@@ -218,6 +218,8 @@
             "title": "The Beginning of the Road to Adventure"
         }
     ], 
-    "numRecords": 31, 
-    "type": "html"
+    "numRecords": 31,
+    "type": "Layer",
+    "name": "beyondthefence",
+    "layerType": "html"
 }

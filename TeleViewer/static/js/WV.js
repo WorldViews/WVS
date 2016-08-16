@@ -470,6 +470,9 @@ WV.createModel = function(entities, opts)
     //viewer.trackedEntity = entity;
 }
 
+/*
+// WV.addModel is now in WV.Billboards and has a different
+// signature.
 WV.addModel = function(collection, name, url, lat, lon, h)
 {
     report("----------- WV.addModel -------------");
@@ -478,7 +481,7 @@ WV.addModel = function(collection, name, url, lat, lon, h)
     e = WV.createModel(collection, name, url, lat, lon, h);
     return e;
 }
-
+*/
 function testJunk()
 {
     report("----------- testJunk -------------");
@@ -495,7 +498,7 @@ function testJunk()
 
 WV.addKML = function(url, opts)
 {
-    report("addKML "+url);
+    report("addKML "+url.slice(0,50));
     var options = {
 	camera : WV.viewer.scene.camera,
 	canvas : WV.viewer.scene.canvas
@@ -542,6 +545,88 @@ function testJunk2()
     WV.viewer.dataSources.add(Cesium.KmlDataSource.load('data/kml/Enocks Cross Country Trip.kml', options));
 }
 
+WV.handleDroppedURL = function(e, url)
+{
+    report("handling URL: "+url);
+    //E = e;
+    var pos = e;
+    var cartesian = WV.viewer.camera.pickEllipsoid(pos, WV.scene.globe.ellipsoid);
+    if (cartesian) {
+	var gpos = Cesium.Cartographic.fromCartesian(cartesian);
+	var lon = Cesium.Math.toDegrees(gpos.longitude);
+	var lat = Cesium.Math.toDegrees(gpos.latitude);
+	report("URL dropped at: "+lon+" "+lat);
+	var lname = "beyondthefence";
+	var rec = {'url': url,
+		   'lon': lon, 'lat': lat, 'type': 'html'};
+	WV.layers[lname].layerType.dataHandler([rec], lname);
+	/*
+	WV.Note.initNote(lon, lat, url);
+	WV.Note.setVisibility(true);
+	*/
+
+    }
+    else {
+	report("Cannot determine position for URL");
+    }
+}
+
+WV.handleDroppedFile = function(e, file)
+{
+    report("handling File: "+file.name+" "+file.type);
+    //E = e;
+    var pos = e;
+    var cartesian = WV.viewer.camera.pickEllipsoid(pos, WV.scene.globe.ellipsoid);
+    if (cartesian) {
+	var gpos = Cesium.Cartographic.fromCartesian(cartesian);
+	var lon = Cesium.Math.toDegrees(gpos.longitude);
+	var lat = Cesium.Math.toDegrees(gpos.latitude);
+	report("File dropped at: "+lon+" "+lat);
+	var reader = new FileReader();
+	if (file.name.indexOf("kml") > 0) {
+	    reader.onload = function(e) {
+		var dataURL = reader.result;
+		//report("gotDataURL "+dataURL);
+		ds = WV.addKML(dataURL);
+		ds.then(function(ent) {
+			report("loaded ds ent: "+ent);
+			WV.viewer.flyTo(ent, {duration: 10});
+		    });
+	    }
+	    reader.readAsDataURL(file);
+	}
+	else if (file.name.indexOf(".json") > 0) {
+	    reader.onload = function(e) {
+		var text = reader.result;
+		report("dropped JSON: "+text);
+		obj = JSON.parse(text);
+		report("obj: "+obj);
+		WV.handleDroppedJSON(file.name, obj);
+	    }
+	    reader.readAsText(file);
+	}
+	else {
+		report("Unrecognized file "+file.name);
+	}
+	//WV.Note.initNote(lon, lat, url);
+	//WV.Note.setVisibility(true);
+    }
+    else {
+	report("Cannot determine position for Dropped File");
+    }
+}
+
+WV.handleDroppedJSON = function(fname, obj)
+{
+    report("got dropped file "+fname);
+    report("obj: "+WV.toJSON(obj));
+    if (obj.type == "Layer") {
+	var name = obj.name;
+	var layer = WV.layers[name];
+	layer.handleLocalData(obj);
+    }
+}
+
 $(document).ready(function() {
     report("Starting...");
     wvCom = new WV.WVCom();
@@ -558,6 +643,7 @@ $(document).ready(function() {
     WV.setupCesium();
     WV.getLocation();
     setTimeout(WV.reportStatus, WV.statusInterval);
+    WV.DnD.setup(WV.handleDroppedURL, WV.handleDroppedFile);
     //testJunk();
     //testJunk2();
 });

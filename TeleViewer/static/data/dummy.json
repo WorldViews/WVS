@@ -1,0 +1,21 @@
+{
+    "records": [
+        {
+	    "id": "x1",
+            "lat": 41.8199286, 
+            "url": "https://gobeyondthefence.com/2016/07/25/vrvirtual-reality-and-rlreal-life/", 
+            "lon": -120.4782551, 
+            "title": "VR(Virtual Reality), and RL(Real Life)"
+        }, 
+        {
+	    "id": "x2",
+            "lat": 42.3187634, 
+            "url": "https://gobeyondthefence.com/2016/07/10/california-caffeine-and-computers/", 
+            "lon": -111.8602466, 
+            "title": "California, Caffeine and Computers"
+        }
+    ], 
+    "type": "Layer",
+    "name": "beyondthefence",
+    "layerType": "html"
+}
