@@ -58,7 +58,7 @@
 		  <div class="navbar-header">
 		    <br>
 		      {% if current_user.name %}
-		      {{ current_user.name }}
+		      {{ current_user.name }} {{ current_user.id }}
 		      <a href="/logout">logout</a>
 		      {% else %}
 		      <a href="/log">login</a>

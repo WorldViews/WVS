@@ -60,6 +60,8 @@ def test():
     opath = "../TeleViewer/static/data/paths/HenryCowellRedwoodGrove.json"
     path = "//palnas2/vol1/panobot/videos/Enock/HenryCowellRiver/River_Trail.gpx"
     opath = "../TeleViewer/static/data/paths/HenryCowellRiverTrail.json"
+    path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
+    opath = "../TeleViewer/static/data/paths/Stearman_Flight.json"
     obj = genIndex(path, opath)
     #print obj
 

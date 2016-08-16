@@ -70,6 +70,21 @@
           "xurl": "https://fxpal.com"
        },
        {
+          "id": "Stearman_Flight_1",
+          "xtype": "dronePath",
+          "type": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Stearman Flight near Napa.",
+	  "tourName": "stearman_flight_1",
+	  "xxdataUrl": "/static/data/paths/PAL_FlyAround_1.json",
+	  "dataUrl": "/static/data/paths/Stearman_Flight.json",
+	  "youtubeId": "gf5rd9rZv4I",
+	  "youtubeDeltaT": -175,
+	  "videoDur": 90,
+	  "coordSys": "GEO",
+	  "height": 100.0
+       },
+       {
           "id": "PresidioWalk1",
           "type": "robotTrail",
           "robotType": "wheelchair",

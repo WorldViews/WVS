@@ -98,6 +98,11 @@ app.config['SOCIAL_FACEBOOK'] = {
     'consumer_secret': fb_app_secret
 }
 
+app.config['SOCIAL_GOOGLE'] = {
+    'consumer_key': g_client_id,
+    'consumer_secret': g_client_secret
+}
+
 mail = Mail(app)
 
 
@@ -141,6 +146,7 @@ class Connection(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     provider_id = db.Column(db.String(255))
     provider_user_id = db.Column(db.String(255))
+    provider_email = db.Column(db.String(255))
     access_token = db.Column(db.String(255))
     secret = db.Column(db.String(255))
     full_name = db.Column(db.String(255))
@@ -276,24 +282,33 @@ def index():
 #@login_failed.connect_via(app):
 @login_failed.connect_via(app)
 def on_login_failed(sender, provider, oauth_response):
+    """
+    This gets called when a user tries a social login and it
+    is not associated with a 'connection' to any social provider.
+    We will attempt to create a new account for the user.
+    """
     print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
     connection_values = get_connection_values_from_oauth_response(provider, oauth_response)
     print "provider:", provider
     print connection_values
     provider_id = connection_values.get('provider_id', None)
+    full_name = connection_values['full_name']
+    uid = connection_values['provider_user_id']
+    email = connection_values.get('provider_email', None)
     if provider_id == 'facebook':
-        full_name = connection_values['full_name']
-        email = connection_values.get('email', None)
+        if not email:
+            email = "fb_%s_%s@unknown.com" % (uid, full_name.replace(' ', '_'))
     elif provider_id == 'twitter':
-        full_name = connection_values['full_name']
-        display_name = connection_values['display_name']
-        email = "unknown_%s@unknown.com" % display_name[1:]
+        if not email:
+            uname = connection_values['display_name'].replace(' ','_')
+            uname = uname.replace('@','')
+            email = "tw_%s_%s@unknown.com" % (uid, uname)
+    elif provider_id == 'google':
+        if not email:
+            email = "g_%s_%s@unknown.com" % (uid, full_name.replace(' ', '_'))
     else:
         print "***** Unknown provider id"
     print "**** Getting user"
-    if email == None:
-        email = "unknown_%s@unknown.com" % time.time()
-        print "**** assigning unknown email", email
     user = findOrAddUser(email, full_name)
     db.session.commit()
     connection_values['user_id'] = user.id

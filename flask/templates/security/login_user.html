@@ -26,8 +26,9 @@
 </p>
 </form>
 
-  {{ social_login('twitter', 'Twitter' )}}
+  {{ social_login('twitter',  'Twitter' )}}
   {{ social_login('facebook', 'Facebook' )}}
+  {{ social_login('google',   'Google' )}}
 
   {% if security.recoverable %}
   <a href="{{ url_for_security('forgot_password') }}">Forgot password</a><br/></li>

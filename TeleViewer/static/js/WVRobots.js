@@ -130,7 +130,10 @@ WV.Robots.handleTrailData = function(layer, rec, data)
 	//report(" "+i+"  "+pos+"  "+lla);
 	//var xyz = Cesium.Cartesian3.fromDegrees(lla[1], lla[0], h);
 	//points.push(xyz);
-	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], h));
+	var alt = h;
+	if (data.haveAltitude)
+	    alt = lla[2];
+	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], alt));
     }
     var color = Cesium.Color.RED;
     if (rec.youtubeId)
