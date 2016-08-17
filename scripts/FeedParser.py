@@ -7,7 +7,7 @@ import codecs
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
 
-#d = feedparser.parse("https://gobeyondthefence.com/feed/")
+#d = feedparser.parse("http://www.gobeyondthefence.com/feed/")
 d = feedparser.parse("https://irishsea-mark-videos.blogspot.com/feeds/posts/default")
 print d.feed.title
 print "n:", len(d.entries)

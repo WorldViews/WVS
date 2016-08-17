@@ -4,6 +4,8 @@ import urllib2
 import requests
 import feedparser
 import codecs
+import traceback
+import time
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
 
@@ -72,29 +74,71 @@ def saveRecs(recs, opath):
            'numRecords': len(recs)}
     if opath:
         json.dump(obj, file(opath,"w"), indent=4)
-
+        
+def openUrl(url,numTries):
+    print "openUrl",url,numTries
+    for i in range(numTries):
+        try:
+            uos = urllib2.urlopen(url)
+            return uos
+        except:
+            traceback.print_exc()
+            time.sleep(5)
+            continue
+    return None
+            
+            
 def scrapeBlog(feedUrl,opath):
+    print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
+    
     #d = feedparser.parse("https://gobeyondthefence.com/feed")
     #d = feedparser.parse("https://irishsea-mark-videos.blogspot.com/feeds/posts/default")
-    print d.feed.title
     print "n:", len(d.entries)
     recs = []
     id = 0
+    numErrors = 0
+    badUrls = []
     for entry in d.entries:
         title = entry.title
         print title
         #print entry.link
         url = entry.link
         print "url:", url
-        uos = urllib2.urlopen(url)
+        uos = openUrl(url,5)
+        if uos == None:
+            print "******Failed to open url",url
+            numErrors += 1
+            badUrls.append(url)
+            continue
         str = uos.read()
+        #first try to see if it has a maps link inserted
         idx = str.find("https://www.google.com/maps/place/")
         if idx > 0:
             id += 1
             idx2 = str.find("/@",idx)
             endIdx = str.find("z", idx2)
             locstr = str[idx2+2:endIdx]
+            parts = locstr.split(",")
+            lat = float(parts[0])
+            lon = float(parts[1])
+            print "lat:", lat, "lon:", lon
+            rec = {'title': title,
+                   'id': id,
+                   'lat': lat,
+                   'lon': lon,
+                   'url': url
+                  }
+            recs.append(rec)
+            saveRecs(recs, opath)
+            continue
+        #if it doesn't have a map link inserted then try to look for open street map
+        idx3 = str.find("ol.proj.transform")
+        if idx3 > 0:
+            id += 1
+            idx4 = str.find("([",idx3)
+            endIdx = str.find("],", idx4)
+            locstr = str[idx4+2:endIdx]
             parts = locstr.split(",")
             lat = float(parts[0])
             lon = float(parts[1])
@@ -128,14 +172,15 @@ def scrapeBlog(feedUrl,opath):
         continue
     #saveRecs(recs, opath)
     print "Done"
-
+    print "Errors",numErrors
+    print "bad urls",badUrls
     
-<<<<<<< HEAD
-scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
+
+scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
-=======
+
 scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
 #scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
->>>>>>> origin/master
+
 
 
