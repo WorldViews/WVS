@@ -6,6 +6,9 @@ import feedparser
 import codecs
 import traceback
 import time
+from readGPX import genIndex
+from readGPX import gpxpy
+
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
 
@@ -87,7 +90,58 @@ def openUrl(url,numTries):
             continue
     return None
             
+def searchForMapLink(str,url):
+    idx = str.find("https://www.google.com/maps/place/")
+    if idx > 0:
+        idx2 = str.find("/@",idx)
+        endIdx = str.find("z", idx2)
+        locstr = str[idx2+2:endIdx]
+        parts = locstr.split(",")
+        lat = float(parts[0])
+        lon = float(parts[1])
+        print "lat:", lat, "lon:", lon
+        rec = {
+                'lat': lat,
+                'lon': lon,
+                'url': url
+               }
+        return rec
+        #recs.append(rec)
+        #saveRecs(recs, opath)
+    return None
+
+def searchForImbeddedMap(str,url):
+    idx = str.find("ol.proj.transform")
+    if idx > 0:
+        idx4 = str.find("([",idx)
+        endIdx = str.find("],", idx4)
+        locstr = str[idx4+2:endIdx]
+        parts = locstr.split(",")
+        lat = float(parts[0])
+        lon = float(parts[1])
+        print "lat:", lat, "lon:", lon
+        rec = {
+               'lat': lat,
+               'lon': lon,
+               'url': url
+              }
+        return rec
+    return None
+def tryGeoGoogle(title,url):
+    geo = getGeoGoogle(title)
+    if geo != None:
+        id += 1
+        print "geo:", geo
+        rec = {'title': title,
+               'id': id,
+               'lat': geo['lat'],
+               'lon': geo['lon'],
+               'url': url
+              }
             
+        return rec
+    return None
+
 def scrapeBlog(feedUrl,opath):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
@@ -112,60 +166,30 @@ def scrapeBlog(feedUrl,opath):
             badUrls.append(url)
             continue
         str = uos.read()
+        rec = None
+        rec = searchForMapLink(str,url)
         #first try to see if it has a maps link inserted
-        idx = str.find("https://www.google.com/maps/place/")
-        if idx > 0:
-            id += 1
-            idx2 = str.find("/@",idx)
-            endIdx = str.find("z", idx2)
-            locstr = str[idx2+2:endIdx]
-            parts = locstr.split(",")
-            lat = float(parts[0])
-            lon = float(parts[1])
-            print "lat:", lat, "lon:", lon
-            rec = {'title': title,
-                   'id': id,
-                   'lat': lat,
-                   'lon': lon,
-                   'url': url
-                  }
-            recs.append(rec)
-            saveRecs(recs, opath)
+        if rec == None:
+            rec = searchForImbeddedMap(str,url)
+        if rec == None:
+            rec = tryGeoGoogle(title,url)
+        if rec == None:
             continue
         #if it doesn't have a map link inserted then try to look for open street map
-        idx3 = str.find("ol.proj.transform")
-        if idx3 > 0:
+        
+        #try to find gpx file in url
+        
+        #try to find gpx file in url
+        idx5 = str.find("url:")
+        if idx5 > 0:
             id += 1
-            idx4 = str.find("([",idx3)
-            endIdx = str.find("],", idx4)
-            locstr = str[idx4+2:endIdx]
-            parts = locstr.split(",")
-            lat = float(parts[0])
-            lon = float(parts[1])
-            print "lat:", lat, "lon:", lon
-            rec = {'title': title,
-                   'id': id,
-                   'lat': lat,
-                   'lon': lon,
-                   'url': url
-                  }
-            recs.append(rec)
-            saveRecs(recs, opath)
+            idx6 = str.find("http:",idx5)
+            endIdx = str.find(",", idx6)
+            gpxstr = str[idx6+5:endIdx]
+            print "myUrl",gpxstr
             continue
         # See if the post title is a location name
-        geo = getGeoGoogle(title)
-        if geo != None:
-            id += 1
-            print "geo:", geo
-            rec = {'title': title,
-                   'id': id,
-                   'lat': geo['lat'],
-                   'lon': geo['lon'],
-                   'url': url
-                  }
-            recs.append(rec)
-            saveRecs(recs, opath)
-            continue
+        
         # We've tried all the ways we know to guess
         # location...
         print "no location found"
@@ -179,7 +203,7 @@ def scrapeBlog(feedUrl,opath):
 scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
 
-scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
+#scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
 #scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 
 
