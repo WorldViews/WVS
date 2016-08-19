@@ -127,6 +127,7 @@ def searchForImbeddedMap(str,url):
               }
         return rec
     return None
+
 def tryGeoGoogle(title,url):
     geo = getGeoGoogle(title)
     if geo != None:
@@ -159,6 +160,7 @@ def scrapeBlog(feedUrl,opath):
     #d = feedparser.parse("https://irishsea-mark-videos.blogspot.com/feeds/posts/default")
     print "n:", len(d.entries)
     recs = []
+    tourRecs = []
     id = 0
     numErrors = 0
     badUrls = []
@@ -201,13 +203,14 @@ def scrapeBlog(feedUrl,opath):
         # location...
         print "no location found"
         continue
+        trec = getYouTubeID(str)
     #saveRecs(recs, opath)
     recs.append(rec)
     saveRecs(recs, opath)
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls
-getYouTubeID(str)    
+    
 
 scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
