@@ -93,9 +93,9 @@ def openUrl(url,numTries):
 def searchForMapLink(str,url):
     idx = str.find("https://www.google.com/maps/place/")
     if idx > 0:
-        idx2 = str.find("/@",idx)
-        endIdx = str.find("z", idx2)
-        locstr = str[idx2+2:endIdx]
+        mapidx = str.find("/@",idx)
+        endIdx = str.find("z", mapidx)
+        locstr = str[mapidx+2:endIdx]
         parts = locstr.split(",")
         lat = float(parts[0])
         lon = float(parts[1])
@@ -113,9 +113,9 @@ def searchForMapLink(str,url):
 def searchForImbeddedMap(str,url):
     idx = str.find("ol.proj.transform")
     if idx > 0:
-        idx4 = str.find("([",idx)
-        endIdx = str.find("],", idx4)
-        locstr = str[idx4+2:endIdx]
+        imbedidx = str.find("([",idx)
+        endIdx = str.find("],", imbedidx)
+        locstr = str[imbedidx+2:endIdx]
         parts = locstr.split(",")
         lat = float(parts[0])
         lon = float(parts[1])
@@ -142,12 +142,20 @@ def tryGeoGoogle(title,url):
     return None
     
 def getYouTubeID(str):
-    ytidx = str.find("https:")
-    if ytidx > 0:
-        idx7 = str.find("//www.youtube.com/embed/",ytidx)
-        endIdx = str.find("?", idx7)
-        youtubeID = str[idx7+5:endIdx]
+    idx = str.find("https:")
+    if idx > 0:
+        ytidx = str.find("//www.youtube.com/embed/",idx)
+        endIdx = str.find("?", ytidx)
+        youtubeID = str[ytidx+24:endIdx]
         print "myID",youtubeID
+        
+def getGPX(str):
+    idx = str.find("url:")
+    if idx > 0:
+        gpxidx = str.find("http:",idx)
+        endIdx = str.find(",", gpxidx)
+        gpxstr = str[gpxidx+5:endIdx]
+        print "myUrl",gpxstr
         
 def scrapeBlog(feedUrl,opath):
     print "scrapeblog",feedUrl
@@ -188,26 +196,22 @@ def scrapeBlog(feedUrl,opath):
         id += 1
         rec['id'] = id
         #try to find gpx file in url
-        idx5 = str.find("url:")
-        if idx5 > 0:
-            idx6 = str.find("http:",idx5)
-            endIdx = str.find(",", idx6)
-            gpxstr = str[idx6+5:endIdx]
-            print "myUrl",gpxstr
-            continue
-        # See if the post title is a location name
+        getYouTubeID(str)
+        getGPX(str)
         
         # We've tried all the ways we know to guess
         # location...
         print "no location found"
         continue
-        trec = getYouTubeID(str)
+        
+        
     #saveRecs(recs, opath)
     recs.append(rec)
     saveRecs(recs, opath)
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls
+   
     
 
 scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
