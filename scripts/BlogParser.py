@@ -141,7 +141,16 @@ def tryGeoGoogle(title,url):
             
         return rec
     return None
-
+    
+def getYouTubeID(str):
+    ytidx = str.find("https:")
+    if ytidx > 0:
+        id += 1
+        idx7 = str.find("//www.youtube.com/embed/",ytidx)
+        endIdx = str.find("?", idx7)
+        youtubeID = str[idx7+5:endIdx]
+        print "myID",youtubeID
+        
 def scrapeBlog(feedUrl,opath):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
@@ -171,14 +180,12 @@ def scrapeBlog(feedUrl,opath):
         #first try to see if it has a maps link inserted
         if rec == None:
             rec = searchForImbeddedMap(str,url)
+        #if no map link inserted try to match Google geocode from title
         if rec == None:
             rec = tryGeoGoogle(title,url)
+        #if it can't match geocode from title then rec equals none and we tried everything
         if rec == None:
             continue
-        #if it doesn't have a map link inserted then try to look for open street map
-        
-        #try to find gpx file in url
-        
         #try to find gpx file in url
         idx5 = str.find("url:")
         if idx5 > 0:
@@ -195,10 +202,12 @@ def scrapeBlog(feedUrl,opath):
         print "no location found"
         continue
     #saveRecs(recs, opath)
+    recs.append(rec)
+    saveRecs(recs, opath)
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls
-    
+getYouTubeID(str)    
 
 scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
