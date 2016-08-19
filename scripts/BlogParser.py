@@ -131,10 +131,8 @@ def searchForImbeddedMap(str,url):
 def tryGeoGoogle(title,url):
     geo = getGeoGoogle(title)
     if geo != None:
-        id += 1
         print "geo:", geo
         rec = {'title': title,
-               'id': id,
                'lat': geo['lat'],
                'lon': geo['lon'],
                'url': url
@@ -146,7 +144,6 @@ def tryGeoGoogle(title,url):
 def getYouTubeID(str):
     ytidx = str.find("https:")
     if ytidx > 0:
-        id += 1
         idx7 = str.find("//www.youtube.com/embed/",ytidx)
         endIdx = str.find("?", idx7)
         youtubeID = str[idx7+5:endIdx]
@@ -188,10 +185,11 @@ def scrapeBlog(feedUrl,opath):
         #if it can't match geocode from title then rec equals none and we tried everything
         if rec == None:
             continue
+        id += 1
+        rec['id'] = id
         #try to find gpx file in url
         idx5 = str.find("url:")
         if idx5 > 0:
-            id += 1
             idx6 = str.find("http:",idx5)
             endIdx = str.find(",", idx6)
             gpxstr = str[idx6+5:endIdx]
