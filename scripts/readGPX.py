@@ -1,11 +1,20 @@
 
+import urllib2
 import gpxpy
 import gpxpy.gpx
 import time
 import json
 import os
 
-def genIndex(path, opath=None):
+def isUrl(str):
+    if str.startswith("http:") or str.startswith("https:"):
+        return True
+    return False
+
+def genIndex(path, opath=None, haveAltitude=False):
+    """
+    path could be a local file path or a url
+    """
     print path
     name = os.path.splitext(os.path.basename(path))[0]
     print name
@@ -13,7 +22,11 @@ def genIndex(path, opath=None):
     indexObj['coordinateSystem'] = "GEO"
     indexObj['name'] = name
     indexObj['locked'] = False
-    gpx_file = open(path, 'r') 
+    indexObj['haveAltitude'] = haveAltitude
+    if isUrl(path):
+        gpx_file = urllib2.urlopen(path)
+    else:
+        gpx_file = open(path, 'r')
     gpx = gpxpy.parse(gpx_file) 
     if len(gpx.tracks) > 1:
         print "**** Warning multiple tracks unexpected"
@@ -48,6 +61,7 @@ def genIndex(path, opath=None):
     return indexObj
 
 def test():
+    """
     path = "\\\\palnas2\\vol1\\panobot\\videos\\Enock\\Gear 360\\FXPAL_Outside_Walkaround_1.gpx"
     opath = "../Viewer/data/paths/FXPAL_Outside_Walkaround_1.json"
     path = "\\\\palnas2\\vol1\\panobot\\videos\\Enock\\GPX files\\Golden_Gate_Presidio.gpx"
@@ -61,9 +75,12 @@ def test():
     path = "//palnas2/vol1/panobot/videos/Enock/HenryCowellRiver/River_Trail.gpx"
     opath = "../TeleViewer/static/data/paths/HenryCowellRiverTrail.json"
     path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
+    """
+    url = "http://www.gobeyondthefence.com/wp-content/uploads/2016/07/Aug_14_2016_121232_PM_2016-08-14_12-12-32.gpx"
+    obj = genIndex(url)
+    path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
     opath = "../TeleViewer/static/data/paths/Stearman_Flight.json"
-    obj = genIndex(path, opath)
-    #print obj
+    obj = genIndex(path, opath, haveAltitude=True)
 
 if __name__ == '__main__':
     test()

@@ -2,8 +2,8 @@
     "coordinateSystem": "GEO", 
     "duration": 2027.0, 
     "endTime": 1471232783.0, 
-    "locked": false,
-    "haveAltitude": true,
+    "haveAltitude": true, 
+    "locked": false, 
     "name": "Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32", 
     "recs": [
         {
