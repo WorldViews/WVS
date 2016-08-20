@@ -6,8 +6,7 @@ import feedparser
 import codecs
 import traceback
 import time
-from readGPX import genIndex
-from readGPX import gpxpy
+import readGPX
 
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
@@ -110,7 +109,7 @@ def searchForMapLink(str,url):
         #saveRecs(recs, opath)
     return None
 
-def searchForImbeddedMap(str,url):
+def searchForEmbeddedMap(str,url):
     idx = str.find("ol.proj.transform")
     if idx > 0:
         imbedidx = str.find("([",idx)
@@ -142,21 +141,40 @@ def tryGeoGoogle(title,url):
     return None
     
 def getYouTubeID(str):
-    idx = str.find("https:")
+    pat = "https://www.youtube.com/embed/"
+    idx = str.find(pat)
     if idx > 0:
-        ytidx = str.find("//www.youtube.com/embed/",idx)
-        endIdx = str.find("?", ytidx)
-        youtubeID = str[ytidx+24:endIdx]
+        endIdx = str.find("?", idx)
+        youtubeID = str[idx+len(pat):endIdx]
         print "myID",youtubeID
-        
+        return youtubeID
+    return None
+
 def getGPX(str):
+    """
+    This function searches for a URL in the given
+    string str that ends with .gpx.  If it finds it
+    it returns that URL.  If not, it retuns None.
+
+    THis function has a small bug, that if it finds
+    one line with url: and http:// on one line and
+    a .gpx in a later line, it will fail.
+    """
     idx = str.find("url:")
     if idx > 0:
         gpxidx = str.find("http:",idx)
-        endIdx = str.find(",", gpxidx)
-        gpxstr = str[gpxidx+5:endIdx]
+        if gpxidx < 0:
+            return None
+        endIdx = str.find(".gpx", gpxidx)
+        if endIdx < 0:
+            return None
+        gpxstr = str[gpxidx:endIdx+len(".gpx")]
+        if gpxstr.find("\n") >= 0:
+            return None
         print "myUrl",gpxstr
-        
+        return gpxstr
+    return None
+
 def scrapeBlog(feedUrl,opath):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
@@ -186,7 +204,7 @@ def scrapeBlog(feedUrl,opath):
         rec = searchForMapLink(str,url)
         #first try to see if it has a maps link inserted
         if rec == None:
-            rec = searchForImbeddedMap(str,url)
+            rec = searchForEmbeddedMap(str,url)
         #if no map link inserted try to match Google geocode from title
         if rec == None:
             rec = tryGeoGoogle(title,url)
@@ -196,9 +214,12 @@ def scrapeBlog(feedUrl,opath):
         id += 1
         rec['id'] = id
         #try to find gpx file in url
-        getYouTubeID(str)
-        getGPX(str)
-        
+        youtubeId = getYouTubeID(str)
+        gpxUrl = getGPX(str)
+        if youtubeId != None and gpxUrl != None:
+            print "****************************\07"
+            print "gpxUrl:", gpxUrl
+            readGPX.genIndex(gpxUrl)
         # We've tried all the ways we know to guess
         # location...
         print "no location found"
