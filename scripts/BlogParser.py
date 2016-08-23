@@ -76,6 +76,13 @@ def saveRecs(recs, opath):
            'numRecords': len(recs)}
     if opath:
         json.dump(obj, file(opath,"w"), indent=4)
+
+def saveVideoRecs(vidrecs, opath):
+    obj = {'type': 'robotTrail',
+           'records': vidrecs,
+           'numRecords': len(vidrecs)}
+    if opath:
+        json.dump(obj, file(opath,"w"), indent=4)
         
 def openUrl(url,numTries):
     print "openUrl",url,numTries
@@ -183,7 +190,7 @@ def scrapeBlog(feedUrl,opath):
     #d = feedparser.parse("https://irishsea-mark-videos.blogspot.com/feeds/posts/default")
     print "n:", len(d.entries)
     recs = []
-    tourRecs = []
+    vidrecs = []
     id = 0
     numErrors = 0
     badUrls = []
@@ -217,6 +224,7 @@ def scrapeBlog(feedUrl,opath):
         youtubeId = getYouTubeID(str)
         gpxUrl = getGPX(str)
         if youtubeId != None and gpxUrl != None:
+            vidrec = youtubeID
             print "****************************\07"
             print "gpxUrl:", gpxUrl
             readGPX.genIndex(gpxUrl)
@@ -227,6 +235,8 @@ def scrapeBlog(feedUrl,opath):
         
         
     #saveRecs(recs, opath)
+    vidrecs.append(vidrec)
+    saveVideoRecs(vidrecs, opath)
     recs.append(rec)
     saveRecs(recs, opath)
     print "Done"
