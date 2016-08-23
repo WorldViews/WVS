@@ -316,10 +316,13 @@ def run():
     csvToKml2(path, "Write_FXPAL_.kml", runIt=False)
     path = "//palnas2/vol1/panobot/videos/Enock/FXPAL_POI_Mission/2016-08-06_16-24-43_v2.csv"
     csvToKml2(path, "PAL_FlyAround_1.kml", runIt=False)
-    """
     path = "//palnas2/vol1/panobot/videos/Enock/Write_FXPAL_Flightlog/2016-08-10_17-59-05_v2.csv"
     csvToKmlPic(path, "Write_FXPAL_flight_down.kml", showUp=False)
     csvToKmlPic(path, "Write_FXPAL_flight_all.kml", showUp=True)
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/golf_trajectory_2.csv"
+    path = "//palnas2/vol1/panobot/videos/Enock/golf_trajectory_slice.csv"
+    csvToKml(path, "Golf.kml")
 
 if __name__ == "__main__":
     run()

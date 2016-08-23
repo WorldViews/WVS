@@ -58,7 +58,7 @@ def genIndex(path, opath=None, haveAltitude=False):
         opath = "%s.json" % name
     print "opath:", opath
     json.dump(indexObj, file(opath, "w"), indent=4, sort_keys=True)
-    return indexObj
+    return indexObj, opath
 
 def test():
     """

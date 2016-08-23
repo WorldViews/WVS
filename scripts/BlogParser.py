@@ -7,6 +7,7 @@ import codecs
 import traceback
 import time
 import readGPX
+import installLayers
 
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
@@ -70,7 +71,7 @@ def getGeoGoogle(loc):
     print obj
     return obj
 
-def saveRecs(recs, opath):
+def saveHtmlRecs(recs, opath):
     obj = {'type': 'html',
            'records': recs,
            'numRecords': len(recs)}
@@ -83,7 +84,7 @@ def saveVideoRecs(vidrecs, opath):
            'numRecords': len(vidrecs)}
     if opath:
         json.dump(obj, file(opath,"w"), indent=4)
-        
+
 def openUrl(url,numTries):
     print "openUrl",url,numTries
     for i in range(numTries):
@@ -182,7 +183,17 @@ def getGPX(str):
         return gpxstr
     return None
 
-def scrapeBlog(feedUrl,opath):
+def fixId(id):
+    id = id.replace("?","_")
+    id = id.replace("-","_")
+    id = id.replace(":","_")
+    id = id.replace("/","_")
+    id = id.replace("=","_")
+    id = id.replace(".", "_")
+    id = id.replace(",", "_")
+    return id
+
+def scrapeBlog(feedUrl, htmlPath, vidPath=None):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
     
@@ -191,12 +202,13 @@ def scrapeBlog(feedUrl,opath):
     print "n:", len(d.entries)
     recs = []
     vidrecs = []
-    id = 0
     numErrors = 0
     badUrls = []
     for entry in d.entries:
         title = entry.title
-        print title
+        uid = fixId(entry['id'])
+        print "title:", title
+        print "uid:", uid
         #print entry.link
         url = entry.link
         print "url:", url
@@ -217,39 +229,58 @@ def scrapeBlog(feedUrl,opath):
             rec = tryGeoGoogle(title,url)
         #if it can't match geocode from title then rec equals none and we tried everything
         if rec == None:
+            print "no location found"
             continue
-        id += 1
-        rec['id'] = id
+        rec['title'] = title
+        rec['id'] = uid
+        recs.append(rec)
+        if vidPath == None:
+            continue
         #try to find gpx file in url
         youtubeId = getYouTubeID(str)
         gpxUrl = getGPX(str)
-        if youtubeId != None and gpxUrl != None:
-            vidrec = youtubeID
-            print "****************************\07"
-            print "gpxUrl:", gpxUrl
-            readGPX.genIndex(gpxUrl)
-        # We've tried all the ways we know to guess
-        # location...
-        print "no location found"
-        continue
+        if youtubeId == None or gpxUrl == None:
+            continue
+        print "gpxUrl:", gpxUrl
+        obj, trailPath = readGPX.genIndex(gpxUrl)
+        vidrec = {
+            "id": "vid_tour_%s" % uid,
+            "type": "robotTrail",
+            "robotType": "wheelchair",
+            "description": title,
+            "tourName": "vid_tour_%s" % uid,
+            "dataUrl": trailPath,
+            "youtubeId": youtubeId,
+            "youtubeDeltaT": 0,
+            "coordSys": "GEO",
+            "height": 0.3,
+            }
+        print "****************************\07"
+        vidrecs.append(vidrec)
         
-        
-    #saveRecs(recs, opath)
-    vidrecs.append(vidrec)
-    saveVideoRecs(vidrecs, opath)
-    recs.append(rec)
-    saveRecs(recs, opath)
+    saveHtmlRecs(recs, htmlPath)
+    if vidPath:
+        saveVideoRecs(vidrecs, vidPath)
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls
-   
-    
 
-scrapeBlog('http://gobeyondthefence.com/feed','Enocks_Blog_data.json')
-#scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
+
+def updateBlogLayers():
+    scrapeBlog('http://gobeyondthefence.com/feed',
+               '../scraped_data/Enocks_Blog_data.json',
+               '../scraped_data/Enocks_tours_data.json')
+
+    scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
+               '../scraped_data/Marks_Blog_data.json')
+
+    installLayers.installAllLayers()
+
 
 #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')
 #scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 
+if __name__ == '__main__':
+    updateBlogLayers()
 
 

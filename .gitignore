@@ -10,6 +10,7 @@ scripts/TBD_data/
 scripts/YOUTUBE_DEV_KEY.txt
 config/ADMIN_CONFIG.py
 django/Registry/static/models/
+scraped_data/
 
 *.pydevproject
 .project

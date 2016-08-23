@@ -71,7 +71,6 @@
        },
        {
           "id": "Stearman_Flight_1",
-          "xtype": "dronePath",
           "type": "robotTrail",
           "robotType": "wheelchair",
           "description": "Stearman Flight near Napa.",
