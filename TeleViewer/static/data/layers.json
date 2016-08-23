@@ -290,7 +290,7 @@
 	      {
                  "name": "beyondthefence",
                  "description": "Enock's Blog",
-                 "iconUrl": "/static/img/billboards/enockicon.png",
+                 "iconUrl": "/static/img/billboards/mountainblog.png",
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,
@@ -326,7 +326,7 @@
 	      {
                  "name": "beyondthefence",
                  "description": "Enock's Blog",
-                 "iconUrl": "/static/img/billboards/enockicon.png",
+                 "iconUrl": "/static/img/billboards/mountainblog.png",
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,
