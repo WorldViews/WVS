@@ -31,6 +31,8 @@ class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             return self.handleGetData()
         if self.path.startswith("/imageTweets"):
             return self.handleGetImageTweets()
+        if self.path.startswith("/wvCurrentUrl"):
+            return self.redirectUrl()
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
@@ -126,7 +128,13 @@ class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             #print jObj
             self.send_data(jObj, "application/json")
         self.send_data("Ok", "text/plain")
-
+        
+    def redirectUrl(self):
+        self.send_response(301)
+        url = file("currentUrl.txt").read()
+        self.send_header("Location",url)
+        self.end_headers()
+        return None
 
 def run(port=PORT):
     print "PhysVizServer HTTP on port", port
