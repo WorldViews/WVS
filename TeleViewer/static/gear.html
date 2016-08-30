@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>WorldViews Gear Portal</title>
+</head>
+<body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<h1>WorldViews Gear Portal</h2>
+<script>
+$(document).ready(function() {
+    setTimeout(redirect, 500);    
+});
+
+function redirect()
+{
+    var url = "/wvCurrentUrl";
+    url += "?t="+new Date().getTime();
+    console.log("url: "+url);
+    window.location = url;
+}
+
+</script>
+</body>
+</html>

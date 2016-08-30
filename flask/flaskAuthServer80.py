@@ -47,6 +47,8 @@ USER_TIMES = {}
 NUM_CONNS = 5
 POOL = Queue.Queue(NUM_CONNS)
 
+PREV_YOUTUBE_ID = None
+
 rdb = None
 try:
     import rethinkdb as rdb
@@ -557,6 +559,26 @@ def dbstats():
 def userstats():
     return flask.jsonify(USER_TIMES)
 
+@app.route('/wvCurrentUrl')
+def wvCurrentUrl():
+    url = "https://youtube.com"
+    if PREV_YOUTUBE_ID:
+        url = "https://www.youtube.com/watch?v=%s" % PREV_YOUTUBE_ID
+    return redirect(url)
+    
+@app.route('/notify/', methods=['GET', 'POST'])
+def notifyServer():
+    dict = {}
+    if request.method == 'POST':
+        print "request.data:", request.data
+    else:
+        for key in request.args:
+            dict[key] = request.args[key]
+    print "dict:", dict
+    if 'youtubeId' in dict:
+        global PREV_YOUTUBE_ID
+        PREV_YOUTUBE_ID = dict['youtubeId']
+    return flask.jsonify({})
 
 
 ###################################################################

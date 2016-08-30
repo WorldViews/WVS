@@ -93,8 +93,22 @@ WVYT.playVideo = function(id, rec)
     else {
 	WVYT.player.loadVideoById(id);
     }
+    WVYT.notifyServer(id, rec);
 }
 
+WVYT.notifyServer = function(id, rec)
+{
+    report("Notify server\n");
+    var obj = {'youtubeId': id,
+		'action': 'watchVideo'};
+    var data = JSON.stringify(obj);
+    //data = "good morning vietnam";
+    report("sending data "+data);
+    $.get("/notify/",
+           obj,
+	   function() { report("Server notified");},
+	   "json");
+}
 
 $(document).ready(function()
 {
