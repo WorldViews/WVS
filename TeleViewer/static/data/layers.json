@@ -337,7 +337,7 @@
               {
                  "name": "MarksBlog",
                  "description": "Mark's Blog",
-                 "iconUrl": "/static/img/billboards/markicon.png",
+                 "iconUrl": "/static/img/billboards/markhiking.png",
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,

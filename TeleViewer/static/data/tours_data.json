@@ -130,7 +130,49 @@
 	  "youtubeDeltaT": -35,
 	  "coordSys": "GEO",
 	  "height": 0.3
-       }
+       },
+       {
+         "id": "Deer_Meadow_Trail",
+         "type": "robotTrail",
+         "robotType": "wheelchair",
+         "description": "Deer Meadow Trail",
+	  "tourName": "porter_tour_3",
+	  "dataUrl": "/static/data/paths/Deer_Meadow_Trail.json",
+	  "youtubeId": "kCHgVKaEZf4",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+      },
+      {
+         "id": "Rancho_San_Antonio_GPX",
+         "type": "robotTrail",
+         "robotType": "wheelchair",
+         "description": "Rancho_San_Antonio_GPX",
+	  "dataUrl": "/static/data/paths/Rancho_San_Antonio.json",
+	  "youtubeId": "LVHc-sdxG_s",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+      },
+      {
+         "id": "Rancho_San_Antonio_GPX_2",
+         "type": "robotTrail",
+         "robotType": "wheelchair",
+         "description": "Rancho_San_Antonio_GPX_2",
+	  "dataUrl": "/static/data/paths/Rancho_San_Antonio_2.json",
+	  "youtubeId": "bZapOZ6Grk0",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+      }
+      
+     
     ]
 }
 
