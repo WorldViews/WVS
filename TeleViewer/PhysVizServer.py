@@ -18,6 +18,7 @@ except:
 REG = {}
 #PORT = 8001
 PORT = 8000
+PREV_YOUTUBE_ID = None
 
 def getQuery(path):
     i = path.rfind("?")
@@ -32,7 +33,9 @@ class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
         if self.path.startswith("/imageTweets"):
             return self.handleGetImageTweets()
         if self.path.startswith("/wvCurrentUrl"):
-            return self.redirectUrl()
+            return self.getCurrentUrl()
+        if self.path.startswith("/notify/"):
+            return self.handleNotify()
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_GET(self)
 
     def do_POST(self):
@@ -41,6 +44,8 @@ class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             return self.handleUpdate()
         if self.path.startswith("/register/"):
             return self.handleRegister()
+        if self.path.startswith("/notify/"):
+            return self.handleNotify()
         SimpleHTTPServer.SimpleHTTPRequestHandler.do_POST(self)
 
     def end_headers(self):
@@ -128,10 +133,23 @@ class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
             #print jObj
             self.send_data(jObj, "application/json")
         self.send_data("Ok", "text/plain")
+
+    def handleNotify(self):
+        print "handleNotify"
+        print "path:", self.path
+        q = getQuery(self.path)
+        print "q:", q
+        if 'youtubeId' in q:
+            global PREV_YOUTUBE_ID
+            PREV_YOUTUBE_ID = q['youtubeId'][0]
+            print "PREV_YOUTUBE_ID:", PREV_YOUTUBE_ID
+        self.send_data("Ok", "text/plain")
         
-    def redirectUrl(self):
+    def getCurrentUrl(self):
+        url = "https://youtube.com"
+        if PREV_YOUTUBE_ID:
+            url = "https://www.youtube.com/watch?v=%s" % PREV_YOUTUBE_ID
         self.send_response(301)
-        url = file("currentUrl.txt").read()
         self.send_header("Location",url)
         self.end_headers()
         return None
