@@ -136,7 +136,6 @@
          "type": "robotTrail",
          "robotType": "wheelchair",
          "description": "Deer Meadow Trail",
-	  "tourName": "porter_tour_3",
 	  "dataUrl": "/static/data/paths/Deer_Meadow_Trail.json",
 	  "youtubeId": "kCHgVKaEZf4",
 	  "youtubeDeltaT": -35,
@@ -170,8 +169,46 @@
 	  "coordSys": "GEO",
 	  "height": 0.3,
           "xurl": "https://fxpal.com"
-      }
-      
+      },
+      {
+         "id": "Vineyard_Trail",
+         "type": "robotTrail",
+         "robotType": "wheelchair",
+         "description": "Vineyard_Trail",
+	  "dataUrl": "/static/data/paths/Vineyard_Trail.json",
+	  "youtubeId": "QOup7ZZ__3E",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+      },
+      {
+         "id": "Winery_House",
+         "type": "robotTrail",
+         "robotType": "wheelchair",
+         "description": "Winery_House",
+	  "dataUrl": "/static/data/paths/Winery_House.json",
+	  "youtubeId": "0a6zmra1Q18",
+	  "youtubeDeltaT": -35,
+	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	  "coordSys": "GEO",
+	  "height": 0.3,
+          "xurl": "https://fxpal.com"
+      },
+      {
+        "id": "Winery_Museum",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Winery_Museum",
+	 "dataUrl": "/static/data/paths/Winery_Museum.json",
+	 "youtubeId": "YiNTaF86RnI",
+	 "youtubeDeltaT": -35,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     }
      
     ]
 }
