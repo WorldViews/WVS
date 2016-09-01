@@ -85,8 +85,13 @@ def saveVideoRecs(vidrecs, opath):
     if opath:
         json.dump(obj, file(opath,"w"), indent=4)
 
-def saveAllRecs(htmlRecs, videRecs, opath):
-    xxx
+def saveAllRecs(recs, vidrecs, opath):
+    obj = {
+           'records': vidrecs,
+           'numRecords': len(vidrecs, htmlRecs)}
+    if allPath:
+        json.dump(obj, file(opath,"w"), indent=4)
+
 
 def openUrl(url,numTries):
     print "openUrl",url,numTries
@@ -266,6 +271,8 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
         saveVideoRecs(vidrecs, vidPath)
     if allPath:
         saveAllRecs(recs,vidrecs, allPath)
+    print "vid path", vidPath
+    print "All Path",allPath
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls
@@ -273,11 +280,11 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
 
 def updateBlogLayers():
     scrapeBlog('http://gobeyondthefence.com/feed',
-               '../scraped_data/Enocks_Blog_data.json',
-               '../scraped_data/Enocks_tours_data.json')
+               'Enocks_Blog_data.json',
+               'Enocks_tours_data.json')
 
     scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
-               '../scraped_data/Marks_Blog_data.json')
+               'Marks_Blog_data.json')
 
     installLayers.installAllLayers()
 
