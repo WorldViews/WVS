@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Paths</name>
+    <description>Examples of paths. Note that the tessellate tag is by default
+      set to 0. If you want to create tessellated lines, they must be authored
+      (or edited) directly in KML.</description>
+    <Style id="lineStyle">
+      <LineStyle>
+        <color>7fffffff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+    <Style id="redStyle">
+      <LineStyle>
+        <color>7f0000ff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f0000ff</color>
+      </PolyStyle>
+    </Style>
+    <Style id="greenStyle">
+      <LineStyle>
+        <color>7f00ff00</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+    <Style id="blueStyle">
+      <LineStyle>
+        <color>7fff0000</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7fff0000</color>
+      </PolyStyle>
+    </Style>
+
+    <Placemark>
+      <name>path0</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.177392274,37.4216,7.11064785719e-06
+              -122.177392273,37.4220491602,0.000203093513846
+              -122.177392274,37.4216,7.11064785719e-06
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path1</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.177392273,37.4220491602,0.000203093513846
+              -122.177042162,37.4220491594,0.000324415974319
+              -122.177392273,37.4220491602,0.000203093513846
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path2</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.177392274,37.4218352744,6.08833506703e-05
+              -122.177176821,37.421835274,0.000117767602205
+              -122.177392274,37.4218352744,6.08833506703e-05
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path3</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176948799,37.422049159,0.000382137484848
+              -122.176571762,37.4215999964,0.000527932308614
+              -122.176948799,37.422049159,0.000382137484848
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path4</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176571757,37.4220491566,0.000723916105926
+              -122.176948803,37.4215999987,0.000186154618859
+              -122.176571757,37.4220491566,0.000723916105926
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path5</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176399201,37.4215999949,0.000742465257645
+              -122.176399195,37.4220491551,0.000938448123634
+              -122.176399201,37.4215999949,0.000742465257645
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path6</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176399195,37.4220491551,0.000938448123634
+              -122.17615681,37.4220491526,0.00130140874535
+              -122.176399195,37.4220491551,0.000938448123634
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path7</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.17615681,37.4220491526,0.00130140874535
+              -122.176076015,37.4220277631,0.00142017472535
+              -122.17615681,37.4220491526,0.00130140874535
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path8</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176076015,37.4220277631,0.00142017472535
+              -122.176049084,37.4220063742,0.00145028252155
+              -122.176076015,37.4220277631,0.00142017472535
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path9</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176049084,37.4220063742,0.00145028252155
+              -122.176022153,37.4219635967,0.00146661326289
+              -122.176049084,37.4220063742,0.00145028252155
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path10</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176022153,37.4219635967,0.00146661326289
+              -122.176022155,37.421899431,0.001425283961
+              -122.176022153,37.4219635967,0.00146661326289
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path11</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176022155,37.421899431,0.001425283961
+              -122.176049087,37.4218566541,0.00135384500027
+              -122.176022155,37.421899431,0.001425283961
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path12</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176049087,37.4218566541,0.00135384500027
+              -122.176076019,37.4218352659,0.00129618495703
+              -122.176049087,37.4218566541,0.00135384500027
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path13</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176076019,37.4218352659,0.00129618495703
+              -122.176156814,37.4218138782,0.00114986672997
+              -122.176076019,37.4218352659,0.00129618495703
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path14</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.176156814,37.4218138782,0.00114986672997
+              -122.176399198,37.4218138807,0.000786905176938
+              -122.176156814,37.4218138782,0.00114986672997
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path15</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.175931192,37.4215999896,0.00150799378753
+              -122.17571573,37.4220491468,0.00214661750942
+              -122.175931192,37.4215999896,0.00150799378753
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path16</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.17571573,37.4220491468,0.00214661750942
+              -122.175500289,37.4215999832,0.00245016161352
+              -122.17571573,37.4220491468,0.00214661750942
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path17</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.175850394,37.4217497086,0.00168909318745
+              -122.175581079,37.4217497046,0.00227794889361
+              -122.175850394,37.4217497086,0.00168909318745
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path18</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.175379982,37.4220491413,0.00294979196042
+              -122.175379995,37.4215999811,0.00275380909443
+              -122.175379982,37.4220491413,0.00294979196042
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path19</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#lineStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.175379995,37.4215999811,0.00275380909443
+              -122.175056817,37.4215999749,0.00365739595145
+              -122.175379995,37.4215999811,0.00275380909443
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+  </Document>
+</kml>

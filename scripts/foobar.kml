@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Paths</name>
+    <description>Examples of paths. Note that the tessellate tag is by default
+      set to 0. If you want to create tessellated lines, they must be authored
+      (or edited) directly in KML.</description>
+    <Style id="lineStyle">
+      <LineStyle>
+        <color>7fffffff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+    <Style id="redStyle">
+      <LineStyle>
+        <color>7f0000ff</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f0000ff</color>
+      </PolyStyle>
+    </Style>
+    <Style id="greenStyle">
+      <LineStyle>
+        <color>7f00ff00</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7f00ff00</color>
+      </PolyStyle>
+    </Style>
+    <Style id="blueStyle">
+      <LineStyle>
+        <color>7fff0000</color>
+        <width>4</width>
+      </LineStyle>
+      <PolyStyle>
+        <color>7fff0000</color>
+      </PolyStyle>
+    </Style>
+
+    <Placemark>
+      <name>path0</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#redStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.1512,37.405,0.0
+              -122.1513,37.406,5.0
+              -122.1512,37.405,0.0
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+
+    <Placemark>
+      <name>path1</name>
+      <description>Transparent green wall with yellow outlines</description>
+      <styleUrl>#redStyle</styleUrl>
+      <LineString>
+        <altitudeMode>relativeToGround</altitudeMode>
+        <coordinates>
+              -122.151,37.4,0.0
+              -122.1516,37.416,5.0
+              -122.151,37.4,0.0
+
+        </coordinates>
+      </LineString>
+    </Placemark>
+
+  </Document>
+</kml>

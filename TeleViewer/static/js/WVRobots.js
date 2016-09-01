@@ -45,14 +45,6 @@ WV.Robots.addRobot = function(layer, rec)
     else {
 	//report("billboard exists "+id);
 	WV.updateBillboard(b, lat, lon, h);
-	/*
-	  var pos = Cesium.Cartesian3.fromDegrees(lon, lat, h);
-	  b.position = pos;
-	  b.show = true;
-	  var points = WV.getTetherPoints(lat, lon, 0, h);
-	  b.tether.positions = points;
-	  b.tether.show = true;
-	*/
     }
 }
 
@@ -68,6 +60,7 @@ WV.Robots.addTrail = function(layer, rec)
 
 WV.Robots.handleTrailData = function(layer, rec, data)
 {
+    rec.layerName = layer.name;
     var recs = data.recs;
     var h = rec.height;
     rec.clickHandler = WV.Robots.handleClick;
@@ -112,9 +105,33 @@ WV.Robots.handleTrailData = function(layer, rec, data)
     return route;
 }
 
+WV.updateCursor = function(rec, xyz)
+{
+    rec.cursor_id = "cursor_"+rec.id
+    var entities = WV.viewer.entities;
+    var cursor = entities.getById(rec.cursor_id);
+    if (cursor) {
+	cursor.position = xyz;
+    }
+    else {
+	var nearFar = new Cesium.NearFarScalar(10000, 2.0, 200000, 0.2)
+	entities.add({
+		position : xyz,
+		id: rec.cursor_id,
+		point : {
+		    // pixelSize will multiply by the scale factor, so in this
+		    // example the size will range from 20px (near) to 5px (far).
+		    pixelSize : 10,
+		    scaleByDistance : nearFar
+		}
+	    });
+    }
+}
+
 WV.Robots.addDroneTrail = function(layer, rec)
 {
     report("WV.Robots.addDroneTrail "+layer.name);
+    rec.layerName = layer.name;
     var url = rec.dataUrl;
     rec.clickHandler = WV.Robots.handleClick;
     WV.getJSON(url, function(data) {
@@ -165,6 +182,7 @@ WV.Robots.handleDroneTrailData = function(layer, rec, data)
 WV.Robots.handleDroneTrailData = function(layer, rec, data)
 {
     rec.clickHandler = WV.Robots.handleClick;
+    rec.layerName = layer.name;
     var recs = data.recs;
     var coordSys = rec.coordSys;
     report("handleDroneTrailData "+rec.dataUrl+" coordSys: "+coordSys);
@@ -214,6 +232,42 @@ WV.Robots.handleDroneTrailData = function(layer, rec, data)
     return route;
 }
 
+/*
+WV.findPointByTime = function(rec, rt)
+{
+    for (var i=0; i<rec.data.recs.length; i++) {
+        if (rec.data.recs[i].rt > rt)
+	    break;
+    }
+    if (i >= rec.points.length)
+	i = rec.points.length-1;
+    return {i: i, nearestPt: rec.points[i]};
+}
+*/
+WV.findPointByTime = function(rec, rt)
+{
+    var recs = rec.data.recs;
+    var iMin = 0;
+    var iMax = recs.length-1;
+
+    while (iMin < iMax) {
+	var i = Math.floor((iMin + iMax)/2.0);
+	var rec = recs[i];
+	if (rec.rt == rt)
+	    break;
+	if (rec.rt < rt) {
+	    iMin = i+1;
+	}
+	else if (rec.rt > rt) {
+	    iMax = i-1;
+	}
+    }
+    if (i >= rec.points.length)
+	i = rec.points.length-1;
+    return {i: i, nearestPt: rec.points[i]};
+}
+
+
 WV.findNearestPoint = function(pt, points)
 {
     report("findNearestPoint: pt: "+pt+" npoints: "+points.length);
@@ -231,6 +285,15 @@ WV.findNearestPoint = function(pt, points)
 	}
     }
     return {'i': iMin, nearestPt: points[iMin], 'd': Math.sqrt(d2Min)};
+}
+
+WV.Robots.noticeTimeChange = function(rec, status)
+{
+    //report(rec.layerName+" "+rec.id+" t: "+status.t);
+    var rt = status.t;
+    var res = WV.findPointByTime(rec, rt);
+    report("noticeTimeChange res: "+JSON.stringify(res));
+    WV.updateCursor(rec, res.nearestPt);
 }
 
 WV.Robots.handleClick = function(rec, xy, xyz)
@@ -258,6 +321,8 @@ WV.Robots.handleClick = function(rec, xy, xyz)
 	dt = t - startTime;
 	idx = Math.floor(dt * frameRate);
 	report("t: "+t+"   dt: "+dt+"   idx: "+idx+"   d: "+res.d);
+	WV.updateCursor(rec, res.nearestPt);
+	WVYT.watcher = function (st) { WV.Robots.noticeTimeChange(rec, st)};
     }
     else {
 	report("Cannot find estimate of t:");

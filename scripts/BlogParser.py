@@ -85,6 +85,9 @@ def saveVideoRecs(vidrecs, opath):
     if opath:
         json.dump(obj, file(opath,"w"), indent=4)
 
+def saveAllRecs(htmlRecs, videRecs, opath):
+    xxx
+
 def openUrl(url,numTries):
     print "openUrl",url,numTries
     for i in range(numTries):
@@ -193,7 +196,7 @@ def fixId(id):
     id = id.replace(",", "_")
     return id
 
-def scrapeBlog(feedUrl, htmlPath, vidPath=None):
+def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
     
@@ -261,6 +264,8 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None):
     saveHtmlRecs(recs, htmlPath)
     if vidPath:
         saveVideoRecs(vidrecs, vidPath)
+    if allPath:
+        saveAllRecs(recs,vidrecs, allPath)
     print "Done"
     print "Errors",numErrors
     print "bad urls",badUrls

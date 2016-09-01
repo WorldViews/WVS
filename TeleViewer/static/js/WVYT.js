@@ -12,6 +12,32 @@ WVYT = {}
 WVYT.videoId = null;
 WVYT.player = null;
 
+WVYT.trackerRunning = false;
+WVYT.watcher = null;
+
+WVYT.runTracker = function()
+{
+    if (WVYT.trackerRunning)
+	return;
+    WVYT.trackerRunning = true;
+    WVYT.trackerTick();
+}
+
+WVYT.trackerTick = function()
+{
+    if (WVYT.player == null)
+	WVYT.trackerRunning = false;
+    if (!WVYT.trackerRunning)
+	return;
+    var playing = WVYT.player.getPlayerState() == 1;
+    var t = WVYT.player.getCurrentTime();
+    var status = {t: t, playing: playing}
+    //report("stat: "+JSON.stringify(status));
+    if (WVYT.watcher)
+	WVYT.watcher(status);
+    setTimeout(WVYT.trackerTick, 300);
+}
+
 WVYT.start = function()
 {
     report("WVYT.start");
@@ -56,6 +82,7 @@ WVYT.setupYouTubePlayer = function(videoId, divName)
       // 4. The API will call this function when the video player is ready.
 WVYT.onPlayerReady = function(event) {
         event.target.playVideo();
+        WVYT.runTracker();
 }
 
       // 5. The API calls this function when the player's state changes.
@@ -64,8 +91,9 @@ WVYT.onPlayerReady = function(event) {
 WVYT.done = false;
 
 WVYT.onPlayerStateChange = function(event) {
+    report("-------> onPlayerStateChange "+event.data);
     if (event.data == YT.PlayerState.PLAYING && !WVYT.done) {
-	report("onPlayerStateChange "+event.data);
+	report("-------> onPlayerStateChange "+event.data);
         //setTimeout(WVYT.stopVideo, 4000);
         WVYT.done = true;
     }
