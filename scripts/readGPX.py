@@ -66,22 +66,28 @@ def test():
     opath = "../Viewer/data/paths/FXPAL_Outside_Walkaround_1.json"
     path = "\\\\palnas2\\vol1\\panobot\\videos\\Enock\\GPX files\\Golden_Gate_Presidio.gpx"
     opath = "../Viewer/data/paths/Golden_Gate_Presidio.json"
-
+    """
+    """
     path = "\\\\palnas2\\vol1\\panobot\\videos\\Enock\\Mark Hehir Vasona Lake County Park\\july_23_1102am.gpx"
     opath = "xxx.json"
     #path = "\\\\palnas2\\vol1\\panobot\\videos\\Enock\\HenryCowell\\Redwood_Grove_Trail.gpx"
     path = "//palnas2/vol1/panobot/videos/Enock/HenryCowell/Redwood_Grove_Trail.gpx"
     opath = "../TeleViewer/static/data/paths/HenryCowellRedwoodGrove.json"
-    path = "//palnas2/vol1/panobot/videos/Enock/HenryCowellRiver/River_Trail.gpx"
-    opath = "../TeleViewer/static/data/paths/HenryCowellRiverTrail.json"
-    path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
+    """
+    
+    
+  
     """
     url = "http://www.gobeyondthefence.com/wp-content/uploads/2016/07/Aug_14_2016_121232_PM_2016-08-14_12-12-32.gpx"
     obj = genIndex(url)
     path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
     opath = "../TeleViewer/static/data/paths/Stearman_Flight.json"
     obj = genIndex(path, opath, haveAltitude=True)
-
+    """
+    path = "//palnas2/vol1/panobot/videos/Enock/Winery_Museum_GPX/Aug_14,_2016_1;17;45_PM_2016-08-14_13-17-45.gpx"
+    opath = "../TeleViewer/static/data/paths/Winery_Museum.json"
+    genIndex(path,opath)
+    
 if __name__ == '__main__':
     test()
 
