@@ -48,6 +48,7 @@ WV.drawImage = function(image, lon0, lat0, wid, len, height, rot) {
 	var lat1 = lat0 + dlat;
 	report("lon0: "+lon0+"  lat0: "+lat0+"  lon1: "+lon1+" lat1: "+lat1);
 	var rect = Cesium.Rectangle.fromDegrees(lon0, lat0, lon1, lat1);
+	//var rect = Cesium.Rectangle.fromDegrees(lon0, lat1, lon1, lat0);
 	entity.rectangle = new Cesium.RectangleGraphics(
 		{
 		    coordinates: rect,
@@ -55,8 +56,8 @@ WV.drawImage = function(image, lon0, lat0, wid, len, height, rot) {
 			    transparent: true,
 			    image: image
 			} ),
-		    rotation: rot,
-		    stRotation: rot,
+		    //rotation: rot,
+		    //stRotation: rot,
 		    height: height
                 }
 	);

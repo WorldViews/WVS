@@ -73,7 +73,7 @@ WV.getTether = function(tetherId, points)
 }
 
 WV.defaultAnchorURL = "/images/mona_cat.jpg";
-
+/*
 WV.addBillboard0 = function(bbCollection, id, lat, lon, imgUrl, scale, height)
 {
     //report("Adding billboard "+WV.numBillboards);
@@ -85,6 +85,25 @@ WV.addBillboard0 = function(bbCollection, id, lat, lon, imgUrl, scale, height)
        eyeOffset : Cesium.Cartesian3.ZERO,
        horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
        verticalOrigin : Cesium.VerticalOrigin.CENTER,
+       scale : scale,
+       image : imgUrl,
+       color : Cesium.Color.WHITE,
+       id : id
+    });
+    return b;
+}
+*/
+WV.addBillboard0 = function(bbCollection, id, lat, lon, imgUrl, scale, height)
+{
+    //report("Adding billboard "+WV.numBillboards);
+    // Example 1:  Add a billboard, specifying all the default values.
+    var b = bbCollection.add({
+       show : true,
+       position : Cesium.Cartesian3.fromDegrees(lon, lat, height),
+       pixelOffset : Cesium.Cartesian2.ZERO,
+       eyeOffset : Cesium.Cartesian3.ZERO,
+       horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
+       verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
        scale : scale,
        image : imgUrl,
        color : Cesium.Color.WHITE,
@@ -133,14 +152,22 @@ WV.addBillboard = function(bbCollection, lat, lon, imgUrl, id, scale, height,
 	tether.show = useTether;
 	//layer.tethers[id] = tether;
     }
-    var alwaysAddAnchor = false;
+    var alwaysAddAnchor = true;
     if (alwaysAddAnchor || useAnchor) {
 	var anchorId = "anchor_icon_"+id;
-	report("creating anchor "+anchorId);
+	report("creating anchor "+anchorId+" scale "+scale);
+	//var imgUrl = WV.defaultAnchorIconURL;
+	//var img = WV.drawImage(imgUrl, lat, lon, 20000.0, 20000.0, 10000, 0.0);
 	var ab = WV.addBillboard0(bbCollection, anchorId,
 				  lat, lon, 
-				  WV.defaultAnchorIconURL, 0.2, 1);
+				  //WV.defaultAnchorIconURL,
+				  imgUrl,
+				  1.0, 10);
 	b.anchor = ab;
+	//ab.pixelOffset = new Cesium.Cartesian2(0.0, 1.0);
+	//ab.pixelOffsetScaleByDistance = new Cesium.NearFarScalar(1.5e2, 0.0, 8.0e6, 10.0);
+        //ab.scaleByDistance = new Cesium.NearFarScalar(1.0e2, 1.0, 800000, 0.0);
+        ab.scaleByDistance = new Cesium.NearFarScalar(1000, scale, 800000, 0.0);
     }
     return b;
 }

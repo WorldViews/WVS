@@ -84,6 +84,14 @@
 	  "height": 100.0
        },
        {
+            "recType": "html",
+            "lat": 38.231, 
+            "lon": -122.438, 
+            "url": "http://www.gobeyondthefence.com/2016/08/15/flying-through-history-over-napa-valley/", 
+            "id": "http___www_gobeyondthefence_com__p_587", 
+            "title": "Flying Through History Over Napa Valley"
+       }, 
+       {
           "id": "PresidioWalk1",
           "type": "robotTrail",
           "robotType": "wheelchair",

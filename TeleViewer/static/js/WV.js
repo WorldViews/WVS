@@ -11,7 +11,7 @@ WV.screenSpaceEventHandler = null;
 WV.layersUrl = "/static/data/layers.json";
 WV.defaultBillboardIconURL = "/images/mona_cat.jpg";
 //WV.defaultAnchorIconURL = "/Viewer/images/purplePlacemark.png";
-WV.defaultAnchorIconURL = "/static/images/purplePlacemark.png";
+WV.defaultAnchorIconURL = "/static/img/purplePlacemark.png";
 WV.playVideoInIframe = true;
 WV.showPagesInIframe = true;
 WV.prevEndId = null;
@@ -287,8 +287,15 @@ WV.setupCesium = function()
 	var layer = WV.layers[layerName];
         report("click picked..... pickedObject._id "+id+ " layer: "+layerName);
         var rec = layer.recs[id];
-	if (layer.clickHandler)
-	    layer.clickHandler(rec, e.position, pickPos);
+	if (rec.clickHandler) {
+	    rec.clickHandler(rec, e.position, pickPos);
+	}
+	else {
+	    report("*** no click handler");
+	    WV.Robots.handleClick(rec, e.position, pickPos);
+	}
+	//if (layer.clickHandler)
+	//    layer.clickHandler(rec, e.position, pickPos);
         //WV.playVid(rec);
         report("LEFT_CLICK e: "+JSON.stringify(e));
         //WV.viewer.trackedEntity = undefined;

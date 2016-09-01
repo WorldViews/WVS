@@ -206,48 +206,106 @@ WV.Layer = function(spec)
     }
 }
 
-
-WV.handleVideoRecs = function(data, layerName)
+WV.addBillboardToLayer = function(layer, rec)
 {
-    report("handleVideoRecs "+layerName);
-    var layer = WV.layers[layerName];
-    layer.recs = {};
-    layer.billboards = {};
-    layer.bbCollection = new Cesium.BillboardCollection();
-    WV.scene.primitives.add(layer.bbCollection);
-    var recs = WV.getRecords(data);
-    for (var i=0; i<recs.length; i++) {
-        var rec = recs[i];
-	rec.layerName = layerName;
-        layer.numObjs++;
-	if (rec.type == "youtube" && rec.id)
-	    rec.youtubeId = rec.id;
-	if (!rec.youtubeId) {
-            report("skipping recs with no youtube video");
-            continue;
-        }
-        if (layer.numObjs > layer.maxNum)
-            return;
-        var imageUrl = WV.getIconUrl(layer.iconUrl);
-        var lon = rec.lon;
-        var lat = rec.lat;
-        id = layerName+"_"+rec.id;
-        layer.recs[id] = rec;
-	WV.recs[id] = rec;
-        var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl, id,
-				layer.scale, layer.height, layer.showTethers);
-        layer.billboards[id] = b;
+    var imageUrl = layer.iconUrl;
+    var lon = rec.lon;
+    var lat = rec.lat;
+    var id = layer.name+"_"+rec.id;
+    if (layer.recs[id]) {
+	report("already have "+id+" in layer "+layer.name);
+	return;
+    }
+    layer.recs[id] = rec;
+    WV.recs[id] = rec;
+    var h = 100000;
+    if (layer.height)
+	h = layer.height;
+    var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl,
+			    id, layer.scale, h, layer.showTethers);
+    layer.billboards[id] = b;
+    if (rec.youtubeId)
+	rec.clickHandler = WV.playVid;
+    else
+	rec.clickHandler = WV.showPage;
+}
+
+WV.recHandlers = {};
+
+/*
+  handler should be a function with signature (layer, rec)
+ */
+WV.registerRecHandler = function(recType, handler)
+{
+    WV.recHandlers[recType.toLowerCase()] = handler;
+}
+
+WV.flyHome = function(layer, rec)
+{
+    var dur = 5;
+    if (rec.duration)
+	dur = rec.duration;
+    report("flyHome "+dur);
+    WV.viewer.camera.flyHome(dur);
+}
+
+WV.addKmlRec = function(layer, rec)
+{
+    var url = rec.url;
+    report("Adding KML "+url);
+    var dsPromise = WV.addKML(url);
+    dsPromise.then(function(ds) {
+	    layer.dataSources.push(ds);
+	});
+}
+
+WV.addGeoJSONRec = function(layer, rec)
+{
+    var url = rec.url;
+    report("Adding GeoJSON "+url);
+    var dsPromise = WV.addGeoJSON(url);
+    dsPromise.then(function(ds) {
+	    layer.dataSources.push(ds);
+	});
+}
+
+WV.registerRecHandler('flyhome',  WV.flyHome);
+WV.registerRecHandler('kml',      WV.addKmlRec);
+WV.registerRecHandler('video',    WV.addBillboardToLayer);
+WV.registerRecHandler('html',     WV.addBillboardToLayer);
+WV.registerRecHandler('geojson',  WV.addGeoJSONRec);
+
+WV.handleRec = function(layer, rec)
+{
+    if (!rec.recType) {
+	if (rec.type) {
+	    rec.recType = rec.type;
+	    report("Using rec.type for rec.recType");
+	}
+	else {
+	    report("*** WV.handleRec skipping rec with no recType\n");
+	    report("*** rec:\n"+WV.toJSON(rec)+"\n");
+	    return;
+	}
+    }
+    recType = rec.recType.toLowerCase();
+    if (WV.recHandlers[recType]) {
+	WV.recHandlers[recType](layer, rec);
+    }
+    else {
+	report("*** no matching rec handler for type "+recType);
     }
 }
 
-
-WV.handleHTMLRecs = function(data, layerName)
+WV.handleRecs = function(data, layerName)
 {
-    report("*** handleHTMLRecs "+layerName);
+    report("*** generic handleRecs "+layerName);
     //report("data:\n"+WV.toJSON(data));
     var layer = WV.layers[layerName];
     if (layer.recs == null) {
+	report("initing layer "+layerName);
 	layer.recs = {};
+	layer.tethers = {};
 	layer.billboards = {};
 	layer.bbCollection = new Cesium.BillboardCollection();
 	WV.scene.primitives.add(layer.bbCollection);
@@ -257,46 +315,25 @@ WV.handleHTMLRecs = function(data, layerName)
         var rec = recs[i];
 	report("rec:\n"+WV.toJSON(rec));
 	rec.layerName = layerName;
+	if (rec.type == "youtube" && rec.id)
+	    rec.youtubeId = rec.id;
+	recType = null;
+	if (rec.recType)
+	    recType = rec.recType;
+	if (!recType)
+	    recType = rec.type;
         layer.numObjs++;
         if (layer.numObjs > layer.maxNum)
             return;
-	if (rec.recType == "flyHome") {
-	    var dur = 5;
-	    if (rec.duration)
-		dur = rec.duration;
-	    report("flyHome "+dur);
-	    WV.viewer.camera.flyHome(dur);
+	if (!recType) {
+	    if (rec.youtubeId)
+		recType = "video";
+	    else
+		recType = "html";
 	}
-	if (rec.recType && rec.recType.toLowerCase() == "kml") {
-	    var url = rec.url;
-	    report("Adding KML "+url);
-	    var dsPromise = WV.addKML(url);
-	    dsPromise.then(function(ds) {
-		    layer.dataSources.push(ds);
-		});
-	    continue;
-	}
-	if (rec.recType && rec.recType.toLowerCase() == "geojson") {
-	    var url = rec.url;
-	    report("Adding GeoJSON "+url);
-	    var dsPromise = WV.addGeoJSON(url);
-	    dsPromise.then(function(ds) {
-		    layer.dataSources.push(ds);
-		});
-	    continue;
-	}
-        var imageUrl = layer.iconUrl;
-        var lon = rec.lon;
-        var lat = rec.lat;
-        id = layerName+"_"+rec.id;
-        layer.recs[id] = rec;
-	WV.recs[id] = rec;
-	h = 100000;
-	if (layer.height)
-	    h = layer.height;
-        var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl,
-				id, layer.scale, h, layer.showTethers);
-        layer.billboards[id] = b;
+	report("recType: "+recType);
+	rec.recType = recType;
+	WV.handleRec(layer, rec);
     }
 }
 
@@ -515,13 +552,14 @@ WV.Layer.toggle = function(layerName)
 
 
 $(document).ready(function() {
+    new WV.LayerType("default", {
+         dataHandler: WV.handleRecs,
+    });
     new WV.LayerType("youtube", {
-         dataHandler: WV.handleVideoRecs,
-	 clickHandler: WV.playVid
+         dataHandler: WV.handleRecs,
     });
     new WV.LayerType("html", {
-         dataHandler: WV.handleHTMLRecs,
-         clickHandler: WV.showPage
+         dataHandler: WV.handleRecs,
     });
 });
 

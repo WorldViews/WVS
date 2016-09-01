@@ -40,17 +40,12 @@ WV.DynWiki.wikiSearchCallback = function(obj)
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];
 	rec.url = "https://en.wikipedia.org/wiki/" + rec.title;
-	/*
-	rec.url = rec.url.replace(' ', '_');
-	rec.url = rec.url.replace(' ', '_');
-	rec.url = rec.url.replace(' ', '_');
-	*/
 	rec.url = rec.url.replaceAll(' ', '_');
         rec.id = ""+rec.pageid;
 	report("rec: "+WV.toJSON(rec));
 	precs.push(rec);
     }
-    WV.DynWiki.handleRecs({'records': precs}, 'dynWiki');
+    WV.handleRecs({'records': precs}, 'dynWiki');
 }
 
 WV.DynWiki.initLayer = function(layer)
@@ -59,6 +54,8 @@ WV.DynWiki.initLayer = function(layer)
     report("DynWiki.initLayer");
     report("layer: "+layer);
     report("layer: "+WV.toJSON(layer));
+    layer.iconUrl = WV.getIconUrl("W.png");
+    layer.scale = 0.1;
     layer.showFun = function(layer) {
 	var jqid = "#"+layer.uiDivId;
 	report("jqid: "+jqid);
@@ -98,56 +95,6 @@ WV.DynWiki.wikiResultsHandler = function(results)
     WV.DynWiki.handleRecs(obj, "dynWiki");
 }
 
-WV.DynWiki.handleRecs = function(data, layerName)
-{
-    report("WV.DynWiki.handleRecs");
-    var layer = WV.layers["dynWiki"];
-    if (!layer.visible) {
-	return;
-    }
-    //    WV.setPeopleBillboardsVisibility(true);
-    if (layer.recs == null) {
-	report("initing RobotData layer");
-	layer.recs = {};
-	layer.tethers = {};
-	layer.billboards = {};
-	layer.bbCollection = new Cesium.BillboardCollection();
-	WV.scene.primitives.add(layer.bbCollection);
-    }
-    layer.setVisibility(true);
-    var recs = data.records;
-    for (var i=0; i<recs.length; i++) {
-        var rec = recs[i];
-	report("dynWiki rec: "+WV.toJSON(rec));
-	rec.layerName = layerName;
-        layer.numObjs++;
-        if (layer.numObjs > layer.maxNum)
-            return;
-        //var imageUrl = layer.iconUrl;
-        var imageUrl = WV.getIconUrl("videoLogo.png");
-	if (0) {
-	    var imgStr = '<img src="'+rec.thumbNailURL+'">';
-	    report("imgStr: "+imgStr);
-	    $("#layersDiv").append(imgStr+"\n");
-	}
-	var scale = 0.1;
-        var lon = rec.lon;
-        var lat = rec.lat;
-	var h = 1000;
-        id = layerName+"_"+rec.id;
-	if (layer.recs[id]) {
-	    report("already have id: "+id);
-	}
-	else {
-	    layer.recs[id] = rec;
-	    WV.recs[id] = rec;
-	    var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl, id,
-				    scale, h, layer.showTethers);
-	    layer.billboards[id] = b;
-	}
-    }
-}
-
 
 WV.DynWiki.handleClick = function(rec)
 {
@@ -156,7 +103,7 @@ WV.DynWiki.handleClick = function(rec)
 }
 
 WV.registerLayerType("dynWiki", {
-      dataHandler: WV.DynWiki.handleRecs,
+      dataHandler: WV.handleRecs,
       clickHandler: WV.DynWiki.handleClick,
       initFun: WV.DynWiki.initLayer
 });
