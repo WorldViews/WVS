@@ -33,9 +33,15 @@ WVYT.trackerTick = function()
     var t = WVYT.player.getCurrentTime();
     var status = {t: t, playing: playing}
     //report("stat: "+JSON.stringify(status));
-    if (WVYT.watcher)
-	WVYT.watcher(status);
-    setTimeout(WVYT.trackerTick, 300);
+    if (WVYT.watcher) {
+	try {
+	    WVYT.watcher(status);
+	}
+	catch (e) {
+	    report("err: "+e);
+	}
+    }
+    setTimeout(WVYT.trackerTick, 250);
 }
 
 WVYT.start = function()

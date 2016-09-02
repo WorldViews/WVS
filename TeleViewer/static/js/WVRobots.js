@@ -232,7 +232,6 @@ WV.Robots.handleDroneTrailData = function(layer, rec, data)
     return route;
 }
 
-/*
 WV.findPointByTime = function(rec, rt)
 {
     for (var i=0; i<rec.data.recs.length; i++) {
@@ -241,9 +240,20 @@ WV.findPointByTime = function(rec, rt)
     }
     if (i >= rec.points.length)
 	i = rec.points.length-1;
-    return {i: i, nearestPt: rec.points[i]};
+    if (i == 0)
+	return {i: i, f: 0, nearestPt: rec.points[i]};
+    var i0 = i-1;
+    var rt0 = rec.data.recs[i0].rt;
+    var rt01 = rec.data.recs[i].rt - rt0;
+    var f = (rt - rt0) / rt01;
+    //report("i0: "+i0+" i: "+i+"  f: "+f);
+    var p0 = rec.points[i0];
+    var p1 = rec.points[i];
+    var pt = new Cesium.Cartesian3();
+    Cesium.Cartesian3.lerp(rec.points[i0], rec.points[i], f, pt);
+    return {i: i, f: f, nearestPt: pt};
 }
-*/
+/*
 WV.findPointByTime = function(rec, rt)
 {
     var recs = rec.data.recs;
@@ -252,13 +262,13 @@ WV.findPointByTime = function(rec, rt)
 
     while (iMin < iMax) {
 	var i = Math.floor((iMin + iMax)/2.0);
-	var rec = recs[i];
-	if (rec.rt == rt)
+	var trec = recs[i];
+	if (trec.rt == rt)
 	    break;
-	if (rec.rt < rt) {
+	if (trec.rt < rt) {
 	    iMin = i+1;
 	}
-	else if (rec.rt > rt) {
+	else if (trec.rt > rt) {
 	    iMax = i-1;
 	}
     }
@@ -266,6 +276,7 @@ WV.findPointByTime = function(rec, rt)
 	i = rec.points.length-1;
     return {i: i, nearestPt: rec.points[i]};
 }
+*/
 
 
 WV.findNearestPoint = function(pt, points)
@@ -287,20 +298,26 @@ WV.findNearestPoint = function(pt, points)
     return {'i': iMin, nearestPt: points[iMin], 'd': Math.sqrt(d2Min)};
 }
 
+WV.Robots.PREV_RT = null;
+
 WV.Robots.noticeTimeChange = function(rec, status)
 {
-    //report(rec.layerName+" "+rec.id+" t: "+status.t);
     var rt = status.t;
+    if (WV.Robots.PREV_RT == rt)
+	return;
+    WV.Robots.PREV_RT = rt;
+    //report("noticeTimeChange "+rec.layerName+" "+rec.id+" t: "+status.t);
     var res = WV.findPointByTime(rec, rt);
-    report("noticeTimeChange res: "+JSON.stringify(res));
+    //report("noticeTimeChange res: "+JSON.stringify(res));
     WV.updateCursor(rec, res.nearestPt);
 }
 
-WV.Robots.handleClick = function(rec, xy, xyz)
+WV.Robots.handleClick = function(rec, xy, xyz, e)
 {
     report("WV.Robots.handleClick rec: "+rec);
     report("WV.Robots xy: "+xy+"  "+xyz);
     RECX = rec;
+    EE = e;
     if (rec.url) {
 	WV.showPage(rec);
 	return;
@@ -345,9 +362,18 @@ WV.Robots.handleClick = function(rec, xy, xyz)
 	    report("**** youtubeDeltaT: "+rec.pathRec.youtubeDeltaT);
 	    t += rec.pathRec.youtubeDeltaT;
         }
-	var playOpts = {'youtubeId': rec.pathRec.youtubeId, 't': t}
-	report("playing prec: "+JSON.stringify(playOpts));
-	WV.playVid(playOpts);
+	if (e && e.shiftDown) {
+	    report("***** shift down... check delta!! ****");
+	    var rt = WV.Robots.PREV_RT;
+	    var newDelta = t - rt;
+	    report("Adjusting delta");
+	    rec.pathRec.youtubeDeltaT -= newDelta;
+	}
+	else {
+	    var playOpts = {'youtubeId': rec.pathRec.youtubeId, 't': t}
+	    report("playing prec: "+JSON.stringify(playOpts));
+	    WV.playVid(playOpts);
+	}
 	return;
     }
     // We have a set of still image panaramas and and index
