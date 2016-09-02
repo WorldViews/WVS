@@ -103,7 +103,7 @@
 	  "tourName": "vasona_1",
 	  "dataUrl": "/static/data/paths/Mark_Vasona.json",
 	  "youtubeId": "AoCFLyan_uI",
-	  "youtubeDeltaT": -35,
+	  "youtubeDeltaT": -23,
 	  "coordSys": "GEO",
 	  "height": 0.3
        },
@@ -127,7 +127,7 @@
 	  "tourName": "cowell_2",
 	  "dataUrl": "/static/data/paths/HenryCowellRiverTrail.json",
 	  "youtubeId": "VrPBleBlqAk",
-	  "youtubeDeltaT": -35,
+	  "youtubeDeltaT": -28,
 	  "coordSys": "GEO",
 	  "height": 0.3
        },
@@ -145,26 +145,26 @@
           "xurl": "https://fxpal.com"
       },
       {
-         "id": "Rancho_San_Antonio_GPX",
+         "id": "Rancho_San_Antonio_Part_One",
          "type": "robotTrail",
          "robotType": "wheelchair",
          "description": "Rancho_San_Antonio_GPX",
 	  "dataUrl": "/static/data/paths/Rancho_San_Antonio.json",
 	  "youtubeId": "LVHc-sdxG_s",
-	  "youtubeDeltaT": -35,
+	  "youtubeDeltaT": -63,
 	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
 	  "coordSys": "GEO",
 	  "height": 0.3,
           "xurl": "https://fxpal.com"
       },
       {
-         "id": "Rancho_San_Antonio_GPX_2",
+         "id": "Rancho_San_Antonio_Part_Two",
          "type": "robotTrail",
          "robotType": "wheelchair",
          "description": "Rancho_San_Antonio_GPX_2",
 	  "dataUrl": "/static/data/paths/Rancho_San_Antonio_2.json",
 	  "youtubeId": "bZapOZ6Grk0",
-	  "youtubeDeltaT": -35,
+	  "youtubeDeltaT": 5,
 	  "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
 	  "coordSys": "GEO",
 	  "height": 0.3,
