@@ -128,12 +128,32 @@ WV.handleImageRecs = function(recs)
     }
 }
 
-function tryToFindRec(obj)
+/*
+This gets called with a Cesium object and tries to find
+one of our own objects ('rec') that we have associated
+with it.
+ */
+WV.findRec = function(obj)
 {
-    report("tryToFindRec: "+obj);
-    if (!obj || !obj.id)
+    report("WV.findRec: "+obj);
+    var id;
+    OBJ_ = obj;
+    if (!obj)
 	return null;
-    id = obj.id._id;
+    if (obj._wvrec) {
+	return obj._wvrec;
+    }
+    if (obj.primitive && obj.primitive._wvrec) { //WTF?!!!!
+	return obj.primitive._wvrec;
+    }
+    if (!obj.id)
+	return null;
+    if (typeof obj.id === 'string' || obj.id instanceof String) {
+	id = obj.id;
+    }
+    else {
+	id = obj.id._id;
+    }
     report("id "+id);
     rec = WV.recs[id];
     report("rec: "+rec);
@@ -158,9 +178,12 @@ WV.onLeftClick = function(e) {
     var id = pickedObject.id;
     var rec = WV.recs[id];
     if (!rec) {
-	rec = tryToFindRec(pickedObject);
-	if (rec)
+	rec = WV.findRec(pickedObject);
+	if (rec) {
+	    report("got rec: "+rec);
 	    id = rec.id;
+	    report("id: "+id);
+	}
     }
     if (!rec) {
 	report("Cannot find rec for id: "+id);
@@ -171,13 +194,13 @@ WV.onLeftClick = function(e) {
     var layerName = rec.layerName;
     var layer = WV.layers[layerName];
     report("click picked..... pickedObject._id "+id+ " layer: "+layerName);
-    var rec = layer.recs[id];
+    //var rec = layer.recs[id];
     if (rec.clickHandler) {
 	rec.clickHandler(rec, e.position, pickPos);
     }
     else {
 	report("*** no click handler");
-	WV.Robots.handleClick(rec, e.position, pickPos, e);
+	WV.Trails.handleClick(rec, e.position, pickPos, e);
     }
     report("LEFT_CLICK e: "+JSON.stringify(e));
     //WV.viewer.trackedEntity = undefined;
@@ -278,7 +301,7 @@ WV.setupCesium = function()
 	//    var rec = pickedObject._wvRec;
 	//}
 	if (!rec) {
-	    rec = tryToFindRec(pickedObject);
+	    rec = WV.findRec(pickedObject);
 	}
 	if (!rec) {
 	    report("Cannot find rec for id: "+id);

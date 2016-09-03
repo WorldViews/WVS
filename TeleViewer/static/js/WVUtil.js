@@ -17,7 +17,7 @@ WV.getClockTime = function()
 }
 
 /*
-  Set the give attribute to given value for every element
+  Set the given attribute to given value for every element
   of a dictionary.
  */
 WV.setObjsAttr = function(objs, attr, val)

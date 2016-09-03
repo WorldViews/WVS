@@ -103,7 +103,6 @@ WV.DynWiki.handleClick = function(rec)
 }
 
 WV.registerLayerType("dynWiki", {
-      dataHandler: WV.handleRecs,
       clickHandler: WV.DynWiki.handleClick,
       initFun: WV.DynWiki.initLayer
 });

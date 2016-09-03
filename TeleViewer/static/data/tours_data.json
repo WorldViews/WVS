@@ -91,7 +91,8 @@
 	  "tourName": "presidio_tour_1",
 	  "dataUrl": "/static/data/paths/Golden_Gate_Presidio.json",
 	  "youtubeId": "Xg6Op_UEXbk",
-	  "youtubeDeltaT": -35,
+	  "xxxyoutubeDeltaT": -35,
+	  "youtubeDeltaT": 0,
 	  "coordSys": "GEO",
 	  "height": 0.3
        },
