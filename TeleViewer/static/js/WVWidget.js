@@ -27,10 +27,20 @@ WV.noteDivTemplate =
 '    </form>\n' +
 '  </div>\n';
 
+WV.blankDivTemplate =
+' <div class="chat-window" id="|NAME|Window">\n' +
+'    <div style="background-color:grey" id="|NAME|Title">\n' +
+'      <span class="chat-title" id="|NAME|Title" style="background-color:grey">|NAME|:</span>\n' +
+'      <button id="|NAME|Dismiss" style="height:15px;float:right;"></button>\n' +
+'    </div>\n' +
+'    <div class="chat-text" id="|NAME|Text"></div>\n' +
+'  </div>\n';
 
-WV.WindowWidget = function(name)
+WV.WindowWidget = function(name, divTemplate)
 {
     this.name = name;
+    this.divTemplate = divTemplate;
+
     var windowId = "#"+name+"Window";
     var formId = "#"+name+"Form";
     var textId = "#"+name+"Text";
@@ -38,6 +48,7 @@ WV.WindowWidget = function(name)
     var titleId = "#"+name+"Title";
     var dismissId = "#"+name+"Dismiss";
     var inst = this;
+    this.id = windowId;
 
     function build() {
 	if ($(titleId).length > 0) {
@@ -45,9 +56,16 @@ WV.WindowWidget = function(name)
 	    return;
 	}
 	//var str = WV.chatDivTemplate.replace(/\|NAME\|/g, name);
-	var str = WV.noteDivTemplate;
-	if (name == "chat") {
-	    str = WV.chatDivTemplate;
+	var str = inst.divTemplate;
+	if (str) {
+	    report("Using provided template:\n"+str);
+	}
+	else {
+	    str = WV.noteDivTemplate;
+	    if (name == "chat") {
+		str = WV.chatDivTemplate;
+	    }
+	    report("Using default template");
 	}
 	//str = WV.noteDivTemplate.replace(/\|NAME\|/g, name);
 	str = str.replace(/\|NAME\|/g, name);
@@ -57,17 +75,19 @@ WV.WindowWidget = function(name)
 
     function rig() {
 	//$(titleId).html(" "+name+":");
-	$(formId).submit(function(){
-		var text = $(inputId).val();
-		$(inputId).val("");
-		try {
-		    inst.handleInput(text);
-		}
-		catch (err) {
-		    report("err: "+err);
-		}
-		return false;
-	});
+	if ($(formId)) {
+	    $(formId).submit(function(){
+		    var text = $(inputId).val();
+		    $(inputId).val("");
+		    try {
+			inst.handleInput(text);
+		    }
+		    catch (err) {
+			report("err: "+err);
+		    }
+		    return false;
+		});
+	}
 	$(dismissId).click(function(e) {
 		inst.dismiss(); 
 	    });
@@ -92,7 +112,7 @@ WV.WindowWidget = function(name)
     }
 
     this.hide = function() {
-	report("WV.ChatWidget.hide");
+	report("WV.Widget.hide");
 	$(windowId).hide(100);
     }
 

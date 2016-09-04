@@ -72,25 +72,25 @@ def getGeoGoogle(loc):
     return obj
 
 def saveHtmlRecs(recs, opath):
+    print "saveHtmlRecs saving to", opath
     obj = {'type': 'html',
            'records': recs,
            'numRecords': len(recs)}
-    if opath:
-        json.dump(obj, file(opath,"w"), indent=4)
+    json.dump(obj, file(opath,"w"), indent=4)
 
 def saveVideoRecs(vidrecs, opath):
+    print "saveVideoRecs saving to", opath
     obj = {'type': 'robotTrail',
            'records': vidrecs,
            'numRecords': len(vidrecs)}
-    if opath:
-        json.dump(obj, file(opath,"w"), indent=4)
+    json.dump(obj, file(opath,"w"), indent=4)
 
-def saveAllRecs(recs, vidrecs, opath):
-    obj = {
-           'records': vidrecs,
-           'numRecords': len(vidrecs, htmlRecs)}
-    if allPath:
-        json.dump(obj, file(opath,"w"), indent=4)
+def saveAllRecs(htmlrecs, vidrecs, opath):
+    print "saveAllRecs saving to", opath
+    recs = htmlrecs + vidrecs
+    obj = {'records': recs,
+           'numRecords': len(recs)}
+    json.dump(obj, file(opath,"w"), indent=4)
 
 
 def openUrl(url,numTries):
@@ -263,14 +263,14 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
             "coordSys": "GEO",
             "height": 0.3,
             }
-        print "****************************\07"
         vidrecs.append(vidrec)
-        
-    saveHtmlRecs(recs, htmlPath)
+
+    if htmlPath:
+        saveHtmlRecs(recs, htmlPath)
     if vidPath:
         saveVideoRecs(vidrecs, vidPath)
     if allPath:
-        saveAllRecs(recs,vidrecs, allPath)
+        saveAllRecs(recs, vidrecs, allPath)
     print "vid path", vidPath
     print "All Path",allPath
     print "Done"
@@ -281,10 +281,11 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
 def updateBlogLayers():
     scrapeBlog('http://gobeyondthefence.com/feed',
                'Enocks_Blog_data.json',
-               'Enocks_tours_data.json')
+               'Enocks_tours_data.json',
+               'Enocks_data.json')
 
-    scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
-               'Marks_Blog_data.json')
+    #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
+    #           'Marks_Blog_data.json')
 
     installLayers.installAllLayers()
 

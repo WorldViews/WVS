@@ -10,13 +10,17 @@ WV.Chat.showTimeStamps = true;
 WV.Chat.handleData = function(data, name)
 {
     report("handleChatData "+name);
-    //report("data: "+WV.toJSON(data));
+    report("data: "+WV.toJSON(data));
     var layer = WV.layers["chat"];
     //if (!layer.visible) {
     //	return;
     //}
     var t = WV.getClockTime();
     var recs = WV.getRecords(data);
+    if (!recs) {
+	report("No records in chat data");
+	return;
+    }
     recs.sort(function(a,b) { return a.t-b.t; })
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];

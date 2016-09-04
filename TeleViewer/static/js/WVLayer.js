@@ -469,6 +469,8 @@ WV.requireModule = function(jsName, done)
 	    report("finished completions");
 	})
     .fail(function(jqxhr, settings, exception) {
+	    report("******************************************************");
+	    report("******************************************************");
 	    report("requireCode failed: "+exception);
 	});
 }

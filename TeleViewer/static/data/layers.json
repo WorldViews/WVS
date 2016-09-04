@@ -400,8 +400,12 @@
                   "mediaType": "robots",
                   "dataFile": "/static/data/porter_data.json",
                   "description": "Porter Model"
+               },
+               {
+                  "name": "admin",
+	          "require": "WVAdmin.js",
+                  "description": "Admin"
                }
-               
            ]
        }
     ]
