@@ -11,6 +11,7 @@
 WVYT = {}
 WVYT.videoId = null;
 WVYT.player = null;
+WVYT.requestedStartTime = null;
 
 WVYT.trackerRunning = false;
 WVYT.watcher = null;
@@ -87,8 +88,12 @@ WVYT.setupYouTubePlayer = function(videoId, divName)
 
       // 4. The API will call this function when the video player is ready.
 WVYT.onPlayerReady = function(event) {
-        event.target.playVideo();
-        WVYT.runTracker();
+    if (WVYT.requestedStartTime) {
+	event.target.seekTo(WVYT.requestedStartTime);
+	WVYT.requestedStartTime = null;
+    }
+    event.target.playVideo();
+    WVYT.runTracker();
 }
 
       // 5. The API calls this function when the player's state changes.
@@ -122,11 +127,19 @@ WVYT.playVideo = function(id, rec)
     }
     WVYT.videoId = id;
     if (WVYT.player == null) {
+	if (rec.t)
+	    WVYT.requestedStartTime = rec.t;
 	WVYT.start();
     }
     else {
-	WVYT.player.loadVideoById(id);
+	var opts = {'videoId': id};
+	if (rec.t)
+	    opts.startSeconds = rec.t;
+	WVYT.player.loadVideoById(opts);
     }
+    // Notify WV Server in case there is a slaved
+    // browswer (e.g. with HMD) wanting to play the
+    // same videos
     WVYT.notifyServer(id, rec);
 }
 

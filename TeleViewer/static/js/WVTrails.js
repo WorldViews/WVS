@@ -1,6 +1,8 @@
 
 WV.Trails = {}
 
+WV.Trails.defaultTrailWidth = 3;
+
 WV.Trails.addRobot = function(layer, rec)
 {
     var t = WV.getClockTime();
@@ -90,7 +92,7 @@ WV.Trails.handleTrailData = function(layer, rec, data)
 	    glowPower : 0.15});
     var opts = { positions : points,
 		 // id: pathId,
-		 width : 3.0,
+		 width : WV.Trails.defaultTrailWidth,
 		 material : material };
     var route = null;
     var polylines = WV.getTetherPolylines();
@@ -102,7 +104,40 @@ WV.Trails.handleTrailData = function(layer, rec, data)
                points: points};
     WV.recs[pathId] = obj;
     layer.recs[pathId] = obj;
+    var showPoints = false;
+    if (showPoints)
+	for (var i=0; i<points.length; i++) {
+	    WV.drawPoint(points[i]);
+	}
     return route;
+}
+
+/*
+  Draw a point at a given position.  If an given is given
+  id and a point with that id has already been drawn, it is
+  repositioned to that point.
+ */
+WV.drawPoint = function(pos, id, size, color)
+{
+    if (id) {
+	var pt = WV.viewer.entities.getById(id);
+	if (pt) {
+	    pt.position = pos;
+	    return;
+	}
+    }
+    size = size | 4;
+    opts = {
+        position : pos,
+	point : {
+            pixelSize : size,
+        }
+    }
+    if (id)
+	opts.id = id;
+    if (color)
+	opts.point.color = color;
+    WV.viewer.entities.add(opts);
 }
 
 WV.updateCursor = function(rec, xyz)
@@ -128,120 +163,130 @@ WV.updateCursor = function(rec, xyz)
     }
 }
 
-WV.Trails.addDroneTrail = function(layer, rec)
+/*
+  Linear search to find index i such that
+
+  recs[i-1].rt <= rt   &&   rt <= recs[i]
+
+  if rt < recs[0]                 returns i=0
+  if rt < recs[recs.length-1].rt  returns recs.length
+*/
+WV.linSearch = function(recs, rt)
 {
-    report("WV.Trails.addDroneTrail "+layer.name);
-    rec.layerName = layer.name;
-    var url = rec.dataUrl;
-    rec.clickHandler = WV.Trails.handleClick;
-    WV.getJSON(url, function(data) {
-	    WV.Trails.handleDroneTrailData(layer, rec, data);
-    });
+    for (var i=0; i<recs.length; i++) {
+        if (recs[i].rt > rt)
+	    return i;
+    }
+    return i;
 }
 
 /*
-WV.Trails.handleDroneTrailData = function(layer, rec, data)
+  Binary search.  Same contract as Linear search
+  but should be faster.
+ */
+WV.binSearch = function(recs, rt)
 {
-    var recs = data.recs;
-    var coordSys = rec.coordSys;
-    report("handleDroneTrailData "+rec.dataUrl+" coordSys: "+coordSys);
-    var points = [];
-    var pathId = "drone_path_"+rec.id
-    for (var i=0; i<recs.length; i++) {
-	var tr = recs[i];
-	var pos = tr.pos;
-	var lla = WV.xyzToLla(tr.pos, coordSys);
-	//report(" "+i+"  "+pos+"  "+lla);
-	//var xyz = Cesium.Cartesian3.fromDegrees(lla[1], lla[0], h);
-	//points.push(xyz);
-	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], lla[2]));
-    }
-    var color = Cesium.Color.RED;
-    if (rec.youtubeId)
-	color = Cesium.Color.GREEN;
-    var material = new Cesium.PolylineGlowMaterialProperty({
-	    color : color,
-	    glowPower : 0.15});
-    var opts = { positions : points,
-		 // id: pathId,
-		 width : 5.0,
-		 material : material };
-    var route = null;
-    var polylines = WV.getTetherPolylines();
-    //route = polylines.add({polyline: opts});
-    route = polylines.add({polyline: opts, id: pathId});
-    route = route.polyline;
-    var obj = {layerName: layer.name, id: pathId, data: data,
-	       pathRec: rec, tourName: rec.tourName,
-               points: points};
-    WV.recs[pathId] = obj;
-    layer.recs[pathId] = obj;
-    return route;
-}
-*/
-WV.Trails.handleDroneTrailData = function(layer, rec, data)
-{
-    rec.clickHandler = WV.Trails.handleClick;
-    rec.layerName = layer.name;
-    var recs = data.recs;
-    var coordSys = rec.coordSys;
-    report("handleDroneTrailData "+rec.dataUrl+" coordSys: "+coordSys);
-    var deltaT = rec.youtubeDeltaT;
-    data.startTime = 0;
-    rec.videoDeltaT = rec.youtubeDeltaT;
-    var videoDur = rec.videoDur;
-    report("deltaT: "+deltaT);
-    report("videoDur: "+videoDur);
-    var points = [];
-    var pathId = "drone_path_"+rec.id
-    for (var i=0; i<recs.length; i++) {
-	var tr = recs[i];
-	tr.vt = null;
-	var pos = tr.pos;
-	var t = tr.time;
-	var vt = t - deltaT;
-	//report("vt: "+vt);
-	if (vt < 0 || vt > videoDur) {
-	    report("rejecting i at: "+vt);
-	    continue;
+    var iMin = 0;
+    var iMax = recs.length-1;
+
+    while (iMin < iMax) {
+	var i = Math.floor((iMin + iMax)/2.0);
+	var rec = recs[i];
+	if (rec.rt == rt)
+	    return i+1;
+	if (rt > rec.rt) {
+	    iMin = i;
 	}
-	tr.vt = vt;
-	var lla = WV.xyzToLla(tr.pos, coordSys);
-	points.push(Cesium.Cartesian3.fromDegrees(lla[1], lla[0], lla[2]));
+	else {
+	    iMax = i;
+	}
+	if (iMin >= iMax-1)
+	    break;
     }
-    var color = Cesium.Color.RED;
-    if (rec.youtubeId)
-	color = Cesium.Color.GREEN;
-    var material = new Cesium.PolylineGlowMaterialProperty({
-	    color : color,
-	    glowPower : 0.15});
-    var opts = { positions : points,
-		 // id: pathId,
-		 width : 5.0,
-		 material : material };
-    var route = null;
-    var polylines = WV.getTetherPolylines();
-    //route = polylines.add({polyline: opts});
-    route = polylines.add({polyline: opts, id: pathId});
-    route = route.polyline;
-    var obj = {layerName: layer.name, id: pathId, data: data,
-	       pathRec: rec, tourName: rec.tourName,
-               points: points};
-    WV.recs[pathId] = obj;
-    layer.recs[pathId] = obj;
-    return route;
+    return iMin+1;
+}
+
+WV.testSearchFun1 = function(recs, searchFun)
+{
+    function correctPos(rt, recs, i) {
+	//report("rt: "+rt+" i: "+i);
+	if (i == 0) {
+	    if (rt <= recs[0].rt)
+		return true;
+	    return false;
+	}
+	if (rt > recs[recs.length-1].rt && i == recs.length)
+	    return true;
+	if (recs[i-1].rt <= rt && rt <= recs[i].rt)
+	    return true;
+	return false;
+    }
+
+    //for (var i=0; i<recs.length; i++) {
+    //  report(i+" "+recs[i].rt);
+    //}
+    var errs = 0;
+    for (var i=0; i<recs.length-1; i++) {
+	var rt = recs[i].rt;
+	var ii = searchFun(recs, rt);
+	if (!correctPos(rt, recs, ii)) {
+	    report("error:  rt "+rt+"  -->  "+ii);
+	    errs++;
+	}
+	rt = (recs[i].rt + recs[i+1].rt)/2.0;
+	ii = searchFun(recs, rt);
+	if (!correctPos(rt, recs, ii)) {
+	    report("error:  rt "+rt+"  -->  "+ii);
+	    errs++;
+	}
+    }
+    return errs;
+}
+
+WV.testSearch = function(nrecs)
+{
+    nrecs = nrecs | 100000;
+    report("WV.testSearch "+nrecs);
+    recs = []
+    for (var i=0; i<nrecs; i++) {
+	recs.push( {i: i, rt: Math.random()*100000000 });
+	//recs.push( {i: i, rt: Math.random()*10000 });
+    }
+    recs.sort(function(a,b) { return a.rt-b.rt; });
+    for (var i=0; i<nrecs-1; i++) {
+	if (recs[i].rt >= recs[i+1].rt) {
+	    report("**** testSearch: recs not sorted ****");
+	    return;
+	}
+	if (recs[i].rt == recs[i+1].rt) {
+	    report("**** testSearch: recs not unique ****");
+	    return;
+	}
+    }
+    report("Testing Linear Search");
+    var t1 = WV.getClockTime();
+    var errs = WV.testSearchFun1(recs, WV.linSearch);
+    var t2 = WV.getClockTime();
+    report("lin searched "+nrecs+" times in "+(t2-t1)+" secs "+errs+" errors");
+    report("Testing binary Search");
+    var t1 = WV.getClockTime();
+    var errs = WV.testSearchFun1(recs, WV.binSearch);
+    var t2 = WV.getClockTime();
+    report("bin searched "+nrecs+" times in "+(t2-t1)+" secs "+errs+" errors");
 }
 
 WV.findPointByTime = function(rec, rt)
 {
-    for (var i=0; i<rec.data.recs.length; i++) {
-        if (rec.data.recs[i].rt > rt)
-	    break;
-    }
-    if (i >= rec.points.length)
-	i = rec.points.length-1;
-    if (i == 0)
+    //report("WV.findPointByTime "+rt);
+    //i = WV.linSearch(rec.data.recs, rt);
+    i = WV.binSearch(rec.data.recs, rt);
+    if (i == 0) {
 	return {i: i, f: 0, nearestPt: rec.points[i]};
+    }
+    if (i >= rec.points.length) {
+	i = rec.points.length-1;
+	return {i: i, f: 1, nearestPt: rec.points[i]};
+    }
     var i0 = i-1;
     var rt0 = rec.data.recs[i0].rt;
     var rt01 = rec.data.recs[i].rt - rt0;
@@ -279,9 +324,9 @@ WV.findPointByTime = function(rec, rt)
 */
 
 
-WV.findNearestPoint = function(pt, points)
+WV.findNearestPoint0 = function(pt, points)
 {
-    //report("findNearestPoint: pt: "+pt+" npoints: "+points.length);
+    report("findNearestPoint: pt: "+pt+" npoints: "+points.length);
     if (points.length == 0) {
 	report("findNearestPoint called with no points");
 	null;
@@ -298,6 +343,34 @@ WV.findNearestPoint = function(pt, points)
     return {'i': iMin, nearestPt: points[iMin], 'd': Math.sqrt(d2Min)};
 }
 
+WV.findNearestPoint = function(pt, points)
+{
+    var dv = new Cesium.Cartesian3();
+    var nv1 = new Cesium.Cartesian3();
+    report("fNP pt: "+pt);
+    var c0 = WV.viewer.camera.position;
+    report("fNP c0: "+c0);
+    Cesium.Cartesian3.subtract(c0,pt,dv);
+    Cesium.Cartesian3.normalize(dv,nv1);
+    report("fNP pt: "+pt+"  nv1: "+nv1);
+    var aMin = 1.0E10;
+    iMin = 0;
+    var v = new Cesium.Cartesian3();
+    var nv2 = new Cesium.Cartesian3();
+    for (var i=0; i<points.length; i++) {
+	Cesium.Cartesian3.subtract(c0, points[i], v);
+	Cesium.Cartesian3.normalize(v,nv2);
+	//var a = Cesium.Cartesian3.angleBetween(nv, v);
+	var a = Cesium.Cartesian3.angleBetween(nv1, nv2);
+	if (a < aMin) {
+	    aMin = a;
+	    iMin = i;
+	}
+    }
+    return {'i': iMin, nearestPt: points[iMin], 'd': aMin};
+}
+
+
 WV.Trails.PREV_RT = null;
 
 WV.Trails.noticeTimeChange = function(rec, status)
@@ -306,7 +379,7 @@ WV.Trails.noticeTimeChange = function(rec, status)
     if (WV.Trails.PREV_RT == rt)
 	return;
     WV.Trails.PREV_RT = rt;
-    report("noticeTimeChange "+rec.layerName+" "+rec.id+" rt: "+rt);
+    //report("noticeTimeChange "+rec.layerName+" "+rec.id+" rt: "+rt);
     var tt = rt - rec.pathRec.youtubeDeltaT;
     var res = WV.findPointByTime(rec, tt);
     //report("noticeTimeChange res: "+JSON.stringify(res));
@@ -323,6 +396,7 @@ WV.Trails.handleClick = function(rec, xy, xyz, e)
 	WV.showPage(rec);
 	return;
     }
+    //WV.drawPoint(xyz, "click_point", 8, Cesium.Color.RED);
     var res = WV.findNearestPoint(xyz, rec.points);
     report("res: "+JSON.stringify(res));
     RES_ = res;
@@ -334,9 +408,10 @@ WV.Trails.handleClick = function(rec, xy, xyz, e)
     if (res) {
 	var data = rec.data;
 	var startTime = data.startTime;
-	t = data.recs[res.i].time;
-	vt = data.recs[res.i].vt;
-	dt = t - startTime;
+	//t = data.recs[res.i].time;
+	//vt = data.recs[res.i].vt;
+	//dt = t - startTime;
+	dt = data.recs[res.i].rt;
 	idx = Math.floor(dt * frameRate);
 	report("t: "+t+"   dt: "+dt+"   idx: "+idx+"   d: "+res.d);
 	WV.updateCursor(rec, res.nearestPt);
@@ -352,10 +427,10 @@ WV.Trails.handleClick = function(rec, xy, xyz, e)
 	// at this point, we will assume t is trail time...
 	// we want to compute video time vt
 	var t = dt;
-	if (vt != null) {
-	    report("**** vt: "+vt);
-	}
-	else if (rec.pathRec.videoDeltaT) {
+	//if (vt != null) {
+	//    report("**** vt: "+vt);
+	//}
+	if (rec.pathRec.videoDeltaT) {
 	    report("**** videoDeltaT: "+rec.pathRec.videoDeltaT);
 	    vt = t - rec.pathRec.videoDeltaT;
 	    report("t: "+t);
@@ -412,7 +487,8 @@ WV.Trails.moveHandler = function(rec, xy, xyz)
 WV.registerModule("WVTrails.js");
 
 WV.registerRecHandler("robotTrail", WV.Trails.addTrail);
-WV.registerRecHandler("dronePath", WV.Trails.addDroneTrail);
+WV.registerRecHandler("dronePath", WV.Trails.addTrail);
+//WV.registerRecHandler("dronePath", WV.Trails.addDroneTrail);
 WV.registerRecHandler("model", WV.addModel);
 
 WV.registerRecHandler("CoordinateSystem",
