@@ -75,7 +75,6 @@ WV.DynYouTube.handleClick = function(rec)
 }
 
 WV.registerLayerType("dynYouTube", {
-      dataHandler: WV.handleRecs,
       clickHandler: WV.DynYouTube.handleClick,
       initFun: WV.DynYouTube.initLayer
 });

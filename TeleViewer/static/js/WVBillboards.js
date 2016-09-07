@@ -11,8 +11,14 @@ WV.setBillboardsVisibility = function(objs, val, tval)
     for (id in objs) {
 	//report("set objs["+id+"]."+attr+" = "+val);
 	objs[id].show = val;
-	if (objs[id].tether)
+	if (objs[id].tether) {
 	    objs[id].tether.show = tval;
+	    report("set tether "+id+" "+tval);
+	}
+	if (objs[id].anchor) {
+	    objs[id].anchor.show = val;
+	    report("set anchor "+id+" "+val);
+	}
     }
 }
 
@@ -25,6 +31,8 @@ WV.setObjsAttr = function(objs, attr, val)
 	objs[id][attr] = val;
 	if (objs[id].tether)
 	    objs[id].tether[attr] = val;
+	if (objs[id].anchor)
+	    objs[id].anchor[attr] = val;
     }
 }
 
@@ -157,10 +165,8 @@ WV.addBillboard = function(bbCollection, lat, lon, imgUrl, id, scale, height,
 	var anchorId = "anchor_icon_"+id;
 	report("creating anchor "+anchorId+" scale "+scale);
 	//var imgUrl = WV.defaultAnchorIconURL;
-	//var img = WV.drawImage(imgUrl, lat, lon, 20000.0, 20000.0, 10000, 0.0);
 	var ab = WV.addBillboard0(bbCollection, anchorId,
 				  lat, lon, 
-				  //WV.defaultAnchorIconURL,
 				  imgUrl,
 				  1.0, 10);
 	b.anchor = ab;

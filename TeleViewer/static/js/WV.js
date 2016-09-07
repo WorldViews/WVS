@@ -128,17 +128,83 @@ WV.handleImageRecs = function(recs)
     }
 }
 
-function tryToFindRec(obj)
+/*
+This gets called with a Cesium object and tries to find
+one of our own objects ('rec') that we have associated
+with it.
+ */
+WV.findRec = function(obj)
 {
-    report("tryToFindRec: "+obj);
-    if (!obj || !obj.id)
+    report("WV.findRec: "+obj);
+    var id;
+    OBJ_ = obj;
+    if (!obj)
 	return null;
-    id = obj.id._id;
+    if (obj._wvrec) {
+	return obj._wvrec;
+    }
+    if (obj.primitive && obj.primitive._wvrec) { //WTF?!!!!
+	return obj.primitive._wvrec;
+    }
+    if (!obj.id)
+	return null;
+    if (typeof obj.id === 'string' || obj.id instanceof String) {
+	id = obj.id;
+    }
+    else {
+	id = obj.id._id;
+    }
     report("id "+id);
     rec = WV.recs[id];
     report("rec: "+rec);
     return rec;
 }
+
+
+WV.onLeftClick = function(e) {
+    report("left click.....");
+    if (e.shiftDown)
+	report(" **** SHIFT ****");
+    if (e.ctrlDown)
+	report(" **** CTRL ****");
+    if (e.altDown)
+	report(" **** ALT ****");
+    var pickedObject = WV.scene.pick(e.position);
+    if (!Cesium.defined(pickedObject)) {
+	return;
+    }
+    var pickPos = WV.scene.pickPosition(e.position);
+    cpo = pickedObject;
+    var id = pickedObject.id;
+    var rec = WV.recs[id];
+    if (!rec) {
+	rec = WV.findRec(pickedObject);
+	if (rec) {
+	    report("got rec: "+rec);
+	    id = rec.id;
+	    report("id: "+id);
+	}
+    }
+    if (!rec) {
+	report("Cannot find rec for id: "+id);
+	PICKED_OBJ = pickedObject;
+	BAD_ID = id;
+	return;
+    }
+    var layerName = rec.layerName;
+    var layer = WV.layers[layerName];
+    report("click picked..... pickedObject._id "+id+ " layer: "+layerName);
+    //var rec = layer.recs[id];
+    if (rec.clickHandler) {
+	rec.clickHandler(rec, e.position, pickPos);
+    }
+    else {
+	report("*** no click handler");
+	WV.Trails.handleClick(rec, e.position, pickPos, e);
+    }
+    report("LEFT_CLICK e: "+JSON.stringify(e));
+    //WV.viewer.trackedEntity = undefined;
+};
 
 WV.setupCesium = function()
 {
@@ -220,6 +286,7 @@ WV.setupCesium = function()
 	    // here as needed.   Maybe do that later.
 	}
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
     handler.setInputAction(function(e) {
         report("left down.....");
         var pickedObject = WV.scene.pick(e.position);
@@ -234,7 +301,7 @@ WV.setupCesium = function()
 	//    var rec = pickedObject._wvRec;
 	//}
 	if (!rec) {
-	    rec = tryToFindRec(pickedObject);
+	    rec = WV.findRec(pickedObject);
 	}
 	if (!rec) {
 	    report("Cannot find rec for id: "+id);
@@ -258,48 +325,20 @@ WV.setupCesium = function()
     // but it didn't work.
     //handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
-    handler.setInputAction(function(e) {
-        report("left click.....");
-        var pickedObject = WV.scene.pick(e.position);
-	if (!Cesium.defined(pickedObject)) {
-            return;
-        }
-	var pickPos = WV.scene.pickPosition(e.position);
-        cpo = pickedObject;
-        var id = pickedObject.id;
-	var rec = WV.recs[id];
-	//if (!rec) {
-	//    report("Trying pickedObject._wvRec");
-	//    var rec = pickedObject._wvRec;
-	//}
-	if (!rec) {
-	    rec = tryToFindRec(pickedObject);
-	    if (rec)
-		id = rec.id;
-	}
-	if (!rec) {
-	    report("Cannot find rec for id: "+id);
-	    PICKED_OBJ = pickedObject;
-	    BAD_ID = id;
-	    return;
-	}
-	var layerName = rec.layerName;
-	var layer = WV.layers[layerName];
-        report("click picked..... pickedObject._id "+id+ " layer: "+layerName);
-        var rec = layer.recs[id];
-	if (rec.clickHandler) {
-	    rec.clickHandler(rec, e.position, pickPos);
-	}
-	else {
-	    report("*** no click handler");
-	    WV.Robots.handleClick(rec, e.position, pickPos);
-	}
-	//if (layer.clickHandler)
-	//    layer.clickHandler(rec, e.position, pickPos);
-        //WV.playVid(rec);
-        report("LEFT_CLICK e: "+JSON.stringify(e));
-        //WV.viewer.trackedEntity = undefined;
-    }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    handler.setInputAction( function(e) {e.shiftDown=false;
+	                                 e.ctrlDown=false;
+					 e.altDown=false;
+					 WV.onLeftClick(e)},
+	                    Cesium.ScreenSpaceEventType.LEFT_CLICK);
+    handler.setInputAction( function(e) {e.shiftDown=true; WV.onLeftClick(e)},
+			    Cesium.ScreenSpaceEventType.LEFT_CLICK,
+			    Cesium.KeyboardEventModifier.SHIFT);
+    handler.setInputAction( function(e) {e.ctrlDown=true; WV.onLeftClick(e)},
+			    Cesium.ScreenSpaceEventType.LEFT_CLICK,
+			    Cesium.KeyboardEventModifier.CTRL);
+    handler.setInputAction( function(e) {e.altDown=true; WV.onLeftClick(e)},
+			    Cesium.ScreenSpaceEventType.LEFT_CLICK,
+			    Cesium.KeyboardEventModifier.ALT);
 
     handler.setInputAction(function(e) {
 	    report("LEFT_DOUBLE_CLICK e: "+JSON.stringify(e));

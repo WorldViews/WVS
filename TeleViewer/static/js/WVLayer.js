@@ -51,8 +51,10 @@ WV.LayerType = function(name, opts)
     else {
 	report("*** No moveHandler");
     }
-    if (!this.dataHandler)
-	report("*** Warning LayerType "+name+"  no dataHandler");
+    if (!this.dataHandler) {
+	report("*** LayerType "+name+" using default dataHandler");
+	this.dataHandler = WV.handleRecs;
+    }
     if (!this.clickHandler)
 	report("*** Warning LayerType "+name+"  no clickHandler");
 }
@@ -223,6 +225,10 @@ WV.addBillboardToLayer = function(layer, rec)
 	h = layer.height;
     var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl,
 			    id, layer.scale, h, layer.showTethers);
+    if (b.anchor) {
+	report("---- adding _wvrec to anchor to "+b.anchor.id);
+	b.anchor._wvrec = rec;
+    }
     layer.billboards[id] = b;
     if (rec.youtubeId)
 	rec.clickHandler = WV.playVid;
@@ -313,7 +319,7 @@ WV.handleRecs = function(data, layerName)
     var recs = WV.getRecords(data);
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];
-	report("rec:\n"+WV.toJSON(rec));
+	//report("rec:\n"+WV.toJSON(rec));
 	rec.layerName = layerName;
 	if (rec.type == "youtube" && rec.id)
 	    rec.youtubeId = rec.id;
@@ -463,6 +469,8 @@ WV.requireModule = function(jsName, done)
 	    report("finished completions");
 	})
     .fail(function(jqxhr, settings, exception) {
+	    report("******************************************************");
+	    report("******************************************************");
 	    report("requireCode failed: "+exception);
 	});
 }
