@@ -208,8 +208,72 @@
 	 "coordSys": "GEO",
 	 "height": 0.3,
          "xurl": "https://fxpal.com"
+     },
+     {
+        "id": "Ardenwood_Conrads_Field",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Ardenwood_Conrads_Field",
+	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Conrads_Field.json",
+	 "youtubeId": "gJ_v8rbd-co",
+	 "youtubeDeltaT": 10,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     },
+     {
+        "id": "Ardenwood_Gardens_Tour",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Ardenwood_Gardens_Tour",
+	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Gardens_Tour.json",
+	 "youtubeId": "uv-cUSMwotE",
+	 "youtubeDeltaT": 10,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     },
+     {
+        "id": "Ardenwood_GPX_More_Gardens",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Ardenwood_GPX_More_Gardens",
+	 "dataUrl": "/static/data/paths/Ardenwood_GPX_More.json",
+	 "youtubeId": "W0AFEqv4YW0",
+	 "youtubeDeltaT": 10,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     },
+     {
+        "id": "Ardenwood_Peacocks",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Ardenwood_Peacocks",
+	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Peacocks.json",
+	 "youtubeId": "uk5rn0WEXqo",
+	 "youtubeDeltaT": 10,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     },
+     {
+        "id": "Ardenwood_Train_Ride",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Ardenwood_Train_Ride",
+	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Train_Ride.json",
+	 "youtubeId": "rexHFV5sOyY",
+	 "youtubeDeltaT": 10,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
      }
-     
     ]
 }
 

@@ -63,7 +63,7 @@ def getGeoGoogle(loc):
                'lon': loc['lng'],
                #'bounds': bounds,
                'address': res['formatted_address'],
-               'query': loc}
+              'query': loc}
     else:
         print "Cannot get geo information from google"
         print ret
@@ -132,8 +132,8 @@ def searchForEmbeddedMap(str,url):
         endIdx = str.find("],", imbedidx)
         locstr = str[imbedidx+2:endIdx]
         parts = locstr.split(",")
-        lat = float(parts[0])
-        lon = float(parts[1])
+        lat = float(parts[1])
+        lon = float(parts[0])
         print "lat:", lat, "lon:", lon
         rec = {
                'lat': lat,
@@ -230,11 +230,14 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
         rec = None
         rec = searchForMapLink(str,url)
         #first try to see if it has a maps link inserted
+        print "maplink",rec
         if rec == None:
             rec = searchForEmbeddedMap(str,url)
         #if no map link inserted try to match Google geocode from title
+        print "embedded",rec
         if rec == None:
             rec = tryGeoGoogle(title,url)
+        print "geo",rec
         #if it can't match geocode from title then rec equals none and we tried everything
         if rec == None:
             print "no location found"
