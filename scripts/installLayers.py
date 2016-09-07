@@ -11,6 +11,9 @@ def installLayer(fileName):
     srcPath = "%s/%s.json" % (SCRAPED_DIR, fileName)
     dstPath = "%s/%s.json" % (TARGET_DIR, fileName)
     bakPath = dstPath+".bak"
+    if not os.path.exists(srcPath):
+        print "**** No such file as", srcPath
+        return
     if os.path.exists(dstPath):
         print "Backing up %s to %s" % (dstPath, bakPath)
         shutil.copyfile(dstPath, bakPath)
@@ -18,8 +21,10 @@ def installLayer(fileName):
     shutil.copyfile(srcPath, dstPath)
 
 def installAllLayers():
-    installLayer("Enocks_Blog_data")
-    installLayer("Marks_Blog_data")
+#    installLayer("Enocks_Blog_data")
+#    installLayer("Marks_Blog_data")
+    installLayer("Enocks_data")
+    installLayer("Marks_data")
 
 
 if __name__ == '__main__':

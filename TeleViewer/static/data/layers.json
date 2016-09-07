@@ -295,7 +295,7 @@
                  "scale": 0.15,
                  "showTethers": true,
                  "mediaType": "html",
-                 "dataFile": "/static/data/Enocks_Blog_data.json",
+                 "dataFile": "/static/data/Enocks_data.json",
                  "visible": false
               },
               {
@@ -331,7 +331,7 @@
                  "scale": 0.15,
                  "showTethers": true,
                  "mediaType": "html",
-                 "dataFile": "/static/data/Enocks_Blog_data.json",
+                 "dataFile": "/static/data/Enocks_data.json",
                  "visible": false
               },
               {
@@ -342,7 +342,7 @@
                  "scale": 0.15,
                  "showTethers": true,
                  "mediaType": "html",
-                 "dataFile": "/static/data/Marks_Blog_data.json",
+                 "dataFile": "/static/data/Marks_data.json",
                  "visible": false
               } 
            ]

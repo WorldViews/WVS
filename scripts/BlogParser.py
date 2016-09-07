@@ -9,12 +9,17 @@ import time
 import readGPX
 import installLayers
 
+SCRAPE_DIR = "../scraped_data"
 UTF8Writer = codecs.getwriter('utf8')
 sys.stdout = UTF8Writer(sys.stdout)
 
+def join(dir,child):
+    path = os.path.join(dir,child)
+    path = path.replace("\\", "/")
+    return path
 
 if 'WV_HOME' in os.environ:
-    CONFIG_PATH = os.path.join(os.environ['WV_HOME'], "config/ADMIN_CONFIG.py")
+    CONFIG_PATH = join(os.environ['WV_HOME'], "config/ADMIN_CONFIG.py")
 else:
     CONFIG_PATH = "config/ADMIN_CONFIG.py"
 print "Config path:", CONFIG_PATH
@@ -201,7 +206,7 @@ def fixId(id):
     id = id.replace(",", "_")
     return id
 
-def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
+def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None, maxNumRecs = None):
     print "scrapeblog",feedUrl
     d = feedparser.parse(feedUrl)
     
@@ -242,6 +247,8 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
         rec['title'] = title
         rec['id'] = uid
         recs.append(rec)
+        if maxNumRecs and len(recs) > maxNumRecs:
+            break
         if vidPath == None:
             continue
         #try to find gpx file in url
@@ -257,7 +264,7 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
             "robotType": "wheelchair",
             "description": title,
             "tourName": "vid_tour_%s" % uid,
-            "dataUrl": trailPath,
+            "dataUrl": join("/static/data/paths", trailPath),
             "youtubeId": youtubeId,
             "youtubeDeltaT": 0,
             "coordSys": "GEO",
@@ -280,12 +287,12 @@ def scrapeBlog(feedUrl, htmlPath, vidPath=None, allPath=None):
 
 def updateBlogLayers():
     scrapeBlog('http://gobeyondthefence.com/feed',
-               'Enocks_Blog_data.json',
-               'Enocks_tours_data.json',
-               'Enocks_data.json')
+               join(SCRAPE_DIR, 'Enocks_Blog_data.json'),
+               join(SCRAPE_DIR, 'Enocks_tours_data.json'),
+               join(SCRAPE_DIR, 'Enocks_data.json'))
 
-    #scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
-    #           'Marks_Blog_data.json')
+    scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default',
+               join(SCRAPE_DIR, 'Marks_Blog_data.json'))
 
     installLayers.installAllLayers()
 
