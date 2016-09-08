@@ -275,6 +275,19 @@
 	 "height": 0.3,
          "xurl": "https://fxpal.com"
      }
+     {
+        "id": "Auburn_River_Trail",
+        "type": "robotTrail",
+        "robotType": "wheelchair",
+        "description": "Auburn_River_Trail",
+	 "dataUrl": "/static/data/paths/Auburn_River_Trail.json",
+	 "youtubeId": "JVKKrDdfIWc",
+	 "youtubeDeltaT": 352.975114,
+	 "XyoutubeUrl": "https://youtu.be/iw5W7PXW43Y",
+	 "coordSys": "GEO",
+	 "height": 0.3,
+         "xurl": "https://fxpal.com"
+     }
     ]
 }
 
