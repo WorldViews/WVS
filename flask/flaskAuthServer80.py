@@ -10,7 +10,6 @@ sys.path.insert(0, FLASK_SOCIAL_DIR)
 import json, time, traceback, socket
 from datetime import datetime
 import flask
-import Queue
 
 #from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
@@ -22,7 +21,8 @@ from flask.ext.security import Security, SQLAlchemyUserDatastore, \
 from flask_security.forms import RegisterForm
 
 from flask import Flask, render_template, send_file, redirect, \
-                  jsonify, send_from_directory, request, url_for
+                  send_from_directory, request, url_for
+#                  jsonify, send_from_directory, request, url_for
 from flask_socketio import SocketIO, emit
 from flask_mail import Mail
 from flask_admin import Admin
@@ -36,44 +36,27 @@ from flask_social import Social, login_failed
 from flask_social.utils import get_connection_values_from_oauth_response
 from flask_social.datastore import SQLAlchemyConnectionDatastore
 
+from jsonHack import jsonify, jsondumps
+
 execfile("../config/ADMIN_CONFIG.py")
 print "MAIL_USERNAME:", MAIL_USERNAME
-
-TABLE_NAMES = ["chat", "notes", "periscope"]
 
 DB_REQUEST_TIMES = {}
 USER_TIMES = {}
 
-NUM_CONNS = 5
-POOL = Queue.Queue(NUM_CONNS)
-
 PREV_YOUTUBE_ID = None
 
-rdb = None
+DBA = None
+
 try:
-    import rethinkdb as rdb
-    #rdb.connect('localhost', 28015).repl()
-    for i in range(NUM_CONNS):
-        print "Getting connection"
-        conn_ = rdb.connect(db='test')
-        POOL.put(conn_)
-    print "**** Connection pool has %d connections ****" % POOL.qsize()
+    #import RDBA
+    #DBA = RDBA.RDBAdapter()
+    import MDBA
+    DBA = MDBA.MDBAdapter()
 except:
     traceback.print_exc()
-    print "*** Running without DB ***"
-    rdb = None
+    print "No RDBA adapter"
 
-def getConn():
-    print "getConn..."
-    conn = POOL.get()
-    cnt = POOL.qsize()
-    print "POOL count", cnt, " conn:", conn
-    return conn
-
-def releaseConn(conn):
-    print "releasing Conn:", conn
-    POOL.put(conn)
-    return
 
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
@@ -264,20 +247,6 @@ def create_users():
     print "------------------------------------------"
 
 
-def getObj(id, tname):
-    print "getObj", id, tname
-    obj = None
-    try:
-        conn = getConn()
-        recs = rdb.table(tname).filter({'id': id}).run(conn)
-        obj = recs.next()
-    finally:
-        releaseConn(conn)
-    return obj
-
-def getNote(id):
-    return getObj(id, 'notes')
-    
 @app.route('/')
 def index():
     """
@@ -385,7 +354,8 @@ def reg():
            'sessionId': sessionId,
            'numUsers': numUsers, 'clientType': clientType}
     print obj
-    jstr = json.dumps(obj)
+    #jstr = json.dumps(obj)
+    jstr = jsondumps(obj)
     print "jstr:", jstr
     if socketio:
         print "send to socketio"
@@ -451,7 +421,8 @@ def sioput(etype):
     if etype0 != etype:
         print "mismatch etype:", etype
     obj = req['obj']
-    jObj = json.dumps(obj)
+    #jObj = json.dumps(obj)
+    jObj = jsondumps(obj)
     print "etype:", etype
     print "jObj:", jObj
     if socketio:
@@ -487,22 +458,24 @@ def addComment(etype):
         if 'name' in req:
             cObj['name'] = req['name']
         comment = cObj
-    note = getNote(parentId)
+    note = DBA.getNote(parentId)
     print "note:", note
     comments = note.get("comments", [])
     comments.append(comment)
     print "comments:", comments
     note['comments'] = comments
-    jObj = json.dumps(note)
+    #jObj = json.dumps(note)
+    jObj = jsondumps(note)
     print "etype:", etype
     print "jObj:", jObj
     if socketio:
         print "send to socketio"
         emit(etype, jObj, broadcast=True, namespace='/')
     print "**** addToDB"
-    replaceObjToDB(note, etype)
+    DBA.replaceObjToDB(note, etype)
     print
-    return flask.jsonify({'status': 'OK'})
+    #return flask.jsonify({'status': 'OK'})
+    return jsonify({'status': 'OK'})
 
 @app.route('/db/<path:etype>')
 def query(etype):
@@ -510,40 +483,10 @@ def query(etype):
     print "query", etype
     t = time.time()
     DB_REQUEST_TIMES[etype] = t
-    if rdb == None:
-        return flask.jsonify({'error': 'No DB', 't': t, 'records': []})
-    args = request.args
-    id = args.get("id", None)
-    tMin = args.get("tMin", None)
-    limit = args.get("limit", None)
-    if limit != None:
-        limit = int(limit)
-    if tMin != None:
-        tMin = float(tMin)
-    try:
-        q = rdb.table(etype)
-        if id != None:
-            q = q.filter({'id': id})
-        if tMin != None:
-            q = q.filter(rdb.row["t"].gt(tMin))
-        q = q.order_by(rdb.desc('t'))
-        if limit != None:
-            q = q.limit(limit)
-        print q
-        try:
-            conn = getConn()
-            recs = q.run(conn)
-            items = list(recs)
-        finally:
-            releaseConn(conn)
-    except:
-        traceback.print_exc()
-        return flask.jsonify({})
-    items = list(recs)
-    obj = {'type': etype,
-           't' : t,
-           'records': items}
-    return flask.jsonify(obj)
+    if DBA == None:
+        return jsonify({'error': 'No DB', 't': t, 'records': []})
+    obj = DBA.query(etype, request.args, t)
+    return jsonify(obj)
 
 """
 This returns an object that gives the most recent request
@@ -553,11 +496,11 @@ are requested.
 """
 @app.route('/dbstats/')
 def dbstats():
-    return flask.jsonify(DB_REQUEST_TIMES)
+    return jsonify(DB_REQUEST_TIMES)
 
 @app.route('/userstats/')
 def userstats():
-    return flask.jsonify(USER_TIMES)
+    return jsonify(USER_TIMES)
 
 @app.route('/wvCurrentUrl')
 def wvCurrentUrl():
@@ -578,7 +521,7 @@ def notifyServer():
     if 'youtubeId' in dict:
         global PREV_YOUTUBE_ID
         PREV_YOUTUBE_ID = dict['youtubeId']
-    return flask.jsonify({})
+    return jsonify({})
 
 
 ###################################################################
@@ -593,13 +536,13 @@ def notifyServer():
 def handle_chat(msg):
     print "handle_chat:", msg
     emit('chat', msg, broadcast=True)
-    addMsgStrToDB(msg, 'chat')
+    DBA.addMsgStrToDB(msg, 'chat')
 
 @socketio.on('notes')
 def handle_notes(msg):
     print "handle_notes:", msg
     emit('notes', msg, broadcast=True)
-    addMsgStrToDB(msg, 'notes')
+    DBA.addMsgStrToDB(msg, 'notes')
 
 @socketio.on('people')
 def handle_people(msg):
@@ -613,45 +556,6 @@ def handle_sharecam(msg):
     #print "handle_sharecam:", msg
     emit('sharecam', msg, broadcast=True)
 
-def addMsgStrToDB(msgStr, etype):
-    print "add Msg to DB:", etype
-    if etype not in TABLE_NAMES:
-        print "**** addMsgStrToDB unknown table:", etype
-        return
-    obj = json.loads(msgStr)
-    if rdb == None:
-        print "*** not connected to DB ***"
-    try:
-        conn = getConn()
-        rdb.table(etype).insert(obj).run(conn)
-    finally:
-        releaseConn(conn)
-
-def addObjToDB(obj, etype):
-    print "add Obj to DB:", etype
-    print "obj:", obj
-    if etype not in TABLE_NAMES:
-        print "**** addObjToDB: unknown table:", etype
-        return
-    try:
-        conn = getConn()
-        rc = rdb.table(etype).insert(obj).run(conn)
-        print "Completed insert", rc
-    finally:
-        releaseConn(conn)
-
-def replaceObjToDB(obj, etype):
-    print "add Obj to DB:", etype
-    print "obj:", obj
-    if etype not in TABLE_NAMES:
-        print "**** addObjToDB: unknown table:", etype
-        return
-    try:
-        conn = getConn()
-        rc = rdb.table(etype).replace(obj).run(conn)
-    finally:
-        releaseConn(conn)
-    print "Completed insert", rc
 
 def run():
     print "Running flask server"
