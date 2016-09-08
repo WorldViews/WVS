@@ -1,75 +1,102 @@
 {
     "layers": [
        {
-          "name": "climbing",
-          "description": "Rock climbing",
-	  "visible": false,
-	  "iconUrl": "/static/img/billboards/climber.png",
-	  "showTethers": true,
-	  "scale": 0.05,
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/climbing_data.json"
+           "name": "YouTube",
+	   "type": "folder",
+	   "layers": [
+	      {
+	          "name": "climbing",
+		  "description": "Rock climbing",
+		  "visible": false,
+		  "iconUrl": "/static/img/billboards/climber.png",
+	          "showTethers": true,
+         	  "scale": 0.05,
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/climbing_data.json"
+              },
+	      {
+                  "name": "gardens",
+                  "description": "Garden Videos",
+	          "maxNum": 8000,
+	          "visible": false,
+	          "iconUrl": "/static/img/billboards/flowers.ico",
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/gardens_data.json"
+              },
+              {
+                  "name": "hiking",
+                  "description": "Hiking",
+	          "maxNum": 5000,
+	          "visible": false,
+	          "iconUrl": "/static/img/billboards/hiker.png",
+	          "scale": 0.1,
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/hiking_data.json"
+              },
+              {
+                  "name": "flyingKite",
+                  "description": "Flying Kites",
+                  "maxNum": 5000,
+                  "visible": false,
+                  "xxheight": 10000,
+	          "scale": 0.07,
+                  "iconUrl": "/static/img/billboards/kite.png",
+                  "mediaType": "youtube",
+                  "dataFile": "/static/data/FlyingKite_data.json"
+              },
+              {
+                  "name": "dancing",
+                  "description": "Dancing",
+                  "maxNum": 6000,
+	          "scale": 0.07,
+                  "iconUrl": "/static/img/billboards/dancing_0.png",
+                  "mediaType": "youtube",
+                  "dataFile": "/static/data/dance_data.json"
+             },
+             {
+                  "name": "temples",
+                  "description": "Temples",
+	          "maxNum": 5000,
+	          "visible": false,
+  	          "scale": 0.06,
+	          "iconUrl": "/static/img/billboards/temple_trans.png",
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/temples_data.json"
+             },
+             {
+                  "name": "surfing",
+                  "description": "Surfing videos",
+	          "maxNum": 8000,
+	          "visible": false,
+	          "scale": 0.06,
+	          "iconUrl": "/static/img/billboards/surfing.png",
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/surfing_data.json"
+             },
+             {
+                  "name": "surfing2",
+                  "description": "Surfing videos (all)",
+	          "maxNum": 8000,
+	          "visible": false,
+	          "scale": 0.06,
+	          "iconUrl": "surfing.png",
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/surfing0_data.json"
+             },
+             {
+                  "name": "waterSports3D",
+                  "description": "3D Water fun videos",
+	          "maxNum": 8000,
+	          "visible": false,
+	          "iconUrl": "/static/img/billboards/surfing.png",
+	          "mediaType": "youtube",
+	          "dataFile": "/static/data/waterSports3D_data.json"
+             }
+         ]
        },
        {
-          "name": "hiking",
-          "description": "Hiking",
-	  "maxNum": 5000,
-	  "visible": false,
-	  "iconUrl": "/static/img/billboards/hiker.png",
-	  "scale": 0.1,
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/hiking_data.json"
-       },
-       {
-          "name": "flyingKite",
-          "description": "Flying Kites",
-          "maxNum": 5000,
-          "visible": false,
-          "xxheight": 10000,
-	  "scale": 0.07,
-          "iconUrl": "/static/img/billboards/kite.png",
-          "mediaType": "youtube",
-          "dataFile": "/static/data/FlyingKite_data.json"
-       },
-       {
-          "name": "dancing",
-          "description": "Dancing",
-          "maxNum": 6000,
-	  "scale": 0.07,
-          "iconUrl": "/static/img/billboards/dancing_0.png",
-          "mediaType": "youtube",
-          "dataFile": "/static/data/dance_data.json"
-       },
-       {
-          "name": "temples",
-          "description": "Temples",
-	  "maxNum": 5000,
-	  "visible": false,
-	  "xxxheight": 10000,
-	  "scale": 0.06,
-	  "iconUrl": "/static/img/billboards/temple_trans.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/temples_data.json"
-       },
-       {
-          "name": "surfing",
-          "description": "Surfing videos",
-	  "maxNum": 8000,
-	  "visible": false,
-	  "scale": 0.06,
-	  "iconUrl": "/static/img/billboards/surfing.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/surfing_data.json"
-       },
-       {
-          "name": "surfing2",
-          "description": "Surfing videos (all)",
-	  "maxNum": 8000,
-	  "visible": false,
-	  "scale": 0.06,
-	  "iconUrl": "surfing.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/surfing0_data.json"
+          "name": "dynYouTube",
+          "description": "YouTube Search"
        },
        {
           "name": "virtualphotowalks",
@@ -83,91 +110,10 @@
 	  "dataFile": "/static/data/virtualphotowalks_data.json"
        },
        {
-          "name": "waterSports3D",
-          "description": "3D Water fun videos",
-	  "maxNum": 8000,
-	  "visible": false,
-	  "iconUrl": "/static/img/billboards/surfing.png",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/waterSports3D_data.json"
-       },
-       {
-          "name": "photos",
-          "description": "Recently tweeted images",
-	  "maxNum": 100,
-	  "scale": 0.2,
-	  "height": 4000000,
-	  "showTethers": false,
-	  "imageServer": "/"
-       },
-       {
-          "name": "sharecam",
-          "description": "Shared Camera Guides",
-	  "iconUrl": "/static/img/billboards/jumpChat.png",
-	  "maxNum": 100,
-	  "visible": false
-       },
-       {
-          "name": "zilong",
-          "description": "Zilong's Journey",
-	  "iconUrl": "/static/img/billboards/yinyang.png",
-	  "mediaType": "html",
-	  "dataFile": "/static/data/zilong_data.json",
-	  "visible": false
-       },
-       {
-          "name": "marksBlog",
-          "description": "Mark's Blog",
-	  "iconUrl": "/static/img/billboards/purplePlacemark.png",
-	  "mediaType": "html",
-	  "dataFile": "/static/data/Marks_Blog_data.json",
-	  "visible": false
-       },
-       {
-          "name": "periscope",
-          "description": "Periscope",
-	  "iconUrl": "/static/img/billboards/periscopeIcon.png",
-	  "scale": 0.06,
-	  "height": 500000,
-	  "showTethers": true,
-	  "mediaType": "html",
-	  "dataFile": "/static/data/periscope_data.json",
-	  "visible": false
-       },
-       {
-          "name": "craigslist",
-	  "require": "WVCraigslist.js",
-	  "dataFile": "/static/data/craigslist_data.json",
-          "description": "Craigslist Events & Housing"
-       },
-       {
-          "name": "dynYouTube",
-          "description": "YouTube Search"
-       },
-       {
-          "name": "gardens",
-          "description": "Garden Videos",
-	  "maxNum": 8000,
-	  "visible": false,
-	  "iconUrl": "/static/img/billboards/flowers.ico",
-	  "mediaType": "youtube",
-	  "dataFile": "/static/data/gardens_data.json"
-       },
-       {
-          "name": "geovid",
-          "description": "GeoVid Project",
-          "iconUrl": "/static/img/billboards/geovid_logo.png",
-          "height": 5000,
-          "scale": 0.10,
-          "showTethers": true,
-          "mediaType": "html",
-          "dataFile": "/static/data/geovid_data.json",
-          "visible": false
-       },
-       {
           "name": "hikes",
           "require": "WVRobots.js",
           "mediaType": "robots",
+	  "iconUrl": "/static/img/billboards/gobeyondthefence.png",
 	  "dataFile": "/static/data/tours_data.json",
           "description": "Tours and Hikes"
        },
@@ -344,14 +290,59 @@
                  "mediaType": "html",
                  "dataFile": "/static/data/Marks_data.json",
                  "visible": false
-              } 
+              },
+              {
+                 "name": "zilong",
+                 "description": "Zilong's Journey",
+	         "iconUrl": "/static/img/billboards/yinyang.png",
+	         "mediaType": "html",
+	         "dataFile": "/static/data/zilong_data.json",
+	         "visible": false
+              }
            ]
+       },
+       {
+          "name": "geovid",
+          "description": "GeoVid Project",
+          "iconUrl": "/static/img/billboards/geovid_logo.png",
+          "height": 5000,
+          "scale": 0.10,
+          "showTethers": true,
+          "mediaType": "html",
+          "dataFile": "/static/data/geovid_data.json",
+          "visible": false
        },
        {
            "name": "Experimental",
 	   "type": "folder",
 	   "open": false,
 	   "layers": [
+	       {
+                  "name": "photos",
+                  "description": "Recently tweeted images",
+	          "maxNum": 100,
+	          "scale": 0.2,
+	          "height": 4000000,
+	          "showTethers": false,
+	          "imageServer": "/"
+               },
+               {
+                  "name": "sharecam",
+                  "description": "Shared Camera Guides",
+	          "iconUrl": "/static/img/billboards/jumpChat.png",
+	          "visible": false
+               },
+               {
+                  "name": "periscope",
+                  "description": "Periscope",
+	          "iconUrl": "/static/img/billboards/periscopeIcon.png",
+	          "scale": 0.06,
+	          "height": 500000,
+	          "showTethers": true,
+	          "mediaType": "html",
+	          "dataFile": "/static/data/periscope_data.json",
+	          "visible": false
+               },
                {
                   "mediaType": "spirals",
                   "require": "WVSpirals.js",
@@ -366,14 +357,6 @@
                   "mediaType": "robots",
 	          "dataFile": "/static/data/robots_data.json",
                   "description": "Telepresence Robots"
-               },
-               {
-                  "name": "hikes",
-                  "require": "WVRobots.js",
-                  "mediaType": "robots",
-		  "iconUrl": "/static/img/billboards/gobeyondthefence.png",
-	          "dataFile": "/static/data/tours_data.json",
-                  "description": "Tours and Hikes"
                },
                {
                   "mediaType": "html",
@@ -405,6 +388,12 @@
                   "name": "admin",
 	          "require": "WVAdmin.js",
                   "description": "Admin"
+               },
+	       {
+                  "name": "craigslist",
+	          "require": "WVCraigslist.js",
+	          "dataFile": "/static/data/craigslist_data.json",
+                  "description": "Craigslist Events & Housing"
                }
            ]
        }
