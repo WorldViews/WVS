@@ -1,23 +1,23 @@
 {
     "records": [
         {
-            "lat": -122.052, 
+            "lat": 37.557, 
             "url": "http://www.gobeyondthefence.com/2016/09/02/oasis-sea-pavement/", 
-            "lon": 37.557, 
+            "lon": -122.052, 
             "id": "http___www_gobeyondthefence_com__p_711", 
             "title": "An Oasis in a Sea of Pavement"
         }, 
         {
-            "lat": -120.38, 
+            "lat": 37.986, 
             "url": "http://www.gobeyondthefence.com/2016/08/29/stars-shine-bright/", 
-            "lon": 37.986, 
+            "lon": -120.38, 
             "id": "http___www_gobeyondthefence_com__p_696", 
             "title": "Where the Stars Shine Bright"
         }, 
         {
-            "lat": -122.438, 
+            "lat": 38.231, 
             "url": "http://www.gobeyondthefence.com/2016/08/15/flying-through-history-over-napa-valley/", 
-            "lon": 38.231, 
+            "lon": -122.438, 
             "id": "http___www_gobeyondthefence_com__p_587", 
             "title": "Flying Through History Over Napa Valley"
         }, 
