@@ -196,11 +196,11 @@ WV.onLeftClick = function(e) {
     report("click picked..... pickedObject._id "+id+ " layer: "+layerName);
     //var rec = layer.recs[id];
     if (rec.clickHandler) {
-	rec.clickHandler(rec, e.position, pickPos);
+	rec.clickHandler(rec, e.position, pickPos, e, pickedObject);
     }
     else {
 	report("*** no click handler");
-	WV.Trails.handleClick(rec, e.position, pickPos, e);
+	WV.Trails.handleClick(rec, e.position, pickPos, e, pickedObject);
     }
     report("LEFT_CLICK e: "+JSON.stringify(e));
     //WV.viewer.trackedEntity = undefined;
@@ -232,11 +232,11 @@ WV.setupCesium = function()
 	    rec = WV.recs[id];
 	}
 	if (rec == null) {
-	    report("trying _wvRec");
+	    //report("trying _wvRec");
 	    rec = pickedObject.id._wvRec;
 	}
 	if (rec == null) {
-	    report("***** setupCesium no rec for id: "+id);
+	    report("***** MOUSE_MOVE no rec for id: "+id);
 	    //report("***** setupCesium no rec for id: "+JSON.stringify(id));
 	    _ID_ = id;
 	    return;

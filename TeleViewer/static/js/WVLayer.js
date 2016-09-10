@@ -230,6 +230,8 @@ WV.addBillboardToLayer = function(layer, rec)
 	b.anchor._wvrec = rec;
     }
     layer.billboards[id] = b;
+    if (rec.clickHandler)
+	return;
     if (rec.youtubeId)
 	rec.clickHandler = WV.playVid;
     else

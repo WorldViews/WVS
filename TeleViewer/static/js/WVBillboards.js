@@ -81,26 +81,7 @@ WV.getTether = function(tetherId, points)
 }
 
 WV.defaultAnchorURL = "/images/mona_cat.jpg";
-/*
-WV.addBillboard0 = function(bbCollection, id, lat, lon, imgUrl, scale, height)
-{
-    //report("Adding billboard "+WV.numBillboards);
-    // Example 1:  Add a billboard, specifying all the default values.
-    var b = bbCollection.add({
-       show : true,
-       position : Cesium.Cartesian3.fromDegrees(lon, lat, height),
-       pixelOffset : Cesium.Cartesian2.ZERO,
-       eyeOffset : Cesium.Cartesian3.ZERO,
-       horizontalOrigin : Cesium.HorizontalOrigin.CENTER,
-       verticalOrigin : Cesium.VerticalOrigin.CENTER,
-       scale : scale,
-       image : imgUrl,
-       color : Cesium.Color.WHITE,
-       id : id
-    });
-    return b;
-}
-*/
+
 WV.addBillboard0 = function(bbCollection, id, lat, lon, imgUrl, scale, height)
 {
     //report("Adding billboard "+WV.numBillboards);

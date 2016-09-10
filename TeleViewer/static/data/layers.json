@@ -112,8 +112,8 @@
        {
           "name": "hikes",
           "require": "WVRobots.js",
-          "mediaType": "robots",
-	  "iconUrl": "/static/img/billboards/gobeyondthefence.png",
+          "mediaType": "trails",
+	  "iconUrl": "/static/img/billboards/tours.png",
 	  "dataFile": "/static/data/tours_data.json",
           "description": "Tours and Hikes"
        },

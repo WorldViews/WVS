@@ -109,8 +109,21 @@ WV.Trails.handleTrailData = function(layer, rec, data)
 	for (var i=0; i<points.length; i++) {
 	    WV.drawPoint(points[i]);
 	}
+    var addBillboard = true;
+    if (addBillboard) {
+	if (!rec.lon) {
+	    var lla0 = WV.xyzToLla(data.recs[0].pos, coordSys);
+	    rec.lat = lla0[0];
+	    rec.lon = lla0[1];
+	}
+	rec.flyDur = 5;
+	rec.height = 10000;
+	rec.clickHandler = WV.Trails.onClickGoTo;
+	WV.addBillboardToLayer(layer, rec);
+    }
     return route;
 }
+
 
 /*
   Draw a point at a given position.  If an given is given
@@ -347,12 +360,12 @@ WV.findNearestPoint = function(pt, points)
 {
     var dv = new Cesium.Cartesian3();
     var nv1 = new Cesium.Cartesian3();
-    report("fNP pt: "+pt);
+    //report("fNP pt: "+pt);
     var c0 = WV.viewer.camera.position;
-    report("fNP c0: "+c0);
+    //report("fNP c0: "+c0);
     Cesium.Cartesian3.subtract(c0,pt,dv);
     Cesium.Cartesian3.normalize(dv,nv1);
-    report("fNP pt: "+pt+"  nv1: "+nv1);
+    //report("fNP pt: "+pt+"  nv1: "+nv1);
     var aMin = 1.0E10;
     iMin = 0;
     var v = new Cesium.Cartesian3();
@@ -386,7 +399,25 @@ WV.Trails.noticeTimeChange = function(rec, status)
     WV.updateCursor(rec, res.nearestPt);
 }
 
-WV.Trails.handleClick = function(rec, xy, xyz, e)
+WV.Trails.onClickGoTo = function(rec, xy, xyz, e, pickedObj)
+{
+    report("**** onClickGoTo...");
+    var dur = 4;
+    var height = 7000;
+    if (rec.flyDur)
+	dur = rec.flyDur;
+    if (rec.height)
+	height = rec.height;
+    report("dur: "+dur+"  h: "+height);
+    var dest = Cesium.Cartesian3.fromDegrees(
+			    rec.lon, rec.lat, height);
+    var opts = {destination: dest, duration: dur};
+    report("**** flyTo opts: "+JSON.stringify(opts));
+    //WV.viewer.flyTo(pickedObj, {duration: dur});
+    WV.viewer.camera.flyTo(opts);
+}
+
+WV.Trails.handleClick = function(rec, xy, xyz, e, pickedObj)
 {
     report("WV.Trails.handleClick rec: "+rec);
     report("WV.Trails xy: "+xy+"  "+xyz);
@@ -396,9 +427,26 @@ WV.Trails.handleClick = function(rec, xy, xyz, e)
 	WV.showPage(rec);
 	return;
     }
+    /*
+    if (rec.pathRec.flyDur) {
+	report("**** flyTo");
+	if (pickedObj) {
+	    var dur = rec.pathRec.flyDur;
+	    var dest = Cesium.Cartesian3.fromDegrees(
+			     rec.pathRec.lon, rec.pathRec.lat, 15000.0);
+	    var opts = {destination: dest, duration: dur};
+	    report("**** flyTo opts: "+opts);
+	    //WV.viewer.flyTo(pickedObj, {duration: dur});
+	    WV.viewer.camera.flyTo(opts);
+	}
+	else {
+	    report("****** no object");
+	}
+    }
+    */
     //WV.drawPoint(xyz, "click_point", 8, Cesium.Color.RED);
     var res = WV.findNearestPoint(xyz, rec.points);
-    report("res: "+JSON.stringify(res));
+    //report("res: "+JSON.stringify(res));
     RES_ = res;
     var frameRate = 29.97;
     var idx = 0;
@@ -438,9 +486,7 @@ WV.Trails.handleClick = function(rec, xy, xyz, e)
 	else if (rec.pathRec.youtubeDeltaT) {
 	    report("**** youtubeDeltaT: "+rec.pathRec.youtubeDeltaT);
 	    vt = t + rec.pathRec.youtubeDeltaT;
-	    report("Computing time");
-	    report("trailTime: "+t);
-	    report("playTime: "+vt);
+	    report("trailTime: "+t+" playTime: "+vt);
         }
 	if (e && e.shiftDown) {
 	    report("***** shift down... updating delta!! ****");
@@ -485,6 +531,10 @@ WV.Trails.moveHandler = function(rec, xy, xyz)
 }
 
 WV.registerModule("WVTrails.js");
+
+WV.registerLayerType("trails", {
+	moveHandler: WV.Trails.moveHandler
+});
 
 WV.registerRecHandler("robotTrail", WV.Trails.addTrail);
 WV.registerRecHandler("dronePath", WV.Trails.addTrail);
