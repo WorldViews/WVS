@@ -13,4 +13,23 @@
 {{ show_provider_button('twitter',  'Twitter', twitter_conn) }}
 {{ show_provider_button('facebook', 'Facebook', facebook_conn) }}
 {{ show_provider_button('google',   'Google', google_conn) }}
+<div>
+<a href="/notifications/clear">Clear Notification Requests</a>
+<p>
+<a href="/notifications/add">Add Notification Requests</a>
+{% if notreqs %}
+<h3>Notifications</h3>
+{% endif %}
+{% for req in notreqs %}
+{{ req.pattern.eventType +" "+req.email }} <br>
+{% endfor %}
+<pre>
+</pre>
+<!--
+<button>Add Notification Requests</button>
+<p>
+<button>Clear My Notification Requests</button>
+-->
+</div>
+
 <!--  other providers have been removed  -->

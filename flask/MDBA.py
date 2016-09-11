@@ -41,10 +41,12 @@ class MDBAdapter:
         #self.db[etype].replace_one({'_id': obj['_id']}, obj)
         self.db[etype].replace_one({'id': obj['id']}, obj)
 
+    """
     def addMsgStrToDB(self, msgStr, etype):
         print "add Msg to DB:", etype
         obj = json.loads(msgStr)
         self.addObjToDB(obj, etype)
+    """
 
     def addObjToDB(self, obj, etype):
         print "add Obj to DB:", etype

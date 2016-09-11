@@ -14,9 +14,11 @@ import flask
 #from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
-from flask.ext.sqlalchemy import SQLAlchemy
+#from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 
-from flask.ext.security import Security, SQLAlchemyUserDatastore, \
+#from flask.ext.security import Security, SQLAlchemyUserDatastore, \
+from flask_security import Security, SQLAlchemyUserDatastore, \
     UserMixin, RoleMixin, login_required, current_user, login_user
 from flask_security.forms import RegisterForm
 
@@ -24,13 +26,10 @@ from flask import Flask, render_template, send_file, redirect, \
                   send_from_directory, request, url_for
 #                  jsonify, send_from_directory, request, url_for
 from flask_socketio import SocketIO, emit
-from flask_mail import Mail
+from flask_mail import Mail, Message
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-#from flask.ext.social import Social, login_failed
-#from flask.ext.social.utils import get_connection_values_from_oauth_response
-#from flask.ext.social.datastore import SQLAlchemyConnectionDatastore
 import flask_social
 from flask_social import Social, login_failed
 from flask_social.utils import get_connection_values_from_oauth_response
@@ -38,11 +37,15 @@ from flask_social.datastore import SQLAlchemyConnectionDatastore
 
 from jsonHack import jsonify, jsondumps
 
+import WVNotification
+
+
 execfile("../config/ADMIN_CONFIG.py")
 print "MAIL_USERNAME:", MAIL_USERNAME
 
 DB_REQUEST_TIMES = {}
 USER_TIMES = {}
+SERVER_START_TIME = time.time()
 
 PREV_YOUTUBE_ID = None
 
@@ -56,7 +59,6 @@ try:
 except:
     traceback.print_exc()
     print "No RDBA adapter"
-
 
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
@@ -99,6 +101,7 @@ app.config['SOCIAL_GOOGLE'] = {
 
 mail = Mail(app)
 
+NOTIFIER = WVNotification.Notifier(DBA, Message, mail)
 
 socketio = SocketIO(app)
 
@@ -312,13 +315,41 @@ def on_login_failed(sender, provider, oauth_response):
 @app.route('/profile')
 @login_required
 def profile():
+    notreqs = NOTIFIER.getNotificationRequests()
+    print "notreqs:", notreqs
     return render_template(
         'profile.html',
         content='Profile Page',
         twitter_conn=social.twitter.get_connection(),
         facebook_conn=social.facebook.get_connection(),
+        notreqs = notreqs,
         #foursquare_conn=social.foursquare.get_connection()
     )
+
+@app.route('/notifications/clear')
+@login_required
+def notificationsClear():
+    email = current_user.email
+    print "notificationsClear", email
+    #NOTIFIER.deleteRequests()
+    NOTIFIER.deleteRequests({'email': email})
+    return redirect('/profile')
+
+@app.route('/notifications/add')
+@login_required
+def notificationsAdd():
+    email = current_user.email
+    print "notificationsAdd", email
+    NOTIFIER.deleteRequests({'email': email})
+    NOTIFIER.addRequest(
+        {'email': email,
+         'pattern': {'eventType': 'newChatPost'},
+         'method': 'email'})
+    NOTIFIER.addRequest(
+        {'email': email,
+         'pattern': {'eventType': 'newComment'},
+         'method': 'email'})
+    return redirect('/profile')
 
 @app.route('/TeleViewer')
 @app.route('/televiewer')
@@ -473,6 +504,8 @@ def addComment(etype):
         emit(etype, jObj, broadcast=True, namespace='/')
     print "**** addToDB"
     DBA.replaceObjToDB(note, etype)
+    if NOTIFIER:
+        NOTIFIER.noticeNewComment(note, comment)
     print
     #return flask.jsonify({'status': 'OK'})
     return jsonify({'status': 'OK'})
@@ -536,20 +569,32 @@ def notifyServer():
 def handle_chat(msg):
     print "handle_chat:", msg
     emit('chat', msg, broadcast=True)
-    DBA.addMsgStrToDB(msg, 'chat')
+    #DBA.addMsgStrToDB(msg, 'chat')
+    msgObj = json.loads(msg)
+    DBA.addObjToDB(msgObj, 'chat')
+    if NOTIFIER:
+        NOTIFIER.noticeNewChatPost(msgObj)
 
 @socketio.on('notes')
-def handle_notes(msg):
-    print "handle_notes:", msg
-    emit('notes', msg, broadcast=True)
-    DBA.addMsgStrToDB(msg, 'notes')
+def handle_notes(msgStr):
+    print "handle_notes:", msgStr
+    emit('notes', msgStr, broadcast=True)
+    #DBA.addMsgStrToDB(msg, 'notes')
+    note = json.loads(msgStr)
+    DBA.addObjToDB(note, 'notes')
+    if NOTIFIER:
+        NOTIFIER.noticeNewNote(note)
 
 @socketio.on('people')
 def handle_people(msg):
     #print "handle_people:", msg
     emit('people', msg, broadcast=True)
     obj = json.loads(msg)
+    userId = obj['userId']
+    isNew = userId not in USER_TIMES
     USER_TIMES[obj['userId']] = obj
+    if isNew and NOTIFIER:
+        NOTIFIER.noticeNewUser(obj)
 
 @socketio.on('sharecam')
 def handle_sharecam(msg):
