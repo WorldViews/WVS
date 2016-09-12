@@ -44,10 +44,10 @@ You can get authentication values at twitter developer website https://dev.twitt
 
 config = {}
 execfile(CONFIG_PATH, config)
-ckey = config['ckey']
-csecret = config['csecret']
-atoken = config['atoken']
-asecret = config['asecret']
+ckey = config['twitter_ckey']
+csecret = config['twitter_csecret']
+atoken = config['twitter_atoken']
+asecret = config['twitter_asecret']
 GOOGLE_API_KEY = config['GOOGLE_API_KEY']
 #GOOGLE_API_KEY = "AIzaSyAAJmB1YoCDbgWILLWFPBR4UABC4RAwvX8"
 

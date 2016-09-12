@@ -29,6 +29,7 @@ from flask_socketio import SocketIO, emit
 from flask_mail import Mail, Message
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+#from flask_admin.contrib.mongoengine import ModelView
 
 import flask_social
 from flask_social import Social, login_failed
