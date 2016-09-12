@@ -86,8 +86,8 @@ app.config['MAIL_USERNAME'] = MAIL_USERNAME
 app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
 app.config['SOCIAL_TWITTER'] = {
-    'consumer_key': ckey,
-    'consumer_secret': csecret
+    'consumer_key': twitter_ckey,
+    'consumer_secret': twitter_csecret
 }
 
 app.config['SOCIAL_FACEBOOK'] = {
