@@ -290,9 +290,9 @@ def notifyServer():
         PREV_YOUTUBE_ID = dict['youtubeId']
     return jsonify({})
 
-def run():
+def run(port=80, host="0.0.0.0"):
     print "Running flask server"
-    socketio.run(app, host="0.0.0.0", port=80)
+    socketio.run(app, host=host, port=port)
     #socketio.run(app, port=80)
 
 if __name__ == '__main__':

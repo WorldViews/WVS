@@ -1,4 +1,4 @@
-import flaskAuthServer80 as S
 
-S.socketio.run(S.app, host="0.0.0.0", port=9000)
+import flask_worldviews
+flask_worldviews.run(port=9000)
 
