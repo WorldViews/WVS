@@ -15,7 +15,6 @@ import json, time, traceback, socket
 from datetime import datetime
 import flask
 
-#from wtforms import Form, BooleanField, StringField, PasswordField, validators
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
 from flask.ext.mongoengine import MongoEngine
@@ -26,12 +25,11 @@ from flask_security.forms import RegisterForm
 
 from flask import Flask, render_template, send_file, redirect, \
                   send_from_directory, request, url_for
-#                  jsonify, send_from_directory, request, url_for
+
 from flask_socketio import SocketIO, emit
 from flask_mail import Mail, Message
 from flask_admin import Admin
 from flask_admin.contrib.mongoengine import ModelView
-#from flask_admin.contrib.mongoengine import ModelView
 
 import flask_social
 from flask_social import Social, login_failed
@@ -39,6 +37,8 @@ from flask_social.utils import get_connection_values_from_oauth_response
 from flask_social.datastore import MongoEngineConnectionDatastore
 
 from jsonHack import jsonify, jsondumps
+
+from WV_flask_projects import ProjectMan
 
 import WVNotification
 
@@ -71,7 +71,8 @@ app.debug = True
 app.config['SECRET_KEY'] = 'secret!'
 app.config['DEBUG'] = True
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///wv.db'
-app.config['MONGODB_SETTINGS'] = {'DB': 'test0'}
+#app.config['MONGODB_SETTINGS'] = {'DB': 'test0'}
+app.config['MONGODB_SETTINGS'] = {'DB': 'wv_data'}
 
 app.config['SECURITY_TRACKABLE'] = True
 app.config['SECURITY_REGISTERABLE'] = True
@@ -196,9 +197,7 @@ class MyModelView(ModelView):
         print "****** redirect for login ******"
         return redirect(url_for('login', next=request.url))
 
-#admin.add_view(MyModelView(User, db.session))
-#admin.add_view(MyModelView(Role, db.session))
-#admin.add_view(MyModelView(Connection, db.session))
+
 admin.add_view(MyModelView(User))
 admin.add_view(MyModelView(Role))
 admin.add_view(MyModelView(Connection))
@@ -420,6 +419,7 @@ def viewerTV():
 #    return send_from_directory('Viewer', "TV.html")
     return render_template("TV.html")
 
+"""
 @app.route('/Viewer/<path:path>')
 def send(path):
     print "send_page", path
@@ -439,6 +439,7 @@ def send_page(path):
 def send_play(path):
     print "send_play", path
     return send_from_directory('play', path)
+"""
 
 @app.route('/static/<path:path>')
 def send_static(path):
@@ -452,37 +453,10 @@ def log_on():
     return redirect('/Viewer/TV')
 #    render_template('TV.html')
 
-"""
-This URL is a gateway for posting to SIO
-"""
-@app.route('/sioput/<path:etype>', methods=['POST','GET'])
-def sioput(etype):
-    req = {}
-    args = request.args
-    if request.data:
-        req = json.loads(request.data)
-    for key in args:
-        req[key] = args[key][0]
-    print "req:", req
-    etype0 = req['etype']
-    if etype0 != etype:
-        print "mismatch etype:", etype
-    obj = req['obj']
-    #jObj = json.dumps(obj)
-    jObj = jsondumps(obj)
-    print "etype:", etype
-    print "jObj:", jObj
-    if socketio:
-        print "send to socketio"
-        emit(etype, jObj, broadcast=True, namespace='/')
-    print "**** addToDB"
-    addObjToDB(obj, etype)
-    print
-    return "OK"
 
 @app.route('/comment/<path:etype>', methods=['POST','GET'])
-def addComment(etype):
-    print "addComment", etype
+def addCommentToNote(etype):
+    print "addCommentToNote", etype
     req = {}
     args = request.args
     print "args:", args
@@ -551,6 +525,25 @@ def dbstats():
 def userstats():
     return jsonify(USER_TIMES)
 
+"""
+--------------------------------------------------------------------
+Support for slave viewers:
+
+These functions are so that a slave viewer can show videos that were
+selected in the main TeleViewer, say running on a large display.  If
+someone clicks on a billboard or causes a video to play in the main
+viewer, the server is notified by /notify/ with a message including
+the youtubeId of the video.   A call to /wvCurrentUrl always returns
+the most recent youtube URL.
+
+This mechanism can be used so that if someone has an HMD and is using
+a display to run TeleViewer, they can then see the selected view in
+the HMD running Samsung internet viewer.
+
+Currently this is done in a global namespace but should be moved to
+a scheme where the master has a name.
+"""
+# Suppo
 @app.route('/wvCurrentUrl')
 def wvCurrentUrl():
     url = "https://youtube.com"
@@ -574,6 +567,41 @@ def notifyServer():
 
 
 ###################################################################
+# SocketIO related section
+
+"""
+This URL is a gateway for posting to SIO.
+It is needed because unfortunately the python socketio
+client is not compatible with the socketio server running
+here.  So python scripts that want to send msgs into the
+socketio stream can do a POST or GET to this url, which
+will emit it into the stream, and add to DB as needed.
+"""
+@app.route('/sioput/<path:etype>', methods=['POST','GET'])
+def sioput(etype):
+    req = {}
+    args = request.args
+    if request.data:
+        req = json.loads(request.data)
+    for key in args:
+        req[key] = args[key][0]
+    print "req:", req
+    etype0 = req['etype']
+    if etype0 != etype:
+        print "mismatch etype:", etype
+    obj = req['obj']
+    #jObj = json.dumps(obj)
+    jObj = jsondumps(obj)
+    print "etype:", etype
+    print "jObj:", jObj
+    if socketio:
+        print "send to socketio"
+        emit(etype, jObj, broadcast=True, namespace='/')
+    print "**** addToDB"
+    addObjToDB(obj, etype)
+    print
+    return "OK"
+
 #
 # SocketIO bindings
 #
