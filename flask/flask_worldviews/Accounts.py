@@ -1,9 +1,9 @@
 # Define models
 
 from datetime import datetime
-from flask import redirect, request
+from flask import redirect, request, render_template
 from jsonHack import jsonify, jsondumps
-from flask_worldviews import db, app
+from flask_worldviews import db, app, NOTIFIER
 
 from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
