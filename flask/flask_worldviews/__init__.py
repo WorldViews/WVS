@@ -164,9 +164,11 @@ def reg():
     return "Ok"
 #    return flask.jsonify({'val': 'ok'})
 
+"""
 @app.route("/WV/<path:path>")
 def getPage(path):
     return render_template(path+".html")
+"""
 
 @app.route('/Viewer/TV')
 def viewerTV():

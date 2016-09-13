@@ -1,3 +1,13 @@
+{% extends "layout.html" %}
+{% block title %}WorldViews Profile{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block tabs %}
+ {{ super() }}
+{% endblock %}
+
 {% macro show_provider_button(provider_id, display_name, conn) %}
     {% if conn %}
     <form action="{{ url_for('social.remove_connection', provider_id=conn.provider_id, provider_user_id=conn.provider_user_id) }}" method="DELETE">
@@ -10,26 +20,29 @@
     {% endif %}
 {% endmacro %}
 
+{% block content %}
+
+&nbsp;<p>&nbsp;<p>&nbsp;<p>
+
 {{ show_provider_button('twitter',  'Twitter', twitter_conn) }}
+<p>
 {{ show_provider_button('facebook', 'Facebook', facebook_conn) }}
+<p>
 {{ show_provider_button('google',   'Google', google_conn) }}
+<p>
+
 <div>
+<h3>Notifications</h3>
 <a href="/notifications/clear">Clear Notification Requests</a>
 <p>
 <a href="/notifications/add">Add Notification Requests</a>
-{% if notreqs %}
-<h3>Notifications</h3>
-{% endif %}
+<p>
 {% for req in notreqs %}
 {{ req.pattern.eventType +" "+req.email }} <br>
 {% endfor %}
-<pre>
-</pre>
-<!--
-<button>Add Notification Requests</button>
 <p>
-<button>Clear My Notification Requests</button>
--->
-</div>
+UserId: {{ current_user.id }} <br>
 
 <!--  other providers have been removed  -->
+{% endblock %}
+</div>

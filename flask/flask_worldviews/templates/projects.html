@@ -2,16 +2,57 @@
 {% block title %}WorldViews Projects{% endblock %}
 {% block head %}
   {{ super() }}
-  <style type="text/css">
-    .important { color: #336699; }
-  </style>
 {% endblock %}
+
 {% block tabs %}
-  {{ super() }}
+ {{ super() }}
 {% endblock %}
+
 {% block content %}
+
+<p>&nbsp;<p>&nbsp;
   <h1>WorldViews Projects</h1>
   <p class="important">
     There are many great projects now in WorldViews...
+
+{% for proj in projs %}
+<!--
+<h3>{{proj.name}}: {{proj.title}} </h3>
+-->
+<h3>{{proj.title}}</h3>
+{{proj.description}}<br>
+{% if proj.members.all %}
+  Members: 
+     {% for member in proj.members.all %}
+        {{member}}
+     {% endfor %}
+  <br>
+{% endif %}
+{% if proj.followers.all %}
+  Followers: 
+     {% for follower in proj.followers.all %}
+        {{follower}}
+     {% endfor %}
+  <br>
+{% endif %}
+{% if current_user.is_authenticated %}
+   {% if current_user in proj.members.all %}
+     <!-- You are in project.  Edit -->
+   {% else %}
+      <span class="join-button" id="{{proj.name}}">Join</span>
+   {% endif %}
+   {% if current_user in proj.followers.all %}
+     <!-- You are following project. -->
+   {% else %}
+      <span class="follow-button" id="{{proj.name}}">Follow</span>
+   {% endif %}
+{% endif %}
+&nbsp;
+<p>
+
+{% endfor %}
+
 {% endblock %}
+
+
 

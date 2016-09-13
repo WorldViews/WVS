@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="google-site-verification" content="DCHc90zpgnUJSd1mb49kIWPKAjJSDH6ROImvHO84orY" />
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+
+    <title>About WorldViews</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-80828450-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+<script src="/static/js/jquery-1.11.2.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+
+<link rel="shortcut icon"
+ href="/static/img/favicon.ico" />
+<link rel="stylesheet" href="/static/css/grid.css" type="text/css" />
+<script src="/static/js/WVR.js"></script>
+<script type="text/javascript">
+</script>
+<style type="text/css">
+</style>
+</head>
+<body style="margin-top: 60px;">
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">WorldViews</a>
+                <a class="navbar-brand" href="/TeleViewer">TeleViewer</a>
+	        {% if current_user.has_role('admin') %}
+                <a class="navbar-brand" href="/admin">Admin</a>
+                <a class="navbar-brand" href="/projects">Projects</a>
+                <a class="navbar-brand" href="/profile">Profile</a>
+		{% endif %}
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+		  <div class="navbar-header">
+		    <br>
+		      {% if current_user.name %}
+		      {{ current_user.name }} 
+		      <a href="/logout">logout</a>
+		      {% else %}
+		      <a href="/log">login</a>
+		      {% endif %}
+		  </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<div class="container">
+
+<div class="span pull-right" style="text-align:right">
+   <img src="/static/img/blue-marble.png" width="200" height="200">
+</div>
+
+<h2>What is WorldViews?</h2>
+
+WorldViews is an informal non-profit organization and set of related open source
+projects and activities, seeking to support all people in peacefully sharing our
+world by making it easier to connect, organize, share views of the world.
+<h3>Mission:</h3>
+Contribute to a more connected and understanding world:
+<ul>
+<li>Support easier sharing of views
+<li>Reinforce that we are one human family sharing Earth
+<li>Facilite virtual and real meeting between people
+<li>Help spread inspiration
+</ul>
+
+<h3>TeleViewer:</h3>
+
+Our first and primary project is TeleViewer, which is a digital earth supporting
+many different ways to see the world or any part of the world.  These may be based
+on images, video, computer graphics, or live streamed views, telepresence robotic
+views, etc.  It is inspired by Google Eath, StreetView and many great related
+projects, but we seek to build open source tools with core content in the
+creative commons.
+Our ultimate vision is to have free tools available to anyone to let them see the
+world or any part of the world in useful and inspiring ways.
+
+
+</div>
+</body>
+</html>

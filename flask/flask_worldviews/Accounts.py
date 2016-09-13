@@ -130,7 +130,7 @@ def getUserById(id):
     Adding this is a hack to get social auth to work.
     """
     print "=================================="
-    return User.query.filter_by(id=id).first()
+    return User.objects(id=id).first()
 
 # Hack to get this visible in flask_social
 #flask.ext.social.views.getUserById = getUserById
