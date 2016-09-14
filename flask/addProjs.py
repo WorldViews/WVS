@@ -2,8 +2,7 @@
 import flask_worldviews
 from flask_worldviews.Projects import Project
 
-proj = Project(name="wvtechdev",
-               title="WorldViews Technology Development",
+proj = Project(title="WorldViews Technology Development",
                description="""
 This is to build cool server and client software for furthering
 the WorldViews mission. All our software is open source, and
@@ -12,8 +11,7 @@ built on open source.
 proj.save()
 
 
-proj = Project(name="wvorgdev",
-               title="WorldViews Oganization and Community",
+proj = Project(title="WorldViews Oganization and Community",
                description="""
 This is to create and nurture a vibrant community of people
 working on WorldViews, enjoying the project, or using it to
@@ -21,8 +19,7 @@ share views of the world.
 """)
 proj.save()
 
-proj = Project(name="droneviews",
-               title="Drone Views",
+proj = Project(title="Drone Views",
                description="""
 Inspired by the sites travelbydrone.com and travelwithdrone.com
 we would like to have a later that shows beautiful videos of drones
@@ -34,8 +31,7 @@ control guidlines) by remote people watching on WorldViews.
 """)
 proj.save()
 
-proj = Project(name="guidereg",
-               title="Guide and Expert Registry",
+proj = Project(title="Guide and Expert Registry",
                description="""
 This project will make it easy to find people around any location
 who can tell you about that location, show you things, or even
@@ -49,8 +45,7 @@ or event coverage they would like to see.
 """)
 proj.save()
 
-proj = Project(name="elcapitan",
-               title="Scaling El Capitan",
+proj = Project(title="Scaling El Capitan",
                description="""
 Enock Glidden is planning to ascend El Capitan at Yosemite this
 September or October. WorldViews will find ways to support this

@@ -4,6 +4,11 @@
     {% block head %}
     <title>{% block title %}{% endblock %} - My Webpage</title>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css" type="text/css" />
+    <script src="/static/js/jquery-1.11.2.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script>
+    function report(str) { console.log(str); }
+    </script>
     {% endblock %}
 
    <script>
@@ -14,9 +19,6 @@
     ga('create', 'UA-80828450-1', 'auto');
     ga('send', 'pageview');
    </script>
-
-   <script src="/static/js/jquery-1.11.2.js"></script>
-   <script src="/static/js/bootstrap.min.js"></script>
 
   </head>
   <body>

@@ -3,19 +3,7 @@
 {% block head %}
   {{ super() }}
 
-<script src="/static/js/tinymce/tinymce.min.js"></script>
-<script>
-  tinymce.init({
-    selector: 'textarea'
-  });
-</script>
-<!--
-  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-  <script>tinymce.init({ selector:'textarea' });</script>
--->
 <script type="text/javascript">
-
-function report(str) { console.log(str); }
 
 $(document).ready(function() {
    $("#newProj").click(function(e) {
@@ -25,43 +13,45 @@ $(document).ready(function() {
        var url = "/projects_add";
        var obj = {};
        obj.title = $("#title").val();
-       //obj.description = $("#description").val();
-       obj.description = tinymce.get('description').getContent();
+       obj.description = $("#description").val();
        obj.owner = "{{ current_user.id }}";
        report("Obj: "+JSON.stringify(obj));
        $.ajax({type: "POST",
                url: url,
                dataType: "json",
-               data: obj}).done(function(res) {
+               data: obj,
+               success: function(res) {
                    report("Sent it. got: "+JSON.stringify(res));
-               });
+               }});
        window.location.href = window.location.href;
    });
    $(".join-button").click(function(e) {
        report("join-button click");
-       var url = "/projects_join";
-       var obj = {projectId: e.target.id, userId: "{{current_user.id}}"};
+       var url = "/projects_join/";
+       var obj = {name: e.target.id, username: "{{user}}"};
        report("Obj: "+JSON.stringify(obj));
        $.ajax({type: "POST",
                url: url,
                dataType: "json",
-               data: obj}).done(function(res) {
+               data: obj,
+               success: function(res) {
                    report("Sent it. got: "+JSON.stringify(res));
                    window.location.href = window.location.href;
-               });
+               }});
    });
    $(".follow-button").click(function(e) {
        report("follow-button click");
-       var url = "/projects_follow";
-       var obj = {projectId: e.target.id, userId: "{{current_user.id}}"};
+       var url = "/projects_follow/";
+       var obj = {name: e.target.id, username: "{{user}}"};
        report("Obj: "+JSON.stringify(obj));
        $.ajax({type: "POST",
                url: url,
                dataType: "json",
-               data: obj}).done(function(res) {
+               data: obj,
+               success: function(res) {
                    report("Sent it. got: "+JSON.stringify(res));
                    window.location.href = window.location.href;
-               });
+               }});
     });
 });
 console.log("good");
@@ -83,8 +73,7 @@ groups allied with WorldViews.
 
 {% for proj in projs %}
 <h3>{{proj.title}}</h3>
-{{proj.description|safe}}<br>
-&nbsp;<p>
+{{proj.description}}<br>
 {% if proj.members %}
   Members: 
      {% for member in proj.members %}
@@ -113,18 +102,48 @@ groups allied with WorldViews.
 {% endif %}
 &nbsp;
 <p>
-<hr width="20%" align="left">
+
 {% endfor %}
 
 {% if current_user.has_role('admin') %}
 &nbsp;
 <p>
 <input type="button" id="newProj" value="New Project">
-{% endif %}
 
+{% macro render_field(field) %}
+  <dt>{{ field.label }}
+  <dd>{{ field(**kwargs)|safe }}
+  {% if field.errors %}
+    <ul class=errors>
+    {% for error in field.errors %}
+      <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  </dd>
+{% endmacro %}
+
+<form id="newProj">
+<form method=post action="/newProj">
+  <dl>
+    {{ render_field(form.title) }}
+    {{ render_field(form.description) }}
+  </dl>
+  <p><input type=submit value=Register>
+</form>
+
+{% endif %}
 <div id="addProj" hidden>
 <h3>Create New Project</h3>
 &nbsp;
+<p>
+<form id="newProjForm0">
+Title: <input id="title" type="text" value="" size=90><br>
+Description: <br>
+<textarea id="description" rows="20" cols="100"></textarea><br>
+<input id="addButton" type="button" value="Add">
+</form>
+
 <p>
 <form id="newProjForm1">
 <dl>
@@ -133,10 +152,9 @@ groups allied with WorldViews.
 <br>
 <dt>Description:</dt>
 <dd>
-<textarea id="description" rows="20" cols="90"></textarea>
+<textarea id="description" rows="20" cols="100"></textarea>
 </dd>
-<xxxinput id="addButton" type="button" value="Add">
-<input id="addButton" type="submit" value="Add">
+<input id="addButton2" type="button" value="Add">
 </dl>
 </form>
 &nbsp;
