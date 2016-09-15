@@ -22,10 +22,10 @@ def projectsAdd():
     print "addProject..."
     form = request.form
     title = form['title']
-    desc =  form['description']
-    ownerId = form['owner']
     print "title:", title
+    desc =  form['description']
     print "desc:", desc
+    ownerId = form['owner']
     print "ownerId:", ownerId
     owner = getUserById(ownerId)
     proj = Project(title=title, description=desc)
@@ -36,8 +36,36 @@ def projectsAdd():
     projs = Project.objects.all()
     return render_template("projects.html", projs=projs)
 
+@app.route('/project_edit', methods=['GET', 'POST'])
+def projectEdit():
+    print "projectEdit"
+    if request.method == "GET":
+        projectId = request.args.get('id')
+    else:
+        form = request.form
+        projectId = form['projectId']
+    print "projectId:", projectId
+    #print "userId:", current_user.id
+    proj = Project.objects(id=projectId).first()
+    return render_template("project_edit.html", proj=proj)
 
-@app.route('/projects_follow', methods=['POST'])
+@app.route('/project_update', methods=['POST'])
+def projectUpdate():
+    print "projectUpdate"
+    projectId = request.form['projectId']
+    title =     request.form['title']
+    desc =      request.form['description']
+    print "projectId:", projectId
+    print "title:", title
+    print "desc:", desc
+    proj = Project.objects(id=projectId).first()
+    proj.description = desc
+    proj.title = title
+    proj.save()
+    return redirect("/projects")
+
+
+@app.route('/project_follow', methods=['POST'])
 def projectsFollow():
     print "projectsFollow"
     form = request.form
@@ -53,7 +81,7 @@ def projectsFollow():
     print "title:", proj.title
     return redirect("/projects")
 
-@app.route('/projects_join', methods=['POST'])
+@app.route('/project_join', methods=['POST'])
 def projectsJoin():
     print "projectsJoin"
     form = request.form

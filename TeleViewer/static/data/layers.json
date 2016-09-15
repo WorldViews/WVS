@@ -110,6 +110,17 @@
 	  "dataFile": "/static/data/virtualphotowalks_data.json"
        },
        {
+                  "name": "periscope",
+                  "description": "Periscope",
+	          "iconUrl": "/static/img/billboards/periscopeIcon.png",
+	          "scale": 0.06,
+	          "height": 500000,
+	          "showTethers": true,
+	          "mediaType": "html",
+	          "dataFile": "/static/data/periscope_data.json",
+	          "visible": false
+       },
+       {
           "name": "hikes",
           "require": "WVRobots.js",
           "mediaType": "trails",
@@ -330,17 +341,6 @@
                   "name": "sharecam",
                   "description": "Shared Camera Guides",
 	          "iconUrl": "/static/img/billboards/jumpChat.png",
-	          "visible": false
-               },
-               {
-                  "name": "periscope",
-                  "description": "Periscope",
-	          "iconUrl": "/static/img/billboards/periscopeIcon.png",
-	          "scale": 0.06,
-	          "height": 500000,
-	          "showTethers": true,
-	          "mediaType": "html",
-	          "dataFile": "/static/data/periscope_data.json",
 	          "visible": false
                },
                {

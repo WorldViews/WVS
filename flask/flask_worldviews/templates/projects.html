@@ -17,54 +17,55 @@
 
 function report(str) { console.log(str); }
 
-$(document).ready(function() {
-   $("#newProj").click(function(e) {
-       $("#addProj").show();
-   });
-   $("#addButton").click(function(e) {
-       var url = "/projects_add";
-       var obj = {};
-       obj.title = $("#title").val();
-       //obj.description = $("#description").val();
-       obj.description = tinymce.get('description').getContent();
-       obj.owner = "{{ current_user.id }}";
-       report("Obj: "+JSON.stringify(obj));
-       $.ajax({type: "POST",
-               url: url,
-               dataType: "json",
-               data: obj}).done(function(res) {
-                   report("Sent it. got: "+JSON.stringify(res));
-               });
-       window.location.href = window.location.href;
-   });
-   $(".join-button").click(function(e) {
-       report("join-button click");
-       var url = "/projects_join";
-       var obj = {projectId: e.target.id, userId: "{{current_user.id}}"};
-       report("Obj: "+JSON.stringify(obj));
-       $.ajax({type: "POST",
-               url: url,
-               dataType: "json",
-               data: obj}).done(function(res) {
-                   report("Sent it. got: "+JSON.stringify(res));
-                   window.location.href = window.location.href;
-               });
-   });
-   $(".follow-button").click(function(e) {
-       report("follow-button click");
-       var url = "/projects_follow";
-       var obj = {projectId: e.target.id, userId: "{{current_user.id}}"};
-       report("Obj: "+JSON.stringify(obj));
-       $.ajax({type: "POST",
-               url: url,
-               dataType: "json",
-               data: obj}).done(function(res) {
-                   report("Sent it. got: "+JSON.stringify(res));
-                   window.location.href = window.location.href;
-               });
-    });
-});
-console.log("good");
+function editProj(projId)
+{
+    report("editProj "+projId);
+    window.location.href = "/project_edit?id="+projId;
+}
+
+function cancelNewProj()
+{
+    $("#addProjDiv").hide();
+    $("#newProjButton").show();
+    $("#title").val("");
+    $("#description").val();
+}
+
+function enterNewProj()
+{
+    $("#addProjDiv").show();
+    $("#newProjButton").hide();
+    window.location.href = "#createNewProject";
+}
+
+function joinProj(projId, userId)
+{
+    var url = "/project_join";
+    var obj = {projectId: projId, userId: userId};
+    report("joinProj Obj: "+JSON.stringify(obj));
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "json",
+            data: obj}).done(function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           });
+}
+
+function followProj(projId, userId)
+{
+    var url = "/project_follow";
+    var obj = {projectId: projId, userId: userId};
+    report("followProj Obj: "+JSON.stringify(obj));
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "json",
+            data: obj}).done(function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           });
+}
+
 </script>
 
 {% endblock %}
@@ -82,6 +83,7 @@ console.log("good");
 groups allied with WorldViews.
 
 {% for proj in projs %}
+<div id="div_{{proj.id}}">
 <h3>{{proj.title}}</h3>
 {{proj.description|safe}}<br>
 &nbsp;<p>
@@ -101,47 +103,53 @@ groups allied with WorldViews.
 {% endif %}
 {% if current_user.is_authenticated %}
    {% if current_user in proj.members %}
+     <span class="edit-button" id="edit_{{proj.id}}" onclick='editProj("{{proj.id}}");'>Edit</span>
      <!-- You are in project.  Edit -->
    {% else %}
-      <span class="join-button" id="{{proj.id}}">Join</span>
+      <span class="join-button" id="{{proj.id}}"
+            onclick="joinProj('{{proj.id}}','{{current_user.id}}');">Join</span>
      {% if current_user in proj.followers %}
         <!-- You are following project. -->
      {% else %}
-       <span class="follow-button" id="{{proj.id}}">Follow</span>
+       <span class="follow-button"
+            onclick="followProj('{{proj.id}}','{{current_user.id}}');">Follow</span>
      {% endif %}
    {% endif %}
 {% endif %}
 &nbsp;
 <p>
+</div>
 <hr width="20%" align="left">
 {% endfor %}
 
 {% if current_user.has_role('admin') %}
 &nbsp;
 <p>
-<input type="button" id="newProj" value="New Project">
+<input type="button" id="newProjButton" value="New Project" onclick="enterNewProj()">
 {% endif %}
 
-<div id="addProj" hidden>
+<div id="addProjDiv" hidden>
+<a name="createNewProject"></a>
 <h3>Create New Project</h3>
 &nbsp;
 <p>
-<form id="newProjForm1">
+<form id="newProjForm1" action="/projects_add" method="post">
 <dl>
 <dt>Title:</dt>
-<dd> <input id="title" type="text" value="" size=90> </dd>
+<dd> <input id="title" type="text" name="title" value="" size=90> </dd>
 <br>
 <dt>Description:</dt>
 <dd>
-<textarea id="description" rows="20" cols="90"></textarea>
+<textarea id="description" name="description" rows="20" cols="90"></textarea>
 </dd>
-<xxxinput id="addButton" type="button" value="Add">
-<input id="addButton" type="submit" value="Add">
+&nbsp;<p>
+<input id="owner" name="owner" type="hidden" value="{{ current_user.id }}">
+<input id="addButton" type="submit" value="Add Project">
+<input id="cancelButton" type="button" value="Cancel" onclick="cancelNewProj()">
 </dl>
 </form>
-&nbsp;
-<p>
 </div>
+&nbsp;<p>
 
 {% endblock %}
 

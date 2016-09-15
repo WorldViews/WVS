@@ -1,0 +1,90 @@
+{% extends "layout.html" %}
+{% block title %}WorldViews Projects{% endblock %}
+{% block head %}
+  {{ super() }}
+
+<script src="/static/js/tinymce/tinymce.min.js"></script>
+<script>
+/*
+  tinymce.init({
+    selector: 'textarea'
+  });
+*/
+tinymce.init({
+  selector: 'textarea',
+  height: 500,
+  theme: 'modern',
+  plugins: [
+    'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+    'searchreplace wordcount visualblocks visualchars code fullscreen',
+    'insertdatetime media nonbreaking save table contextmenu directionality',
+    'emoticons template paste textcolor colorpicker textpattern imagetools'
+  ],
+  toolbar1: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+  toolbar2: 'print preview media | forecolor backcolor emoticons',
+  image_advtab: true,
+  templates: [
+    { title: 'Test template 1', content: 'Test 1' },
+    { title: 'Test template 2', content: 'Test 2' }
+  ],
+  content_css: [
+    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+    '//www.tinymce.com/css/codepen.min.css'
+  ]
+});
+
+</script>
+<!--
+  <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
+-->
+<script type="text/javascript">
+
+function report(str) { console.log(str); }
+
+function cancelEdit()
+{
+    report("cancelEdit");
+    window.location.href = "/projects";
+}
+
+</script>
+
+{% endblock %}
+
+{% block tabs %}
+ {{ super() }}
+{% endblock %}
+
+{% block content %}
+
+<p>&nbsp;<p>&nbsp;
+
+<h3>Edit Project</h3>
+&nbsp;
+<p>
+<form action="/project_update" method="post">
+<dl>
+<dt>Title:</dt>
+<dd> <input id="title" type="text" name="title" value="{{proj.title}}" size=90> </dd>
+<br>
+<dt>Description:</dt>
+<dd>
+<textarea id="description" name="description" rows="20" cols="90">
+{{proj.description}}
+</textarea>
+</dd>
+&nbsp;<p>
+<input id="addButton" type="submit" value="Update Project">
+<input id="cancelButton" type="button" value="Cancel" onclick="cancelEdit()">
+<input name="owner"     type="hidden" value="{{ current_user.id }}">
+<input name="projectId" type="hidden" value="{{ proj.id }}">
+</dl>
+</form>
+</div>
+&nbsp;<p>
+
+{% endblock %}
+
+
+
