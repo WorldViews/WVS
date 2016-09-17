@@ -15,6 +15,9 @@
 -->
 <script type="text/javascript">
 
+var PROJECTS = [];
+var PROJECT_BY_ID = {};
+
 function report(str) { console.log(str); }
 
 function editProj(projId)
@@ -67,6 +70,105 @@ function followProj(projId, userId)
            });
 }
 
+getJSON = function(url, handler)
+{
+    report(">>>>> getJSON: "+url);
+    $.ajax({
+        url: url,
+	dataType: 'text',
+	success: function(str) {
+		data = JSON.parse(str);
+		handler(data);
+	    }
+	});
+}
+
+function getProjects()
+{
+    getJSON("/projects?type=json", handleProjects);
+}
+
+function handleProjects(data)
+{
+    report("handleProjects "+data);
+    var projects = data;
+    PROJECTS = projects;
+    PROJECT_BY_ID = {};
+    for (var i=0; i<projects.length; i++) {
+        var proj = projects[i];
+        PROJECT_BY_ID[proj.id] = proj;
+        handleProject(proj);
+    }
+}
+
+function handleProject(projData)
+{
+    report("project title "+projData.title);
+    proj = new Project(projData);
+    proj.render();
+}
+
+Project = function(args)
+{
+    this.id = args.id;
+    this.title = args.title;
+    this.description = args.description;
+    this.members = args.members;
+    this.followers = args.followers;
+
+    this.getDiv = function() {
+        var id = "proj_"+this.id;
+        jQuery('<span/>', {id: id, width: 200, border:2}
+         ).appendTo("#projectsDiv");
+        return $("#"+id);
+    };
+
+    this.render = function() {
+        var inst = this;
+        report("---------------------------");
+        report("Rendering project");
+        report("title: "+this.title);
+        report("description: "+this.description);
+        var div = this.getDiv();
+        report("div: "+div);
+        div.append("<p>\n");
+        div.append("<h2>"+this.title+"<h2>\n");
+        div.append(this.description+"<br>\n")
+        div.append("<p>\n");
+        div.append("Members: ")
+        var names = this.members.map(function(u) { return u.name; });
+        div.append(names.join(", "));
+        div.append("<br>\n");
+        div.append("Followers: ")
+        var names = this.followers.map(function(u) { return u.name; });
+        div.append(names.join(", ")+"<br>\n");
+        if (this.isMember(current_user_id)) {
+	   //div.append("we are member\n");
+           var bid = "edit_"+this.id;
+           div.append("<span id='ID'>edit</span>".replace("ID", bid));
+           $("#"+bid).click(function(e) { editProj(inst.id); });
+        }
+        div.append("<p>\n");
+        div.append('<hr width="40%" align="left">\n');
+    };
+
+    this.isMember = function(id) {
+        for (var i=0; i<this.members.length; i++) {
+            if (this.members[i].id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+$(document).ready(function() {
+    getProjects();
+});
+
+current_user = "{{current_user}}";
+current_user_id = "{{current_user.id}}";
+
 </script>
 
 {% endblock %}
@@ -83,45 +185,7 @@ function followProj(projId, userId)
     There are many great projects and activities now going on in WorldViews, or by people and
 groups allied with WorldViews.
 
-{% for proj in projs %}
-<div id="div_{{proj.id}}">
-<h3>{{proj.title}}</h3>
-{{proj.description|safe}}<br>
-&nbsp;<p>
-{% if proj.members %}
-  Members: 
-     {% for member in proj.members %}
-        {{member.full_name}}
-     {% endfor %}
-  <br>
-{% endif %}
-{% if proj.followers %}
-  Followers: 
-     {% for follower in proj.followers %}
-        {{follower.full_name}}
-     {% endfor %}
-  <br>
-{% endif %}
-{% if current_user.is_authenticated %}
-   {% if current_user in proj.members %}
-     <span class="edit-button" id="edit_{{proj.id}}" onclick='editProj("{{proj.id}}");'>Edit</span>
-     <!-- You are in project.  Edit -->
-   {% else %}
-      <span class="join-button" id="{{proj.id}}"
-            onclick="joinProj('{{proj.id}}','{{current_user.id}}');">Join</span>
-     {% if current_user in proj.followers %}
-        <!-- You are following project. -->
-     {% else %}
-       <span class="follow-button"
-            onclick="followProj('{{proj.id}}','{{current_user.id}}');">Follow</span>
-     {% endif %}
-   {% endif %}
-{% endif %}
-&nbsp;
-<p>
-</div>
-<hr width="20%" align="left">
-{% endfor %}
+<div id="projectsDiv"></div>
 
 {% if current_user.has_role('admin') %}
 &nbsp;

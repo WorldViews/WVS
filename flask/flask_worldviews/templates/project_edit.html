@@ -48,6 +48,35 @@ function cancelEdit()
     window.location.href = "/projects";
 }
 
+function addMembers()
+{
+   //var projectId = $("#projectId").val();
+   var projectId = "{{proj.id}}";
+   var str = $("#newMembers").val();
+   var reps = str.split(",").map(function(s) { return s.trim(); });
+   report("projectId: "+projectId);
+   report("reps: "+reps);
+   var obj = {projectId: projectId, members: reps};
+   var url = "/project_join";
+   report("obj: "+JSON.stringify(obj));
+   obj = JSON.stringify(obj);
+   report("jstr: "+obj);
+/*
+   $.post(url, obj, function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           }, 'json');
+*/
+   $.ajax({type: "POST",
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: obj}).done(function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           });
+}
+
 </script>
 
 {% endblock %}
@@ -83,6 +112,9 @@ function cancelEdit()
 </form>
 </div>
 &nbsp;<p>
+New Members: <input id="newMembers" type="text" size="100">
+&nbsp;
+<input type="button" value="Add" onclick="addMembers();">
 
 {% endblock %}
 

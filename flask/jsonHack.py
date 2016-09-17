@@ -1,6 +1,7 @@
 """
 https://gist.github.com/akhenakh/2954605
 """
+'''
 try:
     import simplejson as json
 except ImportError:
@@ -8,6 +9,8 @@ except ImportError:
         import json
     except ImportError:
         raise ImportError
+'''
+import json
 import datetime
 from bson.objectid import ObjectId
 from werkzeug import Response

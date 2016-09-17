@@ -1,5 +1,6 @@
 # Define models
 
+import re
 from datetime import datetime
 from flask import redirect, request, render_template
 from jsonHack import jsonify, jsondumps
@@ -131,6 +132,13 @@ def getUserById(id):
     """
     print "=================================="
     return User.objects(id=id).first()
+
+def getUserByStr(str):
+    if str.find("@") >= 0:
+        return User.objects(email=str).first()
+    if re.match("[0-9]+", str):
+        return getUserById()
+    return User.objects(name=str).first()
 
 # Hack to get this visible in flask_social
 #flask.ext.social.views.getUserById = getUserById

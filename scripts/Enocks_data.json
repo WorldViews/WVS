@@ -237,8 +237,31 @@
             "lon": -70.79341, 
             "id": "http___gobeyondthefence_com__p_6", 
             "title": "The Beginning of the Road to Adventure"
+        }, 
+        {
+            "height": 0.3, 
+            "dataUrl": "Aug_14_2016_121232_PM_2016-08-14_12-12-32.json", 
+            "description": "Flying Through History Over Napa Valley", 
+            "coordSys": "GEO", 
+            "youtubeDeltaT": 0, 
+            "robotType": "wheelchair", 
+            "tourName": "vid_tour_http___www_gobeyondthefence_com__p_587", 
+            "type": "robotTrail", 
+            "id": "vid_tour_http___www_gobeyondthefence_com__p_587", 
+            "youtubeId": "gf5rd9rZv4I"
+        }, 
+        {
+            "height": 0.3, 
+            "dataUrl": "Golden_Gate_Presidio.json", 
+            "description": "VR(Virtual Reality), and RL(Real Life)", 
+            "coordSys": "GEO", 
+            "youtubeDeltaT": 0, 
+            "robotType": "wheelchair", 
+            "tourName": "vid_tour_http___gobeyondthefence_com__p_522", 
+            "type": "robotTrail", 
+            "id": "vid_tour_http___gobeyondthefence_com__p_522", 
+            "youtubeId": "Xg6Op_UEXbk"
         }
     ], 
-    "numRecords": 34, 
-    "type": "html"
+    "numRecords": 36
 }

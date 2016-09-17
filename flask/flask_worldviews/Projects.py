@@ -1,10 +1,13 @@
 # Define models
 
-from flask import redirect, request, render_template
+from flask import redirect, request, render_template, Response
+import jsonHack
 from jsonHack import jsonify, jsondumps
+from flask_worldviews.util import gen_json
 from flask_worldviews import db, app
-from flask_worldviews.Accounts import admin, User, MyModelView, getUserById
-from wtforms import Form, StringField
+from flask_worldviews.Accounts import admin, User, MyModelView, getUserById, getUserByStr
+from wtforms import Form, StringField, FloatField
+import mongoengine
 
 class Project(db.Document):
     title = db.StringField(max_length=200)
@@ -14,6 +17,18 @@ class Project(db.Document):
 
     def __unicode__(self):
         return "Project #%s" % (self.title)
+
+    def getJson(self):
+        obj = {}
+        for key,v in self._data.items():
+            print key, v
+            if type(v) == type([]):
+                pass
+            else:
+                obj[key] = v
+        print
+        return obj
+        #return json.dumps(obj, indent=4)
 
 admin.add_view(MyModelView(Project))
 
@@ -25,12 +40,13 @@ def projectsAdd():
     print "title:", title
     desc =  form['description']
     print "desc:", desc
-    ownerId = form['owner']
-    print "ownerId:", ownerId
-    owner = getUserById(ownerId)
+    owner = form['owner']
+    owner = getUserById(owner)
+    print "owner:", owner
     proj = Project(title=title, description=desc)
     print "members:", proj.members
-    proj.members.append(owner)
+    if owner not in proj.members:
+        proj.members.append(owner)
     proj.save()
     print "got project", proj
     projs = Project.objects.all()
@@ -82,23 +98,37 @@ def projectsFollow():
     return redirect("/projects")
 
 @app.route('/project_join', methods=['POST'])
-def projectsJoin():
-    print "projectsJoin"
-    form = request.form
+def projectJoin():
+    print "projectJoin"
+    form = request.get_json()
+    #form = request.form
+    print "form:", form
     projectId = form['projectId']
-    userId = form['userId']
     print "projectId:", projectId
-    print "userId:", userId
+    members = form['members']
+    print "members:", members
     proj = Project.objects(id=projectId).first()
-    user = getUserById(userId)
-    if user not in proj.members:
-        proj.members.append(user)
-        proj.save()
+    for userStr in members:
+        print "userStr:", userStr
+        member = getUserByStr(userStr)
+        if member not in proj.members:
+            proj.members.append(member)
+    proj.save()
     print "title:", proj.title
     return redirect("/projects")
 
 @app.route('/projects')
 def projects():
     projs = Project.objects.all()
-    return render_template("projects.html", projs=projs)
+    if request.args.get("type",None) == "json":
+        #jstr = gen_json(list(projs))
+        jstr = gen_json(list(projs), visible={User: ["name", "id", "email"]})
+        return Response(jstr, mimetype="application/json")
+    return render_template("projects.html", projs=projs,list=list)
+
+@app.route('/jprojects')
+def jprojects():
+    projs = Project.objects.all()
+    return render_template("projects_json.html")
+
 
