@@ -53,7 +53,7 @@ except:
 
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
-            static_folder="../../TeleViewer/static")
+            static_folder="../../static")
 app.debug = True
 #app.debug = False
 app.config['SECRET_KEY'] = 'secret!'

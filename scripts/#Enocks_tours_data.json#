@@ -1,0 +1,18 @@
+{
+    "records": [
+        {
+            "height": 0.3, 
+            "dataUrl": "Aug_14_2016_121232_PM_2016-08-14_12-12-32.json", 
+            "description": "Flying Through History Over Napa Valley", 
+            "coordSys": "GEO", 
+            "youtubeDeltaT": 0, 
+            "robotType": "wheelchair", 
+            "tourName": "vid_tour_1", 
+            "type": "robotTrail", 
+            "id": "vid_tour_1", 
+            "youtubeId": "gf5rd9rZv4I"
+        }
+    ], 
+    "numRecords": 1, 
+    "type": "robotTrail"
+}

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=utf-8>
+<meta name="viewport" content="width=620">
+<title>HTML5 Demo: Simple Drag and Drop</title>
+
+<script>
+
+// For discussion and comments, see: http://remysharp.com/2009/01/07/html5-enabling-script/
+
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+
+</script>
+</head>
+<body>
+
+      <h1>Simple Drag and Drop</h1>
+
+<style>
+
+label {
+  line-height: 32px;
+}
+
+/* for safari */
+*[draggable=true] {
+  -khtml-user-drag: element;
+  cursor: move;
+}
+
+#drop {
+  border: 3px dashed #ccc;
+  padding: 10px;
+  background: #fff;
+  min-height: 200px;
+/*  overflow-y: auto;*/
+}
+
+#drop .info {
+  color: #999;
+  text-align: center;
+}
+
+#drop ul {
+  margin: 0;
+  padding: 0;
+}
+
+#drop li {
+  border-top: 2px solid #ccc;
+  list-style: none;
+  padding: 5px;
+  font-size: 90%;
+}
+
+#drop li:first-child {
+  border-top: 0;
+}
+
+</style>
+
+        
+<p>Instructions: grab <em>anything</em> and drag it in to the drop zone below.
+
+<p>Try also dropping a few files from your desktop on the drop zone
+and notice the content-type: text/uri-list</p>
+
+        <div>
+          <input type="radio" name="getDataType" value="text" id="text" checked="checked" /> <label for="text">getData('Text')</label>
+        </div>
+        <div>
+          <input type="radio" name="getDataType" value="type" id="type" /> <label for="type">getData(e.dataTransfer.types[0]) based on detected content type</label>
+        </div>
+
+ <div id="drop">
+        <p class="info">Drop here for info about the dragged item</p>
+ </div>
+
+<script>
+
+function cancel(e) {
+  if (e.preventDefault) e.preventDefault(); // required by FF + Safari
+  e.dataTransfer.dropEffect = 'copy'; // tells the browser what drop effect is allowed here
+  return false; // required by IE
+}
+
+function entities(s) {
+  var e = {
+    '"' : '&quot;',
+    '&' : '&amp;',
+    '<' : '&lt;',
+    '>' : '&gt;'
+  };
+  return s.replace(/["&<>]/g, function (m) {
+    return e[m];
+  });
+}
+
+var getDataType = document.querySelector('#text');
+var drop = document.querySelector('#drop');
+
+// Tells the browser that we *can* drop on this target
+addEvent(drop, 'dragover', cancel);
+addEvent(drop, 'dragenter', cancel);
+
+addEvent(drop, 'drop', function (e) {
+  if (e.preventDefault) e.preventDefault(); // stops the browser from redirecting off to the text.
+
+  // just rendering the text in to the list
+
+  // clear out the original text
+  drop.innerHTML = '<ul></ul>';
+  
+  var li = document.createElement('li');
+  
+  /** THIS IS THE MAGIC: we read from getData based on the content type - so it grabs the item matching that format **/
+  if (getDataType.checked == false && e.dataTransfer.types) {
+    li.innerHTML = '<ul>';
+    [].forEach.call(e.dataTransfer.types, function (type) {
+      li.innerHTML += '<li>' + entities(e.dataTransfer.getData(type) + ' (content-type: ' + type + ')') + '</li>';
+    });
+    li.innerHTML += '</ul>';
+    
+  } else {
+    // ... however, if we're IE, we don't have the .types property, so we'll just get the Text value
+    li.innerHTML = e.dataTransfer.getData('Text');
+  }
+  
+  var ul = drop.querySelector('ul');
+
+  if (ul.firstChild) {
+    ul.insertBefore(li, ul.firstChild);
+  } else {
+    ul.appendChild(li);
+  }
+  
+  return false;
+});
+</script>
+
+</body>
+</html>

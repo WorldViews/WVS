@@ -19,6 +19,8 @@ REG = {}
 #PORT = 8001
 PORT = 8000
 PREV_YOUTUBE_ID = None
+STATIC_PREFIX = "/static"
+STATIC_DIR = "../static"
 
 def getQuery(path):
     i = path.rfind("?")
@@ -26,7 +28,21 @@ def getQuery(path):
         return {}
     return urlparse.parse_qs(path[i+1:])
 
+print "PhysVis"
+
 class MyHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+    def translate_path(self, path):
+        print "translate_path", path
+        if self.path.startswith(STATIC_PREFIX):
+            if self.path == STATIC_PREFIX or self.path == STATIC_PREFIX+"/":
+                path = STATIC_DIR + "/index.html"
+            else:
+                path = STATIC_DIR + path[len(STATIC_PREFIX):]
+        else:
+            path = SimpleHTTPServer.SimpleHTTPRequestHandler.translate_path(self, path)
+        print "path:", path
+        return path
+
     def do_GET(self):
         if self.path.startswith("/wvgetdata"):
             return self.handleGetData()

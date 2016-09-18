@@ -4,6 +4,8 @@
   {{ super() }}
 
 <script src="/static/js/tinymce/tinymce.min.js"></script>
+<!-- <script src="/static/js/handlebars.runtime-v4.0.5.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 <script>
   tinymce.init({
     selector: 'textarea'
@@ -13,7 +15,25 @@
   <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
   <script>tinymce.init({ selector:'textarea' });</script>
 -->
+
+<script id="project_template" type="text/x-handlebars-template" src="/static/handlebars_templates/project.html">
+  <div class="entry">
+    <h1>Project [[proj.title]]</h1>
+    <div class="body">
+      Description
+      [[[proj.description]]]
+    </div>
+    <p>
+    <hr width="40%" align="left">
+  </div>
+</script>
+
 <script type="text/javascript">
+
+String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
+};
 
 var PROJECTS = [];
 var PROJECT_BY_ID = {};
@@ -104,9 +124,11 @@ function handleProjects(data)
 function handleProject(projData)
 {
     report("project title "+projData.title);
-    proj = new Project(projData);
+    //proj = new Project(projData);
+    proj = new ProjectHB(projData);
     proj.render();
 }
+
 
 Project = function(args)
 {
@@ -162,8 +184,58 @@ Project = function(args)
     }
 }
 
+var Proj = {};
+Proj.templateString = null;
+
+ProjectHB = function(args)
+{
+    this.id = args.id;
+    this.title = args.title;
+    this.description = args.description;
+    this.members = args.members;
+    this.followers = args.followers;
+    /*
+    var vsource = $("#project_template").html();
+    vsource = vsource.replaceAll("\\[", "{");
+    vsource = vsource.replaceAll("\\]", "}");
+    */
+    vsource = Proj.templateString;
+    report("vsource: "+vsource);
+    this.template = Handlebars.compile(vsource);
+    this.getDiv = function() {
+        var id = "proj_"+this.id;
+        jQuery('<span/>', {id: id, width: 200, border:2}
+         ).appendTo("#projectsDiv");
+        return $("#"+id);
+    };
+
+    this.render = function() {
+        var inst = this;
+        report("---------------------------");
+        report("Rendering project");
+        report("title: "+this.title);
+        report("description: "+this.description);
+        var div = this.getDiv();
+        report("div: "+div);
+        div.html(this.template({proj: this}));
+    };
+
+    this.isMember = function(id) {
+        for (var i=0; i<this.members.length; i++) {
+            if (this.members[i].id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
 $(document).ready(function() {
-    getProjects();
+    var url = "/static/handlebars_templates/project.html";
+    $.get(url, function (data) {
+        Proj.templateString = data;
+        getProjects();
+    }, 'html')
 });
 
 current_user = "{{current_user}}";
