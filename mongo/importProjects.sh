@@ -1,4 +1,4 @@
 
-mongoimport --db wv_data --collection project --file bakckup/project.json
+mongoimport --db wv_data --collection project --file backup/project.json
 
 
