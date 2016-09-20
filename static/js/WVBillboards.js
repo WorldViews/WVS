@@ -13,11 +13,11 @@ WV.setBillboardsVisibility = function(objs, val, tval)
 	objs[id].show = val;
 	if (objs[id].tether) {
 	    objs[id].tether.show = tval;
-	    report("set tether "+id+" "+tval);
+	    //report("set tether "+id+" "+tval);
 	}
 	if (objs[id].anchor) {
 	    objs[id].anchor.show = val;
-	    report("set anchor "+id+" "+val);
+	    //report("set anchor "+id+" "+val);
 	}
     }
 }
@@ -144,7 +144,7 @@ WV.addBillboard = function(bbCollection, lat, lon, imgUrl, id, scale, height,
     var alwaysAddAnchor = true;
     if (alwaysAddAnchor || useAnchor) {
 	var anchorId = "anchor_icon_"+id;
-	report("creating anchor "+anchorId+" scale "+scale);
+	//report("creating anchor "+anchorId+" scale "+scale);
 	//var imgUrl = WV.defaultAnchorIconURL;
 	var ab = WV.addBillboard0(bbCollection, anchorId,
 				  lat, lon, 

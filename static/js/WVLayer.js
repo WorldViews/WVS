@@ -35,13 +35,28 @@ WV.getIconUrl = function(url)
     return "/static/img/billboards/"+url;
 }
 
-WV.LayerType = function(name, opts)
+/*
+A LayerType is a type of layer that can be turned on or off and typically shows
+many items of information, such as positions of videos, as well as some behaviors
+such as allowing videos to be played by clicking on billboards or paths.
+The LayerTypeObj is somewhat like a class, in that there may be many instances
+of layers of a given layer type.
+
+Some types are: admin, chat, craigslist, default, dynWiki, dynYouTube, 
+html, indoorMaps, notes, people, robots, sharecam, spirals, trails, youtube.
+
+ */
+WV.LayerTypeObj = function(name, opts)
 {
     report("new LayerType "+name);
     this.name = name;
     WV.layerTypes[name] = this;
+    this.defaultRecType = opts.defaultRecType;
     this.initFun = opts.initFun;
     this.dataHandler = opts.dataHandler;
+    if (!this.dataHandler) {
+	this.dataHandler = WV.handleRecs;
+    }
     this.clickHandler = opts.clickHandler;
     this.moveHandler = opts.moveHandler;
     this.setVisibility = opts.setVisibility;
@@ -49,7 +64,7 @@ WV.LayerType = function(name, opts)
 	report("Added moveHandler");
     }
     else {
-	report("*** No moveHandler");
+	report("*** LayerType "+name+" no moveHandler");
     }
     if (!this.dataHandler) {
 	report("*** LayerType "+name+" using default dataHandler");
@@ -61,10 +76,15 @@ WV.LayerType = function(name, opts)
 
 WV.registerLayerType = function(name, opts)
 {
+    opts = opts || {};
     report("----->>>>> WV.registerLayerType "+name+" "+JSON.stringify(opts));
-    return new WV.LayerType(name, opts);
+    return new WV.LayerTypeObj(name, opts);
 }
 
+/*
+This is an instance of a layer, which may be one of many instances
+of a given layer type.
+*/
 WV.Layer = function(spec)
 {
     var name = spec.name;
@@ -75,6 +95,9 @@ WV.Layer = function(spec)
     this.showTethers = false;
     for (var key in spec) {
 	this[key] = spec[key];
+    }
+    if (this.mediaType) {
+	report("******* mediaType is no longer supported.  Use layerType *****");
     }
     this.initializedLoad = false;
     this.localData = null; // could be used if local files are dragged.
@@ -90,27 +113,22 @@ WV.Layer = function(spec)
     this.pickHandler = WV.simplePickHandler;
     this.clickHandler = WV.simpleClickHandler;
     WV.layers[name] = this;
-    this.layerType = null;
+    this.layerTypeObj = null;
     var inst = this;
-    if (!this.mediaType) { // Is this a good idea?  Maybe its too loose.
-	report("***** No mediaType for layer "+name+" using mediaType="+name);
-	this.mediaType = name;
+    if (!this.layerType) {
+	report("****  No layerType specified for layer "+name+" using layerType="+name);
+	this.layerType = name;
     }
-    if (this.mediaType) {
-	report("mediaType:"+this.mediaType);
-	this.layerType = WV.layerTypes[this.mediaType];
-	if (this.layerType) {
-	    if (this.layerType.initFun) {
-		report("calling initFun "+inst);
-		this.layerType.initFun(inst);
-	    }
-	}
-	else {
-	    report("***** No layerType for layer "+name);
+    report("layerType: "+this.layerType);
+    this.layerTypeObj = WV.layerTypes[this.layerType];
+    if (this.layerTypeObj) {
+	if (this.layerTypeObj.initFun) {
+	    report("calling initFun "+inst);
+	    this.layerTypeObj.initFun(inst);
 	}
     }
     else {
-	report("***** No mediaType for layer "+name);
+	report("***** Warning: No layerType for layer "+name);
     }
 
     this.loaderFun = function() {
@@ -120,13 +138,13 @@ WV.Layer = function(spec)
 	}
 	var layer = WV.layers[this.name];
 	var name = this.name;
-	var layerType = this.layerType;
-	if (layerType) {
-	    layer.clickHandler = layerType.clickHandler;
-	    layer.moveHandler = layerType.moveHandler;
-	    report(">>>>>>>> subscribe "+name+" "+this.layerType.name);
+	var layerTypeObj = this.layerTypeObj;
+	if (layerTypeObj) {
+	    layer.clickHandler = layerTypeObj.clickHandler;
+	    layer.moveHandler = layerTypeObj.moveHandler;
+	    report(">>>>>>>> subscribe "+name+" "+this.layerTypeObj.name);
 	    if (layer.localData == null) {
-		wvCom.subscribe(name, layerType.dataHandler, {dataFile: layer.dataFile});
+		wvCom.subscribe(name, layerTypeObj.dataHandler, {dataFile: layer.dataFile});
 	    }
 	    else {
 		report("*********** skipping local subscribe for local data *********");
@@ -140,6 +158,10 @@ WV.Layer = function(spec)
 	this.initializedLoad = true;
     }
 
+    /*
+     * This may be used for handling files dragged
+     * and dropped onto TeleViewer.
+     */
     this.handleLocalData = function(obj) {
 	report("handleLocalData");
 	var layer = WV.layers[this.name];
@@ -148,15 +170,15 @@ WV.Layer = function(spec)
 	if (!this.initializedLoad)
 	    this.loaderFun();
 	this.setVisibility(true);
-	this.layerType.dataHandler(obj, name);
+	this.layerTypeObj.dataHandler(obj, name);
     }
 
     this.setVisibility = function(visible) {
 	if (!this.initializedLoad)
 	    this.loaderFun();
-	if (this.layerType && this.layerType.setVisibility) {
+	if (this.layerTypeObj && this.layerTypeObj.setVisibility) {
 	    report("***** Using override setVisibility function ******");
-	    this.layerType.setVisibility(visible);
+	    this.layerTypeObj.setVisibility(visible);
 	    return;
 	}
 	this.visible = visible;
@@ -226,7 +248,7 @@ WV.addBillboardToLayer = function(layer, rec)
     var b = WV.addBillboard(layer.bbCollection, lat, lon, imageUrl,
 			    id, layer.scale, h, layer.showTethers);
     if (b.anchor) {
-	report("---- adding _wvrec to anchor to "+b.anchor.id);
+	//report("---- adding _wvrec to anchor to "+b.anchor.id);
 	b.anchor._wvrec = rec;
     }
     layer.billboards[id] = b;
@@ -277,18 +299,32 @@ WV.addGeoJSONRec = function(layer, rec)
 	});
 }
 
+WV.addVidRec = function(layer, rec)
+{
+    if (rec.vtype == "youtube" && !rec.youtubeId) {
+	report("assigning rec.youtubeId = rec.id");
+	rec.youtubeId = rec.id;
+    }
+    if (!rec.youtubeId) {
+	report("ignoring vidRec without youtubeId");
+	return;
+    }
+    WV.addBillboardToLayer(layer, rec);
+}
+
+
 WV.registerRecHandler('flyhome',  WV.flyHome);
 WV.registerRecHandler('kml',      WV.addKmlRec);
-WV.registerRecHandler('video',    WV.addBillboardToLayer);
+WV.registerRecHandler('video',    WV.addVidRec);
 WV.registerRecHandler('html',     WV.addBillboardToLayer);
 WV.registerRecHandler('geojson',  WV.addGeoJSONRec);
 
 WV.handleRec = function(layer, rec)
 {
     if (!rec.recType) {
-	if (rec.type) {
-	    rec.recType = rec.type;
-	    report("Using rec.type for rec.recType");
+	if (rec.type == "youtube") {
+	    rec.recType = "video";
+	    report('Using recType video for rec.type=youtube');
 	}
 	else {
 	    report("*** WV.handleRec skipping rec with no recType\n");
@@ -301,7 +337,7 @@ WV.handleRec = function(layer, rec)
 	WV.recHandlers[recType](layer, rec);
     }
     else {
-	report("*** no matching rec handler for type "+recType);
+	report("*** no matching rec handler for recType "+recType);
     }
 }
 
@@ -310,6 +346,22 @@ WV.handleRecs = function(data, layerName)
     report("*** generic handleRecs "+layerName);
     //report("data:\n"+WV.toJSON(data));
     var layer = WV.layers[layerName];
+    var defaultRecType = null;
+    if (data.defaultRecType) {
+	report("WV.handleRecs using defaultRecType from data");
+	defaultRecType = data.defaultRecType;
+    }
+    if (!defaultRecType && layer.defaultRecType) {
+	report("WV.handleRecs using defaultRecType from layer");
+	defaultRecType = layer.defaultRecType;
+    }
+    if (!defaultRecType && layer.layerTypeObj.defaultRecType) {
+	report("WV.handleRecs using defaultRecType from layerType");
+	defaultRecType = layer.layerTypeObj.defaultRecType;
+    }
+    if (!defaultRecType) {
+	report("*** no default rec type for data for layer "+layerName);
+    }
     if (layer.recs == null) {
 	report("initing layer "+layerName);
 	layer.recs = {};
@@ -322,24 +374,29 @@ WV.handleRecs = function(data, layerName)
     for (var i=0; i<recs.length; i++) {
         var rec = recs[i];
 	//report("rec:\n"+WV.toJSON(rec));
+	if (rec.type) {
+	    report("**** waring rec "+rec.id+" for layer "+layer.name+
+                 " has rec with type field "+rec.type);
+	}
 	rec.layerName = layerName;
-	if (rec.type == "youtube" && rec.id)
+	if (rec.type == "youtube" && rec.id) {
 	    rec.youtubeId = rec.id;
-	recType = null;
-	if (rec.recType)
-	    recType = rec.recType;
+	}
+	recType = rec.recType;
 	if (!recType)
-	    recType = rec.type;
+	    recType = defaultRecType;
         layer.numObjs++;
         if (layer.numObjs > layer.maxNum)
             return;
+	/*
 	if (!recType) {
-	    if (rec.youtubeId)
+	    if (rec.youtubeId) {
+		report("setting rec with youtubeId to recType=video");
 		recType = "video";
-	    else
-		recType = "html";
+	    }
 	}
-	report("recType: "+recType);
+	*/
+	//report("recType: "+recType);
 	rec.recType = recType;
 	WV.handleRec(layer, rec);
     }
@@ -390,7 +447,7 @@ WV.setupLayers = function(layerData)
 WV.recurseLayers = function(layers, cbList, prefix)
 {
     layers.forEach(function(spec) {
-        report("---------------------------------------------------");
+        //report("---------------------------------------------------");
 	if (spec.type == 'folder') {
 	    var div = WV.addLayerFolder(spec, cbList, prefix);
 	    layers = spec['layers'];
@@ -430,7 +487,7 @@ WV.requireModule = function(jsName, done)
     else {
 	jsURL = "/static/js/"+jsName;
     }
-    report("************ requireModule: "+jsName+" **********");
+    report("******* requireModule: "+jsName+" ******");
     report("jsURL: "+jsURL);
     var name = WV.getModuleName(jsURL);
     if (WV.modules[name]) {
@@ -458,7 +515,7 @@ WV.requireModule = function(jsName, done)
     WV.scriptCompletions[jsURL] = completions;
     $.getScript(jsURL)
     .done(function(script, textStatus) {
-	    report("************ requireModule script loaded: "+jsURL+" **********");
+	    report("**** requireModule script loaded: "+jsURL+" ****");
 	    report("calling completions num: "+completions.length);
 	    completions.forEach(function(doneFun) {
 		    try {
@@ -506,8 +563,8 @@ WV.addLayer = function(layerSpec, cbList, prefix)
 
 WV.addLayerFolder = function(spec, cbList, prefix)
 {
-    report("=================================================");
-    report("addLayerFolder spec: "+WV.toJSON(spec));
+    //report("=================================================");
+    //report("addLayerFolder spec: "+WV.toJSON(spec));
     var name = spec.name;
     var open = true;
     if (spec.open != null)
@@ -519,7 +576,7 @@ WV.addLayerFolder = function(spec, cbList, prefix)
     var desc = spec.name + "...<br>";
     if (open)
 	desc = spec.name + "/";
-    report("desc: "+desc);
+    //report("desc: "+desc);
     var folderSpan = $('<span />',
         { html: desc, style: "color:white" }).appendTo(cbList);
     var folderDiv = $('<div />',
@@ -562,15 +619,9 @@ WV.Layer.toggle = function(layerName)
 
 
 $(document).ready(function() {
-    new WV.LayerType("default", {
-         dataHandler: WV.handleRecs,
-    });
-    new WV.LayerType("youtube", {
-         dataHandler: WV.handleRecs,
-    });
-    new WV.LayerType("html", {
-         dataHandler: WV.handleRecs,
-    });
+    WV.registerLayerType("default");
+    WV.registerLayerType("youtube", {defaultRecType: "video"});
+    WV.registerLayerType("html", {defaultRecType: "html"})
 });
 
 

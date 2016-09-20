@@ -11,7 +11,7 @@
 		  "iconUrl": "/static/img/billboards/climber.png",
 	          "showTethers": true,
          	  "scale": 0.05,
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/climbing_data.json"
               },
 	      {
@@ -20,7 +20,7 @@
 	          "maxNum": 8000,
 	          "visible": false,
 	          "iconUrl": "/static/img/billboards/flowers.ico",
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/gardens_data.json"
               },
               {
@@ -30,7 +30,7 @@
 	          "visible": false,
 	          "iconUrl": "/static/img/billboards/hiker.png",
 	          "scale": 0.1,
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/hiking_data.json"
               },
               {
@@ -41,7 +41,7 @@
                   "xxheight": 10000,
 	          "scale": 0.07,
                   "iconUrl": "/static/img/billboards/kite.png",
-                  "mediaType": "youtube",
+                  "layerType": "youtube",
                   "dataFile": "/static/data/FlyingKite_data.json"
               },
               {
@@ -50,7 +50,7 @@
                   "maxNum": 6000,
 	          "scale": 0.07,
                   "iconUrl": "/static/img/billboards/dancing_0.png",
-                  "mediaType": "youtube",
+                  "layerType": "youtube",
                   "dataFile": "/static/data/dance_data.json"
              },
              {
@@ -60,7 +60,7 @@
 	          "visible": false,
   	          "scale": 0.06,
 	          "iconUrl": "/static/img/billboards/temple_trans.png",
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/temples_data.json"
              },
              {
@@ -70,7 +70,7 @@
 	          "visible": false,
 	          "scale": 0.06,
 	          "iconUrl": "/static/img/billboards/surfing.png",
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/surfing_data.json"
              },
              {
@@ -80,7 +80,7 @@
 	          "visible": false,
 	          "scale": 0.06,
 	          "iconUrl": "surfing.png",
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/surfing0_data.json"
              },
              {
@@ -89,7 +89,7 @@
 	          "maxNum": 8000,
 	          "visible": false,
 	          "iconUrl": "/static/img/billboards/surfing.png",
-	          "mediaType": "youtube",
+	          "layerType": "youtube",
 	          "dataFile": "/static/data/waterSports3D_data.json"
              }
          ]
@@ -106,7 +106,7 @@
 	  "scale": 0.1,
 	  "iconUrl": "/static/img/billboards/virtualPhotoWalk.png",
           "xiconUrl": "/static/img/billboards/kite.png",
-	  "mediaType": "youtube",
+	  "layerType": "youtube",
 	  "dataFile": "/static/data/virtualphotowalks_data.json"
        },
        {
@@ -116,14 +116,14 @@
 	          "scale": 0.06,
 	          "height": 500000,
 	          "showTethers": true,
-	          "mediaType": "html",
+	          "layerType": "html",
 	          "dataFile": "/static/data/periscope_data.json",
 	          "visible": false
        },
        {
           "name": "hikes",
           "require": "WVRobots.js",
-          "mediaType": "trails",
+          "layerType": "trails",
 	  "iconUrl": "/static/img/billboards/tours.png",
 	  "dataFile": "/static/data/tours_data.json",
           "description": "Tours and Hikes"
@@ -133,13 +133,13 @@
 	   "type": "folder",
 	   "layers": [
              {
-              "name": "drones",
+              "name": "drones_tbd",
               "description": "Drone videos (Travel By Drone)",
     	      "maxNum": 3000,
 	      "visible": false,
               "scale": 0.25,
               "iconUrl": "/static/img/billboards/tbd_drone_icon.png",
-              "mediaType": "youtube",
+              "layerType": "youtube",
               "dataFile": "/static/data/tbd_data.json"
             },
             {
@@ -148,9 +148,8 @@
     	      "maxNum": 3000,
               "visible": false,
               "scale": 0.09,
-              "xxxiconUrl": "/static/img/billboards/orangeDrone.png",
               "iconUrl": "/static/img/billboards/twd_logo.png",
-              "mediaType": "youtube",
+              "layerType": "youtube",
               "dataFile": "/static/data/twd_data.json"
             },
             {
@@ -160,7 +159,7 @@
               "visible": false,
               "scale": 0.09,
               "iconUrl": "/static/img/billboards/twd_logo.png",
-              "mediaType": "html",
+              "layerType": "html",
               "dataFile": "/static/data/dronewriting_data.json"
             }
 	   ]
@@ -173,7 +172,7 @@
                   "name": "localwiki",
 		  "description": "LocalWiki Entries",
                   "iconUrl": "/static/img/billboards/LocalWiki_Logo.png",
-                  "mediaType": "html",
+                  "layerType": "html",
                   "scale": 0.1,
                   "dataFile": "/static/data/localWikiRegions_data.json",
                   "visible": false
@@ -190,7 +189,7 @@
 	         "height": 1000,
 	         "scale": 0.05,
 	         "showTethers": true,
-	         "mediaType": "html",
+	         "layerType": "html",
 	         "dataFile": "/static/data/wikipedia_data.json",
 	         "visible": false
               },
@@ -201,7 +200,7 @@
 	         "height": 1000,
 	         "scale": 0.05,
 	         "showTethers": true,
-	         "mediaType": "html",
+	         "layerType": "html",
 	         "dataFile": "/static/data/wikipediaLakes_data.json",
 	         "visible": false
               },
@@ -212,7 +211,7 @@
 	         "height": 2000,
 	         "scale": 0.05,
 	         "showTethers": true,
-	         "mediaType": "html",
+	         "layerType": "html",
 	         "dataFile": "/static/data/wiki_museum_data.json",
 	         "visible": false
               }
@@ -251,7 +250,7 @@
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,
-                 "mediaType": "html",
+                 "layerType": "html",
                  "dataFile": "/static/data/Enocks_data.json",
                  "visible": false
               },
@@ -259,7 +258,7 @@
                  "name": "tripitinerary",
                  "description": "Enock's Cross Country Trip",
                  "iconUrl": "/static/img/billboards/roadtrip1.png",
-                 "mediaType": "html",
+                 "layerType": "html",
                  "scale": 0.1,
                  "dataFile": "/static/data/tripitinerary_data.json",
                  "visible": false
@@ -270,7 +269,7 @@
 	         "maxNum": 8000,
 	         "visible": false,
 	         "iconUrl": "/static/img/billboards/Youtube.png",
-	         "mediaType": "youtube",
+	         "layerType": "youtube",
                  "scale": 0.1,
 	         "dataFile": "/static/data/enockglidden_data.json"
               }
@@ -287,7 +286,7 @@
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,
-                 "mediaType": "html",
+                 "layerType": "html",
                  "dataFile": "/static/data/Enocks_data.json",
                  "visible": false
               },
@@ -298,7 +297,7 @@
                  "height": 500000,
                  "scale": 0.15,
                  "showTethers": true,
-                 "mediaType": "html",
+                 "layerType": "html",
                  "dataFile": "/static/data/Marks_Blog_data.json",
                  "visible": false
               },
@@ -306,7 +305,7 @@
                  "name": "zilong",
                  "description": "Zilong's Journey",
 	         "iconUrl": "/static/img/billboards/yinyang.png",
-	         "mediaType": "html",
+	         "layerType": "html",
 	         "dataFile": "/static/data/zilong_data.json",
 	         "visible": false
               }
@@ -319,7 +318,7 @@
           "height": 5000,
           "scale": 0.10,
           "showTethers": true,
-          "mediaType": "html",
+          "layerType": "html",
           "dataFile": "/static/data/geovid_data.json",
           "visible": false
        },
@@ -344,7 +343,7 @@
 	          "visible": false
                },
                {
-                  "mediaType": "spirals",
+                  "layerType": "spirals",
                   "require": "WVSpirals.js",
                   "dataFile": "/static/data/spirals_data.json",
                   "name": "Spirals",
@@ -354,12 +353,12 @@
                {
                   "name": "robots",
                   "require": "WVRobots.js",
-                  "mediaType": "robots",
+                  "layerType": "robots",
 	          "dataFile": "/static/data/robots_data.json",
                   "description": "Telepresence Robots"
                },
                {
-                  "mediaType": "html",
+                  "layerType": "html",
                   "dataFile": "/static/data/GDP_data.json",
                   "name": "GDP",
                   "description": "Per Capita GDP",
@@ -372,7 +371,7 @@
                },
                {
                   "name": "Earthquakes",
-                  "mediaType": "html",
+                  "layerType": "html",
                   "dataFile": "/static/data/earthquakes_data.json",
                   "description": "Recent Earthquakes",
                   "visible": false
@@ -380,7 +379,7 @@
                {
                   "name": "porterModel",
 	          "require": "WVRobots.js",
-                  "mediaType": "robots",
+                  "layerType": "robots",
                   "dataFile": "/static/data/porter_data.json",
                   "description": "Porter Model"
                },

@@ -27,7 +27,7 @@ class Role(db.Document, RoleMixin):
 
 class User(db.Document, UserMixin):
     #email = db.StringField(max_length=255, unique=True)
-    email = db.StringField(max_length=255)
+    email = db.StringField(max_length=255, unique=True)
     name = db.StringField(max_length=255)
     full_name = db.StringField(max_length=255)
     password = db.StringField(max_length=255)
@@ -45,6 +45,10 @@ class User(db.Document, UserMixin):
     @property
     def connections(self):
         return Connection.objects(user_id=str(self.id))
+
+    def __unicode__(self):
+        return "%s" % (self.name)
+
 
 class Connection(db.Document):
     user_id = db.ObjectIdField()
@@ -102,9 +106,8 @@ admin.add_view(MyModelView(User))
 admin.add_view(MyModelView(Role))
 admin.add_view(MyModelView(Connection))
 
-def addUser(email, full_name):
-    print "**** addUser", email, full_name
-    name = full_name.split()[0]
+def addUser(email, name, full_name):
+    print "**** addUser", email, name, full_name
     user = user_datastore.create_user(email=email,
                                full_name=full_name,
                                name=name,
@@ -124,7 +127,8 @@ def findOrAddUser(email, full_name):
     except:
         print traceback.print_exc()
         pass
-    return addUser(email, full_name)
+    name = full_name.split()[0]
+    return addUser(email, name, full_name)
 
 def getUserById(id):
     """
@@ -159,12 +163,12 @@ def create_users():
                                        description='Administrator')
     user_datastore.find_or_create_role(name='end-user',
                                        description='End user')
-    addUser('donkimber@gmail.com',       'Don Kimber')
-    addUser('doczeno@yahoo.com',         'Don')
-    addUser('enockglidden@hotmail.com',  'Enock Glidden')
-    addUser('sinasareth@yahoo.com',      'Sina')
-    addUser('vaughan@fxpal.com',         'Jim Vaughan')
-    addUser('indrajeet.khater@gmail.com','Teddy')
+    addUser('donkimber@gmail.com',       'DonK',    'Don Kimber')
+    addUser('doczeno@yahoo.com',         'DocZeno', 'Doc Zeno')
+    addUser('enockglidden@hotmail.com',  'Enock',   'Enock Glidden')
+    addUser('sinasareth@yahoo.com',      'Sina',    'Sina')
+    addUser('vaughan@fxpal.com',         'JimV',    'Jim Vaughan')
+    addUser('indrajeet.khater@gmail.com','Teddy',   'Indrajeet Khater')
 
     user_datastore.add_role_to_user('donkimber@gmail.com', 'admin')
 

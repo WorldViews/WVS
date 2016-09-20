@@ -128,7 +128,7 @@ def projects():
 
 @app.route('/jprojects')
 def jprojects():
-    projs = Project.objects.all()
+    #projs = Project.objects.all()
     return render_template("projects_json.html")
 
 

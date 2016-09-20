@@ -2,7 +2,7 @@
     "name": "hikes",
     "records": [
        {
-          "type": "CoordinateSystem",
+          "recType": "CoordinateSystem",
 	  "coordSys": "PAL",
           "lat":  37.40583,
 	  "lon": -122.15080,
@@ -10,7 +10,7 @@
 	  "heading": 32.0
        },
        {
-          "type": "CoordinateSystem",
+          "recType": "CoordinateSystem",
 	  "coordSys": "PAL2",
           "lat":  37.40587,
 	  "lon": -122.15082,
@@ -19,7 +19,7 @@
        },
        {
           "id": "4",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "panobot",
           "description": "PanoBot tour",
 	  "tourName": "porter_outdoor_1",
@@ -30,7 +30,7 @@
        },
        {
           "id": "5",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "panobot",
           "description": "PanoBot tour inside PAL.",
 	  "tourName": "porter_tour_3",
@@ -41,7 +41,7 @@
        },
        {
           "id": "FXPALoutsideWalk1",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Walkaround by Enock.",
 	  "tourName": "porter_tour_3",
@@ -55,7 +55,7 @@
        },
        {
           "id": "PAL_FlyAround_1",
-          "type": "dronePath",
+          "recType": "dronePath",
           "robotType": "Phantom4",
           "description": "FlyAround PAL.",
 	  "tourName": "porter_flyaround_1",
@@ -71,7 +71,7 @@
        },
        {
           "id": "Stearman_Flight_1",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Stearman Flight near Napa.",
 	  "tourName": "stearman_flight_1",
@@ -85,7 +85,7 @@
        },
        {
           "id": "PresidioWalk1",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Walkaround Presidio by Enock.",
 	  "tourName": "presidio_tour_1",
@@ -98,7 +98,7 @@
        },
        {
           "id": "VasonaWalk1",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Walkaround Vasona by Mark.",
 	  "tourName": "vasona_1",
@@ -110,7 +110,7 @@
        },
        {
           "id": "HenryCowellWalk1",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Walk through Redwood Grove",
 	  "tourName": "cowell_1",
@@ -122,7 +122,7 @@
        },
        {
           "id": "HenryCowellWalk2",
-          "type": "robotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "description": "Walk through Redwood River Trail",
 	  "tourName": "cowell_2",
@@ -134,7 +134,7 @@
        },
        {
          "id": "Deer_Meadow_Trail",
-         "type": "robotTrail",
+         "recType": "robotTrail",
          "robotType": "wheelchair",
          "description": "Deer Meadow Trail",
 	  "dataUrl": "/static/data/paths/Deer_Meadow_Trail.json",
@@ -147,7 +147,7 @@
       },
       {
          "id": "Rancho_San_Antonio_GPX",
-         "type": "robotTrail",
+         "recType": "robotTrail",
          "robotType": "wheelchair",
          "description": "Rancho_San_Antonio_GPX",
 	  "dataUrl": "/static/data/paths/Rancho_San_Antonio.json",
@@ -160,7 +160,7 @@
       },
       {
          "id": "Rancho_San_Antonio_GPX_2",
-         "type": "robotTrail",
+         "recType": "robotTrail",
          "robotType": "wheelchair",
          "description": "Rancho_San_Antonio_GPX_2",
 	  "dataUrl": "/static/data/paths/Rancho_San_Antonio_2.json",
@@ -173,7 +173,7 @@
       },
       {
          "id": "Vineyard_Trail",
-         "type": "robotTrail",
+         "recType": "robotTrail",
          "robotType": "wheelchair",
          "description": "Vineyard_Trail",
 	  "dataUrl": "/static/data/paths/Vineyard_Trail.json",
@@ -186,7 +186,7 @@
       },
       {
          "id": "Winery_House",
-         "type": "robotTrail",
+         "recType": "robotTrail",
          "robotType": "wheelchair",
          "description": "Winery_House",
 	  "dataUrl": "/static/data/paths/Winery_House.json",
@@ -199,7 +199,7 @@
       },
       {
         "id": "Winery_Museum",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Winery_Museum",
 	 "dataUrl": "/static/data/paths/Winery_Museum.json",
@@ -212,7 +212,7 @@
      },
      {
         "id": "Ardenwood_Conrads_Field",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Ardenwood_Conrads_Field",
 	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Conrads_Field.json",
@@ -225,7 +225,7 @@
      },
      {
         "id": "Ardenwood_Gardens_Tour",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Ardenwood_Gardens_Tour",
 	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Gardens_Tour.json",
@@ -238,7 +238,7 @@
      },
      {
         "id": "Ardenwood_GPX_More_Gardens",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Ardenwood_GPX_More_Gardens",
 	 "dataUrl": "/static/data/paths/Ardenwood_GPX_More.json",
@@ -251,7 +251,7 @@
      },
      {
         "id": "Ardenwood_Peacocks",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Ardenwood_Peacocks",
 	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Peacocks.json",
@@ -264,7 +264,7 @@
      },
      {
         "id": "Ardenwood_Train_Ride",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Ardenwood_Train_Ride",
 	 "dataUrl": "/static/data/paths/Ardenwood_GPX_Train_Ride.json",
@@ -277,7 +277,7 @@
      },
      {
         "id": "Auburn_River_Trail",
-        "type": "robotTrail",
+        "recType": "robotTrail",
         "robotType": "wheelchair",
         "description": "Auburn_River_Trail",
 	 "dataUrl": "/static/data/paths/Auburn_River_Trail.json",

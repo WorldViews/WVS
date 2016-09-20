@@ -246,7 +246,7 @@
             "youtubeDeltaT": 0, 
             "robotType": "wheelchair", 
             "tourName": "vid_tour_http___www_gobeyondthefence_com__p_587", 
-            "type": "robotTrail", 
+            "recType": "robotTrail", 
             "id": "vid_tour_http___www_gobeyondthefence_com__p_587", 
             "youtubeId": "gf5rd9rZv4I"
         }, 
@@ -258,7 +258,7 @@
             "youtubeDeltaT": 0, 
             "robotType": "wheelchair", 
             "tourName": "vid_tour_http___gobeyondthefence_com__p_522", 
-            "type": "robotTrail", 
+            "recType": "robotTrail", 
             "id": "vid_tour_http___gobeyondthefence_com__p_522", 
             "youtubeId": "Xg6Op_UEXbk"
         }

@@ -110,6 +110,7 @@ db = MongoEngine(app)
 
 import flask_worldviews.Accounts
 import flask_worldviews.Projects
+import flask_worldviews.Posts
 import flask_worldviews.Streams
 
 @app.route('/')

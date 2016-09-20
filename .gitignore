@@ -12,6 +12,7 @@ scripts/backup/
 scripts/TBD_data/
 scripts/YOUTUBE_DEV_KEY.txt
 config/ADMIN_CONFIG.py
+config/YOUTUBE_DEV_KEY.txt
 django/Registry/static/models/
 scraped_data/
 

@@ -538,7 +538,6 @@ WV.registerLayerType("trails", {
 
 WV.registerRecHandler("robotTrail", WV.Trails.addTrail);
 WV.registerRecHandler("dronePath", WV.Trails.addTrail);
-//WV.registerRecHandler("dronePath", WV.Trails.addDroneTrail);
 WV.registerRecHandler("model", WV.addModel);
 
 WV.registerRecHandler("CoordinateSystem",

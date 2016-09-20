@@ -2,7 +2,7 @@
     "name": "porterModel",
     "records": [
        {
-          "type": "CoordinateSystem",
+          "recType": "CoordinateSystem",
 	  "coordSys": "PAL",
           "lat":  37.40583,
 	  "lon": -122.15080,
@@ -11,7 +11,7 @@
        },
        {
           "id": "7",
-	  "type": "xmodel",
+	  "recType": "xmodel",
 	  "modelUrl": "../static/models/PorterPAL.glb",
           "lat":  37.40581,
 	  "lon": -122.15080,
@@ -22,7 +22,7 @@
        },
        {
           "id": "8",
-	  "type": "model",
+	  "recType": "model",
 	  "modelUrl": "../static/models/PorterPALCutaway.glb",
           "xlat":  37.40581,
 	  "xlon": -122.15080,

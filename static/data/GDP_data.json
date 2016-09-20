@@ -7,7 +7,7 @@
 	 "recType": "KML",
          "id": "1",
          "xurl": "data/kml/EnocksCrossCountryTrip.kml",
-         "url": "data/kml/gdpPerCapita2008.kmz"
+         "url": "/static/data/kml/gdpPerCapita2008.kmz"
        },
        {
           "recType": "flyHome",

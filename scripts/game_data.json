@@ -1,0 +1,131 @@
+{
+    "query": "game", 
+    "records": [
+        {
+            "id": "2", 
+            "lat": -24.0790691376, 
+            "lon": 31.5747108459, 
+            "publishedAt": "2016-09-16T07:00:09.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/wC-KNCvWsUk/default_live.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/wC-KNCvWsUk/hqdefault_live.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/wC-KNCvWsUk/mqdefault_live.jpg", 
+                    "width": 320
+                }
+            }, 
+            "title": "Djuma Game Reserve Waterhole - Live Cam", 
+            "youtubeId": "wC-KNCvWsUk"
+        }, 
+        {
+            "id": "3", 
+            "lat": -24.70834, 
+            "lon": 31.53632, 
+            "publishedAt": "2016-06-05T05:11:18.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/H0VY1k4HdZc/default_live.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/H0VY1k4HdZc/hqdefault_live.jpg", 
+                    "width": 480
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/H0VY1k4HdZc/mqdefault_live.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/H0VY1k4HdZc/sddefault_live.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Djuma Private Game Reserve Live Stream", 
+            "youtubeId": "H0VY1k4HdZc"
+        }, 
+        {
+            "id": "4", 
+            "lat": 47.19667, 
+            "lon": -122.229662, 
+            "publishedAt": "2016-09-18T21:57:31.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/Ohw1iJmvwsw/default_live.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/Ohw1iJmvwsw/hqdefault_live.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/Ohw1iJmvwsw/maxresdefault_live.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/Ohw1iJmvwsw/mqdefault_live.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/Ohw1iJmvwsw/sddefault_live.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "LIVE! Random Xbox 360 Games w/ Me And g4mer kid123!", 
+            "youtubeId": "Ohw1iJmvwsw"
+        }, 
+        {
+            "id": "1", 
+            "lat": 39.841758728, 
+            "lon": -75.1503829956, 
+            "publishedAt": "2016-09-18T23:10:18.000Z", 
+            "thumbnails": {
+                "default": {
+                    "height": 90, 
+                    "url": "https://i.ytimg.com/vi/3JVLazanABI/default_live.jpg", 
+                    "width": 120
+                }, 
+                "high": {
+                    "height": 360, 
+                    "url": "https://i.ytimg.com/vi/3JVLazanABI/hqdefault_live.jpg", 
+                    "width": 480
+                }, 
+                "maxres": {
+                    "height": 720, 
+                    "url": "https://i.ytimg.com/vi/3JVLazanABI/maxresdefault_live.jpg", 
+                    "width": 1280
+                }, 
+                "medium": {
+                    "height": 180, 
+                    "url": "https://i.ytimg.com/vi/3JVLazanABI/mqdefault_live.jpg", 
+                    "width": 320
+                }, 
+                "standard": {
+                    "height": 480, 
+                    "url": "https://i.ytimg.com/vi/3JVLazanABI/sddefault_live.jpg", 
+                    "width": 640
+                }
+            }, 
+            "title": "Unearthed Arcana Quick Characters Live 5E D&D Game Play", 
+            "youtubeId": "3JVLazanABI"
+        }
+    ], 
+    "time": 1474245426.59
+}
