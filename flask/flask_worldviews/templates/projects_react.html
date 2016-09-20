@@ -11,24 +11,79 @@
   tinymce.init({
     selector: 'textarea'
   });
+
+function report(str)
+{
+    console.log(str);
+}
+
+var current_user = "{{current_user}}";
+current_user_id = "{{current_user.id}}";
+
 </script>
 
 <script type="text/jsx">
+
+
+var COMMA = <span style={ {float: "left"} }>, </span>;
+
+function join(parts, sep)
+{
+    var nparts = [];
+    for (var i=0; i<parts.length; i++) {
+       nparts.push(parts[i]);
+       if (i < parts.length-1)
+          nparts.push(sep);
+    }
+    return nparts;
+}
+
+var User = React.createClass({
+  render: function() {
+    var user = this.props.user;
+    //return ( <div style={ {float: "left"} }>{user.name} {user.email}</div> )
+    return ( <div style={ {float: "left"} }>{user.name}</div> )
+  }
+});
+
+var UserList = React.createClass({
+  render: function() {
+    var users = this.props.users;
+    var userList = users.map(function(user) {
+        return <User user={user}/>;
+        //return user.name;
+    });
+    userList = join(userList, COMMA);
+    return ( <div style={ {float: "left"} }> {userList} </div> )
+  }
+});
+
+var Project = React.createClass({
+  render: function() {
+    report("proj: "+this.props.proj);
+    return (
+      <div>
+        <h2> {this.props.proj.title} </h2>
+        <div dangerouslySetInnerHTML={ {__html: this.props.proj.description} } />
+        <br/>
+        <span style={ {float: "left"} }>Followers: </span>
+            <UserList users= {this.props.proj.followers} />
+        <br/>
+        <span style={ {float: "left"} }>Members: </span>
+            <UserList users= {this.props.proj.members} />
+        &nbsp;<p></p>
+      </div>
+    );
+  }
+});
+
 var ProjectList = React.createClass({
-  getInitialState: function() {
-    return {
-      title: '',
-      description: ''
-    };
-  },
+  getInitialState: function() { return { projects: [] };  },
 
   componentDidMount: function() {
     this.serverRequest = $.get(this.props.source, function (results) {
-      var proj = results[results.length-1];
-      this.setState({
-        title: proj.title,
-        description: proj.description
-      });
+      var projects = results;
+      this.setState({projects: projects});
     }.bind(this));
   },
 
@@ -37,121 +92,16 @@ var ProjectList = React.createClass({
   },
 
   render: function() {
-    return (
-      <div>
-        Title: {this.state.title}
-        <div dangerouslySetInnerHTML={ {__html: this.state.description} } />
-      </div>
-    );
+      var projectList = this.state.projects.map(function(project) {
+            return <Project proj={project} />
+        });
+        return <div>{projectList}</div>;
   }
 });
 
 React.render(
   <ProjectList source="/projects?type=json" />,
   document.getElementById('projectsDiv') );
-</script>
-
-<script type="text/javascript">
-
-var PROJECTS = [];
-var PROJECT_BY_ID = {};
-
-function report(str) { console.log(str); }
-
-function editProj(projId)
-{
-    report("editProj "+projId);
-    window.location.href = "/project_edit?id="+projId;
-}
-
-function cancelNewProj()
-{
-    $("#addProjDiv").hide();
-    $("#newProjButton").show();
-    $("#title").val("");
-    $("#description").val();
-}
-
-function enterNewProj()
-{
-    $("#addProjDiv").show();
-    $("#newProjButton").hide();
-    window.location.href = "#createNewProject";
-}
-
-function joinProj(projId, userId)
-{
-    var url = "/project_join";
-    var obj = {projectId: projId, members: [userId]};
-    var jstr = JSON.stringify(obj);
-    report("joinProj Obj: "+jstr);
-    $.ajax({type: "POST",
-            url: url,
-            dataType: "json",
-            data: jstr}).done(function(res) {
-                report("Sent it. got: "+JSON.stringify(res));
-                window.location.href = window.location.href;
-           });
-}
-
-function followProj(projId, userId)
-{
-    var url = "/project_follow";
-    var obj = {projectId: projId, userId: userId};
-    report("followProj Obj: "+JSON.stringify(obj));
-    $.ajax({type: "POST",
-            url: url,
-            dataType: "json",
-            data: obj}).done(function(res) {
-                report("Sent it. got: "+JSON.stringify(res));
-                window.location.href = window.location.href;
-           });
-}
-
-getJSON = function(url, handler)
-{
-    report(">>>>> getJSON: "+url);
-    $.ajax({
-        url: url,
-	dataType: 'text',
-	success: function(str) {
-		data = JSON.parse(str);
-		handler(data);
-	    }
-	});
-}
-
-function getProjects()
-{
-    getJSON("/projects?type=json", handleProjects);
-}
-
-function handleProjects(data)
-{
-    report("handleProjects "+data);
-    var projects = data;
-    PROJECTS = projects;
-    PROJECT_BY_ID = {};
-    for (var i=0; i<projects.length; i++) {
-        var proj = projects[i];
-        PROJECT_BY_ID[proj.id] = proj;
-        handleProject(proj);
-    }
-}
-
-function handleProject(projData)
-{
-    report("project title "+projData.title);
-    proj = new ProjectR(projData);
-    proj.render();
-}
-
-$(document).ready(function() {
-});
-
-current_user = "{{current_user}}";
-current_user_id = "{{current_user.id}}";
-
 </script>
 
 {% endblock %}

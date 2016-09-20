@@ -3,6 +3,7 @@
 from flask import redirect, request, render_template, Response
 import jsonHack
 from jsonHack import jsonify, jsondumps
+#from flask_security import current_user
 from flask_worldviews.util import gen_json
 from flask_worldviews import db, app
 from flask_worldviews.Accounts import admin, User, MyModelView, getUserById, getUserByStr
@@ -134,6 +135,8 @@ def jprojects():
 @app.route('/rprojects')
 def rprojects():
     #projs = Project.objects.all()
+    #print "userId:", current_user.id
     return render_template("projects_react.html")
+    #return render_template("projects_react.html", current_user_id=current_user.id)
 
 
