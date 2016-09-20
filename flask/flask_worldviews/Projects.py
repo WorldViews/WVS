@@ -131,4 +131,9 @@ def jprojects():
     #projs = Project.objects.all()
     return render_template("projects_json.html")
 
+@app.route('/rprojects')
+def rprojects():
+    #projs = Project.objects.all()
+    return render_template("projects_react.html")
+
 

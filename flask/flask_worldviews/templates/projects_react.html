@@ -1,0 +1,164 @@
+{% extends "layout.html" %}
+{% block title %}WorldViews Projects{% endblock %}
+{% block head %}
+  {{ super() }}
+
+<script src="/static/js/tinymce/tinymce.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/react.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.2/JSXTransformer.js"></script>
+<script>
+  tinymce.init({
+    selector: 'textarea'
+  });
+</script>
+
+<script type="text/jsx">
+var ProjectList = React.createClass({
+  getInitialState: function() {
+    return {
+      title: '',
+      description: ''
+    };
+  },
+
+  componentDidMount: function() {
+    this.serverRequest = $.get(this.props.source, function (results) {
+      var proj = results[results.length-1];
+      this.setState({
+        title: proj.title,
+        description: proj.description
+      });
+    }.bind(this));
+  },
+
+  componentWillUnmount: function() {
+    this.serverRequest.abort();
+  },
+
+  render: function() {
+    return (
+      <div>
+        Title: {this.state.title}
+        <div dangerouslySetInnerHTML={ {__html: this.state.description} } />
+      </div>
+    );
+  }
+});
+
+React.render(
+  <ProjectList source="/projects?type=json" />,
+  document.getElementById('projectsDiv') );
+</script>
+
+<script type="text/javascript">
+
+var PROJECTS = [];
+var PROJECT_BY_ID = {};
+
+function report(str) { console.log(str); }
+
+function editProj(projId)
+{
+    report("editProj "+projId);
+    window.location.href = "/project_edit?id="+projId;
+}
+
+function cancelNewProj()
+{
+    $("#addProjDiv").hide();
+    $("#newProjButton").show();
+    $("#title").val("");
+    $("#description").val();
+}
+
+function enterNewProj()
+{
+    $("#addProjDiv").show();
+    $("#newProjButton").hide();
+    window.location.href = "#createNewProject";
+}
+
+function joinProj(projId, userId)
+{
+    var url = "/project_join";
+    var obj = {projectId: projId, members: [userId]};
+    var jstr = JSON.stringify(obj);
+    report("joinProj Obj: "+jstr);
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "json",
+            data: jstr}).done(function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           });
+}
+
+function followProj(projId, userId)
+{
+    var url = "/project_follow";
+    var obj = {projectId: projId, userId: userId};
+    report("followProj Obj: "+JSON.stringify(obj));
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "json",
+            data: obj}).done(function(res) {
+                report("Sent it. got: "+JSON.stringify(res));
+                window.location.href = window.location.href;
+           });
+}
+
+getJSON = function(url, handler)
+{
+    report(">>>>> getJSON: "+url);
+    $.ajax({
+        url: url,
+	dataType: 'text',
+	success: function(str) {
+		data = JSON.parse(str);
+		handler(data);
+	    }
+	});
+}
+
+function getProjects()
+{
+    getJSON("/projects?type=json", handleProjects);
+}
+
+function handleProjects(data)
+{
+    report("handleProjects "+data);
+    var projects = data;
+    PROJECTS = projects;
+    PROJECT_BY_ID = {};
+    for (var i=0; i<projects.length; i++) {
+        var proj = projects[i];
+        PROJECT_BY_ID[proj.id] = proj;
+        handleProject(proj);
+    }
+}
+
+function handleProject(projData)
+{
+    report("project title "+projData.title);
+    proj = new ProjectR(projData);
+    proj.render();
+}
+
+$(document).ready(function() {
+});
+
+current_user = "{{current_user}}";
+current_user_id = "{{current_user.id}}";
+
+</script>
+
+{% endblock %}
+
+{% block content %}
+<p>
+&nbsp;<p>&nbsp;<p>&nbsp;<p>
+<div id="projectsDiv"></div>
+
+{% endblock %}
