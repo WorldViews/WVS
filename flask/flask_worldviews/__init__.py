@@ -112,6 +112,7 @@ import flask_worldviews.Accounts
 import flask_worldviews.Projects
 import flask_worldviews.Posts
 import flask_worldviews.Streams
+import flask_worldviews.Polly
 
 @app.route('/')
 def index():

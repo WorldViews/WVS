@@ -88,5 +88,29 @@ def handle_sharecam(msg):
     #print "handle_sharecam:", msg
     emit('sharecam', msg, broadcast=True)
 
+"""
+###############################################
+# these are just to test android_chat sample
+#
+@socketio.on('add user')
+def handle_sio_add_user(msg):
+    print "handle_add_user:", msg
+    msg = {'numUsers': 1, 'user': 'xxx'}
+    emit('login', msg, broadcast=True)
+
+@socketio.on('login')
+def handle_sio_login(msg):
+    print "handle_sio_login:", msg
+
+@socketio.on('new message')
+def handle_sio_new_message(msg):
+    print "handle_sio_new_message:", msg
+
+@socketio.on('polly')
+def handle_sio_polly_message(msg):
+    print "handle_sio_polly_message:", msg
+    emit('polly', msg, broadcast=True)
+"""
+
 
 
