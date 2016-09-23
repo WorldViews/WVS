@@ -18,7 +18,7 @@ function report(str)
 }
 
 POLLY = {};
-
+POLLY.user = "anon";
 POLLY.SIO_URL = "http://pollywss.paldeploy.com";
 POLLY.YAW_STEP = 1;
 POLLY.YAW_MIN = -90;
@@ -77,6 +77,7 @@ POLLY.requestView = function(yaw, pitch)
 
 POLLY.sendMsg = function(msg)
 {
+   msg.user = POLLY.user;
    POLLY.sock.emit("polly", msg);
    $("#msgs").prepend("sent: "+msg+"<br>");
 }
@@ -137,7 +138,7 @@ POLLY.redrawCanvas = function()
        var yaw = POLLY.gimbalState.yaw;
        var pitch = POLLY.gimbalState.pitch;
        var vxvy = POLLY.yawpitch_to_vxvy(yaw, pitch);
-       report("redrax vx: "+vxvy.vx+"  vy: "+vxvy.vy);
+       //report("redraw vx: "+vxvy.vx+"  vy: "+vxvy.vy);
        ctx.strokeStyle = "#000000";
        ctx.beginPath();
        ctx.arc(vxvy.vx, vxvy.vy, 10, 0, 2*Math.PI);
@@ -148,7 +149,7 @@ POLLY.redrawCanvas = function()
        var yaw = POLLY.lastRequest.yaw;
        var pitch = POLLY.lastRequest.pitch;
        var vxvy = POLLY.yawpitch_to_vxvy(yaw, pitch);
-       report("redrax vx: "+vxvy.vx+"  vy: "+vxvy.vy);
+       //report("redraw vx: "+vxvy.vx+"  vy: "+vxvy.vy);
        ctx.strokeStyle = "#6666FF";
        ctx.strokeWidth = 2;
        ctx.beginPath();
@@ -175,6 +176,40 @@ POLLY.updateStatus = function() {
     setTimeout(POLLY.updateStatus, POLLY.TIMER_INTERVAL);
 }
 
+POLLY.playVideo = function()
+{
+    var msg = {'msgType': 'polly.playYoutubeVideo',
+               'url': 'https://www.youtube.com/watch?v=vJrVz-2DrlQ'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.takePicture = function()
+{
+    report("request take picture");
+    var msg = {'msgType': 'polly.takePicture'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.launchZoom = function()
+{
+    report("request launch Zoom");
+    var msg = {'msgType': 'polly.launchZoom'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.login = function(event)
+{
+    event.preventDefault();
+    var user = $("#userName").val();
+    if (user == "") {
+       alert("Name required");
+       return;
+    }
+    POLLY.user = user;
+    $("#loginDiv").hide();
+    $("#mainDiv").show();
+}
+
 $(document).ready(function() {
     report("ready");
     POLLY.setupPolly();
@@ -183,11 +218,31 @@ $(document).ready(function() {
     $("#pollyCanvas").click(POLLY.canvasClickHandler);
     $("#clearLog").click(function() { $("#log").html(""); });
 
+    $("#takePicture").click(POLLY.takePicture);
+    $("#launchZoom").click(POLLY.launchZoom);
+    $("#playVideo").click(POLLY.playVideo);
+    $("#loginForm").submit(POLLY.login);
     setTimeout(POLLY.updateStatus, 10);
+    var user = WV.getParameterByName("user");
+    if (user) {
+        POLLY.user = user;
+        $("#loginDiv").hide();
+        $("#mainDiv").show();
+    }
 });
 
 </script>
-<h2>Polly Page</h2>
+<h2>WorldViews Polly Page</h2>
+<div id="loginDiv">
+&nbsp;
+<form id="loginForm">
+Name: <input type="text" id="userName" size=30>
+<input type="submit" id="loginSubmit" value="Login">
+<!-- <button id="login">Go</button> -->
+</form>
+</div>
+<div id="mainDiv" style="display: none">
+<p></p>
 <style>
 .gvalx { display: inline-block; width: 50px; }
 </style>
@@ -200,8 +255,16 @@ Roll: <span class="gval" id="rollVal"></span> &nbsp;
 <p>
 <button id="left">Left</button> <button id="right">Right</button>
 </p>
+<p>
+</p>
+<button id="takePicture">Snap Picture</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="launchZoom">Launch Zoom</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="playVideo">Play Video</button>
 <hr>
 <button id="clearLog">Clear Log</button>
 <div id="log" style="height: 500px"></div>
+</div>
 </body>
 </html>
