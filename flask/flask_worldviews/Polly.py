@@ -12,6 +12,10 @@ from flask_socketio import emit
 ###################################################################
 # SocketIO related section
 POLLY_MSGS_BY_TYPE = {}
+POLLY_LAST_REQUEST = None
+POLLY_LAST_REQUEST_TIME = None
+POLLY_CONTROL_TIMEOUT = 3
+import time
 
 @app.route('/polly')
 def polly():
@@ -23,7 +27,20 @@ def pollyStats():
     return jsonify(POLLY_MSGS_BY_TYPE)
 
 def handlePollyRequest(msg):
+    global POLLY_LAST_REQUEST_TIME, POLLY_LAST_REQUEST
     print "handlePollyRequest", msg
+    if POLLY_LAST_REQUEST:
+        print "Checking control..."
+        dt = time.time() - POLLY_LAST_REQUEST_TIME
+        print "dt:", dt
+        prevUser = POLLY_LAST_REQUEST['user']
+        print "prevUser:", prevUser
+        if msg['user'] != prevUser and dt < POLLY_CONTROL_TIMEOUT:
+            print "Must wait for", prevUser
+            return
+    # Grant this request
+    POLLY_LAST_REQUEST = msg
+    POLLY_LAST_REQUEST_TIME = time.time()
     msg['msgType'] = msg['requested.msgType']
     emit('polly', msg, broadcast=True)
 
