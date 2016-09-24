@@ -198,6 +198,9 @@ WV.onLeftClick = function(e) {
     if (rec.clickHandler) {
 	rec.clickHandler(rec, e.position, pickPos, e, pickedObject);
     }
+    else if (layer.clickHandler) {
+	layer.clickHandler(rec, e.position, pickPos, e, pickedObject);
+    }
     else {
 	report("*** no click handler");
 	WV.Trails.handleClick(rec, e.position, pickPos, e, pickedObject);
