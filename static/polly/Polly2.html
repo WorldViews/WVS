@@ -1,0 +1,289 @@
+<html>
+<head>
+<script>
+WV = {};
+</script>
+  <script src="/static/js/socket.io-1.4.5.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="/static/js/WVUtil.js"></script>
+</head>
+<body>
+<script>
+
+function report(str)
+{
+   console.log(str);
+   //$("#log").prepend(str+"<br>\n");
+   $("#log").append(str+"<br>\n");
+}
+
+POLLY = {};
+POLLY.user = "anon";
+//POLLY.SIO_URL = "http://pollywss.paldeploy.com";
+POLLY.SIO_URL = "/";
+POLLY.YAW_STEP = 1;
+POLLY.YAW_MIN = -90;
+POLLY.YAW_MAX = 90;
+POLLY.PITCH_MIN = -90;
+POLLY.PITCH_MAX = 90;
+POLLY.TIMER_INTERVAL = 100;
+
+POLLY.sock = null;
+POLLY.gimbalState = null;
+POLLY.lastRequest = null;
+
+POLLY.showStatus = function()
+{
+   var gs = POLLY.gimbalState;
+   if (gs == null) {
+       report("no gimbal state yet");
+   }
+   $("#yawVal").html(gs.yaw);
+   $("#pitchVal").html(gs.pitch);
+   $("#rollVal").html(gs.roll);
+}
+
+POLLY.handleGimbalState = function(msg)
+{
+   POLLY.gimbalState = msg;
+   POLLY.gimbalState.timeUpdated = WV.getClockTime();
+   POLLY.showStatus();
+}
+
+POLLY.handleRequestView = function(msg)
+{
+   msg.requestTime = WV.getClockTime();
+   POLLY.lastRequest = msg;
+}
+
+POLLY.handleMsg = function(msg)
+{
+   var str = JSON.stringify(msg);
+   report("received msg: "+str);
+   if (msg.msgType == "polly.gimbalState") {
+      POLLY.handleGimbalState(msg);
+   }
+   if (msg.msgType == "polly.requestView") {
+      POLLY.handleRequestView(msg);
+   }
+   //$("#log").append(str+"<br>");
+   //$("log").prepend("recieved:"+str+"<br>");
+}
+
+POLLY.requestView = function(yaw, pitch)
+{
+   var msg = {'msgType': 'polly.request',
+              'requested.msgType': 'polly.requestView', 'yaw': yaw, 'pitch': pitch};
+   POLLY.sendMsg(msg)
+   //POLLY.lastRequest = msg;
+}
+
+POLLY.sendMsg = function(msg)
+{
+   msg.user = POLLY.user;
+   POLLY.sock.emit("polly", msg);
+   $("#msgs").prepend("sent: "+msg+"<br>");
+}
+
+POLLY.setupPolly = function()
+{
+    POLLY.sock = io(POLLY.SIO_URL);
+    POLLY.sock.on('polly', POLLY.handleMsg);
+}
+
+POLLY.move = function(dyaw, dpitch)
+{
+    var msg = {'msgType': 'polly.move',
+               'dyaw': dyaw,
+               'dpitch': dpitch};
+    report("sending "+JSON.stringify(msg));
+    POLLY.sendMsg(msg);
+}
+
+POLLY.vxvy_to_yawpitch = function(vx, vy)
+{
+   var w = $("#pollyCanvas").width();
+   var h = $("#pollyCanvas").height();
+   var nx =  ( vx/(w+0.0) );
+   var ny = 1.0 - ( vy/(h+0.0) );
+   return {
+      yaw:   POLLY.YAW_MIN +   nx*(POLLY.YAW_MAX - POLLY.YAW_MIN),
+      pitch: POLLY.PITCH_MIN + ny*(POLLY.PITCH_MAX - POLLY.PITCH_MIN)
+   };
+}
+
+POLLY.yawpitch_to_vxvy = function(yaw, pitch)
+{
+   var w = $("#pollyCanvas").width();
+   var h = $("#pollyCanvas").height();
+   var nx = (yaw - POLLY.YAW_MIN)/(0.0+POLLY.YAW_MAX-POLLY.YAW_MIN);
+   var ny = (pitch - POLLY.PITCH_MIN)/(0.0+POLLY.PITCH_MAX-POLLY.PITCH_MIN);
+   return { vx: nx*w, vy: h*(1-ny) };
+}
+
+POLLY.canvasClickHandler = function(e)
+{
+   E = e;
+   var x = e.offsetX;
+   var y = e.offsetY;
+   var pos = POLLY.vxvy_to_yawpitch(x, y);
+   POLLY.requestView(pos.yaw, pos.pitch);
+   report("canvasClick "+x+","+y+" yaw: "+pos.yaw+" pitch: "+pos.pitch);
+}
+
+POLLY.redrawCanvas = function()
+{
+    //report("redrawCanvas");
+    var c = document.getElementById("pollyCanvas");
+    var ctx = c.getContext("2d");
+    ctx.clearRect(0,0, c.width, c.height);
+    if (POLLY.gimbalState != null) {
+       var yaw = POLLY.gimbalState.yaw;
+       var pitch = POLLY.gimbalState.pitch;
+       var vxvy = POLLY.yawpitch_to_vxvy(yaw, pitch);
+       //report("redraw vx: "+vxvy.vx+"  vy: "+vxvy.vy);
+       ctx.strokeStyle = "#000000";
+       ctx.beginPath();
+       ctx.arc(vxvy.vx, vxvy.vy, 10, 0, 2*Math.PI);
+       ctx.lineWidth = 5;
+       ctx.stroke();
+   }
+    if (POLLY.lastRequest != null) {
+       var yaw = POLLY.lastRequest.yaw;
+       var pitch = POLLY.lastRequest.pitch;
+       var vxvy = POLLY.yawpitch_to_vxvy(yaw, pitch);
+       //report("redraw vx: "+vxvy.vx+"  vy: "+vxvy.vy);
+       ctx.strokeStyle = "#6666FF";
+       ctx.strokeWidth = 2;
+       ctx.beginPath();
+       ctx.arc(vxvy.vx, vxvy.vy, 10, 0, 2*Math.PI);
+       ctx.lineWidth = 5;
+       ctx.stroke();
+    }
+}
+
+
+POLLY.updateStatus_ = function()
+{
+    //report("tick...");
+    POLLY.redrawCanvas();
+    if (POLLY.lastRequest) {
+        //report("showing last request info...");
+        var dt = WV.getClockTime() - POLLY.lastRequest.requestTime;
+        //tStr = ""+Math.floor(10*dt)/10;
+        tStr = ""+Math.floor(dt);
+        //report("dt: "+dt);
+        var str = "Last control by "+POLLY.lastRequest.user+" "+tStr+" secs ago";
+        $("#controlStatus").html(str);
+    }
+}
+
+POLLY.updateStatus = function() {
+    try {
+        POLLY.updateStatus_();
+    }
+    catch (e) {
+       report("err: "+e);
+    }
+    setTimeout(POLLY.updateStatus, POLLY.TIMER_INTERVAL);
+}
+
+POLLY.playVideo = function()
+{
+    var msg = {'msgType': 'polly.playYoutubeVideo',
+               'url': 'https://www.youtube.com/watch?v=vJrVz-2DrlQ'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.takePicture = function()
+{
+    report("request take picture");
+    var msg = {'msgType': 'polly.takePicture'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.launchZoom = function()
+{
+    report("request launch Zoom");
+    var msg = {'msgType': 'polly.launchZoom'};
+    POLLY.sendMsg(msg);
+}
+
+POLLY.setUser = function(user)
+{
+    POLLY.user = user;
+    $("#userNameSpan").html(user);
+    $("#loginDiv").hide();
+    $("#mainDiv").show();
+}
+
+POLLY.login = function(event)
+{
+    event.preventDefault();
+    var user = $("#userName").val();
+    if (user == "") {
+       alert("Name required");
+       return;
+    }
+    POLLY.setUser(user);
+}
+
+$(document).ready(function() {
+    report("ready");
+    POLLY.setupPolly();
+    $("#left").click(function() { POLLY.move(-POLLY.YAW_STEP, 0); });
+    $("#right").click(function() { POLLY.move(+POLLY.YAW_STEP, 0); });
+    $("#pollyCanvas").click(POLLY.canvasClickHandler);
+    $("#clearLog").click(function() { $("#log").html(""); });
+
+    $("#takePicture").click(POLLY.takePicture);
+    $("#launchZoom").click(POLLY.launchZoom);
+    $("#playVideo").click(POLLY.playVideo);
+    $("#loginForm").submit(POLLY.login);
+    setTimeout(POLLY.updateStatus, 10);
+    var user = WV.getParameterByName("user");
+    if (user) {
+        POLLY.setUser(user);
+    }
+});
+
+</script>
+<h2>WorldViews Polly</h2>
+<div id="loginDiv">
+&nbsp;
+<form id="loginForm">
+Name: <input type="text" id="userName" size=30>
+<input type="submit" id="loginSubmit" value="Login">
+<!-- <button id="login">Go</button> -->
+</form>
+</div>
+<div id="mainDiv" style="display: none">
+<p></p>
+<style>
+.gvalx { display: inline-block; width: 50px; }
+</style>
+<canvas id="pollyCanvas" width="500" height="100" style="border:1px solid #000000;">
+</canvas>
+<p>
+Yaw: <span class="gval" id="yawVal">0</span> &nbsp;
+Pitch: <span class="gval" id="pitchVal"></span> &nbsp;
+Roll: <span class="gval" id="rollVal"></span> &nbsp;
+<p>
+User: <span id="userNameSpan"></span><br>
+<span id="controlStatus"></span>
+<p></p>
+<button id="left">Left</button> <button id="right">Right</button>
+</p>
+<p>
+</p>
+<button id="takePicture">Snap Picture</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="launchZoom">Launch Zoom</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button id="playVideo">Play Video</button>
+<hr>
+<button id="clearLog">Clear Log</button>
+<div id="log" style="height: 500px"></div>
+</div>
+</body>
+</html>
