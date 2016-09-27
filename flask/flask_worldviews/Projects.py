@@ -9,12 +9,15 @@ from flask_worldviews import db, app
 from flask_worldviews.Accounts import admin, User, MyModelView, getUserById, getUserByStr
 from wtforms import Form, StringField, FloatField
 import mongoengine
+import time
 
 class Project(db.Document):
     title = db.StringField(max_length=200)
     description = db.StringField()
     members = db.ListField(db.ReferenceField(User), default=[])
     followers = db.ListField(db.ReferenceField(User), default=[])
+    creation_time = db.FloatField(default=0)
+    modification_time = db.FloatField(default=0)
 
     def __unicode__(self):
         return "Project #%s" % (self.title)
@@ -48,6 +51,7 @@ def projectsAdd():
     print "members:", proj.members
     if owner not in proj.members:
         proj.members.append(owner)
+    proj.creation_time = time.time()
     proj.save()
     print "got project", proj
     projs = Project.objects.all()
@@ -78,6 +82,7 @@ def projectUpdate():
     proj = Project.objects(id=projectId).first()
     proj.description = desc
     proj.title = title
+    proj.modification_time = time.time()
     proj.save()
     return redirect("/projects")
 

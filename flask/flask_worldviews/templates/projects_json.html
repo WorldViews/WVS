@@ -40,6 +40,15 @@ var PROJECT_BY_ID = {};
 
 function report(str) { console.log(str); }
 
+function dateStr(t) {
+    var d = new Date(t*1000);
+    //return $.format.date(date, 'MM/dd/yyyy HH:mm:ss');
+    var dStr = (d.getUTCMonth()+1) +"/"+ d.getUTCDate() + "/" + d.getUTCFullYear() +
+               " " +
+               + d.getUTCHours() + ":" + d.getUTCMinutes() + ":" + d.getUTCSeconds();
+    return dStr;
+}
+
 function editProj(projId)
 {
     report("editProj "+projId);
@@ -194,6 +203,14 @@ ProjectHB = function(args)
     this.description = args.description;
     this.members = args.members;
     this.followers = args.followers;
+    this.creation_time = args.creation_time;
+    this.modification_time = args.modification_time;
+    if (this.creation_time) {
+        this.description += "\n<br>started on "+dateStr(this.creation_time);
+    }
+    if (this.modification_time) {
+        this.description += "\n<br>updated on "+dateStr(this.modification_time);
+    }
     /*
     var vsource = $("#project_template").html();
     vsource = vsource.replaceAll("\\[", "{");
