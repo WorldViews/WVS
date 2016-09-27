@@ -1,4 +1,5 @@
 call venv\Scripts\activate
 
-python flaskAuthServer80.py
+REM python flaskAuthServer80.py
+python flaskWVServer.py
 
