@@ -88,26 +88,9 @@ function dateTimeStr(t) {
     */
 }
 
-//function editProjUrl(projId) {    return "/project_edit?id="+projId;  }
-//function followProjUrl(projId) {  return "/project_follow?id="+projId;  }
-//function joinProjUrl(projId) {    return "/project_join?id="+projId;  }
-function genTag(funName, label, projId)
-{
-    var fun = funName+"('"+projId+"');";
-    var str = '<span onClick="FUN">'+label+'</span>';
-    str = str.replace("FUN", fun);
-    return str;
-}
-
-function editTag(projId) {
-    return genTag("editProj", "edit", projId);
-}
-function joinTag(projId) {
-    return genTag("joinProj", "join", projId);
-}
-function followTag(projId) {
-    return genTag("followProj", "follow", projId);
-}
+function editProjUrl(projId) {    return "/project_edit?id="+projId;  }
+function followProjUrl(projId) {  return "/project_follow?id="+projId;  }
+function joinProjUrl(projId) {    return "/project_join?id="+projId;  }
 
 function editProj(projId)
 {
@@ -118,8 +101,6 @@ function editProj(projId)
 function joinProj(projId, userId)
 {
     var url = "/project_join";
-    if (!userId)
-        userId = current_user_id;
     var obj = {projectId: projId, members: [userId]};
     var jstr = JSON.stringify(obj);
     report("joinProj Obj: "+jstr);
@@ -135,8 +116,6 @@ function joinProj(projId, userId)
 function followProj(projId, userId)
 {
     var url = "/project_follow";
-    if (!userId)
-        userId = current_user_id;
     var obj = {projectId: projId, userId: userId};
     report("followProj Obj: "+JSON.stringify(obj));
     $.ajax({type: "POST",
@@ -209,6 +188,70 @@ function handleProject(projData)
     proj.render();
 }
 
+/*
+Project = function(args)
+{
+    this.id = args.id;
+    this.title = args.title;
+    this.description = args.description;
+    this.members = args.members;
+    this.followers = args.followers;
+
+    this.getDiv = function() {
+        var id = "proj_"+this.id;
+        jQuery('<span/>', {id: id, width: 200, border:2}
+         ).appendTo("#projectsDiv");
+        return $("#"+id);
+    };
+
+    this.render = function() {
+        var inst = this;
+        report("---------------------------");
+        report("Rendering project");
+        report("title: "+this.title);
+        report("description: "+this.description);
+        var div = this.getDiv();
+        report("div: "+div);
+        div.append("<p>\n");
+        div.append("<h3>"+this.title+"<h3>\n");
+        div.append(this.description+"<br>\n")
+        div.append("<p>\n");
+        div.append("Members: ")
+        var names = this.members.map(function(u) { return u.name; });
+        div.append(names.join(", "));
+        div.append("<br>\n");
+        div.append("Followers: ")
+        var names = this.followers.map(function(u) { return u.name; });
+        div.append(names.join(", ")+"<br>\n");
+        if (this.isMember(current_user_id)) {
+	   //div.append("we are member\n");
+           var bid = "edit_"+this.id;
+           div.append("<span id='ID'>edit</span>".replace("ID", bid));
+           $("#"+bid).click(function(e) { editProj(inst.id); });
+        }
+        div.append("<p>\n");
+        div.append('<hr width="40%" align="left">\n');
+    };
+
+    this.isMember = function(id) {
+        for (var i=0; i<this.members.length; i++) {
+            if (this.members[i].id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    this.isFollower = function(id) {
+        for (var i=0; i<this.members.length; i++) {
+            if (this.followers[i].id == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+*/
 
 var Proj = {};
 Proj.templateString = null;
@@ -249,19 +292,12 @@ ProjectHB = function(args)
         metaStr += "\n<br>updated on "+dateStr(this.modification_time);
     }
     if (this.isMember(current_user_id)) {
-        //var url = editProjUrl(this.id);
-        //var str = "\n<br><a onClick='CLICK'>edit</a>";
-	metaStr += "\n<br>"+editTag(this.id);
+        var url = editProjUrl(this.id);
+	metaStr += "\n<br><a href='"+url+"'>edit</a>";
     }
     if (!this.isMember(current_user_id) && !this.isFollower(current_user_id)) {
-        //var url = followProjUrl(this.id);
-	//metaStr += "\n<br><a href='"+url+"'>follow</a>";
-	metaStr += "\n<br>"+followTag(this.id);
-    }
-    if (!this.isMember(current_user_id)) {
-        //var url = followProjUrl(this.id);
-	//metaStr += "\n<br><a href='"+url+"'>follow</a>";
-	metaStr += "\n<br>"+joinTag(this.id);
+        var url = followProjUrl(this.id);
+	metaStr += "\n<br><a href='"+url+"'>follow</a>";
     }
     this.description += metaStr;
 

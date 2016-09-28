@@ -123,8 +123,8 @@ def projectJoin():
     print "title:", proj.title
     return redirect("/projects")
 
-@app.route('/projects')
-def projects():
+@app.route('/projectsRaw')
+def projectsRaw():
     projs = Project.objects.all()
     if request.args.get("type",None) == "json":
         #jstr = gen_json(list(projs))
@@ -132,9 +132,14 @@ def projects():
         return Response(jstr, mimetype="application/json")
     return render_template("projects.html", projs=projs,list=list)
 
-@app.route('/jprojects')
-def jprojects():
+@app.route('/projects')
+def projects():
     #projs = Project.objects.all()
+    if request.args.get("type",None) == "json":
+        projs = Project.objects.all()
+        #jstr = gen_json(list(projs))
+        jstr = gen_json(list(projs), visible={User: ["name", "id", "email"]})
+        return Response(jstr, mimetype="application/json")
     return render_template("projects_json.html")
 
 @app.route('/rprojects')

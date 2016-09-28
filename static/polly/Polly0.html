@@ -19,8 +19,7 @@ function report(str)
 
 POLLY = {};
 POLLY.user = "anon";
-//POLLY.SIO_URL = "http://pollywss.paldeploy.com";
-POLLY.SIO_URL = "/";
+POLLY.SIO_URL = "http://pollywss.paldeploy.com";
 POLLY.YAW_STEP = 1;
 POLLY.YAW_MIN = -90;
 POLLY.YAW_MAX = 90;
@@ -52,7 +51,6 @@ POLLY.handleGimbalState = function(msg)
 
 POLLY.handleRequestView = function(msg)
 {
-   msg.requestTime = WV.getClockTime();
    POLLY.lastRequest = msg;
 }
 
@@ -72,10 +70,9 @@ POLLY.handleMsg = function(msg)
 
 POLLY.requestView = function(yaw, pitch)
 {
-   var msg = {'msgType': 'polly.request',
-              'requested.msgType': 'polly.requestView', 'yaw': yaw, 'pitch': pitch};
+   var msg = {'msgType': 'polly.requestView', 'yaw': yaw, 'pitch': pitch};
    POLLY.sendMsg(msg)
-   //POLLY.lastRequest = msg;
+   POLLY.lastRequest = msg;
 }
 
 POLLY.sendMsg = function(msg)
@@ -167,15 +164,6 @@ POLLY.updateStatus_ = function()
 {
     //report("tick...");
     POLLY.redrawCanvas();
-    if (POLLY.lastRequest) {
-        //report("showing last request info...");
-        var dt = WV.getClockTime() - POLLY.lastRequest.requestTime;
-        //tStr = ""+Math.floor(10*dt)/10;
-        tStr = ""+Math.floor(dt);
-        //report("dt: "+dt);
-        var str = "Last control by "+POLLY.lastRequest.user+" "+tStr+" secs ago";
-        $("#controlStatus").html(str);
-    }
 }
 
 POLLY.updateStatus = function() {
@@ -209,14 +197,6 @@ POLLY.launchZoom = function()
     POLLY.sendMsg(msg);
 }
 
-POLLY.setUser = function(user)
-{
-    POLLY.user = user;
-    $("#userNameSpan").html(user);
-    $("#loginDiv").hide();
-    $("#mainDiv").show();
-}
-
 POLLY.login = function(event)
 {
     event.preventDefault();
@@ -225,7 +205,9 @@ POLLY.login = function(event)
        alert("Name required");
        return;
     }
-    POLLY.setUser(user);
+    POLLY.user = user;
+    $("#loginDiv").hide();
+    $("#mainDiv").show();
 }
 
 $(document).ready(function() {
@@ -243,12 +225,14 @@ $(document).ready(function() {
     setTimeout(POLLY.updateStatus, 10);
     var user = WV.getParameterByName("user");
     if (user) {
-        POLLY.setUser(user);
+        POLLY.user = user;
+        $("#loginDiv").hide();
+        $("#mainDiv").show();
     }
 });
 
 </script>
-<h2>WorldViews Polly</h2>
+<h2>WorldViews Polly Page</h2>
 <div id="loginDiv">
 &nbsp;
 <form id="loginForm">
@@ -269,9 +253,6 @@ Yaw: <span class="gval" id="yawVal">0</span> &nbsp;
 Pitch: <span class="gval" id="pitchVal"></span> &nbsp;
 Roll: <span class="gval" id="rollVal"></span> &nbsp;
 <p>
-User: <span id="userNameSpan"></span><br>
-<span id="controlStatus"></span>
-<p></p>
 <button id="left">Left</button> <button id="right">Right</button>
 </p>
 <p>
