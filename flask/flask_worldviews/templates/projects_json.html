@@ -105,8 +105,14 @@ function editTag(projId) {
 function joinTag(projId) {
     return genTag("joinProj", "join", projId);
 }
+function leaveTag(projId) {
+    return genTag("leaveProj", "leave project", projId);
+}
 function followTag(projId) {
     return genTag("followProj", "follow", projId);
+}
+function unfollowTag(projId) {
+    return genTag("unfollowProj", "stop following", projId);
 }
 
 function editProj(projId)
@@ -120,15 +126,34 @@ function joinProj(projId, userId)
     var url = "/project_join";
     if (!userId)
         userId = current_user_id;
-    var obj = {projectId: projId, members: [userId]};
-    var jstr = JSON.stringify(obj);
-    report("joinProj Obj: "+jstr);
+    //var obj = {projectId: projId, members: [userId]};
+    var obj = {projectId: projId, userId: userId};
+    //var jstr = JSON.stringify(obj);
+    //report("joinProj Obj: "+jstr);
+    report("joinProj Obj: "+JSON.stringify(obj));
     $.ajax({type: "POST",
             url: url,
-            dataType: "json",
-            data: jstr}).done(function(res) {
-                report("Sent it. got: "+JSON.stringify(res));
-                window.location.href = window.location.href;
+            dataType: "text",
+            data: obj}).done(function(res) {
+                //report("Sent it. got: "+JSON.stringify(res));
+                //location.reload(true);
+                reloadProjects();
+           });
+}
+
+function leaveProj(projId, userId)
+{
+    var url = "/project_leave";
+    if (!userId)
+        userId = current_user_id;
+    var obj = {projectId: projId, userId: userId};
+    report("leaveProj Obj: "+JSON.stringify(obj));
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "text",
+            data: obj}).done(function(res) {
+                report("Sent it");
+                reloadProjects();
            });
 }
 
@@ -141,10 +166,28 @@ function followProj(projId, userId)
     report("followProj Obj: "+JSON.stringify(obj));
     $.ajax({type: "POST",
             url: url,
-            dataType: "json",
+            dataType: "text",
             data: obj}).done(function(res) {
-                report("Sent it. got: "+JSON.stringify(res));
-                window.location.href = window.location.href;
+                //report("Sent it. got: "+JSON.stringify(res));
+                //location.reload(true);
+                reloadProjects();
+           });
+}
+
+function unfollowProj(projId, userId)
+{
+    var url = "/project_unfollow";
+    if (!userId)
+        userId = current_user_id;
+    var obj = {projectId: projId, userId: userId};
+    report("followProj Obj: "+JSON.stringify(obj));
+    $.ajax({type: "POST",
+            url: url,
+            dataType: "text",
+            data: obj}).done(function(res) {
+                //report("Sent it. got: "+JSON.stringify(res));
+                //location.reload(true);
+                reloadProjects();
            });
 }
 
@@ -177,14 +220,24 @@ getJSON = function(url, handler)
 	});
 }
 
+function reloadProjects()
+{
+    report("reloadProjects");
+    getProjects();
+}
+
 function getProjects()
 {
     getJSON("/projects?type=json", handleProjects);
 }
 
+var DID_GRID = false;
+
 function handleProjects(data)
 {
     report("handleProjects "+data);
+    $('.grid').masonry('destroy');
+    $("#projectsDiv").html("");
     var projects = data;
     PROJECTS = projects;
     PROJECT_BY_ID = {};
@@ -194,11 +247,27 @@ function handleProjects(data)
         handleProject(proj);
     }
 
-   $('.grid').masonry({
-     itemSelector: '.grid-item',
-     //columnWidth: 400
-   });
-
+				     
+    $('.grid').masonry({
+          itemSelector: '.grid-item',
+           //columnWidth: 400
+    });
+    /*
+    if (DID_GRID) {
+       report("**** Rerunning masonry");
+       $('.grid').masonry({
+           itemSelector: '.grid-item',
+       });
+    }
+    else {				     
+       report("**** Running masonry");
+       $('.grid').masonry({
+           itemSelector: '.grid-item',
+           //columnWidth: 400
+       });
+       DID_GRID = true;
+   }
+   */
 }
 
 function handleProject(projData)
@@ -248,20 +317,22 @@ ProjectHB = function(args)
     if (this.modification_time) {
         metaStr += "\n<br>updated on "+dateStr(this.modification_time);
     }
-    if (this.isMember(current_user_id)) {
-        //var url = editProjUrl(this.id);
-        //var str = "\n<br><a onClick='CLICK'>edit</a>";
-	metaStr += "\n<br>"+editTag(this.id);
-    }
-    if (!this.isMember(current_user_id) && !this.isFollower(current_user_id)) {
-        //var url = followProjUrl(this.id);
-	//metaStr += "\n<br><a href='"+url+"'>follow</a>";
-	metaStr += "\n<br>"+followTag(this.id);
-    }
-    if (!this.isMember(current_user_id)) {
-        //var url = followProjUrl(this.id);
-	//metaStr += "\n<br><a href='"+url+"'>follow</a>";
-	metaStr += "\n<br>"+joinTag(this.id);
+    if (current_user_id) {
+        if (this.isMember(current_user_id)) {
+	    metaStr += "\n<br>"+editTag(this.id);
+        }
+        if (!this.isFollower(current_user_id)) {
+	    metaStr += "\n<br>"+followTag(this.id);
+        }
+        if (this.isFollower(current_user_id)) {
+	    metaStr += "\n<br>"+unfollowTag(this.id);
+        }
+        if (!this.isMember(current_user_id)) {
+	    metaStr += "\n<br>"+joinTag(this.id);
+        }
+        if (this.isMember(current_user_id)) {
+	    metaStr += "\n<br>"+leaveTag(this.id);
+        }
     }
     this.description += metaStr;
 

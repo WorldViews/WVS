@@ -103,24 +103,56 @@ def projectsFollow():
     print "title:", proj.title
     return redirect("/projects")
 
+@app.route('/project_unfollow', methods=['POST'])
+def projectsUnFollow():
+    print "projectsUnFollow"
+    form = request.form
+    projectId = form['projectId']
+    userId = form['userId']
+    print "projectId:", projectId
+    print "userId:", userId
+    proj = Project.objects(id=projectId).first()
+    user = getUserById(userId)
+    if user in proj.followers:
+        proj.followers.remove(user)
+        proj.save()
+    print "title:", proj.title
+    return redirect("/projects")
+
 @app.route('/project_join', methods=['POST'])
 def projectJoin():
     print "projectJoin"
-    form = request.get_json()
+    #form = request.get_json()
+    form = request.form
     #form = request.form
     print "form:", form
     projectId = form['projectId']
+    userId = form['userId']
     print "projectId:", projectId
-    members = form['members']
-    print "members:", members
+    print "userId:", userId
     proj = Project.objects(id=projectId).first()
-    for userStr in members:
-        print "userStr:", userStr
-        member = getUserByStr(userStr)
-        if member not in proj.members:
-            proj.members.append(member)
+    user = getUserById(userId)
+    if user not in proj.members:
+        proj.members.append(user)
+        proj.save()
     proj.save()
     print "title:", proj.title
+    return redirect("/projects")
+
+@app.route('/project_leave', methods=['POST'])
+def projectLeave():
+    print "projectLeave"
+    form = request.form
+    projectId = form['projectId']
+    userId = form['userId']
+    print "projectId:", projectId
+    print "userId:", userId
+    proj = Project.objects(id=projectId).first()
+    user = getUserById(userId)
+    if user in proj.members:
+        proj.members.remove(user)
+        proj.save()
+    proj.save()
     return redirect("/projects")
 
 @app.route('/projectsRaw')
