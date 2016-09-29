@@ -63,7 +63,7 @@
 	  "xxxdataUrl": "/static/data/paths/PAL_FlyAround_1hack.json",
 	  "youtubeId": "s1qy-R-71-s",
 	  "xxxyoutubeDeltaT": 40,
-	  "youtubeDeltaT": 43,
+	  "youtubeDeltaT": -46.3,
 	  "videoDur": 90,
 	  "coordSys": "GEO",
 	  "height": 100.0,
@@ -92,7 +92,7 @@
 	  "dataUrl": "/static/data/paths/Golden_Gate_Presidio.json",
 	  "youtubeId": "Xg6Op_UEXbk",
 	  "xxxyoutubeDeltaT": -35,
-	  "youtubeDeltaT": 0,
+	  "youtubeDeltaT": -26.4,
 	  "coordSys": "GEO",
 	  "height": 0.3
        },
