@@ -1,0 +1,20 @@
+
+1) Install python distribution.  We've been using anaconda.
+
+2) After anaconda, do pip install virtualenv
+
+3) Install mongodb
+
+4) in mongo directory, create empty mongo_db directory
+
+5) run
+
+   mongo\runMongo
+
+6) setup config directory.   It includes a couple config
+files that are not in the rep.
+
+7) Copy <version>.../Cesium/Build/Cesium to static/Cesium
+
+8) flask\runFlaskServer
+

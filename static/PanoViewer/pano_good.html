@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Photo sphere with three.js</title>
+	<style>
+		html, body, #sphere { height: 100%; }
+		body { margin: 0; overflow: hidden; background-color: #000; }
+		.tm  { position: absolute; top: 10px; right: 10px; }		
+    </style>	
+</head>
+<body>
+	<div id="sphere"></div>
+	<a href="http://thematicmapping.org/" target="parent" class="tm">
+		<img src="http://thematicmapping.org/img/thematicmapping.png">
+	</a>	
+	<script src="js/three.min.js"></script>
+	<script src="js/OrbitControls.js"></script>	
+	<script src="js/Photosphere.js"></script>	
+	<script>
+	  function report(str)
+	  {
+	      console.log(str);
+	  }
+	  
+        var photosphere = null;
+        var imageUrl = null;
+	var imNum = 0;
+	  
+        THREE.ImageUtils.crossOrigin = '';
+	          //imageUrl = "stolanuten.jpg"
+        imageUrl = "http://localhost:8000/getImage?camId=viewImage";
+	        //var speed = 0.00000001;
+	        var speed = 0.1;
+		photosphere = THREE.Photosphere(document.getElementById('sphere'), imageUrl, {
+			view: getParameterByName('view'),
+			//speed: getParameterByName('speed'),
+			speed: speed,
+			y: getParameterByName('y')
+		});
+		window.onresize = photosphere.resize;
+	        var PS = THREE.PhSp;
+
+	function getParameterByName(name) {
+		var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+		return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+	}
+
+	  function updateTexture(d)
+	  {
+	      report("updateTexture: "+d);
+	  }
+	  
+	function updateImage()
+	  {
+	    imNum += 1;
+	    //PS.controls.autoRotate = false;
+
+	    report("updatingImage...");
+	    report("sphere: "+photosphere);
+            report("texture: "+PS.texture);
+            report("material: "+PS.material);
+            report("material.needsUpdate: "+PS.material.needsUpdate);
+	    var url = imageUrl + "&imNumX="+imNum;
+            report("url: "+url);
+	  var texture = THREE.ImageUtils.loadTexture(url);
+	    texture.onLoad(updateTexture);
+	    PS.material.map = texture;
+	    PS.material.needsUpdate = true;
+            PS.sphere.needsUpdate = true;
+            report("material.needsUpdate: "+PS.material.needsUpdate);
+            setTimeout(updateImage, 200);
+	}
+
+	setTimeout(updateImage, 1000);
+	
+	</script>
+</body>
+</html>
