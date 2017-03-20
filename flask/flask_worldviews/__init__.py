@@ -297,7 +297,7 @@ def notifyServer():
     return jsonify({})
 
 def run(port=80, host="0.0.0.0"):
-    print "Running flask server"
+    print "Running flask server", port, host
     socketio.run(app, host=host, port=port)
     #socketio.run(app, port=80)
 

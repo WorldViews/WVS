@@ -390,13 +390,22 @@ WV.playVid = function(rec)
 WV.showPage = function(rec)
 {
     report("show page: "+JSON.stringify(rec));
+    var winName = null;
+    if (rec.layerName) {
+	var layer = WV.layers[rec.layerName];
+	if (layer)
+	    winName = layer.windowName;
+    }
     setTimeout(function() {
-	    if (WV.showPagesInIframe) {
+	    if (WV.showPagesInIframe && !winName) {
 		WV.pageWidget.show();
 		WV.pageWidget.setSrc(rec.url);
 	    }
-	    else {
-		window.open(rec.url, "HTMLPages");
+            else {
+                if (!winName)
+		    winName = "HTMLPages";
+                report("winName: "+winName);
+		window.open(rec.url, winName);
 	    }
     }, 300);
 }

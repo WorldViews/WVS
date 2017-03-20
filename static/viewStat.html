@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+<!--
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+-->
+  <title>Test</title>
+  <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+  <script src="js/socket.io-1.4.5.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="js/viewStat.js"></script>
+</head>
+<body>
+  <div id="notesLayerDiv">
+    <span id="status"></span><br>
+    <span id="status2"></span><br>
+    <button id="b1">click</button>
+  </div>
+<script>
+
+$(document).ready(function() {
+   var sioUrl = "http://platonia";  
+   VS.setup(sioUrl, function(msg) {
+       $("#status2").html("got "+JSON.stringify(msg));
+   });
+   $("#b1").click(function() {
+       report("click");
+       VS.sendStatus(20,30);
+   });
+});
+
+</script>
+</body>
+</html>

@@ -20,7 +20,6 @@ YOUTUBE_API_SERVICE_NAME = "youtube"
 #YOUTUBE_API_SERVICE_NAME = "WVVidWatch"
 YOUTUBE_API_VERSION = "v3"
 
-#LIVE = False
 
 class YouTubeScraper:
    def __init__(self, useUTF8=True):
@@ -110,23 +109,17 @@ class YouTubeScraper:
       print "Got %d specific points" % len(locs)
       return locs
 
-   def fetch(self, name, query=None, locs=None, dimension="any", username=None, channelId=None):
+   def fetch(self, name, query=None, locs=None, dimension="any",
+             username=None, channelId=None, fname=None):
       if query == None:
          query = name
       if username != None:
          channelId = self.getChannelId(username)
-      fname = "%s_data.json" % name
+      if fname == None:
+         fname = "%s_data.json" % name
       if locs == None:
-         print "Search witout location specified"
-         try:
-            self.search(query=query, location=None, dimension=dimension, channelId=channelId)
-         except HttpError, e:
-            print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
-         except:
-            traceback.print_exc()
-         self.saveRecs(fname)
-         return
-
+         locs = ["37.42307,-122.08427",
+                 "15.0465951,-166.3735415"]
       """
       These choices are experimental and not very well worked
       out yet.
@@ -146,20 +139,6 @@ class YouTubeScraper:
          self.saveRecs(fname)
 
    def search(self, query, location, max_results=50, location_radius="1000km", dimension="any", channelId=None):
-      numPages = 0
-      pageToken = None
-      maxNumPages = 100
-      while 1:
-         numPages += 1
-         print "Getting page", numPages
-         pageToken = self.search_(query, location, max_results, location_radius,
-                                  dimension, channelId, pageToken)
-         print "pageToken:", pageToken
-         if numPages > maxNumPages or not pageToken:
-            return
-         
-
-   def search_(self, query, location, max_results=50, location_radius="1000km", dimension="any", channelId=None, pageToken=None):
       print "query:", query
       print "location:", location
       print "location_radius:", location_radius
@@ -171,56 +150,24 @@ class YouTubeScraper:
 
       # Call the search.list method to retrieve results matching the specified
       # query term.
-      if not location:
-         search_response = self.youtube.search().list(
-            q=query,
-            eventType = "live",
-            type="video",
-            videoDimension=dimension,
-            pageToken = pageToken,
-            channelId=channelId,
-            part="id,snippet",
-            maxResults=max_results
-            ).execute()
-         """
-         search_response = self.youtube.search().list(
-            q=query,
-            type="video",
-            eventType = "live",
-            pageToken = pageToken,
-            location=location,
-            videoDimension=dimension,
-            locationRadius=location_radius,
-            channelId=channelId,
-            part="id,snippet",
-            maxResults=max_results
-            ).execute()
-         """
-      else:
-         search_response = self.youtube.search().list(
-            q=query,
-            type="video",
-            pageToken = pageToken,
-            location=location,
-            videoDimension=dimension,
-            locationRadius=location_radius,
-            channelId=channelId,
-            part="id,snippet",
-            maxResults=max_results
-            ).execute()
+      search_response = self.youtube.search().list(
+          q=query,
+          type="video",
+          location=location,
+          videoDimension=dimension,
+          locationRadius=location_radius,
+          channelId=channelId,
+          part="id,snippet",
+          maxResults=max_results
+      ).execute()
 
+      search_videos = []
 
       # Merge video ids
-      print "pageInfo", search_response["pageInfo"]
-      search_videos = []
       for search_result in search_response.get("items", []):
          search_videos.append(search_result["id"]["videoId"])
       video_ids = ",".join(search_videos)
       self.processIds(video_ids)
-      try:
-         return search_response['nextPageToken']
-      except KeyError:
-         return None
 
    def processIds(self, video_ids):
       print "processIds video_ids:", video_ids
@@ -283,14 +230,9 @@ class YouTubeScraper:
 #argparser.add_argument("--location-radius", help="Location radius", default="1000km")
 #argparser.add_argument("--max-results", help="Max results", default=50)
 
-def fetch(name, query=None, loc="global", dimension="any", username=None):
+def fetch(name, query=None, loc="global", dimension="any", username=None, fname=None):
    ys = YouTubeScraper()
-   ys.fetch(name, query, loc, dimension, username)
-#   ys.fetch(name, query, loc, dimension)
-
-def fetchLive(name, query=None, loc="global", dimension="any", username=None):
-   ys = YouTubeScraper()
-   ys.fetch(name, query, None, dimension, username)
+   ys.fetch(name, query, loc, dimension, username, fname=fname)
 #   ys.fetch(name, query, loc, dimension)
 
 def getMetaData(id=None, opath=None):
@@ -333,10 +275,8 @@ if __name__ == "__main__":
 #    fetch("test", username="enockglidden", loc=["36.98,-122.00"])
 #    fetch("test", query="Wilder Ranch State Park", loc=["36.98418,-122.09912"])
    #testChannels()
-#   saveEnocksVideoLayer()
+   saveEnocksVideoLayer()
    #testGetMetaData()
-#   fetchLive("live", "")
-   fetch("earth day")
 
 
 

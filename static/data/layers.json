@@ -118,6 +118,7 @@
 	          "showTethers": true,
 	          "layerType": "html",
 	          "dataFile": "/static/data/periscope_data.json",
+	          "windowName": "Periscope",
 	          "visible": false
        },
        {
