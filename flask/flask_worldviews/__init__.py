@@ -124,8 +124,8 @@ def index():
         page = "landing.html"
     return send_file(page)
     """
-    if request.url == "http://worldviews.org/":
-        return redirect("http://worldviews.paldeploy.com")
+    # if request.url == "http://worldviews.org/":
+    #     return redirect("http://worldviews.paldeploy.com")
     #print "request.full_url", request.url
     return render_template("worldviews.html")
 
@@ -135,6 +135,10 @@ def index():
 def televiewer():
     return render_template("TV.html")
 
+@app.route('/memorialpark')
+@app.route('/memorialpark')
+def televiewer():
+    return render_template("memorialpark.html")
 
 """
 This is used by SharedCam to register itself with us.
