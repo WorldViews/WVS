@@ -29,7 +29,7 @@ from flask_mail import Mail, Message
 from jsonHack import jsonify, jsondumps
 
 import WVNotification
-
+from werkzeug.contrib.fixers import ProxyFix
 
 execfile("../config/ADMIN_CONFIG.py")
 print "MAIL_USERNAME:", MAIL_USERNAME
@@ -54,6 +54,7 @@ except:
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
             static_folder="../../static")
+app.wsgi_app = ProxyFix(app.wsgi_app)
 app.debug = True
 #app.debug = False
 app.config['SECRET_KEY'] = 'secret!'
@@ -136,9 +137,8 @@ def televiewer():
     return render_template("TV.html")
 
 @app.route('/memorialpark')
-@app.route('/memorialpark')
-def televiewer():
-    return render_template("memorialpark.html")
+def lefletjs_viewer():
+    return render_template("leafletjs_viewer.html")
 
 """
 This is used by SharedCam to register itself with us.
