@@ -8,6 +8,7 @@ wv.db
 old.gitignore
 mongo/mongo_db
 mongo/backup
+mongo/diagnostic.data
 scripts/backup/
 scripts/TBD_data/
 scripts/YOUTUBE_DEV_KEY.txt
@@ -247,3 +248,8 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+# vscode
+.vscode
+
+

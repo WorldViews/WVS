@@ -2,7 +2,7 @@
   <p>
     {{ field.label }} {{ field(**kwargs)|safe }}
     {% if field.errors %}
-      <ul>
+      <ul class="error">
       {% for error in field.errors %}
         <li>{{ error }}</li>
       {% endfor %}
@@ -14,7 +14,39 @@
 {% macro render_field_with_errors_(field) %}
     {{ field.label }} {{ field(**kwargs)|safe }}
     {% if field.errors %}
-      <ul>
+      <ul class="error">
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_field_nolabel_with_errors_(field) %}
+    {{ field(**kwargs)|safe }}
+    {% if field.errors %}
+      <ul class="error">
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_checkbox_field_with_errors_(field) %}
+    {{ field(**kwargs)|safe }} {{ field.label }} 
+    {% if field.errors %}
+      <ul class="error">
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro render_errors_(field) %}
+    {% if field.errors %}
+      <ul class="error">
       {% for error in field.errors %}
         <li>{{ error }}</li>
       {% endfor %}
@@ -30,7 +62,7 @@
     <td>
      {{ field(**kwargs)|safe }}
     {% if field.errors %}
-      <ul>
+      <ul class="error">
       {% for error in field.errors %}
         <li>{{ error }}</li>
       {% endfor %}

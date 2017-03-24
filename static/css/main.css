@@ -1,0 +1,112 @@
+.username {
+    margin-right: 20px;
+}
+
+.wrapper {	
+    margin-top: 30px;
+    margin-bottom: 80px;
+}
+
+.form-signin {
+    max-width: 380px;
+    padding: 35px 35px 45px;
+    margin: 0 auto;
+    background-color: #eee;
+    border: 1px solid rgba(0,0,0,0.1);  
+    border-radius: 3px;
+}
+
+.form-signin-heading,
+.checkbox {
+    margin-bottom: 10px;
+}
+
+.checkbox {
+    font-weight: normal;
+    margin-left: 20px;
+}
+
+.checkbox > label {
+    padding-left: 0px;
+}
+
+.form-control {
+    position: relative;
+    font-size: 16px;
+    height: auto;
+    padding: 10px;
+}
+
+.error {
+    color: #c00;
+    padding-left: 0;
+}
+.error li {
+    list-style-type: none;
+}
+
+.social {
+    margin-bottom: 10px;
+}
+
+.or {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.or span {
+    position: relative;
+    background-color: #eee;
+    z-index:1000;
+    padding: 0px 10px;
+}
+
+.or hr {
+    position: relative;
+    margin-top: -10px;
+    height: 1px;
+    border-top-color: #ccc;
+}
+
+input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+input[type="checkbox"] {
+    margin-left: 0px;
+}
+
+.twitter {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+.twitter:hover {
+    background-color: #50c0d0;
+    border-color: #46b8da;
+}
+
+.facebook {
+    background-color: #3b5998;
+    border-color: #357ebd;
+}
+.facebook:hover {
+    background-color: #305090;
+}
+
+.google {
+    background-color: #d9534f;
+    border-color: #d43f3a;
+}
+.google:hover {
+    background-color: #d05040;
+    border-color: #d43f3a;
+}
