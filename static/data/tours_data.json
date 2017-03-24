@@ -97,6 +97,18 @@
 	  "height": 0.3
        },
        {
+          "id": "MemorialPark1",
+          "recType": "robotTrail",
+          "robotType": "minipro",
+          "description": "Walkaround Memorial Park.",
+	  "tourName": "memorial_park_tour_1",
+          "dataUrl": "/static/data/paths/mempark_3_23_2017.json",
+          "youtubeId": "iJ9V3WVmRgc",
+	  "youtubeDeltaT": -282.0,
+	  "coordSys": "GEO",
+	  "height": 1.0
+       },
+       {
           "id": "VasonaWalk1",
           "recType": "robotTrail",
           "robotType": "wheelchair",

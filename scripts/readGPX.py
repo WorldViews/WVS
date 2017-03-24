@@ -83,9 +83,11 @@ def test():
     path = "//palnas2/vol1/panobot/videos/Enock/Stearman_Flight_GPX/Aug_14,_2016_12;12;32_PM_2016-08-14_12-12-32.gpx"
     opath = "../TeleViewer/static/data/paths/Stearman_Flight.json"
     obj = genIndex(path, opath, haveAltitude=True)
-    """
     path = "//palnas2/vol1/panobot/videos/Enock/Winery_Museum_GPX/Aug_14,_2016_1;17;45_PM_2016-08-14_13-17-45.gpx"
     opath = "../TeleViewer/static/data/paths/Winery_Museum.json"
+    """
+    path = "../static/data/paths/mempark_Mar_23,_2017_11_25_28_AM_2017-03-23_11-25-28.gpx"
+    opath = "../static/data/paths/mempark_3_23_2017.json"
     genIndex(path,opath)
     
 if __name__ == '__main__':
