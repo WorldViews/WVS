@@ -9,8 +9,17 @@ https://github.com/mattupstate/flask-social/blob/develop/tests/test_app/mongoeng
 
 """
 import sys
-FLASK_SOCIAL_DIR = "../../flask-social"
-sys.path.insert(0, FLASK_SOCIAL_DIR)
+import os
+path = os.path.dirname(__file__)
+sys.path.insert(0, path + '/../../config')
+
+# Load the config file
+try:
+    from ADMIN_CONFIG import MAIL_USERNAME, MAIL_PASSWORD, MAIL_SERVER, MAIL_PORT, MAIL_USE_SSL, MAIL_USE_TLS, \
+        twitter_ckey, twitter_csecret, fb_app_id, fb_app_secret, g_client_id, g_client_secret
+except ImportError:
+    print "Can't find ADMIN_CONFIG"
+print "MAIL_USERNAME:", MAIL_USERNAME
 
 import json, time, traceback, socket
 from datetime import datetime
@@ -18,7 +27,7 @@ import flask
 
 #from wtforms import Form, BooleanField, StringField, PasswordField, validators
 
-from flask.ext.mongoengine import MongoEngine
+from flask_mongoengine import MongoEngine
 
 from flask import Flask, render_template, send_file, redirect, \
                   send_from_directory, request, url_for
@@ -31,8 +40,7 @@ from jsonHack import jsonify, jsondumps
 import WVNotification
 from werkzeug.contrib.fixers import ProxyFix
 
-execfile("../config/ADMIN_CONFIG.py")
-print "MAIL_USERNAME:", MAIL_USERNAME
+#execfile("../config/ADMIN_CONFIG.py")
 
 DB_REQUEST_TIMES = {}
 USER_TIMES = {}
@@ -143,7 +151,7 @@ def lefletjs_viewer():
 """
 This is used by SharedCam to register itself with us.
 """
-@app.route('/regp/', methods=['POST','GET'])
+@app.route('/regp/', methods=['POST', 'GET'])
 def reg():
     print "reg path:", request.path
     print "reg args", request.args
@@ -285,7 +293,7 @@ def wvCurrentUrl():
     if PREV_YOUTUBE_ID:
         url = "https://www.youtube.com/watch?v=%s" % PREV_YOUTUBE_ID
     return redirect(url)
-    
+
 @app.route('/notify/', methods=['GET', 'POST'])
 def notifyServer():
     dict = {}
@@ -307,5 +315,3 @@ def run(port=80, host="0.0.0.0"):
 
 if __name__ == '__main__':
     run()
-
-

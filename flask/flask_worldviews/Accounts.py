@@ -270,6 +270,6 @@ def notificationsAdd():
 @login_required
 def log_on():
     print "log_on"
-    return redirect('/Viewer/TV')
+    return redirect('/')
 #    render_template('TV.html')
 

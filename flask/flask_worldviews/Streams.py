@@ -41,7 +41,7 @@ def sioput(etype):
         print "send to socketio"
         emit(etype, jObj, broadcast=True, namespace='/')
     print "**** addToDB"
-    addObjToDB(obj, etype)
+    DBA.addObjToDB(obj, etype)
     print
     return "OK"
 
