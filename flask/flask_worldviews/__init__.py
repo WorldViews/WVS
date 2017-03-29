@@ -78,6 +78,9 @@ app.config['SECURITY_RECOVERABLE'] = True
 app.config['SECURITY_CHANGEABLE'] = True
 #app.config['SECURITY_EMAIL_SENDER'] = 'no-reply@pollywss.paldeploy.com'
 app.config['SECURITY_EMAIL_SENDER'] = 'no-reply@paldeploy.com'
+app.config['SECURITY_PASSWORD_SALT'] = '8xGnklqeavTIL+KqzAp0J3vgx1+4vDaCBdfrVZSNFyIAFLdnW6vhlxaPsYObJSI+F5X0pHI4J0qH\n8t6fq257Kw=='
+app.config['SECURITY_PASSWORD_HASH'] = 'pbkdf2_sha512'
+app.config['SECURITY_RESET_PASSWORD_WITHIN'] = '5 minutes'
 
 app.config['MAIL_SERVER'] = MAIL_SERVER
 app.config['MAIL_PORT'] = MAIL_PORT
