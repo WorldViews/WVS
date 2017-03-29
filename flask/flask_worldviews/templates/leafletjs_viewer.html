@@ -69,7 +69,7 @@ function initmap(latlng, bounds) {
             weight: 10
         }
     }).on('loaded', function(e) {
-        map.fitBounds(e.target.getBounds());
+        //map.fitBounds(e.target.getBounds());
     }).on('click', function(e) {
         console.log(e.target);
     })
