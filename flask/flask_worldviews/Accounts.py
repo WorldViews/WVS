@@ -189,6 +189,8 @@ def on_login_failed(sender, provider, oauth_response):
     print connection_values
     provider_id = connection_values.get('provider_id', None)
     full_name = connection_values['full_name']
+    if type(full_name) == type({}): # Google returns dictionary
+        full_name = full_name.get("givenName","") + " "+ full_name.get("familyName","")
     uid = connection_values['provider_user_id']
     email = connection_values.get('provider_email', None)
     if provider_id == 'facebook':
