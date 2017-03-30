@@ -19,7 +19,7 @@ try:
         twitter_ckey, twitter_csecret, fb_app_id, fb_app_secret, g_client_id, g_client_secret
 except ImportError:
     print "Can't find ADMIN_CONFIG"
-print "MAIL_USERNAME:", MAIL_USERNAME
+# print "MAIL_USERNAME:", MAIL_USERNAME
 
 import json, time, traceback, socket
 from datetime import datetime
@@ -125,6 +125,7 @@ import flask_worldviews.Projects
 import flask_worldviews.Posts
 import flask_worldviews.Streams
 import flask_worldviews.Polly
+import flask_worldviews.models.tracks
 
 @app.route('/')
 def index():
