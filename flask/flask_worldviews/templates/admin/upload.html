@@ -1,0 +1,14 @@
+{% extends 'admin/master.html' %}
+{% import 'admin/lib.html' as lib with context %}
+
+{% block body %}
+<div>
+    <h1>Upload Tracks</h1>
+    <p class="lead">
+        Upload gpx or processed json file.
+    </p>
+  {% block fa_form %}
+    {{ lib.render_form(form) }}
+  {% endblock %}
+</div>
+{% endblock body %}

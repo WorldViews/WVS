@@ -25,6 +25,9 @@ class Role(db.Document, RoleMixin):
     name = db.StringField(max_length=80, unique=True)
     description = db.StringField(max_length=255)
 
+    def __unicode__(self):
+        return 'Role: {}'.format(self.name)
+
 class User(db.Document, UserMixin):
     #email = db.StringField(max_length=255, unique=True)
     email = db.StringField(max_length=255, unique=True)
@@ -88,7 +91,7 @@ security = Security(app, user_datastore,
                     confirm_register_form=ExtendedConfirmRegisterForm)
 social = Social(app, connection_datastore)
 
-admin = Admin(app)
+admin = Admin(app, template_mode='bootstrap3')
 
 class MyModelView(ModelView):
     def is_accessible(self):

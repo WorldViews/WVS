@@ -89,6 +89,11 @@ app.config['MAIL_USE_TLS'] = MAIL_USE_TLS
 app.config['MAIL_USERNAME'] = MAIL_USERNAME
 app.config['MAIL_PASSWORD'] = MAIL_PASSWORD
 
+upload_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'uploads')
+app.config['UPLOAD_PATH'] = upload_path
+if not os.path.exists(upload_path):
+    os.makedirs(upload_path)
+
 app.config['SOCIAL_TWITTER'] = {
     'consumer_key': twitter_ckey,
     'consumer_secret': twitter_csecret
