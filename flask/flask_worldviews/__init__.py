@@ -131,6 +131,7 @@ import flask_worldviews.Posts
 import flask_worldviews.Streams
 import flask_worldviews.Polly
 import flask_worldviews.models.tracks
+import flask_worldviews.views.tracks
 
 @app.route('/')
 def index():
