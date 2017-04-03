@@ -5,11 +5,42 @@ report("************** Leaflet *******************");
 
 WVL = {};
 WVL.tracks = {};
+WVL.currentTrack = null;
+WVL.cursor = null;
+WVL.currentPlayTime = 0;
+WVL.lastSeekTime = 0;
+WVL.playSpeed = 3;
 
 // convenience for debugging...
 TRACK = null;
 var PT = null;
 //var DE = null;
+
+WVL.getClockTime = function()
+{
+    return new Date()/1000.0;
+}
+
+WVL.getPlayTime = function(t)
+{
+    var t = WVL.getClockTime();
+    var t0 = WVL.lastSeekTime;
+    var dt = (t-t0)*WVL.playSpeed;
+    WVL.setPlayTime(WVL.currentPlayTime + dt);
+    return WVL.currentPlayTime;
+}
+
+WVL.setPlayTime = function(t)
+{
+    WVL.lastSeekTime = WVL.getClockTime();
+    WVL.currentPlayTime = t;
+    if (!WVL.currentTrack)
+        return;
+    var ret = WVL.findPointByTime(WVL.currentTrack, t);
+    if (!ret)
+	return;
+    WVL.setPoint(ret.nearestPt);
+}
 
 WVL.distanceSquared = function(pt1, pt2)
 {
@@ -21,6 +52,20 @@ WVL.distanceSquared = function(pt1, pt2)
     return d2;
 }
 
+// bogus linear interp... for now just return first point...
+WVL.lerp = function(pt1, pt2, f, pt)
+{
+    var x = (1-f)*pt1[0] + f*pt2[0];
+    var y = (1-f)*pt1[1] + f*pt2[1];
+    return [x,y];
+}
+
+WVL.timerFun = function(e)
+{
+    var t = WVL.getPlayTime();
+    //report("*** tick playTime: "+t);
+    setTimeout(WVL.timerFun, 100);
+}
 
 WVL.clickOnMap = function(e) {
     report("click on map e: "+e);
@@ -50,8 +95,18 @@ WVL.clickOnTrack = function(e, track) {
 	return;
     var rt = trec.rt;
     report("****** seek to "+rt);
+    WVL.setPlayTime(trec.rt);
+    var latLng = [trec.pos[0], trec.pos[1]];
+    WVL.setPoint(latLng);
 }
 
+//WVL.setPoint = function(trec)
+WVL.setPoint = function(latLng)
+{
+    if (!WVL.cursor)
+	WVL.cursor = L.marker(latLng);
+    WVL.cursor.setLatLng(latLng);
+}
 
 WVL.initmap = function(latlng, bounds) {
     // set up the map
@@ -98,6 +153,10 @@ WVL.initmap = function(latlng, bounds) {
     .addTo(map);
 */
     WVL.loadTracks(map);
+    WVL.cursor = L.marker([0,0]);
+    WVL.cursor.addTo(map);
+    WVL.setPlayTime(0)
+    setTimeout(WVL.timerFun, 500);
 }
 
 WVL.handleTrack = function(track, url, map)
@@ -105,6 +164,7 @@ WVL.handleTrack = function(track, url, map)
     TRACK = track;
     var name = track.name;
     WVL.tracks[name] = track;
+    WVL.currentTrack = track;
     //report("data: "+JSON.stringify(track));
     var recs = track.recs;
     var h = 2;
@@ -250,27 +310,29 @@ WVL.testSearch = function(nrecs)
     report("bin searched "+nrecs+" times in "+(t2-t1)+" secs "+errs+" errors");
 }
 
-WVL.findPointByTime = function(rec, rt)
+WVL.findPointByTime = function(track, rt)
 {
     //report("WVL.findPointByTime "+rt);
     //i = WVL.linSearch(rec.data.recs, rt);
-    i = WVL.binSearch(rec.data.recs, rt);
+    var recs = track.recs;
+    var points = track.latLng;
+    i = WVL.binSearch(recs, rt);
     if (i == 0) {
-	return {i: i, f: 0, nearestPt: rec.points[i]};
+	return {i: i, f: 0, nearestPt: points[i]};
     }
-    if (i >= rec.points.length) {
-	i = rec.points.length-1;
-	return {i: i, f: 1, nearestPt: rec.points[i]};
+    if (i >= points.length) {
+	i = points.length-1;
+	return {i: i, f: 1, nearestPt: points[i]};
     }
     var i0 = i-1;
-    var rt0 = rec.data.recs[i0].rt;
-    var rt01 = rec.data.recs[i].rt - rt0;
+    var rt0 = recs[i0].rt;
+    var rt01 = recs[i].rt - rt0;
     var f = (rt - rt0) / rt01;
     //report("i0: "+i0+" i: "+i+"  f: "+f);
-    var p0 = rec.points[i0];
-    var p1 = rec.points[i];
-    var pt = new Cesium.Cartesian3();
-    Cesium.Cartesian3.lerp(rec.points[i0], rec.points[i], f, pt);
+    var p0 = points[i0];
+    var p1 = points[i];
+    //Cesium.Cartesian3.lerp(rec.points[i0], rec.points[i], f, pt);
+    var pt = WVL.lerp(points[i0], points[i], f, pt);
     return {i: i, f: f, nearestPt: pt};
 }
 /*
