@@ -158,6 +158,10 @@ def televiewer():
 def lefletjs_viewer():
     return render_template("leafletjs_viewer.html")
 
+@app.route('/xmemorialpark')
+def xlefletjs_viewer():
+    return render_template("xleafletjs_viewer.html")
+
 """
 This is used by SharedCam to register itself with us.
 """
