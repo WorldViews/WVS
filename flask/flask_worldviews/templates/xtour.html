@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style>
+    #map {
+        xposition: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{% endblock %}
+
+{% block tabs %}
+{% endblock %}
+
+{% block content %}
+
+<table style="width:100%;height:500px">
+    <tr>
+      <td id="sphere"
+	  style="background-color:green; width:50%; height:100%">
+          <div id="player_div"></div>
+      </td>
+      <td style="background-color:blue; width: 100%"><div id="map"></div>
+      </td>
+    </tr>
+  </table>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.0.0/easy-button.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/gpx.min.js"></script>
+<script src="/static/js/WVLeaflet.js"></script>
+<script src="/static/js/WVYT2.js"></script>
+<script>
+
+var latlng = { lat:37.324684179870715, lng:-122.0436295866966 }
+var xbounds = [ [ 37.3265995227329,  -122.04150527715686 ],
+    [ 37.32308873451525, -122.04593628644945 ] ]
+var bounds = [ [ 37.0,  -123.04150527715686 ],
+    [ 38, -120.04593628644945 ] ]
+
+WVL.initmap(latlng, bounds);
+
+var youtubeId = "iJ9V3WVmRgc";
+WVYT.videoId = youtubeId;
+
+$(document).ready(function()
+{
+    WVYT.start();
+});
+
+WVYT.start();
+
+</script>
+  
+<!--
+<script src="https://webrtc.github.io/adapter/adapter-2.1.0.js"></script>
+<script src="../js/jquery-3.1.1.min.js"></script>
+<script src="../js/wrtc.js"></script>
+<script src="../js/three.js"></script>
+<script src="../js/OrbitControls.js"></script>
+<script src="../js/DeviceOrientationControls.js"></script>
+<script src="../js/ImageSource.js"></script>	
+<script src="../js/Pano.js"></script>	
+<script src="../js/PanoParams.js"></script>	
+<script src="../js/THREEx.FullScreen.js"></script>
+<script>
+
+var spec = getImageSpec();
+report("spec: "+JSON.stringify(spec));
+spec.type = ImageSource.TYPE.VIDEO;
+spec.url = "http://dvr4.paldeploy.com/video/stearman.mp4";
+report("------------------------------");
+report("spec: "+JSON.stringify(spec));
+var imageSrc = new ImageSource(spec);
+
+// if we set this to 0 there is no Pano and the table resizes
+// as expected.
+// if we set 1 the Pano is created and resizing behavior seems
+// buggy.
+if (1) {
+    pano = new Pano(document.getElementById('sphere'), imageSrc);
+    pano.updateStyle = true; // with this it keeps getting bigger
+    //pano.updateStyle = false; // with this it doesn't resize
+    pano.start();
+}
+
+	</script>
+-->
+
+{% endblock %}

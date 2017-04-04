@@ -162,6 +162,10 @@ def lefletjs_viewer():
 def xlefletjs_viewer():
     return render_template("xleafletjs_viewer.html")
 
+@app.route('/xtour')
+def xlefletjs_tour():
+    return render_template("xtour.html")
+
 """
 This is used by SharedCam to register itself with us.
 """
