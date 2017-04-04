@@ -49,12 +49,33 @@ WVL.initmap(latlng, bounds);
 var youtubeId = "iJ9V3WVmRgc";
 WVYT.videoId = youtubeId;
 
+function watchYTStat(stat)
+{
+    var trailTime = stat.t + 300;
+    report("watchYTStat "+trailTime);
+    WVL.setPlayTime(trailTime);
+}
+
+function watchTrackEvent(track, trec, e)
+{
+   report("----------------------");
+   report("trec: "+trec);
+   var t = trec.rt;
+   report("t: "+t);
+   WVL.setPlayTime(t);
+   var vt = t - 300;
+   if (vt < 0)
+      vt = 0;
+   report("vt: "+vt);    
+   WVYT.setPlayTime(vt);
+}
+
 $(document).ready(function()
 {
+    WVL.registerTrackWatcher(watchTrackEvent);
+    WVYT.registerWatcher(watchYTStat);
     WVYT.start();
 });
-
-WVYT.start();
 
 </script>
   

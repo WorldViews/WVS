@@ -9,7 +9,14 @@ WVL.currentTrack = null;
 WVL.cursor = null;
 WVL.currentPlayTime = 0;
 WVL.lastSeekTime = 0;
-WVL.playSpeed = 3;
+WVL.playSpeed = 0;
+WVL.trackWatchers = [];
+
+// function has signature
+// watcher(track, trec, event)
+WVL.registerTrackWatcher = function(fun) {
+    WVL.trackWatchers.push(fun);
+}
 
 // convenience for debugging...
 TRACK = null;
@@ -62,7 +69,7 @@ WVL.lerp = function(pt1, pt2, f, pt)
 
 WVL.timerFun = function(e)
 {
-    var t = WVL.getPlayTime();
+    //var t = WVL.getPlayTime();
     //report("*** tick playTime: "+t);
     setTimeout(WVL.timerFun, 100);
 }
@@ -95,9 +102,10 @@ WVL.clickOnTrack = function(e, track) {
 	return;
     var rt = trec.rt;
     report("****** seek to "+rt);
-    WVL.setPlayTime(trec.rt);
+    //WVL.setPlayTime(trec.rt);
     var latLng = [trec.pos[0], trec.pos[1]];
     WVL.setPoint(latLng);
+    WVL.trackWatchers.forEach(w => { w(track, trec, e); })
 }
 
 //WVL.setPoint = function(trec)

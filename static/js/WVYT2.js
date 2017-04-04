@@ -23,7 +23,22 @@ WVYT.player = null;
 WVYT.requestedStartTime = null;
 
 WVYT.trackerRunning = false;
-WVYT.watcher = null;
+WVYT.watchers = [];
+
+WVYT.setPlayTime = function(t)
+{
+    report("WVYT.setPlayTime "+t);
+    if (!WVYT.player) {
+	report("no player");
+	return;
+    }
+    WVYT.player.seekTo(t);
+}
+
+WVYT.registerWatcher = function(watcher)
+{
+    WVYT.watchers.push(watcher);
+}
 
 WVYT.runTracker = function()
 {
@@ -42,7 +57,8 @@ WVYT.trackerTick = function()
     var playing = WVYT.player.getPlayerState() == 1;
     var t = WVYT.player.getCurrentTime();
     var status = {t: t, playing: playing}
-    report("stat: "+JSON.stringify(status));
+    //report("stat: "+JSON.stringify(status));
+/*
     if (WVYT.watcher) {
 	try {
 	    WVYT.watcher(status);
@@ -51,6 +67,15 @@ WVYT.trackerTick = function()
 	    report("err: "+e);
 	}
     }
+*/
+    WVYT.watchers.forEach(watcher => {
+	try {
+	    watcher(status);
+	}
+	catch (e) {
+	    report("err: "+e);
+	}
+    });
     setTimeout(WVYT.trackerTick, 250);
 }
 
@@ -111,7 +136,7 @@ WVYT.stopVideo = function() {
 
 WVYT.playVideo = function(id, rec)
 {
-    report("WVYT.playVideo "+id);
+    report("WVYT.playVideo "+id+" "+JSON.stringify(rec));
     //WV.youtubeWidget.show();
     if (WVYT.videoId == id && WVYT.player && rec) {
 	var t = rec.t;
