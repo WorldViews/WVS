@@ -41,8 +41,10 @@
 var latlng = { lat:37.324684179870715, lng:-122.0436295866966 }
 var xbounds = [ [ 37.3265995227329,  -122.04150527715686 ],
     [ 37.32308873451525, -122.04593628644945 ] ]
-var bounds = [ [ 37.0,  -123.04150527715686 ],
-    [ 38, -120.04593628644945 ] ]
+var bounds = [
+[ 37.0,  -123.04150527715686 ],
+[ 38, -120.04593628644945 ]
+];
 
 WVL.initmap(latlng, bounds);
 
@@ -52,7 +54,7 @@ WVYT.videoId = youtubeId;
 function watchYTStat(stat)
 {
     var trailTime = stat.t + 300;
-    report("watchYTStat "+trailTime);
+    //report("watchYTStat "+trailTime);
     WVL.setPlayTime(trailTime);
 }
 
@@ -62,12 +64,16 @@ function watchTrackEvent(track, trec, e)
    report("trec: "+trec);
    var t = trec.rt;
    report("t: "+t);
+   var desc = track.desc;
+   var videoId = desc.youtubeId;
+   var deltaT = desc.youtubeDeltaT;
    WVL.setPlayTime(t);
    var vt = t - 300;
    if (vt < 0)
       vt = 0;
    report("vt: "+vt);    
-   WVYT.setPlayTime(vt);
+   WVYT.playVideo(videoId, {t: vt});
+//   WVYT.setPlayTime(vt);
 }
 
 $(document).ready(function()

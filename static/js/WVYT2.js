@@ -25,6 +25,11 @@ WVYT.requestedStartTime = null;
 WVYT.trackerRunning = false;
 WVYT.watchers = [];
 
+WVYT.play = function(videoId, t)
+{
+}
+
+
 WVYT.setPlayTime = function(t)
 {
     report("WVYT.setPlayTime "+t);
@@ -136,7 +141,9 @@ WVYT.stopVideo = function() {
 
 WVYT.playVideo = function(id, rec)
 {
+    report("==============================================");
     report("WVYT.playVideo "+id+" "+JSON.stringify(rec));
+    report("WVYT.videoId (current) "+WVYT.videoId);
     //WV.youtubeWidget.show();
     if (WVYT.videoId == id && WVYT.player && rec) {
 	var t = rec.t;

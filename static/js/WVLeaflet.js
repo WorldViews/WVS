@@ -11,8 +11,10 @@ WVL.currentPlayTime = 0;
 WVL.lastSeekTime = 0;
 WVL.playSpeed = 0;
 WVL.trackWatchers = [];
+//WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
+WVL.toursUrl = "/static/data/tours_data.json";
 
-// function has signature
+// A watcher function has signature
 // watcher(track, trec, event)
 WVL.registerTrackWatcher = function(fun) {
     WVL.trackWatchers.push(fun);
@@ -81,11 +83,23 @@ WVL.clickOnMap = function(e) {
     report("shift: "+de.shiftKey);
 }
 
+WVL.setCurrentTrack = function(track)
+{
+    report("-------------------------------");
+    var desc = track.desc;
+    report("setCurrentTrack id: "+desc.id);
+    var videoId = desc.youtubeId;
+    var videoDeltaT = desc.youtubeDeltaT;
+    report("videoId: "+videoId);
+    report("deltaT: "+videoDeltaT);
+}
+
 WVL.clickOnTrack = function(e, track) {
     report("click on track e: "+e);
     report("name: "+track.name);
     report("trail: "+track.trail);
     report("latLng: "+e.latlng);
+    WVL.setCurrentTrack(track);
     var de = e.originalEvent;
     report("shift: "+de.shiftKey);
     var pt = [e.latlng.lat, e.latlng.lng];
@@ -125,19 +139,22 @@ WVL.initmap = function(latlng, bounds) {
     // create the tile layer with correct attribution
     var osmUrl='http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
-    var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 19, attribution: osmAttrib});
+    //var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 19, attribution: osmAttrib});
+    var osm = new L.TileLayer(osmUrl, {minZoom: 10, maxZoom: 21, attribution: osmAttrib});
 
     // start the map in South-East England
-    map.setView(new L.LatLng(latlng.lat, latlng.lng),18);
+    //map.setView(new L.LatLng(latlng.lat, latlng.lng),18);
+    map.setView(new L.LatLng(latlng.lat, latlng.lng),5);
     map.addLayer(osm);
 
     // var helloPopup = L.popup().setContent('Hello World!');
+    /*
     L.easyButton('fa-globe fa-fixed fa-lg', function(btn, map){
         map.fitBounds(bounds);
         // helloPopup.setContent(JSON.stringify(map.getCenter(), 0, 2))
         // helloPopup.setLatLng(map.getCenter()).openOn(map);
     }).addTo(map);
-
+    */
 /*
     var gpx = '/static/data/paths/mempark_Mar_23,_2017_11_25_28_AM_2017-03-23_11-25-28.gpx';
     new L.GPX(gpx, {
@@ -160,23 +177,25 @@ WVL.initmap = function(latlng, bounds) {
     })
     .addTo(map);
 */
-    WVL.loadTracks(map);
+    //WVL.loadTracksFromAPI(map);
+    WVL.loadTracksFromFile(WVL.toursUrl, map);
     WVL.cursor = L.marker([0,0]);
     WVL.cursor.addTo(map);
     WVL.setPlayTime(0)
     setTimeout(WVL.timerFun, 500);
 }
 
-WVL.handleTrack = function(track, url, map)
+//
+WVL.handleTrack = function(trackDesc, trackData, url, map)
 {
-    TRACK = track;
-    var name = track.name;
-    WVL.tracks[name] = track;
-    WVL.currentTrack = track;
+    TRACK = trackData;
+    var name = trackData.name;
+    WVL.tracks[name] = trackData;
+    WVL.currentTrack = trackData;
     //report("data: "+JSON.stringify(track));
-    var recs = track.recs;
+    var recs = trackData.recs;
     var h = 2;
-    var coordSys = track.coordinateSystem;
+    var coordSys = trackData.coordinateSystem;
     if (!coordSys) {
 	report("*** no coodinateSystem specified");
 	coordSys = "GEO";
@@ -188,23 +207,63 @@ WVL.handleTrack = function(track, url, map)
 	latLng.push([pos[0], pos[1]]);
     }
     //report("latLng: "+latLng);
-    track.latLng = latLng;
-    track.trail = L.polyline(latLng, { color: '#3333ff', weight: 8});
-    track.trail.on('click', function(e) { WVL.clickOnTrack(e, track);});
-    track.trail.addTo(map);
+    trackData.desc = trackDesc;
+    trackData.latLng = latLng;
+    trackData.trail = L.polyline(latLng, { color: '#3333ff', weight: 8});
+    trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
+    trackData.trail.addTo(map);
 }
 
-WVL.loadTracks = function(map)
+WVL.loadTrackFromAPI = function(trackDesc, map)
 {
-    var url = "/api/v1/track/mempark_Mar_23_2017_11_25_28_AM_2017-03-23_11-25-28";
+    //var url = "/api/v1/track/"+idmempark_Mar_23_2017_11_25_28_AM_2017-03-23_11-25-28";
+    var trackId = trackDesc.id;
+    var url = "/api/v1/track/"+trackId;
     $.getJSON(url, function(data) {
         //report("GOT JSON: "+data);
-	WVL.handleTrack(data, url, map);
+	WVL.handleTrack(trackDesc, data, url, map);
     });
 }
 
+WVL.loadTracksFromAPI = function(map)
+{
+    var url = "/api/v1/track/mempark_Mar_23_2017_11_25_28_AM_2017-03-23_11-25-28";
+    var trackDescs = [{"id": "mempark_Mar_23_2017_11_25_28_AM_2017-03-23_11-25-28",
+		  "youtubeId": "iJ9V3WVmRgc",
+		  "youtubeDeltaT": -282.0
+		 }];
+    trackDescs.forEach(trackDesc => { WVL.loadTrackFromAPI(trackDesc, map); });
+}
 
+WVL.loadTrackFromFile = function(trackDesc, url, map)
+{
+    $.getJSON(url, function(data) {
+        //report("GOT JSON: "+data);
+	WVL.handleTrack(trackDesc, data, url, map);
+    });
+}
 
+WVL.handleLayerRecs = function(tours, url, map)
+{
+    report("got tours data from "+url);
+    tours.records.forEach(trackDesc => {
+	if (trackDesc.recType != "robotTrail") {
+	    return;
+	}
+	var trackId = trackDesc.id;
+	report("tour.tourId: "+trackId);
+	var dataUrl = trackDesc.dataUrl;
+	WVL.loadTrackFromFile(trackDesc, dataUrl, map);
+    });
+}
+
+WVL.loadTracksFromFile = function(url, map)
+{
+    report("**** WVL.loadTracksFromFiler "+url);
+    $.getJSON(url, function(data) {
+        WVL.handleLayerRecs(data, url, map);
+    });
+}
 
 /*
   Linear search to find index i such that
