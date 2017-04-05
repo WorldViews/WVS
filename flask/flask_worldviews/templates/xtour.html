@@ -53,8 +53,13 @@ WVYT.videoId = youtubeId;
 
 function watchYTStat(stat)
 {
-    var trailTime = stat.t + 300;
-    //report("watchYTStat "+trailTime);
+    if (!WVL.currentTrack) {
+        report("watchYTStat No current track");
+    }
+    var desc = WVL.currentTrack.desc;
+    var vt = stat.t;
+    var trailTime = vt - desc.youtubeDeltaT;
+    report("watchYTStat vt: "+vt+"   trailTime: "+trailTime);
     WVL.setPlayTime(trailTime);
 }
 
@@ -67,8 +72,9 @@ function watchTrackEvent(track, trec, e)
    var desc = track.desc;
    var videoId = desc.youtubeId;
    var deltaT = desc.youtubeDeltaT;
+   WVL.setCurrentTrack(track);
    WVL.setPlayTime(t);
-   var vt = t - 300;
+   var vt = t + deltaT;
    if (vt < 0)
       vt = 0;
    report("vt: "+vt);    

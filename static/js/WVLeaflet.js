@@ -86,6 +86,7 @@ WVL.clickOnMap = function(e) {
 WVL.setCurrentTrack = function(track)
 {
     report("-------------------------------");
+    WVL.currentTrack = track;
     var desc = track.desc;
     report("setCurrentTrack id: "+desc.id);
     var videoId = desc.youtubeId;
