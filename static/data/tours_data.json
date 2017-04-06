@@ -18,7 +18,79 @@
 	  "heading": 32.0
        },
        {
-          "id": "4",
+          "recType": "CoordinateSystem",
+          "coordSys": "HillerMuseum1",
+          "lat":  37.5127049,
+          "lon": -122.2531347,
+	  "alt": 41.0,
+	  "heading": 40.0
+       },
+       {
+          "recType": "CoordinateSystem",
+          "coordSys": "HillerMuseumMainPath2",
+          "lat":  37.5127049,
+          "lon": -122.2531347,
+	  "alt": 41.0,
+	  "heading": 325.0
+       },
+       {
+          "recType": "CoordinateSystem",
+          "coordSys": "HillerUpstairsPath1",
+          "lat":  37.5127049,
+          "lon": -122.2531347,
+	  "alt": 41.0,
+	  "heading": 42.0
+       },
+       {
+          "id": "hiller_lobby_path_1",
+          "recType": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Hiller Lobby Path 1",
+	  "tourName": "hiller_lobby_path_1",
+	  "dataUrl": "/static/data/paths/hiller_lobby_path_1.json",
+	  "height": 0.3,
+          "youtubeId": "WJwEOm2wOgA",
+	  "youtubeDeltaT": 0,
+	  "coordSys": "HillerMuseum1"
+       },
+       {
+          "id": "hiller_main_path_1",
+          "recType": "xxxrobotTrail",
+          "robotType": "wheelchair",
+          "description": "Hiller Main Path 1",
+	  "tourName": "hiller_main_path_1",
+	  "dataUrl": "/static/data/paths/hiller_main_path_1.json",
+	  "height": 0.3,
+	  "youtubeId": "ixvaAOAuqBs",
+	  "youtubeDeltaT": 0,
+	  "coordSys": "HillerMuseum1"
+       },
+       {
+          "id": "hiller_upstairs_path_1",
+          "recType": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Hiller Upstairs Path 1",
+	  "tourName": "hiller_main_path_1",
+	  "dataUrl": "/static/data/paths/hiller_upstairs_path_1.json",
+	  "height": 0.3,
+	  "youtubeId": "znwVxzuTaAU",
+	  "youtubeDeltaT": 1,
+	  "coordSys": "HillerUpstairsPath1"
+       },
+       {
+          "id": "hiller_main_path_2",
+          "recType": "robotTrail",
+          "robotType": "wheelchair",
+          "description": "Hiller Main Path 2",
+	  "tourName": "hiller_main_path_2",
+	  "dataUrl": "/static/data/paths/hiller_main_path_2.json",
+	  "height": 0.3,
+	  "youtubeId": "4g1oe8S9PfI",
+          "youtubeDeltaT": 3,
+	  "coordSys": "HillerMuseumMainPath2"
+       },
+       {
+          "id": "porter_outdoor_tour_1",
           "recType": "robotTrail",
           "robotType": "panobot",
           "description": "PanoBot tour",
@@ -29,7 +101,7 @@
           "xurl": "https://fxpal.com"
        },
        {
-          "id": "5",
+          "id": "porter_tour_3",
           "recType": "robotTrail",
           "robotType": "panobot",
           "description": "PanoBot tour inside PAL.",
