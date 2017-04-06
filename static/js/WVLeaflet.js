@@ -1,9 +1,16 @@
 
+"use strict";
+
 function report(str) { console.log(str); }
 
-report("************** Leaflet *******************");
+if (typeof WV == "undefined") {
+    report("****** defining WV ******");
+    var WV = {};
+}
 
-WVL = {};
+var WVL = {};
+
+
 WVL.tracks = {};
 WVL.currentTrack = null;
 WVL.cursor = null;
@@ -20,10 +27,6 @@ WVL.registerTrackWatcher = function(fun) {
     WVL.trackWatchers.push(fun);
 }
 
-// convenience for debugging...
-TRACK = null;
-var PT = null;
-//var DE = null;
 
 WVL.getClockTime = function()
 {
@@ -104,7 +107,6 @@ WVL.clickOnTrack = function(e, track) {
     var de = e.originalEvent;
     report("shift: "+de.shiftKey);
     var pt = [e.latlng.lat, e.latlng.lng];
-    PT = pt;
     report("pt: "+pt);
     var ret = WVL.findNearestPoint(pt, track.latLng);
     report("ret: "+JSON.stringify(ret));
@@ -187,16 +189,19 @@ WVL.initmap = function(latlng, bounds) {
 }
 
 //
+var TD;
 WVL.handleTrack = function(trackDesc, trackData, url, map)
 {
-    TRACK = trackData;
     var name = trackData.name;
     WVL.tracks[name] = trackData;
-    WVL.currentTrack = trackData;
+    //WVL.currentTrack = trackData;
     //report("data: "+JSON.stringify(track));
     var recs = trackData.recs;
     var h = 2;
     var coordSys = trackData.coordinateSystem;
+    if (!coordSys) {
+	coordSys = trackDesc.coordSys;
+    }
     if (!coordSys) {
 	report("*** no coodinateSystem specified");
 	coordSys = "GEO";
@@ -205,7 +210,9 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     var latLng = [];
     for (var i=0; i<recs.length; i++) {
 	var pos = recs[i].pos;
-	latLng.push([pos[0], pos[1]]);
+	var lla = WV.xyzToLla(pos, coordSys);
+	//latLng.push([pos[0], pos[1]]);
+	latLng.push([lla[0], lla[1]]);
     }
     //report("latLng: "+latLng);
     trackData.desc = trackDesc;
@@ -248,6 +255,11 @@ WVL.handleLayerRecs = function(tours, url, map)
 {
     report("got tours data from "+url);
     tours.records.forEach(trackDesc => {
+	if (trackDesc.recType.toLowerCase() == "coordinatesystem") {
+	    report("**** yipee!!  coordinateSystem "+JSON.stringify(trackDesc));
+	    WV.addCoordinateSystem(trackDesc.coordSys, trackDesc);
+	    return;
+	}
 	if (trackDesc.recType != "robotTrail") {
 	    return;
 	}
@@ -384,7 +396,7 @@ WVL.findPointByTime = function(track, rt)
     //i = WVL.linSearch(rec.data.recs, rt);
     var recs = track.recs;
     var points = track.latLng;
-    i = WVL.binSearch(recs, rt);
+    var i = WVL.binSearch(recs, rt);
     if (i == 0) {
 	return {i: i, f: 0, nearestPt: points[i]};
     }
@@ -403,30 +415,6 @@ WVL.findPointByTime = function(track, rt)
     var pt = WVL.lerp(points[i0], points[i], f, pt);
     return {i: i, f: f, nearestPt: pt};
 }
-/*
-WVL.findPointByTime = function(rec, rt)
-{
-    var recs = rec.data.recs;
-    var iMin = 0;
-    var iMax = recs.length-1;
-
-    while (iMin < iMax) {
-	var i = Math.floor((iMin + iMax)/2.0);
-	var trec = recs[i];
-	if (trec.rt == rt)
-	    break;
-	if (trec.rt < rt) {
-	    iMin = i+1;
-	}
-	else if (trec.rt > rt) {
-	    iMax = i-1;
-	}
-    }
-    if (i >= rec.points.length)
-	i = rec.points.length-1;
-    return {i: i, nearestPt: rec.points[i]};
-}
-*/
 
 
 WVL.findNearestPoint = function(pt, points)
@@ -437,7 +425,7 @@ WVL.findNearestPoint = function(pt, points)
 	null;
     }
     var d2Min = WVL.distanceSquared(pt, points[0]);
-    iMin = 0;
+    var iMin = 0;
     for (var i=1; i<points.length; i++) {
 	var d2 = WVL.distanceSquared(pt, points[i]);
 	if (d2 < d2Min) {
