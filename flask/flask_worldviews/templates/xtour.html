@@ -34,7 +34,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.0.0/easy-button.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/gpx.min.js"></script>
-<script src="/static/js/WVLeaflet.js"></script>
+<script src="/static/js/Leaflet/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="/static/js/Leaflet/WVLeaflet.js"></script>
 <script src="/static/js/math3d.js"></script>
 <script src="/static/js/WVCoordSys.js"></script>
 <script src="/static/js/WVYT2.js"></script>
@@ -52,6 +53,10 @@ WVL.initmap(latlng, bounds);
 
 var youtubeId = "iJ9V3WVmRgc";
 WVYT.videoId = youtubeId;
+
+WVL.goHome = function()
+{
+}
 
 function watchYTStat(stat)
 {
@@ -95,39 +100,4 @@ $(document).ready(function()
 
 </script>
   
-<!--
-<script src="https://webrtc.github.io/adapter/adapter-2.1.0.js"></script>
-<script src="../js/jquery-3.1.1.min.js"></script>
-<script src="../js/wrtc.js"></script>
-<script src="../js/three.js"></script>
-<script src="../js/OrbitControls.js"></script>
-<script src="../js/DeviceOrientationControls.js"></script>
-<script src="../js/ImageSource.js"></script>	
-<script src="../js/Pano.js"></script>	
-<script src="../js/PanoParams.js"></script>	
-<script src="../js/THREEx.FullScreen.js"></script>
-<script>
-
-var spec = getImageSpec();
-report("spec: "+JSON.stringify(spec));
-spec.type = ImageSource.TYPE.VIDEO;
-spec.url = "http://dvr4.paldeploy.com/video/stearman.mp4";
-report("------------------------------");
-report("spec: "+JSON.stringify(spec));
-var imageSrc = new ImageSource(spec);
-
-// if we set this to 0 there is no Pano and the table resizes
-// as expected.
-// if we set 1 the Pano is created and resizing behavior seems
-// buggy.
-if (1) {
-    pano = new Pano(document.getElementById('sphere'), imageSrc);
-    pano.updateStyle = true; // with this it keeps getting bigger
-    //pano.updateStyle = false; // with this it doesn't resize
-    pano.start();
-}
-
-	</script>
--->
-
 {% endblock %}
