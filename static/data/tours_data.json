@@ -42,6 +42,24 @@
 	  "heading": 42.0
        },
        {
+	   "id": "Hiller_Aviation_Museum",
+           "recType": "IndoorMap",
+	   "name": "Hiller Aviation Museum",
+           "imageUrl": "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145",
+           "p0":  [37.5127049, -122.2531347],
+	   "alt": 41.0,
+	   "heading": 42.0
+       },
+       {
+	   "id": "FXPAL_Map",
+           "recType": "IndoorMap",
+	   "name": "FXPAL",
+           "imageUrl": "/static/img/PorterFloorPlan.png",
+           "p0":  [37.40583, -122.15080],
+	   "alt": 41.0,
+	   "heading": 42.0
+       },
+       {
           "id": "hiller_lobby_path_1",
           "recType": "robotTrail",
           "robotType": "wheelchair",
