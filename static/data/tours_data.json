@@ -47,6 +47,8 @@
 	   "name": "Hiller Aviation Museum",
            "imageUrl": "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145",
            "p0":  [37.5127049, -122.2531347],
+	   "width": 50,
+	   "height": 50,
 	   "alt": 41.0,
 	   "heading": 42.0
        },
@@ -55,9 +57,11 @@
            "recType": "IndoorMap",
 	   "name": "FXPAL",
            "imageUrl": "/static/img/PorterFloorPlan.png",
-           "p0":  [37.40583, -122.15080],
+           "p0": [37.406055969601624,-122.15125858783723],
+	   "width": 56,
+	   "height": 45,
 	   "alt": 41.0,
-	   "heading": 42.0
+	   "heading": 32.9
        },
        {
           "id": "hiller_lobby_path_1",
@@ -193,7 +197,8 @@
           "description": "Walkaround Memorial Park.",
 	  "tourName": "memorial_park_tour_1",
           "dataUrl": "/static/data/paths/mempark_3_23_2017.json",
-          "youtubeId": "iJ9V3WVmRgc",
+          "xxxyoutubeId": "iJ9V3WVmRgc",
+          "youtubeId": "f5e_4iIFzU8",
 	  "youtubeDeltaT": -282.0,
 	  "coordSys": "GEO",
 	  "height": 1.0
