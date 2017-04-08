@@ -25,42 +25,134 @@ WVL.trackWatchers = [];
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
 
-WVL.ImageLayer = function(imageUrl, point1, point2, point3)
+WVL.ImageLayer = function(imageUrl, opts)
 {
     this.map = WVL.map;
-    this.point1 = point1;
-    this.point2 = point2;
-    this.point3 = point3;
+    this.marker1 = null;
+    this.marker2 = null;
+    this.marker3 = null;
+    if (opts.p1 && opts.p2 && opts.p3) {
+	this.point1 = new L.LatLng(opts.p1[0],opts.p1[1]);
+	this.point2 = new L.LatLng(opts.p2[0],opts.p2[1]);
+	this.point3 = new L.LatLng(opts.p3[0],opts.p3[1]);
+    }
+    else if (opts.p1 && opts.width && opts.height) {
+	report("width: "+opts.width);
+	report("height: "+opts.height);
+	this.point1 = new L.LatLng(opts.p1[0],opts.p1[1]);
+	this.point2 = L.GeometryUtil.destination(this.point1, 90, opts.width);
+	this.point3 = L.GeometryUtil.destination(this.point1, 180, opts.height);
+    }
+    else {
+	report("**** bad arguments to WV.ImageLayer ****");
+	return;
+    }
+    this.h12 = L.GeometryUtil.bearing(this.point1, this.point2);
+    this.h13 = L.GeometryUtil.bearing(this.point1, this.point3);
+    //this.d12 = L.GeometryUtil.distance(this.map, this.point1, this.point2);
+    //this.d13 = L.GeometryUtil.distance(this.map, this.point1, this.point3);
+    this.d12 = this.map.distance(this.point1, this.point2);
+    this.d13 = this.map.distance(this.point1, this.point3);
+    report(" d12: "+this.d12);
+    report(" d13: "+this.d13);
+    report(" h12: "+this.h12);
+    report(" h13: "+this.h13);
 
-    this.overlay = L.imageOverlay.rotated(imageUrl, point1, point2, point3, {
+    this.overlay = L.imageOverlay.rotated(imageUrl, this.point1, this.point2, this.point3, {
 	opacity: 0.8,
 	interactive: false,
 	attribution: "Historical building plan &copy; <a href='http://www.ign.es'>Instituto Geográfico Nacional de España</a>"
     });
-
-    this.addMarkers = function() {
-	this.marker1 = L.marker(point1, {draggable: true} ).addTo(this.map);
-	this.marker2 = L.marker(point2, {draggable: true} ).addTo(this.map);
-	this.marker3 = L.marker(point3, {draggable: true} ).addTo(this.map);
-	var inst = this;
-	this.marker1.on('drag dragend', () => {inst.repositionImage()});
-	this.marker2.on('drag dragend', () => {inst.repositionImage()});
-	this.marker3.on('drag dragend', () => {inst.repositionImage()});
-    }
-    
-    this.fitBounds = function() {
-	var	bounds = new L.LatLngBounds(this.point1, this.point2).extend(this.point3);
-	this.map.fitBounds(bounds);
-    }
-    
-    this.repositionImage = function() {
-	this.overlay.reposition(this.marker1.getLatLng(), this.marker2.getLatLng(), this.marker3.getLatLng());
-    };
-
     this.overlay.addTo(WVL.map);
-    //this.addMarkers();
+    if (opts.heading) {
+	this.setHeading(opts.heading);
+    }
+    //this.addGrips();
     //this.fitBounds();
 }
+
+WVL.ImageLayer.prototype.fitBounds = function()
+{
+    var	bounds = new L.LatLngBounds(this.point1, this.point2).extend(this.point3);
+    this.map.fitBounds(bounds);
+}
+
+WVL.ImageLayer.prototype.edit = function()
+{
+    this.marker1 = L.marker(this.point1, {draggable: true} ).addTo(this.map);
+    this.marker2 = L.marker(this.point2, {draggable: true} ).addTo(this.map);
+    this.marker3 = L.marker(this.point3, {draggable: true} ).addTo(this.map);
+    var inst = this;
+    this.marker1.on('drag dragend', () => {inst.handleTranslate()});
+    this.marker2.on('drag dragend', () => {inst.handleRotate()});
+//    this.marker2.on('drag dragend', () => {inst.handleSkew()});
+//    this.marker3.on('drag dragend', () => {inst.handleSkew()});
+}
+
+WVL.ImageLayer.prototype.handleTranslate = function()
+{
+    report("handleTranslate");
+    report(" d12: "+this.d12);
+    report(" d13: "+this.d13);
+    report(" h12: "+this.h12);
+    report(" h13: "+this.h13);
+    this.point1 = this.marker1.getLatLng();
+    this.point2 = L.GeometryUtil.destination(this.point1, this.h12, this.d12);
+    this.point3 = L.GeometryUtil.destination(this.point1, this.h13, this.d13);
+    this.overlay.reposition(this.point1, this.point2, this.point3);
+    this.updateGrips();
+    this.dump();
+//    if (this.marker2) this.marker2.setLatLng(this.point2);
+//    if (this.marker3) this.marker3.setLatLng(this.point3);
+}
+
+WVL.ImageLayer.prototype.handleRotate = function()
+{
+    report("handleTranslate");
+    var point2 = this.marker2.getLatLng();
+    var h = L.GeometryUtil.bearing(this.point1, point2);
+    this.setHeading(h);
+//    if (this.marker2) this.marker2.setLatLng(this.point2);
+//    if (this.marker3) this.marker3.setLatLng(this.point3);
+}
+
+WVL.ImageLayer.prototype.handleSkew = function()
+{
+    this.point1 = this.marker1.getLatLng();
+    this.point2 = this.marker2.getLatLng();
+    this.point3 = this.marker3.getLatLng();
+    this.overlay.reposition(this.point1, this.point2, this.point3);
+    var h = L.GeometryUtil.bearing(this.point1, this.point2);
+    report("Heading: "+h);
+}
+
+WVL.ImageLayer.prototype.setHeading = function(h)
+{
+    report("setHeading "+h);
+    report(" p1: "+this.point1);
+    this.point2 = L.GeometryUtil.destination(this.point1, h, this.d12);
+    this.h13 = this.h13 + (h - this.h12);
+    this.point3 = L.GeometryUtil.destination(this.point1, this.h13, this.d13);
+    this.h12 = h
+    this.overlay.reposition(this.point1, this.point2, this.point3);
+    this.updateGrips();
+    this.dump();
+}
+
+WVL.ImageLayer.prototype.updateGrips = function(h)
+{
+    if (this.marker1) this.marker1.setLatLng(this.point1);
+    if (this.marker2) this.marker2.setLatLng(this.point2);
+    if (this.marker3) this.marker3.setLatLng(this.point3);
+}
+
+WVL.ImageLayer.prototype.dump = function()
+{
+    var p1 = this.point1;
+    var obj = {'heading': this.h12, 'origin': [p1.lat, p1.lng]};
+    report("map: "+JSON.stringify(obj));
+}
+
 
 // A watcher function has signature
 // watcher(track, trec, event)
@@ -189,6 +281,21 @@ WVL.clickOnTrack = function(e, track) {
     WVL.trackWatchers.forEach(w => { w(track, trec, e); })
 }
 
+WVL.clickOnPlacemark = function (e, trackDesc, gpos) {
+    WVL.map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true});
+};
+
+var E;
+var LOCK = true;
+WVL.dragPlacemark = function (e, trackDesc, gpos) {
+    report("dragging placemark");
+    var placemark = trackDesc.placemark;
+    E = e;
+    if (LOCK)
+	placemark.setLatLng(gpos);
+};
+
+
 //WVL.setPoint = function(trec)
 WVL.setPoint = function(latLng)
 {
@@ -289,15 +396,19 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     //report("latLng: "+latLng);
     trackData.desc = trackDesc;
     trackData.latLng = latLng;
-    trackData.trail = L.polyline(latLng, { color: '#3333ff', weight: 8});
+    trackData.trail = L.polyline(latLng, { color: '#3333ff', weight: 6});
     trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
     trackData.trail.addTo(map);
     var gpos = latLng[0];
-    trackDesc.placemark = L.marker(gpos);
+    trackDesc.placemark = L.marker(gpos, {draggable: true});
     trackDesc.placemark.addTo(map);
-    trackDesc.placemark.on('click', function (e) {
-	map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true});
-    });
+//    trackDesc.placemark.on('click', function (e) {
+//	map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true});
+//    });
+    trackDesc.placemark.on('click',
+			   e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
+    trackDesc.placemark.on('drag dragend',
+			   e => { WVL.dragPlacemark(e,trackDesc,gpos);});
 }
 
 WVL.loadTrackFromAPI = function(trackDesc, map)
@@ -338,12 +449,17 @@ WVL.handleLayerRecs = function(tours, url, map)
 	if (WVL.match(trackDesc.recType, "IndoorMap")) {
 	    report("**** yipee!!  indoor map "+JSON.stringify(trackDesc));
 	    var imap = trackDesc;
-	    var p0 = imap.p0;
-	    var p1 = [p0[0]+.001, p0[1]];
-	    var p2 = [p0[0], p0[1]+0.001];
-	    var imlayer = new WVL.ImageLayer(imap.imageUrl, p0, p1, p2);
+	    var p1 = imap.p0;
+	    var p2 = [p1[0]+.001, p1[1]];
+	    var p3 = [p1[0], p1[1]+0.001];
+	    var imlayer = new WVL.ImageLayer(imap.imageUrl,
+					     {p1: p1,
+					      width: imap.width,
+					      height: imap.height,
+					      heading: imap.heading});
+//	    var imlayer = new WVL.ImageLayer(imap.imageUrl, {p1: p1, p2: p2, p3: p3});
 	    WVL.indoorMaps[imap.id] = imlayer;
-	    imlayer.addMarkers();
+	    imlayer.edit();
 	    return;
 	}
 	if (trackDesc.recType.toLowerCase() == "coordinatesystem") {
