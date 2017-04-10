@@ -20,26 +20,30 @@
        {
           "recType": "CoordinateSystem",
           "coordSys": "HillerMuseum1",
-          "lat":  37.5127049,
-          "lon": -122.2531347,
-	  "alt": 41.0,
-	  "heading": 40.0
+          "lat": 37.51260770586334,
+           "lon": -122.25301489233973,
+	   "alt": 41.0,
+	   "heading": 40.0,
+	   "sx": 1.1,
+	   "sy": 1.05
        },
        {
           "recType": "CoordinateSystem",
           "coordSys": "HillerMuseumMainPath2",
-          "lat":  37.5127049,
-          "lon": -122.2531347,
-	  "alt": 41.0,
+           "lat":  37.51263642818957,
+           "lon": -122.25299209356311,
+	   "alt": 41.0,
+	   "sx": 1.1,
+	   "sy": 1.12,
 	  "heading": 325.0
        },
        {
           "recType": "CoordinateSystem",
-          "coordSys": "HillerUpstairsPath1",
-          "lat":  37.5127049,
-          "lon": -122.2531347,
+           "coordSys": "HillerUpstairsPath1",
+          "lat":  37.512634300610245,
+           "lon": -122.252976000309,
 	  "alt": 41.0,
-	  "heading": 42.0
+	  "heading": 44.0
        },
        {
 	   "id": "Hiller_Aviation_Museum",
