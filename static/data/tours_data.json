@@ -45,12 +45,13 @@
 	   "id": "Hiller_Aviation_Museum",
            "recType": "IndoorMap",
 	   "name": "Hiller Aviation Museum",
-           "imageUrl": "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145",
-           "p0":  [37.5127049, -122.2531347],
-	   "width": 50,
-	   "height": 50,
+           "xxximageUrl": "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145",
+           "imageUrl": "/static/img/hillerMap.svg",
+           "p0": [37.51256621803919,-122.25359827280046],
+	   "width": 94,
+	   "height": 73,
 	   "alt": 41.0,
-	   "heading": 42.0
+	   "heading": 39.5
        },
        {
 	   "id": "FXPAL_Map",
