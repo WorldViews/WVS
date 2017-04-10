@@ -89,20 +89,6 @@ WVL.ImageLayer.prototype.handleRotate = function()
     this.setHeading(h);
 }
 
-/*
-WVL.ImageLayer.prototype.setHeading = function(h)
-{
-    report("setHeading "+h);
-    report(" p1: "+this.point1);
-    this.point2 = L.GeometryUtil.destination(this.point1, h, this.d12);
-    this.h13 = this.h13 + (h - this.h12);
-    this.point3 = L.GeometryUtil.destination(this.point1, this.h13, this.d13);
-    this.h12 = h
-    this.overlay.reposition(this.point1, this.point2, this.point3);
-    this.updateGrips();
-    this.dump();
-}
-*/
 WVL.ImageLayer.prototype.setHeading = function(h)
 {
     report("setHeading "+h);
@@ -290,13 +276,28 @@ WVL.clickOnPlacemark = function (e, trackDesc, gpos) {
 };
 
 var E;
-var LOCK = true;
+WVL.LOCK = true;
 WVL.dragPlacemark = function (e, trackDesc, gpos) {
-    report("dragging placemark");
+    report("dragging placemark gpos: "+gpos);
     var placemark = trackDesc.placemark;
     E = e;
-    if (LOCK)
-	placemark.setLatLng(gpos);
+    if (!WVL.LOCK) {
+	var t1 = WVL.getClockTime();
+	var npt = placemark.getLatLng();
+	//placemark.setLatLng(npt);
+	var data = trackDesc.data;
+	//var coordSys = data.coordinateSystem;
+	var coordSys = trackDesc.coordSys;
+	report("coordSys: "+coordSys);
+	var cs = WV.coordinateSystems[coordSys]
+	report("cs before: "+JSON.stringify(cs));
+	//WV.updateCoordinateSystem(cs, npt.lat, npt.lng);
+	cs.update(npt.lat, npt.lng);
+	report("cs after: "+JSON.stringify(cs));
+	WVL.updateTrack(trackDesc.data);
+	var t2 = WVL.getClockTime();
+	report("updated in "+(t2-t1)+" secs");
+    }
 };
 
 
@@ -376,34 +377,16 @@ var TD;
 WVL.handleTrack = function(trackDesc, trackData, url, map)
 {
     var name = trackData.name;
+    trackData.desc = trackDesc;  //*** NOTE: these set up a circular reference
+    trackDesc.data = trackData;
     WVL.tracks[name] = trackData;
-    //WVL.currentTrack = trackData;
-    //report("data: "+JSON.stringify(track));
-    var recs = trackData.recs;
-    var h = 2;
-    var coordSys = trackData.coordinateSystem;
-    if (!coordSys) {
-	coordSys = trackDesc.coordSys;
-    }
-    if (!coordSys) {
-	report("*** no coodinateSystem specified");
-	coordSys = "GEO";
-    }
-    report("handleTrailData "+url+" coordSys: "+coordSys+" map: "+map);
-    var latLng = [];
-    for (var i=0; i<recs.length; i++) {
-	var pos = recs[i].pos;
-	var lla = WV.xyzToLla(pos, coordSys);
-	//latLng.push([pos[0], pos[1]]);
-	latLng.push([lla[0], lla[1]]);
-    }
-    //report("latLng: "+latLng);
-    trackData.desc = trackDesc;
-    trackData.latLng = latLng;
-    trackData.trail = L.polyline(latLng, { color: '#3333ff', weight: 6});
+    report("handleTrailData "+url);
+    WVL.computeTrackPoints(trackData);
+    trackData.trail = L.polyline(trackData.latLng, { color: '#3333ff', weight: 6});
     trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
     trackData.trail.addTo(map);
-    var gpos = latLng[0];
+    var gpos = trackData.latLng[0];
+    trackDesc.map = map;
     trackDesc.placemark = L.marker(gpos, {draggable: true});
     trackDesc.placemark.addTo(map);
 //    trackDesc.placemark.on('click', function (e) {
@@ -413,6 +396,38 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
 			   e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
     trackDesc.placemark.on('drag dragend',
 			   e => { WVL.dragPlacemark(e,trackDesc,gpos);});
+}
+
+WVL.updateTrack = function(trackData)
+{
+    report("updateTrack");
+    WVL.computeTrackPoints(trackData);
+    var desc = trackData.desc;
+    trackData.trail.setLatLngs(trackData.latLng);
+}
+
+WVL.computeTrackPoints = function(trackData)
+{
+    var desc = trackData.desc;
+    var recs = trackData.recs;
+    var h = 2;
+    var coordSys = trackData.coordinateSystem;
+    if (!coordSys) {
+	coordSys = desc.coordSys;
+    }
+    if (!coordSys) {
+	report("*** no coodinateSystem specified");
+	coordSys = "GEO";
+    }
+    var latLng = [];
+    for (var i=0; i<recs.length; i++) {
+	var pos = recs[i].pos;
+	var lla = WV.xyzToLla(pos, coordSys);
+	//latLng.push([pos[0], pos[1]]);
+	latLng.push([lla[0], lla[1]]);
+    }
+    //report("latLng: "+latLng);
+    trackData.latLng = latLng;    
 }
 
 WVL.loadTrackFromAPI = function(trackDesc, map)
