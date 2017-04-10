@@ -24,24 +24,73 @@ We will take the origin for lxyz and mxyz to be the same
 so that the tranform between them is a pure rotation.
 
 */
-WV.addCoordinateSystem = function(csName, csys)
+
+/*
+This defines a coordinate system that will map between cartesian coordinates
+in that system (mxyz above) and geographic coordinates.  Essentially this
+provides the geoplacement of a model.
+
+Note, the sx and sy are optional scale factors (default is 1) and may
+be a bit of a hack.  For example, if they are not 1, the units are no longer
+meters, and if they are not equal, it loses isotropy.  However, tweaking them
+can help give better fits of paths into geometry.
+*/
+WV.CoordinateSystem = function(lat, lon, alt, heading, sx, sy)
 {
-   if (csys.heading == null)
-      csys.heading = 0;
-   var cs = {lat: csys.lat, lon: csys.lon, alt: csys.alt, heading: csys.heading};
-//   var h = cs.heading * Math.PI / 180.0;
-   var h = (270 + cs.heading) * Math.PI / 180.0;
-   cs.origin_lla = [cs.lat, cs.lon, cs.alt];
-   cs.origin_xyz = V3.latLonAltToCartesian(cs.origin_lla);
-   cs.localToGlobal = M33.makeLocalToGlobalFrame(cs.origin_lla);
-   cs.globalToLocal = M33.transpose(cs.localToGlobal)
-   cs.modelToLocal = M33.identity();
-   cs.modelToLocal[0] = V3.rotate(cs.modelToLocal[0], cs.modelToLocal[2], -h);
-   cs.modelToLocal[1] = V3.rotate(cs.modelToLocal[1], cs.modelToLocal[2], -h);
-   cs.localToModel = M33.transpose(cs.modelToLocal)
-   WV.coordinateSystems[csName] = cs;
+    sx = sx || 1;
+    sy = sy || 1;
+    this.update(lat,lon,alt,heading, sx, sy);
 }
 
+
+WV.CoordinateSystem.prototype.update = function(lat, lon, alt, heading, sx, sy)
+{
+    var cs = this;
+    cs.lat = lat;
+    cs.lon = lon;
+    if (sx)
+	cs.sx = sx;
+    if (sy)
+	cs.sy = sy;
+    if (alt != null)
+	cs.alt = alt;
+    if (heading != null)
+	cs.heading = heading;
+    var h = (270 + cs.heading) * Math.PI / 180.0;
+    cs.origin_lla = [cs.lat, cs.lon, cs.alt];
+    cs.origin_xyz = V3.latLonAltToCartesian(cs.origin_lla);
+    cs.localToGlobal = M33.makeLocalToGlobalFrame(cs.origin_lla);
+    cs.globalToLocal = M33.transpose(cs.localToGlobal)
+    cs.modelToLocal = M33.identity();
+    cs.modelToLocal[0] = V3.rotate(cs.modelToLocal[0], cs.modelToLocal[2], -h);
+    cs.modelToLocal[1] = V3.rotate(cs.modelToLocal[1], cs.modelToLocal[2], -h);
+    cs.localToModel = M33.transpose(cs.modelToLocal)
+}
+
+// Convert a triple [x,y,z] to [lat, lng, alt]
+//
+WV.CoordinateSystem.prototype.xyzToLla = function(xyz)
+{
+    xyz = [this.sx*xyz[0], this.sy*xyz[1], xyz[2]];
+    lxyz = M33.transform(this.modelToLocal, xyz);
+    gxyz = V3.add(this.origin_xyz, M33.transform(this.localToGlobal, lxyz));
+    return V3.cartesianToLatLonAlt(gxyz);
+}
+
+//TODO: define WV.CoordinateSystem.prototype.llaToXyz
+
+
+WV.addCoordinateSystem = function(csName, csys)
+{
+    if (csys.heading == null)
+	csys.heading = 0;
+    //var cs = {lat: csys.lat, lon: csys.lon, alt: csys.alt, heading: csys.heading};
+    var cs = new WV.CoordinateSystem(csys.lat, csys.lon, csys.alt, csys.heading, csys.sx, csys.sy); 
+    WV.coordinateSystems[csName] = cs;
+    return cs;
+}
+
+// corvert model to geo coordinates in given coordinate system
 WV.xyzToLla = function(xyz, coordSys)
 {
 //    report("xyzToGeoPos: xyz: "+xyz+"  "+coordSys);
@@ -50,9 +99,7 @@ WV.xyzToLla = function(xyz, coordSys)
 	return xyz;
     }
     var cs = WV.coordinateSystems[coordSys];
-    lxyz = M33.transform(cs.modelToLocal, xyz);
-    gxyz = V3.add(cs.origin_xyz, M33.transform(cs.localToGlobal, lxyz));
-    return V3.cartesianToLatLonAlt(gxyz);
+    return cs.xyzToLla(xyz);
 }
 
 WV.xyzToGeoPos = function(xyz, coordSys)
@@ -97,7 +144,7 @@ WV.testCoordTrans = function()
           }
        }
     }
-    report("numFailues: "+numFails);
+    report("numFailures: "+numFails);
 }
 
 
