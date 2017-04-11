@@ -1,11 +1,9 @@
 :local(.styles) {
+  flex: 0 1 auto;
   padding-top: 10px;
-  padding-bottom: 10px;
   text-align: center;
   background-color: #E0F2F1;
-  color: black;
-  position: absolute;
+  color: #888;
   bottom: 0;
   width: 100%;
-  z-index: 100;
 }

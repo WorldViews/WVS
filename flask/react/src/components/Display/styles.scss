@@ -1,0 +1,28 @@
+:local(.styles) {
+    flex: 1 1 auto;
+    position: relative;
+}
+
+
+:local(.left) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    bottom: 0;
+    border: 1px solid red;
+}
+
+:local(.right) {
+    position: absolute;
+    left: 50%;
+    width: 50%;
+    top: 0;
+    bottom: 0;
+    border: 1px solid green;
+}
+
+.nopadding {
+    padding: 0;
+    margin: 0;
+}

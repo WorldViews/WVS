@@ -3,14 +3,12 @@ import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
 
 import App from './containers/App'
-import Home from './components/Home'
+//import Display from './components/Display'
 
 const render = Component => {
   ReactDOM.render(
     <AppContainer>
-      <App>
-        <Home/>
-      </App>
+      <Component/>
     </AppContainer>,
     document.getElementById('root')
   )
