@@ -17,20 +17,17 @@ export default class App extends React.Component { // eslint-disable-line react/
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme()}>
-                <section>
+            <section>
+                <div>
                     <Header />
-                    <div
-                      className="container"
-                      style={{ marginTop: 10, paddingBottom: 250 }}
-                    >
-                        {this.props.children}
-                    </div>
-                    <div>
-                        <Footer />
-                    </div>
-                </section>
-            </MuiThemeProvider>
+                </div>
+                <div className="container-fluid">
+                    {this.props.children}
+                </div>
+                <div>
+                    <Footer />
+                </div>
+            </section>
         );
     }
 }
