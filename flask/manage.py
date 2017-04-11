@@ -49,7 +49,6 @@ def make_shell_context():
     """ Creates a python REPL with several default imports
         in the context of the app
     """
-
     return dict(app=app, db=db,
         User=User, Role=Role, Track=Track, TrackPosition=TrackPosition)
 
@@ -62,6 +61,13 @@ def test():
         return 0
     else:
         return 1
+
+@manager.command
+def setup():
+    """ run npm install and other setup for the project """
+    dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'react')
+    handle = subprocess.Popen(["npm", "install"], cwd=dir_path)
+    handle.wait()
 
 if __name__ == "__main__":
     manager.run()

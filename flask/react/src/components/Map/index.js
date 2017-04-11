@@ -1,14 +1,21 @@
 import React from 'react';
+import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 
-export default class Map extends React.Component {
-
+export default class MapView extends React.Component {
     render() {
+        const position = [51.505, -0.09];
         return (
-            <section>
-                <div className={this.props.className + " container text-center"}>
-                    <h1>Map</h1>
-                </div>
-            </section>
+            <Map center={position} zoom={13} className={this.props.className}>
+                <TileLayer
+                url='http://{s}.tile.osm.org/{z}/{x}/{y}.png'
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <Marker position={position}>
+                <Popup>
+                    <span>A pretty CSS3 popup.<br/>Easily customizable.</span>
+                </Popup>
+                </Marker>
+            </Map>
         );
     }
 }

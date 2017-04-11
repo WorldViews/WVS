@@ -1,25 +1,41 @@
 :local(.styles) {
-    flex: 1 1 auto;
-    position: relative;
-}
-
-
-:local(.left) {
+  flex: 1 1 auto;
+  position: relative;
+  .left {
+    flex: 1;
     position: absolute;
     top: 0;
     left: 0;
     width: 50%;
+    height: 100%;
     bottom: 0;
     border: 1px solid red;
-}
-
-:local(.right) {
+    overflow: hidden;
+  }
+  .right {
+    flex: 1;
     position: absolute;
     left: 50%;
     width: 50%;
+    height: 100%;
     top: 0;
     bottom: 0;
     border: 1px solid green;
+    overflow: hidden;
+  }
+}
+
+.leftMax {
+    .left {
+        width: 100%;
+        z-index: 10;
+    }
+    .right {
+        width: 640px;
+        height: 480px;
+        right: 0;
+        bottom: 0;
+    }
 }
 
 .nopadding {
