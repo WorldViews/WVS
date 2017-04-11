@@ -166,6 +166,10 @@ def xlefletjs_viewer():
 def xlefletjs_tour():
     return render_template("xtour.html")
 
+@app.route('/react')
+def react_view():
+    return render_template('react.html')
+
 """
 This is used by SharedCam to register itself with us.
 """

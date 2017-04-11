@@ -252,4 +252,7 @@ pip-log.txt
 # vscode
 .vscode
 
-
+# React
+node_modules
+/static/react
+npm-debug.log
