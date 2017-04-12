@@ -1,12 +1,54 @@
 import React from 'react';
 import YouTube from 'react-youtube';
+import WVYT from 'WVYT2';
+import WVL from 'Leaflet/WVLeaflet';
 
 export default class Viewer extends React.Component {
+
+    watchYTStat(stat) {
+        if (!WVL.currentTrack) {
+            //console.log("watchYTStat No current track");
+            return;
+        }
+        var desc = WVL.currentTrack.desc;
+        //console.log("watchYTStat desc: "+JSON.stringify(desc));
+        var vt = stat.t;
+        var trailTime = vt - desc.youtubeDeltaT;
+        //console.log("watchYTStat vt: "+vt+"   trailTime: "+trailTime);
+        WVL.setPlayTime(trailTime);
+    }
+
+    watchTrackEvent(track, trec, e) {
+        console.log("----------------------");
+        console.log("trec: "+trec);
+        var t = trec.rt;
+        console.log("t: "+t);
+        var desc = track.desc;
+        var videoId = desc.youtubeId;
+        var deltaT = desc.youtubeDeltaT;
+        WVL.setCurrentTrack(track);
+        WVL.setPlayTime(t);
+        var vt = t + deltaT;
+        if (vt < 0)
+            vt = 0;
+        console.log("vt: "+vt);
+        WVYT.playVideo(videoId, {t: vt});
+        //   WVYT.setPlayTime(vt);
+    }
+
+    componentDidMount() {
+        var youtubeId = "f5e_4iIFzU8";
+        WVYT.videoId = youtubeId;
+        WVYT.divId = 'youtube';
+        
+        WVL.registerTrackWatcher((track, trec, e) => this.watchTrackEvent(track, trec, e));
+        WVYT.registerWatcher((stat) => this.watchYTStat(stat));
+        WVYT.start();
+    }
+
     render() {
         return (
-            <YouTube className={this.props.className} 
-                videoId="2g811Eo7K8U"
-            />
+            <div id="youtube" className={this.props.className}></div>
         );
     }
 }

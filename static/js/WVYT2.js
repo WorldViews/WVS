@@ -9,8 +9,8 @@ may be refactored to handle both cases.
 ***
  */
 
-//if (!report)
-//    report = function(str) { console.log(str); }
+if (typeof report === 'undefined')
+   report = function(str) { console.log(str); }
 //function report(str) { console.log(str); }
 
 WVYT = {}
@@ -103,6 +103,7 @@ function onYouTubeIframeAPIReady() {
 	    }
     });
 }
+window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 // 4. The API will call this function when the video player is ready.
 WVYT.onPlayerReady = function(event) {
@@ -174,3 +175,6 @@ WVYT.notifyServer = function(id, rec)
 	   "json");
 }
 
+if (typeof module !== 'undefined') {
+    module.exports = exports = WVYT;
+}
