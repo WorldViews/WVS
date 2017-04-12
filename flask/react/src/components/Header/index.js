@@ -13,7 +13,7 @@ export default class Header extends React.Component {
   render () {
     return (
             <header className={`${styles}`}>
-                <h1>WorldView Tours</h1>
+                <h1>WorldViews Tours</h1>
             </header>
     )
   }

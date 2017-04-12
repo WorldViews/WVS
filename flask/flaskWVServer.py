@@ -1,3 +1,3 @@
 
 import flask_worldviews
-flask_worldviews.run()
+flask_worldviews.run(port=7000)

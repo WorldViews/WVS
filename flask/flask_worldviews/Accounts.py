@@ -173,6 +173,7 @@ def create_users():
     addUser('vaughan@fxpal.com',         'JimV',    'Jim Vaughan')
     addUser('indrajeet.khater@gmail.com','Teddy',   'Indrajeet Khater')
 
+    user_datastore.add_role_to_user('enockglidden@hotmail.com',  'admin')
     user_datastore.add_role_to_user('donkimber@gmail.com', 'admin')
 
     print "------------------------------------------"
