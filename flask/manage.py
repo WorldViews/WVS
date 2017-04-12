@@ -69,5 +69,14 @@ def setup():
     handle = subprocess.Popen(["npm", "install"], cwd=dir_path)
     handle.wait()
 
+@manager.command
+def runmongo():
+    """ run npm install and other setup for the project """
+    dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'mongo')
+    print dir_path
+    handle = subprocess.Popen(["mongod", "--dbpath=./mongo_db"], cwd=dir_path)
+    handle.wait()
+
+
 if __name__ == "__main__":
     manager.run()

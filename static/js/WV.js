@@ -705,3 +705,7 @@ $(document).ready(function() {
     //testJunk();
     //testJunk2();
 });
+
+if (typeof module !== 'undefined') {
+    module.exports = exports = WV;
+}

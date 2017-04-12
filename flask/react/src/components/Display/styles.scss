@@ -32,8 +32,8 @@
 }
 
 @mixin min {
-    width: 300px;
-    height: 150px;
+    width: 213px;
+    height: 160px;
     left: inherit;
     top: inherit;
     right: 10;
@@ -64,11 +64,6 @@
     position: absolute;
     width: 100%;
     text-align: center;
-    top: 20px;
+    bottom: 20px;
     z-index: 1000;
-}
-
-.nopadding {
-    padding: 0;
-    margin: 0;
 }

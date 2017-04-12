@@ -387,3 +387,7 @@ M33 = {
     return ea;
   }
 };
+
+if (typeof module !== 'undefined') {
+  module.exports = exports = {V3:V3, M33:M33};
+}

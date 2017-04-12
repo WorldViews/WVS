@@ -6,6 +6,13 @@ function report(str) { console.log(str); }
 if (typeof WV == "undefined") {
     report("****** defining WV ******");
     var WV = {};
+    if (typeof __webpack_require__ === 'function') {
+        WV = require('WVCoordSys');
+        L = require('leaflet');
+        require('leaflet-geometryutil');
+        require('leaflet-easybutton');
+        require('leaflet-imageoverlay-rotated');
+    }
 }
 
 var WVL = {};
@@ -661,5 +668,6 @@ WVL.findNearestPoint = function(pt, points)
     }
     return {'i': iMin, nearestPt: points[iMin], 'd': Math.sqrt(d2Min)};
 }
-
-
+if (typeof module !== 'undefined') {
+    module.exports = exports = WVL;
+}

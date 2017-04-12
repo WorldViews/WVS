@@ -16,9 +16,14 @@ module.exports = {
     path: path.resolve(__dirname, '../../static/react'),
     filename: '[name].bundle.js'
   },
+  resolve: {
+    modules: [
+      path.resolve("node_modules"),
+      path.resolve('../../static/js')
+    ]
+  },
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       {
         test: /bootstrap-sass\/assets\/javascripts\//,
         loader: 'imports?jQuery=jquery',

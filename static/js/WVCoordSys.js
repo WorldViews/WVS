@@ -1,4 +1,12 @@
 
+if (typeof WV == "undefined") {
+    WV = {};
+    if (typeof __webpack_require__ === 'function') {
+        var Math3D = require('math3d');
+        V3 = Math3D.V3;
+        M33 = Math3D.M33;
+    }
+}
 WV.coordinateSystems = {};
 
 /*
@@ -157,3 +165,7 @@ var YMM15_origin = {lat: 35.462857269, lon: 139.6276285, alt: 42.3, heading: 14.
 //WV.addCoordinateSystem("PAL", PAL_origin);
 //WV.addCoordinateSystem("YMM15", YMM15_origin);
 WV.currentCoordSys = "PAL";
+
+if (typeof module !== 'undefined') {
+    module.exports = exports = WV;
+}
