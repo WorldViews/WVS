@@ -1,33 +1,32 @@
-import React from 'react';
+import React from 'react'
 
 /* component styles */
-import { styles, left, right } from './styles.scss';
+import { styles } from './styles.scss'
 
 import Viewer from '../Viewer'
 import Map from '../Map'
 
 export default class DisplayView extends React.Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            layout: ''
-        }
+  constructor (props) {
+    super(props)
+    this.state = {
+      layout: ''
     }
+  }
 
-    changeLayout(layout) {
-        if (layout === 'left') {
-            this.setState({layout: 'left-max'});
-        } else if (layout === 'right') {
-            this.setState({layout: 'right-max'});
-        } else {
-            this.setState({layout: ''});
-        }
-        setTimeout(() => this.refs.map.resize(), 500);
+  changeLayout (layout) {
+    if (layout === 'left') {
+      this.setState({layout: 'left-max'})
+    } else if (layout === 'right') {
+      this.setState({layout: 'right-max'})
+    } else {
+      this.setState({layout: ''})
     }
+    setTimeout(() => this.refs.map.resize(layout), 500)
+  }
 
-    render() {
-        return (
+  render () {
+    return (
         <div className={[styles, this.state.layout].join(' ')}>
             <Viewer className="left" />
             <Map ref="map" className="right" />
@@ -39,6 +38,6 @@ export default class DisplayView extends React.Component {
                 </div>
             </div>
         </div>
-        );
-    }
+    )
+  }
 }

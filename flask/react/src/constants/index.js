@@ -1,1 +1,1 @@
-export const MAP_MOVE = 'MAP_MOVE';
+export const MAP_MOVE = 'MAP_MOVE'

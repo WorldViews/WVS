@@ -47,6 +47,14 @@ module.exports = {
         loader: 'url?limit=10000&mimetype=image/svg+xml',
       }, {
         test: /\.js$/,
+        loader: 'eslint-loader',
+        exclude: /node_modules/,
+        options: {
+          useEslintrc: false,
+          configFile: path.resolve('.eslintrc')
+        }
+      }, {
+        test: /\.js$/,
         loaders: ['babel-loader'],
         exclude: /node_modules/,
       }, {
