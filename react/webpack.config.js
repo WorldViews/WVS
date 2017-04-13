@@ -17,13 +17,13 @@ module.exports = {
   },
   output: {
     publicPath: '/static/react/',
-    path: path.resolve(__dirname, '../../static/react'),
+    path: path.resolve(__dirname, '../static/react'),
     filename: '[name].bundle.js'
   },
   resolve: {
     modules: [
       path.resolve("node_modules"),
-      path.resolve('../../static/js')
+      path.resolve('../static/js')
     ]
   },
   module: {
