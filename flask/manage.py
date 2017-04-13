@@ -24,7 +24,7 @@ class ReactFlaskServer(Server):
     def __call__(self, app, host, port, use_debugger, use_reloader,
                threaded, processes, passthrough_errors):
         # spawn hot reload server
-        dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'react')
+        dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'react')
         environ = os.environ.copy()
         environ['PORT'] = str(port)
 
@@ -65,7 +65,7 @@ def test():
 @manager.command
 def setup():
     """ run npm install and other setup for the project """
-    dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'react')
+    dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'react')
     handle = subprocess.Popen(["npm", "install"], cwd=dir_path)
     handle.wait()
 

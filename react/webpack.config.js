@@ -1,6 +1,10 @@
 const webpack = require('webpack')
 const path = require('path')
 
+const port = process.env['PORT'] || 8080;
+const host = process.env['HOST'] || 'localhost';
+const flask_port = process.env['FLASK_PORT'] || 7000;
+
 module.exports = {
   //devtool: 'source-map',
   devtool: 'cheap-module-eval-source-map',
@@ -13,13 +17,13 @@ module.exports = {
   },
   output: {
     publicPath: '/static/react/',
-    path: path.resolve(__dirname, '../../static/react'),
+    path: path.resolve(__dirname, '../static/react'),
     filename: '[name].bundle.js'
   },
   resolve: {
     modules: [
       path.resolve("node_modules"),
-      path.resolve('../../static/js')
+      path.resolve('../static/js')
     ]
   },
   module: {
@@ -73,10 +77,12 @@ module.exports = {
     moduleExtensions: ["-loader"]
   },  
   devServer: {
+    host: host,
+    port: port,
     proxy: [
       {
         context: ['**'],
-        target: 'http://localhost:7000',
+        target: 'http://localhost:' + flask_port,
       }
     ]
   }
