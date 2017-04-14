@@ -7,7 +7,8 @@
         }
       }
     ],
-    "react"
+    "react",
+    "flow"
   ],
   "plugins": [
     "react-hot-loader/babel",
