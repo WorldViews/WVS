@@ -1,5 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
+const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin')
+
 
 const port = process.env['PORT'] || 8080;
 const host = process.env['HOST'] || 'localhost';
@@ -76,7 +78,7 @@ module.exports = {
   },
   resolveLoader: {
     moduleExtensions: ["-loader"]
-  },  
+  },
   devServer: {
     host: host,
     port: port,
@@ -86,5 +88,8 @@ module.exports = {
         target: 'http://localhost:' + flask_port,
       }
     ]
-  }
+  },
+  plugins: [
+    new FlowBabelWebpackPlugin()
+  ]
 }

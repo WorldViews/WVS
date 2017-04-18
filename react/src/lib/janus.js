@@ -22,6 +22,8 @@
 	OTHER DEALINGS IN THE SOFTWARE.
  */
 
+var adapter = require('webrtc-adapter');
+
 // List of sessions
 Janus.sessions = {};
 

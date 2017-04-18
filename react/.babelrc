@@ -13,6 +13,7 @@
   "plugins": [
     "react-hot-loader/babel",
     "transform-class-properties",
-    "syntax-class-properties"
+    "syntax-class-properties",
+    "transform-flow-comments"
   ]
 }

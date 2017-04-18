@@ -17,12 +17,24 @@ describe('JanusVideoRoom Integartion Tests', () => {
             done();
         }).error(() => {
             assert.ok(false, "connect failed");
+            done();
         });
     }).timeout(3000);
 
     it('list rooms', (done) => {
         client.listRooms().then((rooms) => {
             assert.isAtLeast(rooms.length, 1);
+            done();
+        });
+    });
+
+    it('room exists', (done) => {
+        client.roomExists(1234).then((exists) => {
+            assert.isOk(exists);
+            return client.roomExists(9999)
+        }).then((exists) => {
+            assert.isNotOk(exists);
+            done();
         });
     });
 
@@ -33,12 +45,45 @@ describe('JanusVideoRoom Integartion Tests', () => {
         });
     });
 
+    it('join room', (done)  => {
+        client.join(1234).then((roomInfo) => {
+            assert.equal(roomInfo.room, 1234);
+            done();
+        });
+    });
+
+    it('publish room', (done) => {
+        let constraints = {
+            video: true,
+            audio: true
+        }
+        navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+            assert.notEqual(stream, undefined);
+            client.publish(stream).then(() => {
+                done();
+            });
+        });
+    });
+
+    it('unpublish room', (done) => {
+        client.unpublish().then(() => {
+            done();
+        });
+    });    
+
+    it('leave room', (done)  => {
+        client.leave(1234).then(() => {
+            done();
+        });
+    });
+
     it('disconnect', (done) => {
         client.disconnect().then(() => {
             assert.ok(true, "disconnect ok");
             done();
         }).error(() => {
             assert.ok(false, "disconnect failed");
+            done();
         });
     });
 

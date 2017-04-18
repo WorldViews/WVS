@@ -256,3 +256,4 @@ pip-log.txt
 node_modules
 /static/react
 npm-debug.log
+/react/docs

@@ -8,9 +8,9 @@ module.exports = function(config) {
     customLaunchers: {
       devChrome: {
         base: 'Chrome',
-        flags: []
-        //flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']
-        //flags: ['--disable-web-security', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']
+        // flags: []
+        // flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']
+        flags: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream']
       }
     },
 
@@ -36,7 +36,7 @@ module.exports = function(config) {
 
     exclude: [],
 
-    reporters: ['progress'],
+    reporters: ['progress', 'mocha'],
 
     port: 9876,
 
@@ -46,9 +46,9 @@ module.exports = function(config) {
 
     autoWatch: false,
 
-    browsers: ['Chrome'],
+    browsers: ['devChrome'],
 
-    singleRun: false,
+    singleRun: true,
 
     browserNoActivityTimeout: 60000,
 
@@ -59,7 +59,8 @@ module.exports = function(config) {
       'karma-chai',
       'karma-chrome-launcher',
       'karma-webpack',
-      'karma-sourcemap-loader'
+      'karma-sourcemap-loader',
+      'karma-mocha-reporter'
     ]
   })
 };
