@@ -7,7 +7,8 @@ const flask_port = process.env['FLASK_PORT'] || 7000;
 
 module.exports = {
   //devtool: 'source-map',
-  devtool: 'cheap-module-eval-source-map',
+  //devtool: 'cheap-module-eval-source-map',
+  devtool: 'inline-source-map',
   entry: {
     'app': [
       'babel-polyfill',
