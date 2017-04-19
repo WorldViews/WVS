@@ -15,8 +15,8 @@ export default class MapView extends React.Component {
             [ 37.0, -123.04150527715686 ],
             [ 38, -120.04593628644945 ]
     ]
-
-    WVL.initmap(latlng, bounds)
+    WVL.initmap(latlng, bounds);
+    WVL.loadTracksFromFile(WVL.toursUrl);
   }
 
   resize (layout) {
