@@ -17,6 +17,7 @@ config/YOUTUBE_DEV_KEY.txt
 django/Registry/static/models/
 scraped_data/
 play/*
+static/play/*
 
 *.pydevproject
 .project
