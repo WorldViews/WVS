@@ -1,6 +1,5 @@
 const webpack = require('webpack')
 const path = require('path')
-const FlowBabelWebpackPlugin = require('flow-babel-webpack-plugin')
 
 
 const port = process.env['PORT'] || 8080;
@@ -90,6 +89,5 @@ module.exports = {
     ]
   },
   plugins: [
-    new FlowBabelWebpackPlugin()
   ]
 }
