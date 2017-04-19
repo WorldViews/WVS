@@ -1,6 +1,6 @@
 import Janus from './janus';
 import Promise from 'bluebird';
-import ontrigger from 'ontriggerjs';
+import EventEmitter from 'super-event-emitter';
 
 let charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -8,6 +8,9 @@ let charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
  * Janus Video Room Plugin manager
  *
  * Allow you to manage the janus.plugin.videoroom plugin.
+ *
+ * Events:
+ * 
  */
 export default class JanusVideoRoom {
 
@@ -16,9 +19,7 @@ export default class JanusVideoRoom {
      * @param {string:any} options - configuration options
      */
     constructor(options) {
-        ontrigger.super(this);
-        ontrigger(this);
-
+        EventEmitter.mixin(this);
         options = options || {};
         this.options = options;
         this.options.url = this.options.url || 'ws://localhost:8188';
@@ -80,19 +81,19 @@ export default class JanusVideoRoom {
                 // attach a video room
                 self.janus.attach({
                     plugin: 'janus.plugin.videoroom',
-                    opaqueId: self._id(),
+                    opaqueId: self.options.id,
                     success: (pluginHandle) => {
                         console.info("janus.plugin.video room attached")
                         self.publisherHandle = pluginHandle;
                         resolve();
                     },
                     error: reject,
-                    onmessage: self.onmessage.bind(self),
-                    mediaState: self.mediaState.bind(self),
-                    webrtcState: self.webrtcState.bind(self),
-                    onlocalstream: self.onlocalstream.bind(self),
-                    onremotestream: self.onremotestream.bind(self),
-                    oncleanup: self.oncleanup.bind(self)
+                    onmessage: self.onMessagePublisher.bind(self),
+                    mediaState: self.onMediaState.bind(self),
+                    webrtcState: self.onWebrtcState.bind(self),
+                    onlocalstream: self.onLocalStream.bind(self),
+                    onremotestream: self.onRemoteStream.bind(self),
+                    oncleanup: self.onCleanup.bind(self)
                 });
             });
         });
@@ -100,6 +101,10 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Disconnect from janus server
+     * @returns {Promise} promise
+     */
     disconnect() {
         let promise = new Promise((resolve, reject) => {
             if (this.publisherHandle) {
@@ -122,13 +127,21 @@ export default class JanusVideoRoom {
         return promise;
     }
 
-    createRoom() {
-        console.error('unsupported');
-    }
+    // createRoom() {
+    //     console.error('unsupported');
+    // }
 
-    destroyRoom(roomid) {
-        console.error('unsupported');
-    }
+    // destroyRoom(roomid) {
+    //     console.error('unsupported');
+    // }
+
+    // forwardRtp() {
+    //     console.error('unsupported');
+    // }
+
+    // stopForwardRtp() {
+    //     console.error('unsupported');
+    // }
 
     listRooms() {
         let self = this;
@@ -152,14 +165,6 @@ export default class JanusVideoRoom {
 
         });
         return promise;
-    }
-
-    forwardRtp() {
-        console.error('unsupported');
-    }
-
-    stopForwardRtp() {
-        console.error('unsupported');
     }
 
     roomExists(roomid) {
@@ -288,11 +293,41 @@ export default class JanusVideoRoom {
     }
 
     subscribe(roomid, userid) {
+        let self = this;
+        let promise = new Promise((resolve, reject) => {
+            self.janus.attach({
+                plugin: 'janus.plugin.videoroom',
+                opaqueId: self.options.id,
+                success: (pluginHandle) => {
+                    console.info("janus.plugin.videoroom subscriber attached")
+                    self.subscriberHandles[userid] = pluginHandle;
 
+                    var listen = {
+                        "request": "join",
+                        "room": roomid,
+                        "ptype": "listener",
+                        "feed": userid
+                    };
+                    pluginHandle.send({"message": listen});
+                    resolve();
+                },
+                error: reject,
+                onmessage: (msg, jsep) => {
+                    self.onMessageSubscriber(userid, msg, jsep)
+                },
+                mediaState: self.onMediaState.bind(self),
+                webrtcState: self.onWebrtcState.bind(self),
+                onlocalstream: self.onLocalStream.bind(self),
+                onremotestream: self.onRemoteStream.bind(self),
+                oncleanup: self.onCleanup.bind(self)
+            });
+        });
+        return promise;
     }
 
     join(roomid) {
         let self = this;
+        self.roomid = roomid;
         let promise = new Promise((resolve, reject) => {
             self.promises['join'] = { resolve, reject };
             if (self.publisherHandle) {
@@ -318,6 +353,7 @@ export default class JanusVideoRoom {
 
     leave(roomid) {
         let self = this;
+        self.roomid = undefined;
         let promise = new Promise((resolve, reject) => {
             if (self.publisherHandle) {
                 let request = { "request": "leave" };
@@ -338,7 +374,7 @@ export default class JanusVideoRoom {
 
 
     // callback handlers
-    onmessage(msg, jsep) {
+    onMessagePublisher(msg, jsep) {
         let event = msg.videoroom;
         Janus.debug("onmessage: msg = " +
             JSON.stringify(msg) + " jsep = " + JSON.stringify(jsep));
@@ -352,51 +388,96 @@ export default class JanusVideoRoom {
                 this.onmsg_event(msg, jsep);
                 break;
         }
+
+        if (jsep) {
+            this.publisherHandle.handleRemoteJsep({jsep: jsep});
+        }
     }
 
-    onmessageSubscriber(msg, jsep) {
+    onMessageSubscriber(userid, msg, jsep) {
+        Janus.debug("onmessage: msg = " +
+            JSON.stringify(msg) + " jsep = " + JSON.stringify(jsep));
 
+        let event = msg.videoroom;
+        switch (event) {
+            case "attached":
+                this.onmsg_attached(msg, jsep);
+                break;
+
+            case "event":
+                this.onmsg_event(msg, jsep);
+                break;
+        }
+
+        let self = this;
+        let subscriberHandle = self.subscriberHandles[userid];
+        if (jsep) {
+            subscriberHandle.handleRemoteJsep({jsep: jsep});
+
+            subscriberHandle.createAnswer({
+                jsep: jsep,
+                // Add data:true here if you want to subscribe to datachannels as well
+                // (obviously only works if the publisher offered them in the first place)
+                media: { audioSend: false, videoSend: false },	// We want recvonly audio/video
+                success: function(jsep) {
+                    var body = { "request": "start", "room": self.roomid };
+                    subscriberHandle.send({"message": body, "jsep": jsep});
+                },
+                error: function(error) {
+                    console.error("WebRTC error:", error);
+                }
+            });
+        }
     }
 
-    mediaState(medium, on) {
+    onMediaState(medium, on) {
         Janus.log("Janus " + (on ? "started" : "stopped") + " receiving our " + medium);
+        this.emit('mediastate', medium, on);
     }
 
-    webrtcState(on) {
+    onWebrtcState(on) {
         Janus.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
+        this.emit('webrtcstate', on);
     }
 
-    onlocalstream(stream) {
+    onLocalStream(stream) {
         Janus.debug(" ::: Got a local stream :::");
+        this.emit('localstream', stream);
     }
 
-    onremotestream(stream) {
+    onRemoteStream(stream) {
         Janus.debug(" ::: Got a remote stream :::");
+        this.emit('remotestream', stream);
     }
 
-    oncleanup() {
+    onCleanup() {
         Janus.debug(" ::: Got a cleanup message :::");
     }
 
     // message handlers
+    onmsg_attached(msg, jsep) {
+        console.log("Successfully attached room " + msg.room + " feed " + msg.id);
+        this.emit('attached', msg);
+    }
+
     onmsg_joined(msg, jsep) {
         console.log("Successfully joined room " + msg.room);
         let promise = this.promises['join'];
         if (promise) {
             promise.resolve(msg);
         }
-        this.trigger('joined', [msg]);
+        this.emit('joined', msg);
     }
 
     onmsg_event(msg, jsep) {
         if (msg.publishers) {
-            this.trigger('publishers', [msg.publishers]);
+            this.emit('publishers', msg.publishers);
         } else if (msg.leaving) {
-            this.trigger('leaving', [msg.publishers]);
+            this.emit('leaving', msg.publishers);
         } else if (msg.unpublished) {
-            this.trigger('unpublished', [msg.unpublished]);
+            this.emit('unpublished', msg.unpublished);
         } else if (msg.error) {
-            this.trigger('error', [msg.error]);
+            this.emit('error', msg.error);
             console.error(msg.error);
         }
     }

@@ -65,11 +65,33 @@ describe('JanusVideoRoom Integartion Tests', () => {
         });
     });
 
+    it('subscribe room', (done) => {
+        let timeout = setTimeout(() => {
+            client.off('remotestream', onremotestream);
+            asset.ok(false, "didn't get a remote stream");
+        }, 7000);
+
+        let onremotestream = (stream) => {
+            client.off('remotestream', onremotestream);
+            assert.isNotNull(stream);
+            clearTimeout(timeout)
+            done();
+        };
+
+        client.on('remotestream', onremotestream);
+
+        client.listUsers(1234).then((users) => {
+            let id = users[0].id;
+            client.subscribe(1234, id).then(() => {
+            });
+        });
+    }).timeout(10000);
+
     it('unpublish room', (done) => {
         client.unpublish().then(() => {
             done();
         });
-    });    
+    });
 
     it('leave room', (done)  => {
         client.leave(1234).then(() => {
