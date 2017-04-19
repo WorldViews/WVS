@@ -340,30 +340,8 @@ WVL.initmap = function(latlng, bounds) {
 	WVL.setViewHome();
     }).addTo(map);
 
-/*
-    var gpx = '/static/data/paths/mempark_Mar_23,_2017_11_25_28_AM_2017-03-23_11-25-28.gpx';
-    new L.GPX(gpx, {
-        async: true,
-        marker_options: {
-            startIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/pin-icon-start.png',
-            endIconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/pin-icon-end.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/pin-shadow.png',
-            clickable: true
-        },
-        polyline_options: {
-//            color: '#ffc34d',
-            color: '#ff3333',
-            weight: 5
-        }
-    }).on('loaded', function(e) {
-        //map.fitBounds(e.target.getBounds());
-    }).on('click', function(e) {
-        console.log(e.target);
-    })
-    .addTo(map);
-*/
     //WVL.loadTracksFromAPI(map);
-    WVL.loadTracksFromFile(WVL.toursUrl, map);
+    //WVL.loadTracksFromFile(WVL.toursUrl, map);
     WVL.cursor = L.marker([0,0]);
     WVL.cursor.addTo(map);
     WVL.setPlayTime(0)
@@ -506,6 +484,8 @@ WVL.handleLayerRecs = function(tours, url, map)
 WVL.loadTracksFromFile = function(url, map)
 {
     report("**** WVL.loadTracksFromFile "+url);
+    if (!map)
+	map = WVL.map;
     WVL.getJSON(url, function(data) {
         WVL.handleLayerRecs(data, url, map);
     });
