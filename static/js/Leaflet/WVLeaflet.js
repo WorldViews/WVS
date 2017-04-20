@@ -35,6 +35,11 @@ WVL.indoorMaps = {};
 WVL.SIO_URL = window.location.protocol + '//' + window.location.host + ":7000/";
 WVL.sock = null;
 WVL.clientMarkers = {};
+WVL.trackLayer = null;
+WVL.layers = {};
+WVL.layerControl = null;
+WVL.osm = null;
+WVL.googleSat = null;
 
 WVL.ImageLayer = function(imageUrl, opts)
 {
@@ -320,10 +325,25 @@ WVL.setPoint = function(latLng)
     WVL.cursor.setLatLng(latLng);
 }
 
+WVL.addLayerControl = function()
+{
+   //var group1 = L.layerGroup([littleton, denver, aurora, golden]);
+//    var overlayMaps = {
+//	"Trails": WVL.trackLayer,
+//    };
+    //L.control.layers(null, WVL.layers).addTo(WVL.map);
+    var maps = {'OpenStreetMap': WVL.osm,
+		'Google Sattelite': WVL.googleSat};
+    WVL.layerControl = L.control.layers(maps, WVL.layers).addTo(WVL.map);
+}
+
 WVL.initmap = function(latlng, bounds) {
     // set up the map
     var map = new L.Map('map');
     WVL.map = map;
+    WVL.trackLayer = L.layerGroup();
+    WVL.layers['Trails'] = WVL.trackLayer;
+    WVL.trackLayer.addTo(map);
     WVL.homeLatLng = latlng;
     WVL.homeBounds = bounds;
     map.on('click', WVL.clickOnMap);
@@ -333,11 +353,16 @@ WVL.initmap = function(latlng, bounds) {
     var osmAttrib='Map data © <a href="http://openstreetmap.org">OpenStreetMap</a> contributors';
     //var osm = new L.TileLayer(osmUrl, {minZoom: 17, maxZoom: 19, attribution: osmAttrib});
     var osm = new L.TileLayer(osmUrl, {minZoom: 5, maxZoom: 21, attribution: osmAttrib});
-
+    WVL.osm = osm;
+    WVL.googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+	maxZoom: 20,
+	subdomains:['mt0','mt1','mt2','mt3']
+    });    
     // start the map in South-East England
     //map.setView(new L.LatLng(latlng.lat, latlng.lng),18);
     map.setView(new L.LatLng(latlng.lat, latlng.lng),10);
     map.addLayer(osm);
+    //map.addLayer(googleSat);
 
     // var helloPopup = L.popup().setContent('Hello World!');
     L.easyButton('fa-globe fa-fixed fa-lg', function(btn, map){
@@ -350,10 +375,10 @@ WVL.initmap = function(latlng, bounds) {
     WVL.cursor.addTo(map);
     WVL.setPlayTime(0)
     setTimeout(WVL.timerFun, 500);
-
-    var imageUrl = "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145";
-    //var point1 = L.latLng(40.52256691873593, -3.7743186950683594);
+    WVL.addLayerControl();
 /*
+    //var point1 = L.latLng(40.52256691873593, -3.7743186950683594);
+    var imageUrl = "http://cdn.calatlantichomes.com/images/webplanlevelsvg/3c4f705b-1e95-e411-8342-02bfcd947d8b/image.svg.gzip?v=63591147145";
     var point1 = [40.52256691873593, -3.7743186950683594];
     var point2 = [40.5210255066156, -3.7734764814376835];
     var point3 = [40.52180437272552, -3.7768453359603886];
@@ -373,7 +398,20 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     WVL.computeTrackPoints(trackData);
     trackData.trail = L.polyline(trackData.latLng, { color: '#3333ff', weight: 6});
     trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
-    trackData.trail.addTo(map);
+    //trackData.trail.addTo(map);
+    var trackLayerName = trackDesc.layerName;
+    if (!trackLayerName)
+	trackLayerName = "Trails";
+    var trackLayer = WVL.layers[trackLayerName];
+    if (!trackLayer) {
+        report("***************************");
+	trackLayer = L.layerGroup();
+	WVL.layers[trackLayerName] = trackLayer;
+	//L.control.layers(null, WVL.layers).addTo(WVL.map);
+	if (WVL.layerControl)
+	    WVL.layerControl.addOverlay(trackLayer, trackLayerName);
+    }
+    trackData.trail.addTo(trackLayer);
     var gpos = trackData.latLng[0];
     trackDesc.map = map;
     trackDesc.placemark = L.marker(gpos, {draggable: true});
