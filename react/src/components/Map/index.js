@@ -1,11 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 // import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import WVL from 'Leaflet/WVLeaflet'
 
 export default class MapView extends React.Component {
 
   static propTypes = {
-    className: React.PropTypes.string
+    className: PropTypes.string
   };
 
   componentDidMount () {
@@ -25,7 +26,11 @@ export default class MapView extends React.Component {
       case 'right':
         break
     }
-    WVL.map.invalidateSize()
+    WVL.map.invalidateSize();
+  }
+
+  componentWillUpdate() {
+    WVL.map.invalidateSize();
   }
 
   render () {

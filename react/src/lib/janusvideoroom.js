@@ -27,6 +27,11 @@ export default class JanusVideoRoom {
         this.publisherHandle = undefined;
         this.subscriberHandles = {};
         this.promises = {};
+        this.localStreams = {};
+        this.settings = {
+            enableAudio: true,
+            enableVideo: true
+        };
     }
 
     /**
@@ -121,10 +126,46 @@ export default class JanusVideoRoom {
                 this.connection.close();
                 this.connection = undefined;
             }
+
+            let stopTrack = (track) => {
+                track.stop();
+            }
+
+            _.forEach(this.localStreams, (stream) => {
+                _.forEach(stream.getVideoTracks(), stopTrack);
+                _.forEach(stream.getAudioTracks(), stopTrack);
+            });
+
             resolve();
         });
 
         return promise;
+    }
+
+    enableAudio(enable) {
+        if (enable !== undefined) {
+            this.settings.enableAudio = enable;
+
+            _.forEach(this.localStreams, (stream) => {
+                _.forEach(stream.getAudioTracks(), (track) => {
+                    track.enable = this.settings.enableAudio;
+                });
+            });
+        }
+        return this.settings.enableAudio;
+    }
+
+    enableVideo(enable) {
+        if (enable !== undefined) {
+            this.settings.enableAudio = enable;
+
+            _.forEach(this.localStreams, (stream) => {
+                _.forEach(stream.getAudioTracks(), (track) => {
+                    track.enable = this.settings.enableAudio;
+                });
+            });
+        }
+        return this.settings.enableAudio;
     }
 
     // createRoom() {
@@ -442,6 +483,7 @@ export default class JanusVideoRoom {
 
     onLocalStream(stream) {
         Janus.debug(" ::: Got a local stream :::");
+        this.localStreams[stream.id] = stream;
         this.emit('localstream', stream);
     }
 

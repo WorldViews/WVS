@@ -9,7 +9,7 @@ class UserList extends React.Component { // eslint-disable-line react/prefer-sta
     children: PropTypes.node,
     className: PropTypes.string,
     users: PropTypes.array,
-    dispatch: PropTypes.function
+    dispatch: PropTypes.func
   };
 
   constructor(props) {

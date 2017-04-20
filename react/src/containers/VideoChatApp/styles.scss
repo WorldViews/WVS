@@ -1,27 +1,15 @@
 :local(.container) {
-  flex: 1 1 auto;
-  position: relative;
+  display: flex;
+  flex-flow: row;
+
   .left {
-    transition: all .2s ease-in;
-    flex: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;
-    bottom: 0;
-    overflow: hidden;
+      flex: 1;
   }
+
   .right {
-    transition: all .2s ease-in;
-    flex: 1;
-    position: absolute;
-    left: 50%;
-    width: 50%;
-    height: 100%;
-    top: 0;
-    bottom: 0;
-    overflow: hidden;
+      flex: 1;
+      display: flex;
+      flex-flow: column;
   }
   .fill {
       flex: 1;

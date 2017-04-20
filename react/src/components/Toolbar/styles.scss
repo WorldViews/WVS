@@ -1,0 +1,33 @@
+:local(.styles) {
+  display: flex;
+  flex-flow: column;
+  flex: 0 0 auto;
+  padding-top: 10px;
+  text-align: center;
+  background-color: #263238;
+  color: #eee;
+  bottom: 0;
+  width: 50px;
+  height: 100%;
+
+  .icon {
+    padding: 10px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #eee;
+      color: #000;
+    }
+  }
+
+  .disabled {
+    color: #900;
+    &:hover {
+      color: #900;
+    }
+  }
+
+  .menu {
+    margin-bottom: 20px;
+  }
+}

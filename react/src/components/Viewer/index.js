@@ -1,10 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types';
+
 import WVYT from 'WVYT2'
 import WVL from 'Leaflet/WVLeaflet'
 
 export default class Viewer extends React.Component {
   static propTypes = {
-    className: React.PropTypes.string
+    className: PropTypes.string
   };
 
   watchYTStat (stat) {

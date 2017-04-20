@@ -1,19 +1,13 @@
 import * as types from '../constants';
 import _ from 'lodash';
-import JanusVideoRoom from 'lib/janusvideoroom';
-import store from 'containers/VideoChatApp/store';
-
 import * as actions from '../actions/chat'
 
 const defaultState = {
     connected: false,
     mainStream: undefined,
-    users: [],
-    // users: [{
-    //           stream: undefined,
-    //           thumbnail: undefined,
-    //           username: "foobar!!!"
-    //       }]
+    enableAudio: true,
+    enableVideo: true,
+    users: []
 };
 
 export default function reducer(state = defaultState, action) {
@@ -33,9 +27,15 @@ export default function reducer(state = defaultState, action) {
             return result;
         }
         case types.CHAT_USER_UPDATE: {
+            let users = _.unionWith(action.users, state.users, (a,b) => a.id == b.id);
+            let mainStream = state.mainStream;
+            if (users.length == 1) {
+                mainStream = users[0].stream;
+            }
             let result = {
                 ...state,
-                users: _.unionWith(action.users, state.users, (a,b) => a.id == b.id)
+                users,
+                mainStream
             };
             return result;
         }
@@ -56,53 +56,33 @@ export default function reducer(state = defaultState, action) {
                 mainStream: action.user.stream
             }
         }
+        case types.CHAT_CONNECT: {
+            return {
+                ...state,
+                connected: true
+            }
+        }
+        case types.CHAT_DISCONNECT: {
+            return {
+                ...state,
+                connected: false,
+                users: []
+            }
+        }
+        case types.CHAT_ENABLE_AUDIO: {
+            return {
+                ...state,
+                enableAudio: action.enable
+            }
+        }
+        case types.CHAT_ENABLE_VIDEO: {
+            return {
+                ...state,
+                enableVideo: action.enable
+            }
+        }
         default:
             return state;
     }
     return state;
 }
-
-let janusClient = new JanusVideoRoom({
-    url: 'wss://sd6.dcpfs.net:8989/janus'
-});
-janusClient.on('localstream', (stream) => {
-});
-
-janusClient.on('remotestream', (user) => {
-    store.dispatch(actions.chatUserUpdate([user]));
-});
-
-janusClient.on('publishers', (users) => {
-    store.dispatch(actions.chatUserEnter(users));
-});
-
-janusClient.on('unpublished', (users) => {
-    store.dispatch(actions.chatUserExit(users));
-});
-
-janusClient.on('leaving', (users) => {
-    store.dispatch(actions.chatUserExit(users));
-});
-
-// connect to janus
-janusClient.connect().then(() => {
-    return janusClient.join(9000);
-}).then(() => {
-    let constraints = {
-        video: true,
-        audio: true
-    }
-    navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-        let user = {
-            stream,
-            id: stream.id,
-            username: stream.id
-        };
-        let action = actions.chatUserUpdate([user]);
-        store.dispatch(action);
-
-        janusClient.publish(stream).then(() => {
-            console.log(' ::::  published local stream');
-        });
-    });
-});

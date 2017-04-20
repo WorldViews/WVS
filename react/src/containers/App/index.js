@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types';
 
 // application components
 import Header from '../../components/Header'
@@ -10,7 +11,7 @@ import styles from './styles/app.scss'
 
 export default class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
-    children: React.PropTypes.node
+    children: PropTypes.node
   };
 
   render () {
