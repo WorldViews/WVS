@@ -1,6 +1,7 @@
 import React from 'react'
 import Icon from 'react-icons-kit';
 import PropTypes from 'prop-types';
+import Tooltip from 'react-tooltip'
 import { connect } from 'react-redux';
 
 /* component styles */
@@ -21,6 +22,14 @@ class Toolbar extends React.Component {
     enableAudio: PropTypes.bool,
     enableVideo: PropTypes.bool,
     dispatch: PropTypes.func
+  }
+
+  static stateToProps(state, props) {
+    return {
+        connected: state.chat.connected,
+        enableAudio: state.chat.enableAudio,
+        enableVideo: state.chat.enableVideo
+    };
   }
 
   onMenuToggle() {
@@ -46,17 +55,23 @@ class Toolbar extends React.Component {
   render () {
     return (
       <section className={styles}>
-        <Icon icon={bars} className="icon menu" onClick={this.onMenuToggle.bind(this)}/>
+        <Tooltip place="right" type="info" effect="solid"/>
+        <Icon icon={bars}
+            className="icon menu" onClick={this.onMenuToggle.bind(this)}/>
 
-        <Icon icon={this.props.connected ?  phoneHangUp : phoneSquare}
+        <Icon
+            data-tip={this.props.connected ?  "Disconnect" : "Connect"}
+            icon={this.props.connected ?  phoneHangUp : phoneSquare}
             className="icon"
             onClick={this.onConnectToggle.bind(this)}/>
 
         <Icon icon={videoCamera}
+            data-tip={this.props.enableVideo ?  "Disable Camera" : "Enable Camera"}
             className={"icon" + ((this.props.enableVideo) ? "" : " disabled")}
             onClick={this.onVideoToggle.bind(this)}/>
 
         <Icon icon={microphone}
+            data-tip={this.props.enableAudio ?  "Disable Microphone" : "Enable Microphone"}
             className={"icon" + ((this.props.enableAudio) ? "" : " disabled")}
             onClick={this.onAudioToggle.bind(this)}/>
 
@@ -65,12 +80,4 @@ class Toolbar extends React.Component {
   }
 }
 
-function mapStateToProps(state, props) {
-  return {
-    connected: state.chat.connected,
-    enableAudio: state.chat.enableAudio,
-    enableVideo: state.chat.enableVideo
-  };
-}
-
-export default connect(mapStateToProps)(Toolbar);
+export default connect(Toolbar.stateToProps)(Toolbar);

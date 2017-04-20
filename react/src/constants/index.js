@@ -1,4 +1,9 @@
 export const MAP_MOVE = 'MAP_MOVE'
+export const MAP_SELECT_TRACK = 'MAP_SELECT_TRACK'
+
+export const VIDEO_PLAY_URL = 'VIDEO_PLAY_URL'
+export const VIDEO_SEEK = 'VIDEO_SEEK'
+export const VIDEO_STOP = 'VIDEO_STOP'
 
 export const CHAT_USER_ENTER = "CHAT_USER_ENTER"
 export const CHAT_USER_EXIT = "CHAT_USER_EXIT"
