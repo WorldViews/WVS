@@ -32,6 +32,9 @@ WVL.trackWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
+WVL.SIO_URL = window.location.protocol + '//' + window.location.host + ":7000/";
+WVL.sock = null;
+WVL.clientMarkers = {};
 
 WVL.ImageLayer = function(imageUrl, opts)
 {
@@ -445,9 +448,6 @@ WVL.loadTrackFromFile = function(trackDesc, url, map)
     });
 }
 
-WVL.SIO_URL = window.location.protocol + '//' + window.location.host + ":7000/";
-WVL.sock = null;
-WVL.clientMarkers = {};
 
 WVL.handleSIOMessage = function(msg)
 {
