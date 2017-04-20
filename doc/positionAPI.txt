@@ -7,7 +7,8 @@ fields:
 
   msgType:    should be 'position'
   version:    should be 0.1
-  clientId:   I unique string identifying the client.
+  clientType: Client type, e.g. drone, robot, wheelchair, etc.
+  clientId:   A unique string identifying the client.
   t:          A unix time stamp in seconds since epoc.
   position:   A [x,y] or [x,y,z] tuple.
   coordSys:   A coordinate system name.
