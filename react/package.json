@@ -94,6 +94,7 @@
     "uglify-js": "github:mishoo/UglifyJS2#harmony",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
+    "webpack-bundle-analyzer": "^2.4.0",
     "webpack-dev-server": "^2.4.1",
     "webrtc-adapter": "^3.3.2"
   }

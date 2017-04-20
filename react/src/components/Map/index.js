@@ -28,6 +28,7 @@ class MapView extends React.Component {
     if (Config.mapSocketioUrl) {
       WVL.SIO_URL = Config.mapSocketioUrl;
     }
+    console.log("SIO_URL = " + WVL.SIO_URL);
 
     WVL.initmap(latlng, bounds);
     WVL.loadTracksFromFile(WVL.toursUrl);

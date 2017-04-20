@@ -1,5 +1,6 @@
 const webpack = require('webpack')
 const path = require('path')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 
 const port = process.env['PORT'] || 8080;
@@ -98,6 +99,7 @@ module.exports = (env) => {
       ]
     },
     plugins: [
+      //new BundleAnalyzerPlugin()
     ],
     externals: {
       'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))
@@ -115,6 +117,7 @@ module.exports = (env) => {
         minimize: true,
         debug: false
       }),
+      new webpack.optimize.DedupePlugin(), //dedupe similar code
       new webpack.optimize.UglifyJsPlugin({
         beautify: false,
         mangle: {
@@ -125,7 +128,8 @@ module.exports = (env) => {
             screw_ie8: true
         },
         comments: false
-      })
+      }),
+      new webpack.optimize.AggressiveMergingPlugin()//Merge chunks
     );
 
     Object.keys(config.entry).filter(function(k, i) {
