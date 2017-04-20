@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import WVL from 'Leaflet/WVLeaflet'
 import { mapSelectTrack } from 'actions/map';
 import { connect } from 'react-redux';
+import Config from 'config';
 
 class MapView extends React.Component {
 
@@ -23,6 +24,11 @@ class MapView extends React.Component {
             [ 37.0, -123.04150527715686 ],
             [ 38, -120.04593628644945 ]
     ]
+
+    if (Config.mapSocketioUrl) {
+      WVL.SIO_URL = Config.mapSocketioUrl;
+    }
+
     WVL.initmap(latlng, bounds);
     WVL.loadTracksFromFile(WVL.toursUrl);
     WVL.watchPositions();

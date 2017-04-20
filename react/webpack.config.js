@@ -92,7 +92,7 @@ module.exports = (env) => {
       port: port,
       proxy: [
         {
-          context: ['**'],
+          context: ['**', '!/nodejs-sock/**'],
           target: 'http://localhost:' + flask_port,
         }
       ]
@@ -100,7 +100,7 @@ module.exports = (env) => {
     plugins: [
     ],
     externals: {
-      'Config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))
+      'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))
     }
   }
 

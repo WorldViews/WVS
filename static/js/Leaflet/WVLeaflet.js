@@ -32,7 +32,7 @@ WVL.trackWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
-WVL.SIO_URL = window.location.protocol + '//' + window.location.host + ":7000/";
+WVL.SIO_URL = window.location.protocol + '//' + window.location.hostname + ":7000/";
 WVL.sock = null;
 WVL.clientMarkers = {};
 
