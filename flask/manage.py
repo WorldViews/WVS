@@ -33,7 +33,7 @@ class ReactFlaskServer(Server):
         global hmr_server
         if hmr_server is None:
             hmr_server = subprocess.Popen(["npm", "run", "dev"], cwd=dir_path)
-        
+
         # run the server
         super(self.__class__, self).__call__(app, host, port,
             use_debugger, use_reloader, threaded, processes, passthrough_errors)
@@ -42,7 +42,20 @@ class ReactFlaskServer(Server):
 manager = Manager(app)
 manager.add_command("show-urls", ShowUrls())
 manager.add_command("clean", Clean())
-manager.add_command("runserver", ReactFlaskServer())
+manager.add_command("runserver", Server(port=7000))
+
+@manager.command
+def runnpmdev():
+        # spawn hot reload server
+        port = 8080
+        dir_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'react')
+        environ = os.environ.copy()
+        environ['PORT'] = str(port)
+
+        port = 7000
+        environ['FLASK_PORT'] = str(port)
+        #hmr_server = subprocess.Popen(["npm", "run", "dev"], cwd=dir_path)
+        subprocess.Popen(["npm", "run", "dev"], cwd=dir_path).communicate()
 
 @manager.shell
 def make_shell_context():

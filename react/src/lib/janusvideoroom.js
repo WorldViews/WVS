@@ -10,7 +10,7 @@ let charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
  * Allow you to manage the janus.plugin.videoroom plugin.
  *
  * Events:
- * 
+ *
  */
 export default class JanusVideoRoom {
 

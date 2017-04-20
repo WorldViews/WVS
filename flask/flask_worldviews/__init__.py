@@ -168,7 +168,13 @@ def xlefletjs_tour():
 
 @app.route('/react')
 def react_view():
-    return render_template('react.html')
+    return render_template('react.html',
+        bundle='app.bundle.js')
+
+@app.route('/chat')
+def videochat_view():
+    return render_template('react.html',
+        bundle='videochat.bundle.js')
 
 """
 This is used by SharedCam to register itself with us.

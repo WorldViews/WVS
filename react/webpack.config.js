@@ -15,6 +15,11 @@ module.exports = {
       'babel-polyfill',
       'react-hot-loader/patch',
       './src/index'
+    ],
+    'videochat': [
+      'babel-polyfill',
+      'react-hot-loader/patch',
+      './src/videochat'
     ]
   },
   output: {
@@ -24,8 +29,9 @@ module.exports = {
   },
   resolve: {
     modules: [
+      path.resolve('../static/js'),
+      path.resolve('./src'),
       path.resolve("node_modules"),
-      path.resolve('../static/js')
     ]
   },
   module: {

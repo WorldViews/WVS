@@ -1,1 +1,8 @@
 export const MAP_MOVE = 'MAP_MOVE'
+
+export const CHAT_USER_ENTER = "CHAT_USER_ENTER"
+export const CHAT_USER_EXIT = "CHAT_USER_EXIT"
+export const CHAT_USER_UPDATE = "CHAT_USER_UPDATE"
+export const CHAT_ROOM_JOIN = "CHAT_ROOM_JOIN"
+export const CHAT_ROOM_LEAVE = "CHAT_ROOM_LEAVE"
+export const CHAT_SELECT_USER = "CHAT_SELECT_USER"

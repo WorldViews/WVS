@@ -229,7 +229,7 @@ WVL.timerFun = function(e)
 {
     //var t = WVL.getPlayTime();
     //report("*** tick playTime: "+t);
-    setTimeout(WVL.timerFun, 100);
+    //setTimeout(WVL.timerFun, 100);
 }
 
 WVL.clickOnMap = function(e) {
