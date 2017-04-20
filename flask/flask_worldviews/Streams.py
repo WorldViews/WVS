@@ -62,6 +62,18 @@ def handle_chat(msg):
     if NOTIFIER:
         NOTIFIER.noticeNewChatPost(msgObj)
 
+
+@app.route('/testPosition')
+def testPosition():
+    return redirect("/static/test/testPosition.html")
+
+@socketio.on('position')
+def handle_sio_position_message(msg):
+    print "handle_sio_position_message:", msg
+    msgType = msg.get("msgType", None)
+    emit('position', msg, broadcast=True, include_self=False)
+
+        
 @socketio.on('notes')
 def handle_notes(msgStr):
     print "handle_notes:", msgStr
