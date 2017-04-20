@@ -1,0 +1,127 @@
+<html>
+<head>
+<title>Position Update Test</title>
+</head>
+<body>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<style>
+    #map {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 60%;
+    }
+</style>
+<div id="map"></div>
+<p>
+<div>
+Client: <input id="clientId" type="text" value="client1">
+</div>
+<p>
+<div id="log" style="overflow-y:auto;height:30%"><div>
+    
+<script src="/static/js/socket.io-1.4.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--
+<script src="/static/js/WVUtil.js"></script>
+-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.0.0/easy-button.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/gpx.min.js"></script>
+<script src="/static/js/Leaflet/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="/static/js/Leaflet/Leaflet.geometryutils.js"></script>
+<script src="/static/js/Leaflet/WVLeaflet.js"></script>
+<script src="/static/js/math3d.js"></script>
+<script src="/static/js/WVCoordSys.js"></script>
+<script>
+
+var clientMarkers = {};
+  
+var SIO_URL = "/";
+
+var sock;
+
+var latlng = { lat:37.324684179870715, lng:-122.0436295866966 }
+var bounds = [ [ 37.3265995227329,  -122.04150527715686 ],
+                [ 37.32308873451525, -122.04593628644945 ] ]
+
+handleMessage = function(msg)
+{
+   //var str = JSON.stringify(msg);
+   //report("received msg: "+str);
+   handlePosition(msg);
+}
+
+setupIO = function()
+{
+    sock = io(SIO_URL);
+    sock.on('position', handleMessage);
+}
+
+function handlePosition(msg)
+{
+    console.log("Got position msg: "+JSON.stringify(msg));
+    $("#log").prepend(JSON.stringify(msg)+"<br>");
+    var clientId = msg.clientId;
+    var marker = clientMarkers[clientId];
+    var lat = msg.position[0];
+    var lng = msg.position[1];
+    if (!marker) {
+        console.log("CreateMarker "+clientId);
+        var marker = L.marker([lat, lng]).addTo(WVL.map);
+        clientMarkers[clientId] = marker;
+    }
+    else {
+        console.log("AdjustMarker "+clientId);
+        //clientMarkers[clientId].setLatLng(L.latLng(lat,lng));
+        clientMarkers[clientId].setLatLng([lat,lng]);
+    }
+}
+
+function sendPosition(pos)
+{
+   var clientId = $("#clientId").val();
+   var msg = {
+      clientId: clientId,
+      t: WVL.getClockTime(),
+      position: pos,
+      coordSys: "geo"
+   }
+   console.log("sending msg: "+JSON.stringify(msg));
+   sock.emit('position', msg);
+   handlePosition(msg);
+}
+
+function myHandleClick(e)
+{
+    report(">>>>>>>>>> myHandleClick on map e: "+e);
+    report("latLng: "+e.latlng);
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    var alt = 1; // drone may actually have good value;
+    var pos = [lat, lng, alt];
+    report("pos: "+pos);
+    sendPosition(pos);
+    var de = e.originalEvent;
+    report("shift: "+de.shiftKey);
+}
+
+WVL.initmap(latlng, bounds);
+WVL.loadTracksFromFile(WVL.toursUrl);
+
+WVL.map.on('click', myHandleClick)
+
+WVL.goHome = function(){}
+
+setupIO();
+
+$(document).ready(function()
+{
+});
+
+</script>
+</body>
+</html>
