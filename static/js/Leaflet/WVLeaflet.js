@@ -12,6 +12,7 @@ if (typeof WV == "undefined") {
         require('leaflet-geometryutil');
         require('leaflet-easybutton');
         require('leaflet-imageoverlay-rotated');
+	var io = require('socket.io-1.4.5');
     }
 }
 
@@ -442,6 +443,36 @@ WVL.loadTrackFromFile = function(trackDesc, url, map)
         //report("GOT JSON: "+data);
 	WVL.handleTrack(trackDesc, data, url, map);
     });
+}
+
+WVL.SIO_URL = window.location.protocol + '//' + window.location.host + ":7000/";
+WVL.sock = null;
+WVL.clientMarkers = {};
+
+WVL.handleSIOMessage = function(msg)
+{
+    report("WVL received position msg: "+JSON.stringify(msg));
+    var clientId = msg.clientId;
+    var marker = WVL.clientMarkers[clientId];
+    var lat = msg.position[0];
+    var lng = msg.position[1];
+    if (marker) {
+        console.log("AdjustMarker "+clientId);
+        //clientMarkers[clientId].setLatLng(L.latLng(lat,lng));
+        marker.setLatLng([lat,lng]);
+    }
+    else {
+        console.log("CreateMarker "+clientId);
+        var marker = L.marker([lat, lng]).addTo(WVL.map);
+        WVL.clientMarkers[clientId] = marker;
+    }
+}
+
+WVL.watchPositions = function()
+{
+    report("************** watch Positions *************");
+    WVL.sock = io(WVL.SIO_URL);
+    WVL.sock.on('position', WVL.handleSIOMessage);
 }
 
 WVL.match = function(s1,s2) { return s1.toLowerCase() == s2.toLowerCase() };
