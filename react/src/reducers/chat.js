@@ -65,6 +65,7 @@ export default function reducer(state = defaultState, action) {
         case types.CHAT_DISCONNECT: {
             return {
                 ...state,
+                mainStream: undefined,
                 connected: false,
                 users: []
             }

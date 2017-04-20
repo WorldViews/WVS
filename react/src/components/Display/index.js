@@ -5,6 +5,7 @@ import { styles } from './styles.scss'
 
 import Viewer from '../Viewer'
 import Map from '../Map'
+import WVL from 'Leaflet/WVLeaflet'
 
 export default class DisplayView extends React.Component {
   constructor (props) {
@@ -22,14 +23,14 @@ export default class DisplayView extends React.Component {
     } else {
       this.setState({layout: ''})
     }
-    setTimeout(() => this.refs.map.resize(layout), 500)
+    setTimeout(() => WVL.map.invalidateSize(), 500);
   }
 
   render () {
     return (
         <div className={[styles, this.state.layout].join(' ')}>
             <Viewer className="left" />
-            <Map ref="map" className="right" />
+            <Map ref={ (map) => { this.map = map; }} className="right" />
             <div className="controls">
                 <div className="btn-group" role="group">
                     <button type="button" className="btn btn-default" onClick={() => this.changeLayout('left')}>Left</button>

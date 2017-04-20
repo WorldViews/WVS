@@ -119,7 +119,7 @@ may cause e-mail when new questions are posted.
 """
 NOTIFIER = WVNotification.Notifier(DBA, Message, mail)
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, async_mode='eventlet')
 
 # Create database connection object
 #db = SQLAlchemy(app)

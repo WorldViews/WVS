@@ -6,7 +6,8 @@ import chat from './chat'
 const rootReducer = combineReducers({
   routing: routerReducer,
   /* your reducers */
-  chat
+  chat,
+  map
 });
 
 export default rootReducer
