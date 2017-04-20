@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 
 const port = process.env['PORT'] || 8080;
@@ -29,7 +30,7 @@ module.exports = (env) => {
     output: {
       publicPath: '/static/react/',
       path: path.resolve(__dirname, '../static/react'),
-      filename: '[name].bundle.js'
+      filename: '[name]-[hash].bundle.js'
     },
     resolve: {
       modules: [
@@ -99,7 +100,8 @@ module.exports = (env) => {
       ]
     },
     plugins: [
-      //new BundleAnalyzerPlugin()
+      //new BundleAnalyzerPlugin(),
+      new ManifestPlugin()
     ],
     externals: {
       'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))

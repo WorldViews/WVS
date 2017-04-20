@@ -59,6 +59,16 @@ except:
     traceback.print_exc()
     print "No RDBA adapter"
 
+try:
+    import json
+
+    manifest_path = os.path.join(path, '../../static/react/manifest.json')
+    with open(manifest_path) as f:
+        webpack_manifest = json.load(f)
+except:
+    webpack_manifest = {}
+
+
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
             static_folder="../../static")
@@ -148,7 +158,6 @@ def index():
     #print "request.full_url", request.url
     return render_template("worldviews.html")
 
-
 @app.route('/TeleViewer')
 @app.route('/televiewer')
 def televiewer():
@@ -169,12 +178,12 @@ def xlefletjs_tour():
 @app.route('/react')
 def react_view():
     return render_template('react.html',
-        bundle='app.bundle.js')
+        bundle=webpack_manifest.get('app.js', 'app.bundle.js'))
 
 @app.route('/chat')
 def videochat_view():
     return render_template('react.html',
-        bundle='videochat.bundle.js')
+        bundle=webpack_manifest.get('videochat.js', 'videochat.bundle.js'))
 
 """
 This is used by SharedCam to register itself with us.
