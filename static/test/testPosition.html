@@ -85,6 +85,9 @@ function sendPosition(pos)
 {
    var clientId = $("#clientId").val();
    var msg = {
+      msgType: 'position',
+      version: 0.1,
+      clientType: 'test',
       clientId: clientId,
       t: WVL.getClockTime(),
       position: pos,
