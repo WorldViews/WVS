@@ -1,0 +1,27 @@
+
+Clients can post their position information to WorldViews
+by sending messages via socket.io to the channel called 'position'
+
+The messages should be JSON objects with the following required
+fields:
+
+  msgType:    should be 'position'
+  version:    should be 0.1
+  clientId:   I unique string identifying the client.
+  t:          A unix time stamp in seconds since epoc.
+  position:   A [x,y] or [x,y,z] tuple.
+  coordSys:   A coordinate system name.
+
+The default coordinate system is "geo", and when it is used
+the position tuple should be [lat, lng] or [lat,lng,alt].
+
+Optional fields could be added, with things like notes, battery levels,
+etc. associated with a position,
+
+Additional pose information may be included.  If a camera position is
+known, it could be included as
+
+  yaw:	    A yaw angle in degrees
+  pitch:    Pitch in degrees
+  roll:	    roll in degrees
+
