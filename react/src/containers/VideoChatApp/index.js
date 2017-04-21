@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import VideoRoom from 'components/VideoRoom'
 
 // global styles for app
-import styles from './styles.scss'
+// import styles from './styles.scss'
 
 export default class App extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -18,11 +18,7 @@ export default class App extends React.Component { // eslint-disable-line react/
 
   render () {
     return (
-        <section className={styles.box}>
-            {/*<Header />*/}
-            <VideoRoom className={styles.container}/>
-            {/*<Footer />*/}
-        </section>
+        <VideoRoom/>
     )
   }
 }

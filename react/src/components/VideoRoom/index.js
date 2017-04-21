@@ -14,17 +14,30 @@ class VideoRoom extends React.Component {
     children: PropTypes.node,
     className: PropTypes.string,
     leftView: PropTypes.node,
+    maximizePanel: PropTypes.string,
   }
 
   static stateToProps(state, props) {
     return {
-        leftView: state.views.leftView
+        leftView: state.views.leftView,
+        maximizePanel: state.views.maximizePanel
      };
+  }
+
+  getMaxPanelClass() {
+    switch (this.props.maximizePanel) {
+      case 'left':
+        return 'left-max';
+      case 'right':
+        return 'right-max';
+      default:
+        return '';
+    }
   }
 
   render () {
     return (
-        <content className={styles.container}>
+        <content className={`${styles.container} ${this.getMaxPanelClass()}`}>
             <Toolbar/>
             <div className="left">
             {this.props.leftView ? this.props.leftView : <Instructions />}

@@ -12,11 +12,13 @@ class MapView extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    maximizePanel: PropTypes.string
   };
 
   static stateToProps(state, props) {
     return {
+        maximizePanel: state.views.maximizePanel
     }
   }
 
@@ -37,6 +39,12 @@ class MapView extends React.Component {
     WVL.watchPositions();
 
     WVL.registerTrackWatcher(this.onWatchTrack.bind(this));
+  }
+
+  componentWillUpdate(nextProp) {
+    if (nextProp.maximizePanel == 'right') {
+      WVL.map.invalidateSize();
+    }
   }
 
   onWatchTrack(track, trec, e) {

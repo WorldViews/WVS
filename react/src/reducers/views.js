@@ -1,6 +1,7 @@
 import * as types from '../constants';
 
 const defaultState = {
+    maximizePanel: undefined,
     leftView: undefined,
     rightView: undefined
 };
@@ -17,6 +18,18 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 rightView: action.view
             };
+        case types.VIEWS_MAXIMIZE_PANEL: {
+            return {
+                ...state,
+                maximizePanel: action.panel
+            }
+        }
+        case types.VIEWS_RESET_PANELS: {
+            return {
+                ...state,
+                maximizePanel: null
+            }
+        }
         default:
             return {
                 ...state

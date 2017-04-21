@@ -18,6 +18,7 @@ import { globe } from 'react-icons-kit/fa/globe';
 import { trello } from 'react-icons-kit/fa/trello';
 
 import { chatConnect, chatDisconnect, chatEnableAudio, chatEnableVideo } from 'actions/chat';
+import { viewsMaximizePanel, viewsResetPanels } from 'actions/views';
 
 class Toolbar extends React.Component {
 
@@ -32,7 +33,7 @@ class Toolbar extends React.Component {
     return {
         connected: state.chat.connected,
         enableAudio: state.chat.enableAudio,
-        enableVideo: state.chat.enableVideo
+        enableVideo: state.chat.enableVideo,
     };
   }
 
@@ -57,12 +58,15 @@ class Toolbar extends React.Component {
   }
 
   onMaximizeViewer() {
+      this.props.dispatch(viewsMaximizePanel('left'));
   }
 
   onMaximizeMap() {
+      this.props.dispatch(viewsMaximizePanel('right'));
   }
 
   onResetView() {
+      this.props.dispatch(viewsResetPanels());
   }
 
   render () {
