@@ -1,0 +1,10 @@
+{
+    "name": "TestServer",
+    "version": "1.7.1",
+    "devDependencies": {
+        "express": "4.4.4",
+        "request": "2.36.0",
+        "yargs": "1.2.6",
+	"socket.io": "latest"
+    }
+}
