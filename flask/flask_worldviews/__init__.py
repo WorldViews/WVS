@@ -34,6 +34,7 @@ from flask import Flask, render_template, send_file, redirect, \
 
 from flask_socketio import SocketIO, emit
 from flask_mail import Mail, Message
+from flask_cors import CORS
 
 from jsonHack import jsonify, jsondumps
 
@@ -74,6 +75,11 @@ def get_webpack_manifest():
 #app = Flask(__name__, static_url_path='')
 app = Flask(__name__, static_url_path='/static',
             static_folder="../../static")
+
+# setup cors to open up socket.io
+cors = CORS(app, resources={r"/socket.io/*": {"origins": "*"}})
+
+
 app.wsgi_app = ProxyFix(app.wsgi_app)
 app.debug = True
 #app.debug = False
