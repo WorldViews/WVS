@@ -1,10 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-// import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+
 import WVL from 'Leaflet/WVLeaflet'
 import { mapSelectTrack } from 'actions/map';
+import { viewsUpdateLeft } from 'actions/views';
 import { connect } from 'react-redux';
 import Config from 'config';
+import TrackViewer from 'components/Viewer';
 
 class MapView extends React.Component {
 
@@ -38,26 +40,9 @@ class MapView extends React.Component {
   }
 
   onWatchTrack(track, trec, e) {
-    this.props.dispatch(mapSelectTrack(track));
+    this.props.dispatch(mapSelectTrack({track, trec}));
+    this.props.dispatch(viewsUpdateLeft(<TrackViewer/>));
   }
-
-  // componentDidUpdate(prevProps, prevState, prevContext) {
-  //   WVL.map.invalidateSize();
-  // }
-
-  // resize (layout) {
-  //   switch (layout) {
-  //     case 'left':
-  //       break
-  //     case 'right':
-  //       break
-  //   }
-  //   WVL.map.invalidateSize();
-  // }
-
-  // componentWillUpdate() {
-  //   WVL.map.invalidateSize();
-  // }
 
   render () {
     return (

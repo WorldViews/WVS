@@ -1,23 +1,21 @@
 import * as types from '../constants';
 
 const defaultState = {
-    selectedTrack: undefined,
-    position: {
-        lat: 0,
-        lng: 0
-    }
+    leftView: undefined,
+    rightView: undefined
 };
 
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
-        case types.MAP_MOVE:
-            return {
-                ...state
-            };
-        case types.MAP_SELECT_TRACK:
+        case types.VIEWS_UPDATE_LEFT:
             return {
                 ...state,
-                selectedTrack: action.track
+                leftView: action.view
+            };
+        case types.VIEWS_UPDATE_RIGHT:
+            return {
+                ...state,
+                rightView: action.view
             };
         default:
             return {

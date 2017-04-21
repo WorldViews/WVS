@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import styles from './styles.scss'
+// import styles from './styles.scss'
 
 class VideoView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -14,13 +14,23 @@ class VideoView extends React.Component { // eslint-disable-line react/prefer-st
   }
 
   attachStream(stream) {
+      if (!this.video) {
+        return;
+      }
+
       if (stream) {
-        this.refs.video.srcObject = stream;
-        this.refs.video.play();
+        this.video.srcObject = stream;
+        this.video.play();
       } else {
-        this.refs.video.srcObject = null;
+        this.video.srcObject = null;
       }
     //   this.refs.video.src = URL.createObjectURL(stream);
+  }
+
+  componentDidMount() {
+    if (this.props.stream) {
+      this.attachStream(this.props.stream);
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -32,9 +42,10 @@ class VideoView extends React.Component { // eslint-disable-line react/prefer-st
 
   render () {
     return (
-            <section className={[ this.props.className, styles.video ].join(' ')}>
+      <video ref={(v) => { this.video = v; }} className={this.props.className}></video>
+            /*<section className={[ this.props.className, styles.video ].join(' ')}>
                 <video ref="video"></video>
-            </section>
+            </section>*/
     )
   }
 }

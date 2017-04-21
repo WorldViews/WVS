@@ -11,7 +11,7 @@ import { phoneSquare } from 'react-icons-kit/fa/phoneSquare';
 import { phoneHangUp } from 'react-icons-kit/icomoon/phoneHangUp';
 import { videoCamera } from 'react-icons-kit/fa/videoCamera';
 import { microphone } from 'react-icons-kit/fa/microphone';
-import { microphoneSlash } from 'react-icons-kit/fa/microphoneSlash';
+// import { microphoneSlash } from 'react-icons-kit/fa/microphoneSlash';
 
 import { chatConnect, chatDisconnect, chatEnableAudio, chatEnableVideo } from 'actions/chat';
 

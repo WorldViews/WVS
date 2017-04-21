@@ -1,20 +1,41 @@
 import React from 'react'
-import { styles } from '../Display/styles.scss'
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import styles from './styles.scss';
 
-export default class VideoView extends React.Component {
-  constructor (props) {
-    super(props);
+import Map from 'components/Map'
+import UserList from './userlist'
+import VideoView from './videoview'
+import Toolbar from 'components/Toolbar'
+
+class VideoRoom extends React.Component {
+  static propTypes = {
+    children: PropTypes.node,
+    className: PropTypes.string,
+    leftView: PropTypes.node,
+  }
+
+  static stateToProps(state, props) {
+    return {
+        leftView: state.views.leftView
+     };
   }
 
   render () {
     return (
-        <div className={styles}>
-            <div className="left">left</div>
-            <div className="right">
-                <div>users</div>
-                <div>map</div>
+        <content className={styles.container}>
+            <Toolbar/>
+            <div className="left">
+            {this.props.leftView ? this.props.leftView : <VideoView />}
             </div>
-        </div>
+            <div className="right">
+                <UserList/>
+                <Map className="fill"/>
+            </div>
+        </content>
         )
   }
 }
+
+
+export default connect(VideoRoom.stateToProps)(VideoRoom);

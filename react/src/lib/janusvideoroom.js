@@ -1,6 +1,7 @@
 import Janus from './janus';
 import Promise from 'bluebird';
 import EventEmitter from 'super-event-emitter';
+import _ from 'lodash';
 
 let charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -68,7 +69,7 @@ export default class JanusVideoRoom {
         let self = this;
         let promise = new Promise((resolve, reject) => {
             // Initialize Janus
-            let p = new Promise((resolve) => {
+            new Promise((resolve) => {
                 Janus.init({
                     debug: 'all',
                     callback: resolve});

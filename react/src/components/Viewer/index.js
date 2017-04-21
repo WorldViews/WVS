@@ -39,6 +39,12 @@ export default class Viewer extends React.Component {
         //   WVYT.setPlayTime(vt);
   }
 
+  componentWillUnmount() {
+    WVYT.player.stopVideo();
+    WVYT.player.destroy();
+    WVYT.player = null;
+  }
+
   componentDidMount () {
     var youtubeId = 'f5e_4iIFzU8'
     WVYT.videoId = youtubeId
@@ -51,7 +57,7 @@ export default class Viewer extends React.Component {
 
   render () {
     return (
-            <div id="youtube" className={this.props.className}></div>
+        <div id="youtube" className={this.props.className}></div>
     )
   }
 }

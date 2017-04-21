@@ -1,9 +1,19 @@
 {
-    "extends": "plugin:react/recommended",
+    "extends": ["eslint:recommended", "plugin:react/recommended"],
     "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true,
+        "worker": true,
+        "mocha": true
+    },
     "plugins": [
         "standard",
         "promise",
         "react"
-    ]
+    ],
+    "rules": {
+        "no-unused-vars": ["error", { "vars": "all", "args": "none", "ignoreRestSiblings": false }],
+        "no-console": 0
+    }
 }

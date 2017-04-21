@@ -1,6 +1,5 @@
 import * as types from '../constants';
 import _ from 'lodash';
-import * as actions from '../actions/chat'
 
 const defaultState = {
     connected: false,
@@ -85,5 +84,4 @@ export default function reducer(state = defaultState, action) {
         default:
             return state;
     }
-    return state;
 }

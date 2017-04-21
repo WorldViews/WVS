@@ -12,9 +12,9 @@ module.exports = (env) => {
   const production = env === 'prod';
 
   let config = {
-    //devtool: 'source-map',
+    devtool: 'source-map',
     //devtool: 'cheap-module-eval-source-map',
-    devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
     entry: {
       'app': [
         'react-hot-loader/patch',
@@ -63,6 +63,7 @@ module.exports = (env) => {
           test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
           loader: 'url?limit=10000&mimetype=image/svg+xml',
         }, {
+          enforce: "pre",
           test: /\.js$/,
           loader: 'eslint-loader',
           exclude: /node_modules/,
@@ -101,7 +102,9 @@ module.exports = (env) => {
     },
     plugins: [
       //new BundleAnalyzerPlugin(),
-      new ManifestPlugin()
+      new ManifestPlugin({
+        writeToFileEmit: true
+      })
     ],
     externals: {
       'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))

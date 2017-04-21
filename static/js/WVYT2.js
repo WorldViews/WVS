@@ -78,17 +78,23 @@ WVYT.trackerTick = function()
 WVYT.start = function()
 {
     report("WVYT.start");
-    var tag = document.createElement('script');
+    if (WVYT.apiReady) {
+        onYouTubeIframeAPIReady();
+    } else {
+        var tag = document.createElement('script');
 
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    }
 }
 
 // 3. This function creates an <iframe> (and YouTube player)
 //    after the API code downloads.
 function onYouTubeIframeAPIReady() {
     report("onYouTubeIframeAPIReady");
+    WVYT.apiReady = true;
+    WVYT.ready = false;
     if (WVYT.videoId == null) {
 	error("No videoId");
 	return;
@@ -107,6 +113,7 @@ window.onYouTubeIframeAPIReady = onYouTubeIframeAPIReady;
 
 // 4. The API will call this function when the video player is ready.
 WVYT.onPlayerReady = function(event) {
+    WVYT.ready = true;
     if (WVYT.requestedStartTime) {
 	event.target.seekTo(WVYT.requestedStartTime);
 	WVYT.requestedStartTime = null;
@@ -133,6 +140,10 @@ WVYT.stopVideo = function() {
 
 WVYT.playVideo = function(id, rec)
 {
+    if (!WVYT.ready) {
+        return;
+    }
+
     report("==============================================");
     report("WVYT.playVideo "+id+" "+JSON.stringify(rec));
     report("WVYT.videoId (current) "+WVYT.videoId);
@@ -153,7 +164,7 @@ WVYT.playVideo = function(id, rec)
 	var opts = {'videoId': id};
 	if (rec.t)
 	    opts.startSeconds = rec.t;
-	WVYT.player.loadVideoById(opts);
+    WVYT.player.loadVideoById(opts);
     }
     // Notify WV Server in case there is a slaved
     // browswer (e.g. with HMD) wanting to play the

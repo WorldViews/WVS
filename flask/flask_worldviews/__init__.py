@@ -39,6 +39,8 @@ from jsonHack import jsonify, jsondumps
 
 import WVNotification
 from werkzeug.contrib.fixers import ProxyFix
+import json
+
 
 #execfile("../config/ADMIN_CONFIG.py")
 
@@ -59,14 +61,14 @@ except:
     traceback.print_exc()
     print "No RDBA adapter"
 
-try:
-    import json
-
-    manifest_path = os.path.join(path, '../../static/react/manifest.json')
-    with open(manifest_path) as f:
-        webpack_manifest = json.load(f)
-except:
-    webpack_manifest = {}
+def get_webpack_manifest():
+    try:
+        manifest_path = os.path.join(path, '../../static/react/manifest.json')
+        with open(manifest_path) as f:
+            webpack_manifest = json.load(f)
+    except:
+        webpack_manifest = {}
+    return webpack_manifest
 
 
 #app = Flask(__name__, static_url_path='')
@@ -177,11 +179,13 @@ def xlefletjs_tour():
 
 @app.route('/react')
 def react_view():
+    webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
         bundle=webpack_manifest.get('app.js', 'app.bundle.js'))
 
 @app.route('/chat')
 def videochat_view():
+    webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
         bundle=webpack_manifest.get('videochat.js', 'videochat.bundle.js'))
 
