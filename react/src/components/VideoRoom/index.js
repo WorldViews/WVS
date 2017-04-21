@@ -5,8 +5,9 @@ import styles from './styles.scss';
 
 import Map from 'components/Map'
 import UserList from './userlist'
-import VideoView from './videoview'
+// import VideoView from './videoview'
 import Toolbar from 'components/Toolbar'
+import Instructions from './instructions'
 
 class VideoRoom extends React.Component {
   static propTypes = {
@@ -26,7 +27,7 @@ class VideoRoom extends React.Component {
         <content className={styles.container}>
             <Toolbar/>
             <div className="left">
-            {this.props.leftView ? this.props.leftView : <VideoView />}
+            {this.props.leftView ? this.props.leftView : <Instructions />}
             </div>
             <div className="right">
                 <UserList/>
