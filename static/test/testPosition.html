@@ -81,7 +81,7 @@ function handlePosition(msg)
     }
 }
 
-function sendPosition(pos)
+function sendPosition(pos, text)
 {
    var clientId = $("#clientId").val();
    var msg = {
@@ -93,6 +93,8 @@ function sendPosition(pos)
       position: pos,
       coordSys: "geo"
    }
+   if (text)
+      msg.text = text;
    console.log("sending msg: "+JSON.stringify(msg));
    sock.emit('position', msg);
    handlePosition(msg);
@@ -121,8 +123,27 @@ WVL.goHome = function(){}
 
 setupIO();
 
+getOurLocation = function() {
+    report("**** Getting location ****");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(handleLocation);
+    } else {
+        report("Geolocation is not supported by this browser.");
+    }
+}
+
+handleLocation = function(position) {
+    report("**** Got location ****");
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var pos = [lat,lon];
+    sendPosition(pos, "Initial WebPage location");
+}
+
+
 $(document).ready(function()
 {
+    getOurLocation();
 });
 
 </script>
