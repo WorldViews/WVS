@@ -58,6 +58,6 @@ io.on('connection', function(socket) {
     socket.on('disconnect', obj => handleDisconnect(socket, obj));
 });
 
-var port = 3000;
-report("listening on "+port);
-app.listen(port);
+var port = 4000;
+report("listening on localhost:"+port);
+app.listen(port, 'localhost');
