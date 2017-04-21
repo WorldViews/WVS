@@ -18,6 +18,7 @@ django/Registry/static/models/
 scraped_data/
 play/*
 static/play/*
+node/SocketIO/node_modules/*
 
 *.pydevproject
 .project
