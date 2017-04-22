@@ -32,7 +32,7 @@ WVL.trackWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
-WVL.SIO_URL = window.location.protocol + '//' + window.location.hostname + ":7000/";
+WVL.SIO_URL = window.location.protocol + '//' + window.location.hostname + ":4000/";
 WVL.sock = null;
 WVL.clientMarkers = {};
 WVL.trackLayer = null;
@@ -396,7 +396,10 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     WVL.tracks[name] = trackData;
     report("handleTrailData "+url);
     WVL.computeTrackPoints(trackData);
-    trackData.trail = L.polyline(trackData.latLng, { color: '#3333ff', weight: 6});
+    var color = '#3333ff';
+    if (trackDesc.recType == 'dronePath')
+	color = '#33ff33';
+    trackData.trail = L.polyline(trackData.latLng, { color: color, weight: 6});
     trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
     //trackData.trail.addTo(map);
     var trackLayerName = trackDesc.layerName;
@@ -540,7 +543,7 @@ WVL.handleLayerRecs = function(tours, url, map)
 	    WV.addCoordinateSystem(trackDesc.coordSys, trackDesc);
 	    return;
 	}
-	if (trackDesc.recType != "robotTrail") {
+	if (trackDesc.recType != "robotTrail" && trackDesc.recType != "dronePath") {
 	    return;
 	}
 	var trackId = trackDesc.id;
