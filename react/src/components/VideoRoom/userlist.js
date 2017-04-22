@@ -5,8 +5,11 @@ import { chatSelectUser } from 'actions/chat'
 import { viewsUpdateLeft } from 'actions/views'
 import styles from './styles.scss'
 import VideoView from './videoview'
+import Icon from 'react-icons-kit';
+import { ic_face } from 'react-icons-kit/md/ic_face';
 
-class UserList extends React.Component { // eslint-disable-line react/prefer-stateless-function
+
+class UserList extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
@@ -36,8 +39,10 @@ class UserList extends React.Component { // eslint-disable-line react/prefer-sta
                 {this.props.users.map((u, i) => {
                     return (
                         <div className="avatar" key={u.id} onClick={() =>  this.onClick(u)}>
-                            <img className="thumbnail" />
-                            <div className="username">{u.username}</div>
+                            {(u.picture) ?
+                                    <img className="thumbnail" src={u.picture} /> :
+                                    <Icon className="thumbnail" size={100} icon={ic_face} />}
+                            <div className="username">{u.display}</div>
                         </div>
                     )
                 })}
