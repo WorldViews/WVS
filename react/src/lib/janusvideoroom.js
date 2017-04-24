@@ -68,6 +68,15 @@ export default class JanusVideoRoom {
         return randomString;
     }
 
+    _stopStream(stream) {
+        let stopTrack = (track) => {
+            track.stop();
+        }
+
+        _.forEach(stream.getVideoTracks(), stopTrack);
+        _.forEach(stream.getAudioTracks(), stopTrack);
+    }
+
     /**
      * Connect to the janus url specified in the contructor
      * @returns {Promise} promise
@@ -105,7 +114,7 @@ export default class JanusVideoRoom {
                     mediaState: self.onMediaState.bind(self),
                     webrtcState: self.onWebrtcState.bind(self),
                     onlocalstream: self.onLocalStream.bind(self),
-                    onremotestream: self.onRemoteStream.bind(self),
+                    // onremotestream: self.onRemoteStream.bind(self),
                     oncleanup: self.onCleanup.bind(self),
                     // ondataopen: () => {
                     //     self.onDataOpenSubscriber()
@@ -141,13 +150,8 @@ export default class JanusVideoRoom {
                 this.connection = undefined;
             }
 
-            let stopTrack = (track) => {
-                track.stop();
-            }
-
             _.forEach(this.localStreams, (stream) => {
-                _.forEach(stream.getVideoTracks(), stopTrack);
-                _.forEach(stream.getAudioTracks(), stopTrack);
+                this._stopStream(stream);
             });
 
             resolve();
@@ -362,8 +366,10 @@ export default class JanusVideoRoom {
                 },
                 mediaState: self.onMediaState.bind(self),
                 webrtcState: self.onWebrtcState.bind(self),
-                onlocalstream: self.onLocalStream.bind(self),
-                onremotestream: self.onRemoteStream.bind(self),
+                // onlocalstream: self.onLocalStream.bind(self),
+                onremotestream: (stream) => {
+                    self.onRemoteStream(userid, stream);
+                },
                 oncleanup: () => {
                     self.onCleanupSubscriber(userid);
                 },
@@ -374,6 +380,21 @@ export default class JanusVideoRoom {
                     self.onDataSubscriber(userid, data);
                 }
             });
+        });
+        return promise;
+    }
+
+    configure(userid, options) {
+        let promise = new Promise((resolve, reject) => {
+            let pluginHandle = self.subscriberHandles[userid];
+            var listen = {
+                "request": "configure",
+                "audio": options.audio || true,
+                "video": options.video || true,
+                "data": options.data || true
+            };
+            pluginHandle.send({"message": listen});
+            resolve();
         });
         return promise;
     }
@@ -526,9 +547,17 @@ export default class JanusVideoRoom {
         this.emit('localstream', stream);
     }
 
-    onRemoteStream(stream) {
+    onRemoteStream(userid, stream) {
         Janus.debug(" ::: Got a remote stream :::");
-        this.emit('remotestream', stream);
+        //this.emit('remotestream', stream);
+        let user = this.publishers[userid];
+        if (user) {
+            if (user.stream) {
+                this._stopStream(user.stream);
+            }
+            user.stream = stream;
+            this.emit("remotestream", user);
+        }
     }
 
     onCleanup() {

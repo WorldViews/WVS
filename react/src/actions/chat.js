@@ -62,13 +62,22 @@ janusClient.on('localstream', (stream) => {
 });
 
 janusClient.on('remotestream', (user) => {
+
+    // disable video by default until the stream is selected
+    _.forEach(user.stream.getVideoTracks(), (track) => {
+        track.enabled = false;
+    });
     store.dispatch(chatUserUpdate([user]));
 });
 
 janusClient.on('publishers', (users) => {
     store.dispatch(chatUserEnter(users));
     _.forEach(users, (user) => {
-        janusClient.subscribe(user.id);
+        janusClient.subscribe(user.id, {
+            audio: true,
+            video: true,
+            data: true
+        });
     });
 });
 

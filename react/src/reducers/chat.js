@@ -9,6 +9,14 @@ const defaultState = {
     users: []
 };
 
+function enableVideo(stream, enable) {
+    if (stream) {
+        _.forEach(stream.getVideoTracks(), (track) => {
+            track.enabled = enable;
+        });
+    }
+}
+
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
         case types.CHAT_USER_ENTER: {
@@ -18,9 +26,20 @@ export default function reducer(state = defaultState, action) {
             }
         }
         case types.CHAT_USER_EXIT: {
+            let users = _.differenceWith(state.users, action.users,(a,b) => a.id == b.id);
+            let mainStream = state.mainSteam;
+            if (mainStream) {
+                let foundUser = _.find(users, (u) => {
+                    return u.stream.id = mainStream.id;
+                });
+                if (foundUser) {
+                    mainStream = foundUser.stream;
+                }
+            }
             let result = {
                 ...state,
-                users: _.differenceWith(state.users, action.users,(a,b) => a.id == b.id)
+                mainStream,
+                users
 
             };
             return result;
@@ -50,6 +69,9 @@ export default function reducer(state = defaultState, action) {
             }
         }
         case types.CHAT_SELECT_USER: {
+            enableVideo(state.mainStream, false);
+            enableVideo(action.user.stream, true);
+
             return {
                 ...state,
                 mainStream: action.user.stream
