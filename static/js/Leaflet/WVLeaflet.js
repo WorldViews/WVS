@@ -18,7 +18,7 @@ if (typeof WV == "undefined") {
 
 var WVL = {};
 
-
+WVL.showTrackPlacemarks = true;
 WVL.tracks = {};
 WVL.currentTrack = null;
 WVL.cursor = null;
@@ -32,7 +32,8 @@ WVL.trackWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
-WVL.SIO_URL = window.location.protocol + '//' + window.location.hostname + ":4000/";
+//WVL.SIO_URL = window.location.protocol + '//' + window.location.hostname + ":4000/";
+WVL.SIO_URL = "https://worldviews.org";
 WVL.sock = null;
 WVL.clientMarkers = {};
 WVL.trackLayer = null;
@@ -316,13 +317,22 @@ WVL.dragPlacemark = function (e, trackDesc, gpos) {
     }
 };
 
+WVL.getCursor = function()
+{
+    if (!WVL.cursor) {
+	var iconOpts = WVL.iconOpts['360cam'];
+	var icon = L.icon(iconOpts);
+        var opts = {'title': 'Camera Position', icon: icon};
+        //var marker = L.marker([lat, lng],opts).addTo(WVL.map);
+	WVL.cursor = L.marker([0,0], opts);
+	WVL.cursor.addTo(WVL.map);
+    }
+    return WVL.cursor;
+}
 
-//WVL.setPoint = function(trec)
 WVL.setPoint = function(latLng)
 {
-    if (!WVL.cursor)
-	WVL.cursor = L.marker(latLng);
-    WVL.cursor.setLatLng(latLng);
+    WVL.getCursor().setLatLng(latLng);
 }
 
 WVL.addLayerControl = function()
@@ -371,8 +381,7 @@ WVL.initmap = function(latlng, bounds) {
 
     //WVL.loadTracksFromAPI(map);
     //WVL.loadTracksFromFile(WVL.toursUrl, map);
-    WVL.cursor = L.marker([0,0]);
-    WVL.cursor.addTo(map);
+    WVL.getCursor();
     WVL.setPlayTime(0)
     setTimeout(WVL.timerFun, 500);
     WVL.addLayerControl();
@@ -387,7 +396,7 @@ WVL.initmap = function(latlng, bounds) {
 }
 
 //
-var TD;
+//var TD;
 WVL.handleTrack = function(trackDesc, trackData, url, map)
 {
     var name = trackData.name;
@@ -399,8 +408,12 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     var color = '#3333ff';
     if (trackDesc.recType == 'dronePath')
 	color = '#33ff33';
-    trackData.trail = L.polyline(trackData.latLng, { color: color, weight: 6});
-    trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
+    var opts = { color: color, weight: 2};
+    trackData.trail = L.polyline(trackData.latLng, opts);
+    trackData.backing = L.polyline(trackData.latLng,
+				     {color: color, weight: 10, opacity: 0.1});
+    //trackData.trail.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
+    trackData.backing.on('click', function(e) { WVL.clickOnTrack(e, trackData);});
     //trackData.trail.addTo(map);
     var trackLayerName = trackDesc.layerName;
     if (!trackLayerName)
@@ -415,17 +428,25 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
 	    WVL.layerControl.addOverlay(trackLayer, trackLayerName);
     }
     trackData.trail.addTo(trackLayer);
+    trackData.backing.addTo(trackLayer);
     var gpos = trackData.latLng[0];
     trackDesc.map = map;
-    trackDesc.placemark = L.marker(gpos, {draggable: true});
-    trackDesc.placemark.addTo(map);
-//    trackDesc.placemark.on('click', function (e) {
-//	map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true});
-//    });
-    trackDesc.placemark.on('click',
-			   e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
-    trackDesc.placemark.on('drag dragend',
-			   e => { WVL.dragPlacemark(e,trackDesc,gpos);});
+    trackDesc.placemark = null;
+    if (WVL.showTrackPlacemarks) {
+	//var label = "Hello There";
+	var label = trackDesc.description;
+	var opts = {draggable: true};
+	if (label)
+	    opts.title = label;
+	var placemark =  L.marker(gpos, opts);
+	trackDesc.placemark = placemark;
+	//placemark.bindPopup(label).openPopup();
+	placemark.addTo(map);
+	placemark.on('click',
+		     e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
+	placemark.on('drag dragend',
+		     e => { WVL.dragPlacemark(e,trackDesc,gpos);});
+    }
 }
 
 WVL.updateTrack = function(trackData)
@@ -489,11 +510,37 @@ WVL.loadTrackFromFile = function(trackDesc, url, map)
     });
 }
 
+WVL.iconOpts = {
+    //'drone': '/img/billboards/tbd_drone_icon.png',
+    'drone': {
+	'iconUrl': '/static/img/billboards/drone.png',
+	'iconSize': [32,32]
+    },
+    'robot': {
+	'iconUrl': '/static/img/billboards/double-robotics-2.png',
+	'iconSize': [32,32]
+    },
+    '360cam': {
+	'iconUrl': '/static/img/icons/360cam.png',
+	'iconSize': [32,32]
+    },
+    'test': {
+	'iconUrl': '/static/img/billboards/hiking.png',
+	'iconSize': [32,32],
+    }
+};
+//iconAnchor: [22, 94],
+//popupAnchor: [-3, -76],
+//shadowUrl: 'my-icon-shadow.png',
+//shadowRetinaUrl: 'my-icon-shadow@2x.png',
+//shadowSize: [68, 95],
+//shadowAnchor: [22, 94]
 
 WVL.handleSIOMessage = function(msg)
 {
     report("WVL received position msg: "+JSON.stringify(msg));
     var clientId = msg.clientId;
+    var clientType = msg.clientType;
     var marker = WVL.clientMarkers[clientId];
     var lat = msg.position[0];
     var lng = msg.position[1];
@@ -504,7 +551,19 @@ WVL.handleSIOMessage = function(msg)
     }
     else {
         console.log("CreateMarker "+clientId);
-        var marker = L.marker([lat, lng]).addTo(WVL.map);
+	var iconOpts = WVL.iconOpts[clientType];
+	if (!iconOpts) {
+	    iconOpts = {iconUrl: "/static/img/billboards/purplePlacemark.png",
+			iconSize: [32,32]
+		       };
+	}
+	report("clientType: "+clientType);
+	report("iconOpts: "+JSON.stringify(iconOpts));
+	var myIcon = L.icon(iconOpts);
+        var opts = {'title': clientId, icon: myIcon};
+        var marker = L.marker([lat, lng],opts).addTo(WVL.map);
+	marker.bindPopup(clientId);
+	marker.openPopup();
         WVL.clientMarkers[clientId] = marker;
     }
 }
