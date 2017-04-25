@@ -4,6 +4,7 @@ import _ from 'lodash';
 const defaultState = {
     connected: false,
     mainStream: undefined,
+    localStream: false,
     enableAudio: true,
     enableVideo: true,
     users: []
@@ -20,13 +21,16 @@ function enableVideo(stream, enable) {
 export default function reducer(state = defaultState, action) {
     switch (action.type) {
         case types.CHAT_USER_ENTER: {
+            let users = _.unionWith(action.users, state.users, (a,b) => a.id == b.id);
+            users = _.sortBy(users, (u) => u.id);
             return {
                 ...state,
-                users: _.unionWith(action.users, state.users, (a,b) => a.id == b.id)
+                users
             }
         }
         case types.CHAT_USER_EXIT: {
             let users = _.differenceWith(state.users, action.users,(a,b) => a.id == b.id);
+            users = _.sortBy(users, (u) => u.id);
             let mainStream = state.mainSteam;
             if (mainStream) {
                 let foundUser = _.find(users, (u) => {
@@ -46,6 +50,8 @@ export default function reducer(state = defaultState, action) {
         }
         case types.CHAT_USER_UPDATE: {
             let users = _.unionWith(action.users, state.users, (a,b) => a.id == b.id);
+            users = _.sortBy(users, (u) => u.id);
+            // let users = _.unionBy([action.users, state.users], 'id');
             let mainStream = state.mainStream;
             if (users.length == 1) {
                 mainStream = users[0].stream;
@@ -69,12 +75,15 @@ export default function reducer(state = defaultState, action) {
             }
         }
         case types.CHAT_SELECT_USER: {
-            enableVideo(state.mainStream, false);
+            if (!state.localStream) {
+                enableVideo(state.mainStream, false);
+            }
             enableVideo(action.user.stream, true);
 
             return {
                 ...state,
-                mainStream: action.user.stream
+                mainStream: action.user.stream,
+                localStream: action.user.local
             }
         }
         case types.CHAT_CONNECT: {

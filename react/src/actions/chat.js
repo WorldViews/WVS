@@ -51,12 +51,7 @@ export const chatEnableVideo = (enable) => {
 /**
  * Janus Event Handlers
  */
-janusClient.on('localstream', (stream) => {
-    let user = {
-        stream,
-        id: janusClient.status.id,
-        display: 'me'
-    };
+janusClient.on('localstream', (user) => {
     let action = chatUserUpdate([user]);
     store.dispatch(action);
 });
@@ -93,10 +88,15 @@ janusClient.on('statusUpdate', (msg) => {
     let user = msg[0];
     let status = msg[1];
     console.log('statusUpdate user: ' + user.display + ': ' + JSON.stringify(status));
+    store.dispatch(chatUserUpdate([user]));
 });
 
 janusClient.on('chatMsg', (msg) => {
     let user = msg[0];
     let message = msg[1];
     console.log('chatMsg user: ' + user.display + ': ' + message);
+});
+
+janusClient.on('thumbnailUpdate', (user) => {
+    store.dispatch(chatUserUpdate([user]));
 });

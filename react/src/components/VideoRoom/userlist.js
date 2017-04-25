@@ -39,8 +39,8 @@ class UserList extends React.Component {
                 {this.props.users.map((u, i) => {
                     return (
                         <div className="avatar" key={u.id} onClick={() =>  this.onClick(u)}>
-                            {(u.picture) ?
-                                    <img className="thumbnail" src={u.picture} /> :
+                            {(u.status && u.status.picture) ?
+                                    <img className="thumbnail" src={u.status.picture} /> :
                                     <Icon className="thumbnail" size={100} icon={ic_face} />}
                             <div className="username">{u.display}</div>
                         </div>

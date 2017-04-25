@@ -31,7 +31,18 @@ export default class JanusVideoRoom {
         this.promises = {};
         this.localStreams = {};
         this.publishers = {};
+        this.thumbnailTimers = {};
+        this.audioElements = {};
         this.roomInfo = {};
+        this.me = {};
+
+        // used to create thumbnail
+        this.video = document.createElement('video')
+        this.canvas = document.createElement('canvas');
+        this.canvas.width = 100;
+        this.canvas.height = 100;
+        this.canvasContext = this.canvas.getContext('2d');
+
         this.status = {
             id: 0,
             audioEnabled: true,
@@ -77,6 +88,29 @@ export default class JanusVideoRoom {
         _.forEach(stream.getAudioTracks(), stopTrack);
     }
 
+    _createThumbnail(userid) {
+        let self = this;
+        if (userid) {
+            let user = _.get(this, 'publishers[userid].stream', {});
+            this.video.srcObject = user.stream;
+            setTimeout(() => {
+                self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
+                user.picture = self.canvas.toDataURL();
+            }, 1000);
+        } else {
+            _.forEach(this.localStreams, (stream) => {
+                self.video.srcObject = stream;
+                setTimeout(() => {
+                    self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
+                    self.status.picture = self.canvas.toDataURL();
+                    self.me.status.picture = self.status.picture;
+                    self._sendStatus();
+                    self.emit('thumbnailUpdate', self.me);
+                }, 1000);
+            });
+        }
+    }
+
     /**
      * Connect to the janus url specified in the contructor
      * @returns {Promise} promise
@@ -114,14 +148,7 @@ export default class JanusVideoRoom {
                     mediaState: self.onMediaState.bind(self),
                     webrtcState: self.onWebrtcState.bind(self),
                     onlocalstream: self.onLocalStream.bind(self),
-                    // onremotestream: self.onRemoteStream.bind(self),
-                    oncleanup: self.onCleanup.bind(self),
-                    // ondataopen: () => {
-                    //     self.onDataOpenSubscriber()
-                    // },
-                    // ondata: (data) => {
-                    //     self.onDataSubscriber(data);
-                    // }
+                    oncleanup: self.onCleanup.bind(self)
                 });
             });
         });
@@ -350,6 +377,9 @@ export default class JanusVideoRoom {
                 success: (pluginHandle) => {
                     console.info("janus.plugin.videoroom subscriber attached")
                     self.subscriberHandles[userid] = pluginHandle;
+                    // self.thumbnailTimers[userid] = setInterval(() =>  {
+                    //     self._createThumbnail(userid);
+                    // }, 5000)
 
                     var listen = {
                         "request": "join",
@@ -366,7 +396,6 @@ export default class JanusVideoRoom {
                 },
                 mediaState: self.onMediaState.bind(self),
                 webrtcState: self.onWebrtcState.bind(self),
-                // onlocalstream: self.onLocalStream.bind(self),
                 onremotestream: (stream) => {
                     self.onRemoteStream(userid, stream);
                 },
@@ -447,16 +476,16 @@ export default class JanusVideoRoom {
     }
 
     // private
-    _sendStatus(userid) {
+    _sendStatus() {
       let content = {
-        source: userid,
+        source: this.roomInfo.id,
         status: this.status
       };
 
-      this._sendMessage(userid, "statusUpdate", content);
+      this._sendMessage("statusUpdate", content);
     }
 
-    _sendMessage(userid, type, content) {
+    _sendMessage(type, content) {
         if (this.publisherHandle === null) {
           return;
         }
@@ -542,14 +571,36 @@ export default class JanusVideoRoom {
 
     onLocalStream(stream) {
         Janus.debug(" ::: Got a local stream :::");
+
+        let self = this;
         this.localStreams[stream.id] = stream;
         this.status.stream = stream;
-        this.emit('localstream', stream);
+        this.thumbnailTimers['me'] = setInterval(() => {
+            self._createThumbnail();
+        }, 5000);
+
+        this.me = {
+            ...this.me,
+            stream,
+            id: this.status.id,
+            local: true,
+            display: 'me',
+            status: {
+                picture: null
+            }
+        };
+
+        this.emit('localstream', this.me);
     }
 
     onRemoteStream(userid, stream) {
         Janus.debug(" ::: Got a remote stream :::");
-        //this.emit('remotestream', stream);
+
+        let audio = document.createElement('audio');
+        this.audioElements[userid] = audio;
+        audio.srcObject = stream;
+        audio.play();
+
         let user = this.publishers[userid];
         if (user) {
             if (user.stream) {
@@ -564,6 +615,15 @@ export default class JanusVideoRoom {
         Janus.debug(" ::: Got a cleanup message :::");
     }
 
+    onCleanupSubscriber(userid) {
+        Janus.debug(" ::: Got a cleanup message " + userid + " :::");
+
+        delete this.publishers[userid];
+        clearInterval(this.thumbnailTimers[userid]);
+        delete this.thumbnailTimers[userid];
+        delete this.audioElements[userid];
+    }
+
     onDataOpenSubscriber(userid) {
         this._sendStatus();
     }
@@ -573,7 +633,15 @@ export default class JanusVideoRoom {
         data = JSON.parse(data);
         let user = this.publishers[userid];
         if (user) {
-            this.emit(data.type, [user, data.content]);
+            switch (data.type) {
+                case "statusUpdate":
+                    user.status = data.content.status;
+                    this.emit(data.type, [user, data.content.status]);
+                    break;
+                case "chatMsg":
+                    this.emit(data.type, [user, data.content]);
+                    break;
+            }
         }
     }
 
@@ -628,6 +696,11 @@ export default class JanusVideoRoom {
             if (publisher) {
                 this.emit('unpublished', publisher);
                 delete self.publishers[id];
+
+                clearInterval(self.thumbnailTimers[id]);
+                delete self.thumbnailTimers[id];
+
+
             }
         } else if (msg.error) {
             this.emit('error', msg.error);

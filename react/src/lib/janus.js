@@ -1164,7 +1164,9 @@ function Janus(gatewayCallbacks) {
 			return;
 		}
 		Janus.log("Sending string on data channel: " + text);
-		config.dataChannel.send(text);
+		if (config.dataChannel.readyState == 'open') {
+			config.dataChannel.send(text);
+		}
 		callbacks.success();
 	}
 

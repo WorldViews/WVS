@@ -20,6 +20,7 @@ class VideoView extends React.Component { // eslint-disable-line react/prefer-st
 
       if (stream) {
         this.video.srcObject = stream;
+        this.video.muted = true;
         this.video.play();
       } else {
         this.video.srcObject = null;
