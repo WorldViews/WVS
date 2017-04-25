@@ -15,6 +15,10 @@ let charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
  */
 export default class JanusVideoRoom {
 
+    static VIDEO_TYPE_NORMAL = 'normal';
+    static VIDEO_TYPE_360 = '360';
+    static VIDEO_TYPE_DRONE = 'drone';
+
     /**
      * Constructor
      * @param {string:any} options - configuration options
@@ -209,6 +213,11 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Enable or disable audio
+     *
+     * @param {boolean} enable - enable/disable audio
+     */
     enableAudio(enable) {
         if (enable !== undefined) {
             this.status.audioEnabled = enable;
@@ -222,6 +231,11 @@ export default class JanusVideoRoom {
         return this.status.audioEnabled;
     }
 
+    /**
+     * Enable or disable video
+     *
+     * @param {boolean} enable - enable/disable video
+     */
     enableVideo(enable) {
         if (enable !== undefined) {
             this.status.videoEnabled = enable;
@@ -235,6 +249,11 @@ export default class JanusVideoRoom {
         return this.status.videoEnabled;
     }
 
+    /**
+     * List rooms
+     *
+     * @returns {Promise<array>} - promise to be resolved
+     */
     listRooms() {
         let self = this;
         let promise = new Promise((resolve, reject) => {
@@ -259,6 +278,12 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Check if a room exists
+     *
+     * @param {number} roomid
+     * @returns {Promise<boolean>}
+     */
     roomExists(roomid) {
         let self = this;
         let promise = new Promise((resolve, reject) => {
@@ -283,6 +308,14 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Kick a user from a room
+     *
+     * @param {number} roomid
+     * @param {number} userid
+     * @param {string} adminsecret
+     * @returns {Promise<boolean>}
+     */
     kick(roomid, userid, adminsecret) {
         let self = this;
         let promise = new Promise((resolve, reject) => {
@@ -308,6 +341,12 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * List users in a room
+     *
+     * @param {number} roomid
+     * @returns {Promise<array>}
+     */
     listUsers(roomid) {
         let self = this;
         let promise = new Promise((resolve, reject) => {
@@ -332,6 +371,12 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Publish a media stream from getUserMedia().
+     *
+     * @param {MediaStream} stream
+     * @returns {Promise}
+     */
     publish(stream) {
         return new Promise((resolve, reject) => {
             let self = this;
@@ -366,7 +411,12 @@ export default class JanusVideoRoom {
         });
     }
 
-    unpublish(roomid) {
+    /**
+     * Unpublish a media stream.
+     *
+     * @returns {Promise}
+     */
+    unpublish() {
         let self = this;
         let promise = new Promise((resolve, reject) => {
             if (self.publisherHandle) {
@@ -384,6 +434,12 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Subscribe to a user's stream feed
+     *
+     * @param {number} userid - user id
+     * @param {object} options - options dictionary
+     */
     subscribe(userid, options) {
         let media = _.merge({
             audioSend: true,
@@ -399,9 +455,6 @@ export default class JanusVideoRoom {
                 success: (pluginHandle) => {
                     console.info("janus.plugin.videoroom subscriber attached")
                     self.subscriberHandles[userid] = pluginHandle;
-                    // self.thumbnailTimers[userid] = setInterval(() =>  {
-                    //     self._createThumbnail(userid);
-                    // }, 5000)
 
                     var listen = {
                         "request": "join",
@@ -435,6 +488,12 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Reconfigure the stream already published
+     *
+     * @param {number} userid - user id
+     * @param {object} options - dictionary of options
+     */
     configure(userid, options) {
         let promise = new Promise((resolve, reject) => {
             let pluginHandle = self.subscriberHandles[userid];
@@ -450,6 +509,11 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Join a room
+     *
+     * @param {number} roomid - room number to join
+     */
     join(roomid) {
         let self = this;
         self.roomid = roomid;
@@ -476,7 +540,10 @@ export default class JanusVideoRoom {
         return promise;
     }
 
-    leave(roomid) {
+    /**
+     * Leave the room
+     */
+    leave() {
         let self = this;
         self.roomid = undefined;
         let promise = new Promise((resolve, reject) => {
@@ -497,6 +564,10 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    /**
+     * Sets or gets the username
+     * @param {string} [name] - username
+     */
     username(name) {
         if (name) {
             this.options.username = name;
@@ -505,6 +576,12 @@ export default class JanusVideoRoom {
         return this.options.username;
     }
 
+    /**
+     * Sets or gets the video type.
+     *
+     * Valid video types are 'normal', '360', or 'drone'
+     * @param {string} [type] - video type
+     */
     videoType(type) {
         if (type) {
             this.options.videoType = type;
