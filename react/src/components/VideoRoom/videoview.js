@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import styles from './styles.scss'
+import styles from './styles.scss'
 
 class VideoView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
@@ -43,10 +43,7 @@ class VideoView extends React.Component { // eslint-disable-line react/prefer-st
 
   render () {
     return (
-      <video ref={(v) => { this.video = v; }} className={this.props.className}></video>
-            /*<section className={[ this.props.className, styles.video ].join(' ')}>
-                <video ref="video"></video>
-            </section>*/
+      <video ref={(v) => { this.video = v; }} className={styles.mainview} controls="1"></video>
     )
   }
 }

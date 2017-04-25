@@ -7,7 +7,34 @@ const defaultState = {
     localStream: false,
     enableAudio: true,
     enableVideo: true,
-    users: []
+    showTextChat: false,
+    users: [],
+    messages: [
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+        {
+            user: 'test1',
+            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
+        },
+    ]
 };
 
 function enableVideo(stream, enable) {
@@ -23,6 +50,9 @@ export default function reducer(state = defaultState, action) {
         case types.CHAT_USER_ENTER: {
             let users = _.unionWith(action.users, state.users, (a,b) => a.id == b.id);
             users = _.sortBy(users, (u) => u.id);
+            if (!state.connected) {
+                users = [];
+            }
             return {
                 ...state,
                 users
@@ -55,6 +85,9 @@ export default function reducer(state = defaultState, action) {
             let mainStream = state.mainStream;
             if (users.length == 1) {
                 mainStream = users[0].stream;
+            }
+            if (!state.connected) {
+                users = [];
             }
             let result = {
                 ...state,
@@ -97,7 +130,8 @@ export default function reducer(state = defaultState, action) {
                 ...state,
                 mainStream: undefined,
                 connected: false,
-                users: []
+                users: [],
+                messages: []
             }
         }
         case types.CHAT_ENABLE_AUDIO: {
@@ -110,6 +144,24 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 enableVideo: action.enable
+            }
+        }
+        case types.CHAT_SHOW_TEXT_CHAT: {
+            return {
+                ...state,
+                showTextChat: action.show
+            }
+        }
+        case types.CHAT_SEND_TEXT_MESSAGE: {
+            return {
+                ...state,
+                messages: _.concat(state.messages, action.message)
+            }
+        }
+        case types.CHAT_ADD_TEXT_MESSAGE: {
+            return {
+                ...state,
+                messages: _.concat(state.messages, action.message)
             }
         }
         default:

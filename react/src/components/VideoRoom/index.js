@@ -8,6 +8,7 @@ import UserList from './userlist'
 // import VideoView from './videoview'
 import Toolbar from 'components/Toolbar'
 import Instructions from './instructions'
+import TextChatView from 'components/TextChatView'
 
 class VideoRoom extends React.Component {
   static propTypes = {
@@ -39,6 +40,7 @@ class VideoRoom extends React.Component {
     return (
         <content className={`${styles.container} ${this.getMaxPanelClass()}`}>
             <Toolbar/>
+            <TextChatView />
             <div className="left">
             {this.props.leftView ? this.props.leftView : <Instructions />}
             </div>

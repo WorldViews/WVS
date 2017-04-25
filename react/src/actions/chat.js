@@ -11,6 +11,19 @@ export const chatUserEnter = (users) => ({ type: types.CHAT_USER_ENTER, users })
 export const chatUserExit = (users) => ({ type: types.CHAT_USER_EXIT, users });
 export const chatUserUpdate = (users) => ({ type: types.CHAT_USER_UPDATE, users });
 export const chatSelectUser = (user) => ({ type: types.CHAT_SELECT_USER, user });
+export const chatShowTextChat = (show) => ({ type: types.CHAT_SHOW_TEXT_CHAT, show })
+export const chatSendTextMessage = (text) => {
+    let msg = {
+        user: janusClient.username(),
+        ts: Date.now(),
+        text: text
+    };
+    janusClient.sendTextMessage(text);
+    return { type: types.CHAT_SEND_TEXT_MESSAGE, message: msg };
+}
+export const chatAddTextMessage = (msg) => {
+    return { type: types.CHAT_ADD_TEXT_MESSAGE, message: msg };
+}
 export const chatConnect = (roomid) => {
     return (dispatch) => {
         janusClient.connect().then(() => {
@@ -93,8 +106,14 @@ janusClient.on('statusUpdate', (msg) => {
 
 janusClient.on('chatMsg', (msg) => {
     let user = msg[0];
-    let message = msg[1];
-    console.log('chatMsg user: ' + user.display + ': ' + message);
+    let text = msg[1];
+    let textMessage = {
+        user: user.display,
+        ts: Date.now(),
+        text: text
+    }
+    console.log('chatMsg user: ' + user.display + ': ' + text);
+    store.dispatch(chatAddTextMessage(textMessage));
 });
 
 janusClient.on('thumbnailUpdate', (user) => {

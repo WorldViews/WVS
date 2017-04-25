@@ -1,0 +1,46 @@
+:local(.messages) {
+    display: flex;
+    flex-direction: column;
+    transition: left .2s ease-in 0s;
+    position: absolute;
+    top: 0;
+    left: -500px;
+    bottom: 0;
+    width: 500px;
+    background-color: rgba(38, 50, 56, 0.9);
+    padding: 10px;
+    overflow: auto;
+    z-index: 50;
+
+    .form-group {
+        flex: 0;
+        height: 50px;
+    }
+
+    .messages {
+        flex: 1;
+        overflow: auto;
+    }
+}
+
+:local(.shown) {
+    left: 50px;
+}
+
+
+:local(.message) {
+    border-radius: 5px;
+    color:  #eee;
+    padding: 10px;
+    width: 100%;
+    .name {
+        float: left;
+    }
+    .timestamp {
+        float: right;
+    }
+    .text {
+        width: 100%;
+        clear: both;
+    }
+}

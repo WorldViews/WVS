@@ -12,12 +12,13 @@ import { phoneHangUp } from 'react-icons-kit/icomoon/phoneHangUp';
 import { videoCamera } from 'react-icons-kit/fa/videoCamera';
 import { microphone } from 'react-icons-kit/fa/microphone';
 // import { microphoneSlash } from 'react-icons-kit/fa/microphoneSlash';
+import { comments } from 'react-icons-kit/fa/comments';
 
 import { youtubePlay } from 'react-icons-kit/fa/youtubePlay';
 import { globe } from 'react-icons-kit/fa/globe';
 import { trello } from 'react-icons-kit/fa/trello';
 
-import { chatConnect, chatDisconnect, chatEnableAudio, chatEnableVideo } from 'actions/chat';
+import { chatConnect, chatDisconnect, chatEnableAudio, chatEnableVideo, chatShowTextChat } from 'actions/chat';
 import { viewsMaximizePanel, viewsResetPanels } from 'actions/views';
 
 class Toolbar extends React.Component {
@@ -26,6 +27,7 @@ class Toolbar extends React.Component {
     connected: PropTypes.bool,
     enableAudio: PropTypes.bool,
     enableVideo: PropTypes.bool,
+    showTextChat: PropTypes.bool,
     dispatch: PropTypes.func
   }
 
@@ -34,6 +36,7 @@ class Toolbar extends React.Component {
         connected: state.chat.connected,
         enableAudio: state.chat.enableAudio,
         enableVideo: state.chat.enableVideo,
+        showTextChat: state.chat.showTextChat
     };
   }
 
@@ -69,6 +72,10 @@ class Toolbar extends React.Component {
       this.props.dispatch(viewsResetPanels());
   }
 
+  onToggleTextChat() {
+      this.props.dispatch(chatShowTextChat(!this.props.showTextChat));
+  }
+
   render () {
     return (
       <section className={styles}>
@@ -89,8 +96,14 @@ class Toolbar extends React.Component {
 
         <Icon icon={microphone}
             data-tip={this.props.enableAudio ?  "Disable Microphone" : "Enable Microphone"}
-            className={"icon icon-padding" + ((this.props.enableAudio) ? "" : " disabled")}
+            className={"icon" + ((this.props.enableAudio) ? "" : " disabled")}
             onClick={this.onAudioToggle.bind(this)}/>
+
+        <Icon icon={comments}
+            data-tip={this.props.showTextChat ?  "Hide Text Chat" : "Show Text Chat"}
+            className="icon icon-padding"
+            onClick={this.onToggleTextChat.bind(this)}/>
+
 
 
         <Icon icon={youtubePlay}

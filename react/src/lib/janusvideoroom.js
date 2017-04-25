@@ -35,6 +35,7 @@ export default class JanusVideoRoom {
         this.audioElements = {};
         this.roomInfo = {};
         this.me = {};
+        this.connected = false;
 
         // used to create thumbnail
         this.video = document.createElement('video')
@@ -141,6 +142,7 @@ export default class JanusVideoRoom {
                     success: (pluginHandle) => {
                         console.info("janus.plugin.video room attached")
                         self.publisherHandle = pluginHandle;
+                        self.connected = true;
                         resolve();
                     },
                     error: reject,
@@ -162,6 +164,7 @@ export default class JanusVideoRoom {
      */
     disconnect() {
         let promise = new Promise((resolve, reject) => {
+            this.connected = false
             if (this.publisherHandle) {
                 this.publisherHandle.detach();
                 this.publisherHandle = undefined;
@@ -177,9 +180,20 @@ export default class JanusVideoRoom {
                 this.connection = undefined;
             }
 
+            _.forEach(this.publishers, (pub) => {
+                this._stopStream(pub.stream);
+            });
+
+            _.forEach(this.thumbnailTimers, (t) => {
+                clearInterval(t);
+            });
+            this.audioElements = {};
+
             _.forEach(this.localStreams, (stream) => {
                 this._stopStream(stream);
             });
+
+            this.janus.destroy();
 
             resolve();
         });
@@ -475,6 +489,18 @@ export default class JanusVideoRoom {
         return promise;
     }
 
+    username(name) {
+        if (name) {
+            this.options.username = name;
+            this._sendStatus();
+        }
+        return this.options.username;
+    }
+
+    sendTextMessage(msg) {
+        this._sendMessage("chatMsg", msg);
+    }
+
     // private
     _sendStatus() {
       let content = {
@@ -486,7 +512,7 @@ export default class JanusVideoRoom {
     }
 
     _sendMessage(type, content) {
-        if (this.publisherHandle === null) {
+        if (!this.publisherHandle) {
           return;
         }
 
@@ -578,7 +604,9 @@ export default class JanusVideoRoom {
         this.thumbnailTimers['me'] = setInterval(() => {
             self._createThumbnail();
         }, 10000);
-        self._createThumbnail();
+        // setTimeout(() => {
+        //     self._createThumbnail();
+        // }, 5000);
 
         this.me = {
             ...this.me,
