@@ -1,0 +1,120 @@
+<html>
+<head>
+<title>Position Update Test</title>
+</head>
+<body>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+
+<style>
+    #map {
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 60%;
+    }
+</style>
+<div id="map"></div>
+<p>
+<div>
+ClientId: <input id="clientId" type="text" value="client1"><br>
+ClientType: <input id="clientType" type="text" value="test">
+</div>
+<p>
+<div id="log" style="overflow-y:auto;height:30%"><div>
+    
+<script src="/static/js/socket.io-1.4.5.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.3/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.EasyButton/2.0.0/easy-button.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.3.0/gpx.min.js"></script>
+<script src="/static/js/Leaflet/Leaflet.ImageOverlay.Rotated.js"></script>
+<script src="/static/js/Leaflet/Leaflet.geometryutils.js"></script>
+<script src="/static/js/Leaflet/WVLeaflet.js"></script>
+<script src="/static/js/math3d.js"></script>
+<script src="/static/js/WVCoordSys.js"></script>
+<script>
+
+var clientMarkers = {};
+  
+var SIO_URL = "/";
+
+var sock;
+
+var latlng = { lat:37.324684179870715, lng:-122.0436295866966 }
+var bounds = [ [ 37.3265995227329,  -122.04150527715686 ],
+                [ 37.32308873451525, -122.04593628644945 ] ]
+
+
+function sendPosition(pos, text)
+{
+   var clientId = $("#clientId").val();
+   var clientType = $("#clientType").val();
+   var msg = {
+      msgType: 'position',
+      version: 0.1,
+      clientType: clientType,
+      clientId: clientId,
+      t: WVL.getClockTime(),
+      position: pos,
+      coordSys: "geo"
+   }
+   if (text)
+      msg.text = text;
+   console.log("sending msg: "+JSON.stringify(msg));
+   if (!WVL.sock) {
+      console.log("***** no WVL.sock *****");
+   }
+   WVL.sock.emit('position', msg);
+}
+
+function myHandleClick(e)
+{
+    report(">>>>>>>>>> myHandleClick on map e: "+e);
+    report("latLng: "+e.latlng);
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    var alt = 1; // drone may actually have good value;
+    var pos = [lat, lng, alt];
+    report("pos: "+pos);
+    sendPosition(pos);
+    var de = e.originalEvent;
+    report("shift: "+de.shiftKey);
+}
+
+WVL.initmap(latlng, bounds);
+WVL.loadTracksFromFile(WVL.toursUrl);
+
+WVL.map.on('click', myHandleClick)
+
+WVL.goHome = function(){}
+
+
+getOurLocation = function() {
+    report("**** Getting location ****");
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(handleLocation);
+    } else {
+        report("Geolocation is not supported by this browser.");
+    }
+}
+
+handleLocation = function(position) {
+    report("**** Got location ****");
+    var lat = position.coords.latitude;
+    var lon = position.coords.longitude;
+    var pos = [lat,lon];
+    sendPosition(pos, "Initial WebPage location");
+}
+
+
+$(document).ready(function()
+{
+    WVL.watchPositions();
+    getOurLocation();
+});
+
+</script>
+</body>
+</html>
