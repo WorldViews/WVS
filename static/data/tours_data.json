@@ -169,6 +169,20 @@
           "xurl": "https://fxpal.com"
        },
        {
+          "id": "HajimeFlight1",
+          "recType": "xxdronePath",
+          "robotType": "Mavic",
+          "description": "Flights around Rancho San Antonio.",
+	  "tourName": "hajime_flight_1",
+	   "dataUrl": "/static/data/flights/FLY100.json",
+	  "youtubeId": "s1qy-R-71-s",
+	  "youtubeDeltaT": -46.3,
+	  "videoDur": 90,
+	  "coordSys": "GEO",
+	  "height": 100.0,
+          "xurl": "https://fxpal.com"
+       },
+       {
           "id": "Stearman_Flight_1",
           "recType": "robotTrail",
           "robotType": "wheelchair",
