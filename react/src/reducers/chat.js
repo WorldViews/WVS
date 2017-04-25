@@ -9,32 +9,7 @@ const defaultState = {
     enableVideo: true,
     showTextChat: false,
     users: [],
-    messages: [
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-        {
-            user: 'test1',
-            text: 'alsdkfjlaksjdflkasd fljasdklf jaklsdfj'
-        },
-    ]
+    messages: []
 };
 
 function enableVideo(stream, enable) {
@@ -162,6 +137,12 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 messages: _.concat(state.messages, action.message)
+            }
+        }
+        case types.CHAT_CLEAR_TEXT_MESSAGES: {
+            return {
+                ...state,
+                messages: []
             }
         }
         default:

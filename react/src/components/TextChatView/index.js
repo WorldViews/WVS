@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styles from './styles.scss';
-import { chatSendTextMessage } from 'actions/chat';
+import { chatSendTextMessage, chatShowTextChat, chatClearTextMessages } from 'actions/chat';
 import Timestamp from 'react-timestamp';
 
 class TextChatView extends React.Component {
@@ -21,13 +21,32 @@ class TextChatView extends React.Component {
         };
     }
 
+    scrollMessagesToBottom() {
+        this.messages.scrollTop = this.messages.scrollHeight;
+    }
+
+    componentDidUpdate() {
+        if (this.props.showTextChat) {
+            this.input.focus();
+        }
+    }
+
     onKeyPress(e) {
         if (e.key === 'Enter') {
             let msg = e.target.value;
             e.target.value = "";
             this.props.dispatch(chatSendTextMessage(msg));
             console.log('msg = ' + msg)
+            this.scrollMessagesToBottom();
         }
+    }
+
+    onClearMessages() {
+        this.props.dispatch(chatClearTextMessages());
+    }
+
+    onCloseMessages() {
+        this.props.dispatch(chatShowTextChat(false));
     }
 
     render() {
@@ -35,24 +54,30 @@ class TextChatView extends React.Component {
             // <div className={`${styles.messages} ${ this.props.showTextChat ? '' : styles.hidden }`}>
             //<div className={styles.messages + ' ' + (this.props.showTextChat ? styles.shown : styles.hidden) }>
             <div className={styles.messages + ' ' + (this.props.showTextChat ? styles.shown : '') }>
-                <div className="messages">
-                    {this.props.messages.map((message) => {
-                        return <div className={`${styles.message}`}>
+                <div className="messages" ref={(m) => { this.messages = m }}>
+                    {this.props.messages.map((message,i) => {
+                        let ts = ((message.ts || Date.now())/ 1000);
+                        return <div className={styles.message} key={i}>
                             <div>
                                 <label className="name">{message.user}</label>
                                 <span className="timestamp">
                                     <i className="glyphicon glyphicon-time"/>
-                                    <Timestamp time={(message.ts || Date.now())/1000} />
+                                    &nbsp; <Timestamp time={ ts } />
                                 </span>
                             </div>
                             <div className="text">{message.text}</div>
                         </div>
-
                     })}
                 </div>
-                <div className="form-group">
-                    <input type="text" className="form-control" placeholder="Write a message..."
-                        onKeyPress={this.onKeyPress.bind(this) } />
+                <div className={styles.textinput}>
+                    <input ref={(i) => {this.input = i}} type="text" className="form-control" placeholder="Write a message..."
+                            onKeyPress={this.onKeyPress.bind(this) } />
+                    <a className="form-control btn btn-primary" onClick={this.onClearMessages.bind(this)}>
+                        <i className="glyphicon glyphicon-trash"></i>
+                    </a>
+                    <a className="form-control btn btn-info" onClick={this.onCloseMessages.bind(this)}>
+                        <i className="glyphicon glyphicon-chevron-left"></i>
+                    </a>
                 </div>
             </div>
         );

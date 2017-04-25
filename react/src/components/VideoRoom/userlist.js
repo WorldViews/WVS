@@ -23,10 +23,6 @@ class UserList extends React.Component {
      };
   }
 
-  constructor(props) {
-      super(props);
-  }
-
   onClick(user) {
       console.log('click')
       this.props.dispatch(chatSelectUser(user));

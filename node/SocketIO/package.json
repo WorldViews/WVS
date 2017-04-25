@@ -1,6 +1,9 @@
 {
     "name": "TestServer",
     "version": "1.7.1",
+    "scripts": {
+        "start": "node simpleSocketIOServer.js"
+    },
     "devDependencies": {
         "express": "4.4.4",
         "request": "2.36.0",

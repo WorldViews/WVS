@@ -3,8 +3,9 @@ import JanusVideoRoom from 'lib/janusvideoroom';
 import store from 'containers/VideoChatApp/store';
 import _ from 'lodash';
 
-let janusClient = new JanusVideoRoom({
-    url: 'wss://sd6.dcpfs.net:8989/janus'
+export let janusClient = new JanusVideoRoom({
+    url: types.CONFIG_JANUS_URL
+    // url: 'ws://localhost:8188/janus'
 });
 
 export const chatUserEnter = (users) => ({ type: types.CHAT_USER_ENTER, users });
@@ -12,6 +13,7 @@ export const chatUserExit = (users) => ({ type: types.CHAT_USER_EXIT, users });
 export const chatUserUpdate = (users) => ({ type: types.CHAT_USER_UPDATE, users });
 export const chatSelectUser = (user) => ({ type: types.CHAT_SELECT_USER, user });
 export const chatShowTextChat = (show) => ({ type: types.CHAT_SHOW_TEXT_CHAT, show })
+export const chatClearTextMessages = () => ({ type: types.CHAT_CLEAR_TEXT_MESSAGES })
 export const chatSendTextMessage = (text) => {
     let msg = {
         user: janusClient.username(),
@@ -24,21 +26,23 @@ export const chatSendTextMessage = (text) => {
 export const chatAddTextMessage = (msg) => {
     return { type: types.CHAT_ADD_TEXT_MESSAGE, message: msg };
 }
-export const chatConnect = (roomid) => {
+export const chatConnect = (roomid = types.CONFIG_JANUS_ROOM) => {
     return (dispatch) => {
         janusClient.connect().then(() => {
             return janusClient.join(roomid);
         }).then(() => {
+            dispatch({ type: types.CHAT_CONNECT });
             let constraints = {
                 video: true,
                 audio: true
             }
-            navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-                janusClient.publish(stream).then(() => {
-                    console.log(' ::::  published local stream');
-                    dispatch({ type: types.CHAT_CONNECT });
-                });
+            return navigator.mediaDevices.getUserMedia(constraints);
+        }).then((stream) => {
+            return janusClient.publish(stream).then(() => {
+                console.log(' ::::  published local stream');
             });
+        }).catch((e) => {
+            alert('Unable to find a camera.  Try reconnect the camera and reboot the computer.');
         });
     }
 };
@@ -118,4 +122,8 @@ janusClient.on('chatMsg', (msg) => {
 
 janusClient.on('thumbnailUpdate', (user) => {
     store.dispatch(chatUserUpdate([user]));
+});
+
+janusClient.on('error', (msg) => {
+    alert('Server Error: ' + msg + "\n\nPlease try to reload the webpage.");
 });

@@ -23,3 +23,8 @@ export const CHAT_ENABLE_VIDEO = "CHAT_ENABLE_VIDEO"
 export const CHAT_SHOW_TEXT_CHAT = "CHAT_SHOW_TEXT_CHAT"
 export const CHAT_SEND_TEXT_MESSAGE = "CHAT_SEND_TEXT_MESSAGE"
 export const CHAT_ADD_TEXT_MESSAGE = "CHAT_ADD_TEXT_MESSAGE"
+export const CHAT_CLEAR_TEXT_MESSAGES = "CHAT_CLEAR_TEXT_MESSAGES"
+
+export const CONFIG_JANUS_URL = 'wss://sd6.dcpfs.net:8989/janus'
+// export const CONFIG_JANUS_URL = 'ws://localhost:8188/janus'
+export const CONFIG_JANUS_ROOM = 9000

@@ -19,7 +19,8 @@ import { globe } from 'react-icons-kit/fa/globe';
 import { trello } from 'react-icons-kit/fa/trello';
 
 import { chatConnect, chatDisconnect, chatEnableAudio, chatEnableVideo, chatShowTextChat } from 'actions/chat';
-import { viewsMaximizePanel, viewsResetPanels } from 'actions/views';
+import { viewsMaximizePanel, viewsResetPanels, viewsUpdateLeft } from 'actions/views';
+import InstructionsView from 'components/VideoRoom/instructions'
 
 class Toolbar extends React.Component {
 
@@ -47,8 +48,9 @@ class Toolbar extends React.Component {
   onConnectToggle() {
     if (this.props.connected) {
         this.props.dispatch(chatDisconnect());
+        this.props.dispatch(viewsUpdateLeft(<InstructionsView/>));
     } else {
-        this.props.dispatch(chatConnect(9000));
+        this.props.dispatch(chatConnect());
     }
   }
 
