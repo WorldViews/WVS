@@ -17,8 +17,10 @@ if (typeof WV == "undefined") {
 }
 
 var WVL = {};
-
-WVL.showTrackPlacemarks = true;
+window.WVL = WVL;
+WVL.showSitePlacemarks = true;
+WVL.showTrackPlacemarks = false;
+WVL.sites = {};
 WVL.tracks = {};
 WVL.currentTrack = null;
 WVL.cursor = null;
@@ -41,6 +43,37 @@ WVL.layers = {};
 WVL.layerControl = null;
 WVL.osm = null;
 WVL.googleSat = null;
+
+WVL.Site = function(name)
+{
+    this.name = name;
+    this.placemark = null;
+    this.tracks = []
+}
+
+WVL.Site.prototype.addPlacemark = function(trackDesc)
+{
+    if (this.placemark)
+	return;
+    var trackDesc = this.tracks[0];
+    var opts = {draggable: false, title: this.name};
+    var gpos = trackDesc.data.latLng[0];
+    //var gpos = [0,0];
+    this.placemark =  L.marker(gpos, opts);
+    //placemark.bindPopup(label).openPopup();
+    this.placemark.addTo(WVL.map);
+    this.placemark.on('click',
+		      e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
+}
+
+WVL.Site.prototype.addTrack = function(trackDesc)
+{
+    this.tracks.push(trackDesc);
+    if (WVL.showSitePlacemarks) {
+	this.addPlacemark();
+    }
+}
+
 
 WVL.ImageLayer = function(imageUrl, opts)
 {
@@ -432,6 +465,9 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     var gpos = trackData.latLng[0];
     trackDesc.map = map;
     trackDesc.placemark = null;
+    if (trackDesc.site) {
+	trackDesc.site.addTrack(trackDesc);
+    }
     if (WVL.showTrackPlacemarks) {
 	//var label = "Hello There";
 	var label = trackDesc.description;
@@ -582,7 +618,7 @@ WVL.handleLayerRecs = function(tours, url, map)
     report("got tours data from "+url);
     tours.records.forEach(trackDesc => {
 	if (WVL.match(trackDesc.recType, "IndoorMap")) {
-	    report("**** yipee!!  indoor map "+JSON.stringify(trackDesc));
+	    report("**** indoor map "+JSON.stringify(trackDesc));
 	    var imap = trackDesc;
 	    var p1 = imap.p0;
 	    var p2 = [p1[0]+.001, p1[1]];
@@ -598,7 +634,7 @@ WVL.handleLayerRecs = function(tours, url, map)
 	    return;
 	}
 	if (trackDesc.recType.toLowerCase() == "coordinatesystem") {
-	    report("**** yipee!!  coordinateSystem "+JSON.stringify(trackDesc));
+	    report("**** coordinateSystem "+JSON.stringify(trackDesc));
 	    WV.addCoordinateSystem(trackDesc.coordSys, trackDesc);
 	    return;
 	}
@@ -606,6 +642,15 @@ WVL.handleLayerRecs = function(tours, url, map)
 	    return;
 	}
 	var trackId = trackDesc.id;
+	var siteName = trackDesc.site;
+	if (!siteName)
+	    siteName = trackDesc.description;
+	if (siteName) {
+	    if (!WVL.sites[siteName]) {
+		WVL.sites[siteName] = new WVL.Site(siteName);
+	    }
+	    trackDesc.site = WVL.sites[siteName];
+	}
 	report("tour.tourId: "+trackId);
 	var dataUrl = trackDesc.dataUrl;
 	WVL.loadTrackFromFile(trackDesc, dataUrl, map);
