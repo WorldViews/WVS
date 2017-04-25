@@ -244,7 +244,7 @@
 	  "tourName": "memorial_park_tour_2",
           "dataUrl": "/static/data/paths/MemorialPark/mempark_2017-04-12_17-37-48.json",
           "youtubeId": "vN5VL-dJdoo",
-	  "youtubeDeltaT": 0.0,
+	  "youtubeDeltaT": -32.1,
 	  "coordSys": "GEO",
 	  "height": 1.0
        },
@@ -258,7 +258,7 @@
 	  "tourName": "memorial_park_tour_3",
           "dataUrl": "/static/data/paths/MemorialPark/mempark_2017-04-12_17-49-14.json",
           "youtubeId": "2FwO4sB_EhE",
-	  "youtubeDeltaT": 0.0,
+	  "youtubeDeltaT": -36.82,
 	  "coordSys": "GEO",
 	  "height": 1.0
        },
@@ -272,7 +272,7 @@
 	  "tourName": "memorial_park_tour_4",
           "dataUrl": "/static/data/paths/MemorialPark/mempark_2017-04-12_18-00-55.json",
           "youtubeId": "mmfD1-XpXXo",
-	  "youtubeDeltaT": 0.0,
+	  "youtubeDeltaT": -87.74,
 	  "coordSys": "GEO",
 	  "height": 1.0
        },
@@ -286,7 +286,7 @@
 	  "tourName": "memorial_park_tour_5",
           "dataUrl": "/static/data/paths/MemorialPark/mempark_2017-04-12_18-13-01.json",
           "youtubeId": "RoUTzQAB1PE",
-	  "youtubeDeltaT": 0.0,
+	  "youtubeDeltaT": -25.83,
 	  "coordSys": "GEO",
 	  "height": 1.0
        },
