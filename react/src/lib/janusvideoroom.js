@@ -36,6 +36,7 @@ export default class JanusVideoRoom {
         this.roomInfo = {};
         this.me = {};
         this.connected = false;
+        this.connecting = false;
 
         // used to create thumbnail
         this.video = document.createElement('video')
@@ -119,6 +120,9 @@ export default class JanusVideoRoom {
     connect() {
         let self = this;
         let promise = new Promise((resolve, reject) => {
+            if (self.connecting) {
+                reject("Connecting...");
+            }
             // Initialize Janus
             new Promise((resolve) => {
                 Janus.init({
@@ -130,7 +134,10 @@ export default class JanusVideoRoom {
                 return new Promise((resolve) => {
                     self.janus = new Janus({
                         server: self.options.url,
-                        success: resolve,
+                        success: () => {
+                            self.connecting = false;
+                            resolve()
+                        },
                         error: reject
                     });
                 });
