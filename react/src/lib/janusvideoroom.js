@@ -604,10 +604,9 @@ export default class JanusVideoRoom {
         this.thumbnailTimers['me'] = setInterval(() => {
             self._createThumbnail();
         }, 10000);
-        self._createThumbnail();
-        // setTimeout(() => {
-        //     self._createThumbnail();
-        // }, 5000);
+        setTimeout(() => {
+            self._createThumbnail();
+        }, 2000);
 
         this.me = {
             ...this.me,
