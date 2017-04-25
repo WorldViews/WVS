@@ -36,6 +36,7 @@
     "bluebird": "^3.5.0",
     "bootstrap": "^3.3.7",
     "bootstrap-webpack": "0.0.6",
+    "camel-case": "^3.0.0",
     "chai": "^3.5.0",
     "css-loader": "^0.28.0",
     "esdoc": "^0.5.2",

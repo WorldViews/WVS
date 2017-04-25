@@ -95,14 +95,14 @@ export default class JanusVideoRoom {
             this.video.srcObject = user.stream;
             setTimeout(() => {
                 self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
-                user.picture = self.canvas.toDataURL();
+                user.picture = self.canvas.toDataURL('image/jpeg', 0.3);
             }, 1000);
         } else {
             _.forEach(this.localStreams, (stream) => {
                 self.video.srcObject = stream;
                 setTimeout(() => {
                     self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
-                    self.status.picture = self.canvas.toDataURL();
+                    self.status.picture = self.canvas.toDataURL('image/jpeg', 0.5);
                     self.me.status.picture = self.status.picture;
                     self._sendStatus();
                     self.emit('thumbnailUpdate', self.me);
@@ -193,7 +193,7 @@ export default class JanusVideoRoom {
 
             _.forEach(this.localStreams, (stream) => {
                 _.forEach(stream.getAudioTracks(), (track) => {
-                    track.enable = this.status.audioEnabled;
+                    track.enabled = this.status.audioEnabled;
                 });
             });
         }
@@ -205,8 +205,8 @@ export default class JanusVideoRoom {
             this.status.videoEnabled = enable;
 
             _.forEach(this.localStreams, (stream) => {
-                _.forEach(stream.getAudioTracks(), (track) => {
-                    track.enable = this.status.videoEnabled;
+                _.forEach(stream.getVideoTracks(), (track) => {
+                    track.enabled = this.status.videoEnabled;
                 });
             });
         }
@@ -577,7 +577,8 @@ export default class JanusVideoRoom {
         this.status.stream = stream;
         this.thumbnailTimers['me'] = setInterval(() => {
             self._createThumbnail();
-        }, 5000);
+        }, 10000);
+        self._createThumbnail();
 
         this.me = {
             ...this.me,
