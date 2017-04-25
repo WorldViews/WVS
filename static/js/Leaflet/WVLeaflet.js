@@ -322,7 +322,7 @@ WVL.clickOnTrack = function(e, track) {
 }
 
 WVL.clickOnPlacemark = function (e, trackDesc, gpos) {
-    WVL.map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true});
+    WVL.map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true, duration: 0.5});
 };
 
 var E;
