@@ -51,7 +51,8 @@ export default class JanusVideoRoom {
             videoEnabled: true,
             speaking: false,
             picture: null,
-            display: this.options.username
+            display: this.options.username,
+            videoType: 'normal'
         };
     }
 
@@ -502,6 +503,14 @@ export default class JanusVideoRoom {
             this._sendStatus();
         }
         return this.options.username;
+    }
+
+    videoType(type) {
+        if (type) {
+            this.options.videoType = type;
+            this._sendStatus();
+        }
+        return this.options.videoType;
     }
 
     sendTextMessage(msg) {
