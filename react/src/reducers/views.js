@@ -1,6 +1,7 @@
 import * as types from '../constants';
 
 const defaultState = {
+    mediaUrl: undefined,
     maximizePanel: undefined,
     leftView: undefined,
     rightView: undefined
@@ -28,6 +29,12 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 maximizePanel: null
+            }
+        }
+        case types.VIEWS_SET_MEDIA_URL: {
+            return {
+                ...state,
+                mediaUrl: action.url
             }
         }
         default:
