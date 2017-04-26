@@ -3,6 +3,7 @@ import math
 import numpy
 from numpy.linalg import norm
 from numpy import cross, array, transpose, dot, eye
+import json
 """
 Note, dot(A,B) is matrix A times B
 for vectors u,v    u*v is the scalar project
@@ -179,10 +180,43 @@ def test4():
     print "xyz:", xyz
     print "lla:", lla
 
+def test4():
+    cs = CoordSys('Quinlan', 37.3258179, -122.0445978, 0, 0)
+    xyz = [20,20,0]
+    lla = cs.xyzToLatLonAlt([20,20,0])
+    print "xyz:", xyz
+    print "lla:", lla
+    print "----------"
+    lla = 37.3258179, -122.0445978, 0
+    print "lla:", lla
+    xyz = cs.latLonAltToXYZ(lla)
+    print "xyz:", xyz
 
+def convertTourFromGeo(inPath, outPath, cs, name=None):
+    print "convertTour %s => %s" % (inPath, outPath)
+    tour = json.load(file(inPath))
+    if tour['coordinateSystem'] != "GEO":
+        print "*** input tour is not in GEO coordinates"
+    tour['coordinateSystem'] = cs.name
+    if name:
+        tour['name'] = name
+    for rec in tour['recs']:
+        x,y,z = cs.latLonAltToXYZ(rec['pos'])
+        rec['pos'] = [x,y,z]
+    json.dump(tour, file(outPath, "w"), indent=4)
+
+def test5():
+    #cs = CoordSys('Quinlan', 37.3258179, -122.0656978, 0, 90)
+    cs = CoordSys('Quinlan', 37.3258179, -122.0425, 0, 90)
+    inPath = "C:/GitHub/WorldViews/WVS/static/data/paths/MemorialPark/mempark_2017-04-12_18-13-01.json"
+    #outPath = "C:/GitHub/PanoJS/WVS/static/data/paths/MemorialPark/quinlan_path_1.json"
+    outPath = "C:/GitHub/PanoJS/tours/data/quinlan_path_1.json"
+    convertTourFromGeo(inPath, outPath, cs, "quinlan_path_1")
+    
 if __name__ == '__main__':
     #test1()
     #test3()
-    test4()
+    #test4()
+    test5()
 
 
