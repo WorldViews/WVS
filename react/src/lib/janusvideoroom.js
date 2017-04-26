@@ -442,7 +442,7 @@ export default class JanusVideoRoom {
      */
     subscribe(userid, options) {
         let media = _.merge({
-            audioSend: true,
+            audioSend: false,
             videoSend: false,
             data: true
         }, options);
