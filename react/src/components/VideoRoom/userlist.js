@@ -7,7 +7,7 @@ import styles from './styles.scss'
 import VideoView from 'components/Viewer'
 import Icon from 'react-icons-kit';
 import { ic_face } from 'react-icons-kit/md/ic_face';
-
+import _ from 'lodash';
 
 class UserList extends React.Component {
   static propTypes = {
@@ -28,10 +28,15 @@ class UserList extends React.Component {
       this.props.dispatch(chatSelectUser(user));
       this.props.dispatch(viewsUpdateLeft(<VideoView />));
       let url = 'janus://' + user.display;
-      let type = user.videoType || 'webrtc';
+      let type = 'webrtc';
 
       if (user.display.match(/[Dd]rone/)) {
           type = 'webrtc-drone';
+      }
+
+      let videoType = _.get(user, 'status.videoType');
+      if (videoType === '360') {
+          type = 'webrtc-360';
       }
 
       this.props.dispatch(viewsSetMediaUrl(url, type));
