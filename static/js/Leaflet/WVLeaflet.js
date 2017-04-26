@@ -295,8 +295,16 @@ WVL.clickOnMap = function(e) {
 WVL.setCurrentTrack = function(track)
 {
     report("-------------------------------");
+    if (WVL.currentTrack == track)
+	return;
     WVL.currentTrack = track;
     var desc = track.desc;
+    var recType = desc.recType;
+    if (recType && WVL.cursor && recType != WVL.cursor.recType) {
+	report("***** Need to replace cursor *****");
+	WVL.removeCursor();
+	WVL.getCursor(recType);
+    }
     report("setCurrentTrack id: "+desc.id);
     var videoId = desc.youtubeId;
     var videoDeltaT = desc.youtubeDeltaT;
@@ -360,10 +368,23 @@ WVL.dragPlacemark = function (e, trackDesc, gpos) {
     }
 };
 
+WVL.removeCursor = function()
+{
+    if (!WVL.cursor)
+	return;
+    WVL.cursor.remove();
+    WVL.cursor = null;
+}
+
 WVL.getCursor = function()
 {
     if (!WVL.cursor) {
+	var recType = null;
+	if (WVL.currentTrack)
+	    recType = WVL.currentTrack.desc.recType;
 	var iconOpts = WVL.iconOpts['360cam'];
+	if (recType == "dronePath")
+	    iconOpts = WVL.iconOpts['drone'];
 	var icon = L.icon(iconOpts);
         var opts = {'title': 'Camera Position', icon: icon};
         //var marker = L.marker([lat, lng],opts).addTo(WVL.map);
