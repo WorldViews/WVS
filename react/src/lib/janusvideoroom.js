@@ -720,6 +720,11 @@ export default class JanusVideoRoom {
             self._createThumbnail();
         }, 2000);
 
+        // make sure the saved audio/video toggle state is updated to
+        // the new stream that has been published.
+        self.enableAudio(self.enableAudio());
+        self.enableVideo(self.enableVideo());
+
         this.me = {
             ...this.me,
             stream,
