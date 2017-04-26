@@ -2,23 +2,26 @@ import React from 'react'
 import PropTypes from 'prop-types';
 
 import WVL from 'Leaflet/WVLeaflet'
-import { mapSelectTrack } from 'actions/map';
-import { viewsUpdateLeft } from 'actions/views';
+import { chatSelectUser } from 'actions/chat';
+import { viewsUpdateLeft, viewsSetMediaUrl } from 'actions/views';
 import { connect } from 'react-redux';
 import Config from 'config';
 import TrackViewer from 'components/Viewer';
+import _ from 'lodash';
 
 class MapView extends React.Component {
 
   static propTypes = {
     className: PropTypes.string,
     dispatch: PropTypes.func,
-    maximizePanel: PropTypes.string
+    maximizePanel: PropTypes.string,
+    users: PropTypes.array
   };
 
   static stateToProps(state, props) {
     return {
-        maximizePanel: state.views.maximizePanel
+        maximizePanel: state.views.maximizePanel,
+        users: state.chat.users
     }
   }
 
@@ -39,6 +42,7 @@ class MapView extends React.Component {
     WVL.watchPositions();
 
     WVL.registerTrackWatcher(this.onWatchTrack.bind(this));
+    WVL.registerDeviceClickWatcher(this.onDeviceClickWatcher.bind(this));
   }
 
   componentWillUpdate(nextProp) {
@@ -47,9 +51,37 @@ class MapView extends React.Component {
     }
   }
 
-  onWatchTrack(track, trec, e) {
-    this.props.dispatch(mapSelectTrack({track, trec}));
+  onDeviceClickWatcher(clientId, clientType, info) {
+    let type = 'webrtc';
+    let url = 'janus://' + clientId;
+    if (clientId === 'drone' || clientId === 'Drone') {
+      clientType = 'drone';
+    }
+    switch (clientType) {
+      case 'android':
+        if (info.videoType === '360')
+          type = 'webrtc-360';
+        break;
+      case 'drone':
+        type = 'webrtc-drone';
+        break;
+      default:
+        type = 'webrtc';
+    }
+    let user = _.find(this.props.users, {'display': clientId});
+    this.props.dispatch(chatSelectUser(user));
+    this.props.dispatch(viewsSetMediaUrl(url, type));
     this.props.dispatch(viewsUpdateLeft(<TrackViewer/>));
+  }
+
+  onWatchTrack(track, trec, e) {
+    //this.props.dispatch(mapSelectTrack({track, trec}));
+    let ytid = _.get(track, 'desc.youtubeId');
+    if (ytid) {
+      let url = 'https://www.youtube.com/watch?v=' + ytid;
+      this.props.dispatch(viewsSetMediaUrl(url, 'youtube'));
+      this.props.dispatch(viewsUpdateLeft(<TrackViewer/>));
+    }
   }
 
   render () {

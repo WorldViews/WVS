@@ -34,7 +34,8 @@ export default function reducer(state = defaultState, action) {
         case types.VIEWS_SET_MEDIA_URL: {
             return {
                 ...state,
-                mediaUrl: action.url
+                mediaUrl: action.mediaUrl,
+                mediaType: action.mediaType,
             }
         }
         default:

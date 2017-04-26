@@ -3,8 +3,9 @@ import _ from 'lodash';
 
 const defaultState = {
     connected: false,
-    mainStream: undefined,
-    localStream: false,
+    // mainStream: undefined,
+    // localStream: false,
+    selectedUser: undefined,
     enableAudio: true,
     enableVideo: true,
     showTextChat: false,
@@ -36,18 +37,18 @@ export default function reducer(state = defaultState, action) {
         case types.CHAT_USER_EXIT: {
             let users = _.differenceWith(state.users, action.users,(a,b) => a.id == b.id);
             users = _.sortBy(users, (u) => u.id);
-            let mainStream = state.mainSteam;
-            if (mainStream) {
-                let foundUser = _.find(users, (u) => {
-                    return u.stream.id = mainStream.id;
-                });
-                if (foundUser) {
-                    mainStream = foundUser.stream;
-                }
-            }
+            // let mainStream = state.mainSteam;
+            // if (mainStream) {
+            //     let foundUser = _.find(users, (u) => {
+            //         return u.stream.id = mainStream.id;
+            //     });
+            //     if (foundUser) {
+            //         mainStream = foundUser.stream;
+            //     }
+            // }
             let result = {
                 ...state,
-                mainStream,
+                // mainStream,
                 users
 
             };
@@ -57,17 +58,17 @@ export default function reducer(state = defaultState, action) {
             let users = _.unionWith(action.users, state.users, (a,b) => a.id == b.id);
             users = _.sortBy(users, (u) => u.id);
             // let users = _.unionBy([action.users, state.users], 'id');
-            let mainStream = state.mainStream;
-            if (users.length == 1) {
-                mainStream = users[0].stream;
-            }
+            // let mainStream = state.mainStream;
+            // if (users.length == 1) {
+            //     mainStream = users[0].stream;
+            // }
             if (!state.connected) {
                 users = [];
             }
             let result = {
                 ...state,
                 users,
-                mainStream
+                // mainStream
             };
             return result;
         }
@@ -83,15 +84,17 @@ export default function reducer(state = defaultState, action) {
             }
         }
         case types.CHAT_SELECT_USER: {
-            if (!state.localStream) {
-                enableVideo(state.mainStream, false);
+            let prevStream = _.get(state, 'selectedUser.stream');
+            if (!_.get(state, 'selectedUser.local')) {
+                enableVideo(prevStream, false);
             }
-            enableVideo(action.user.stream, true);
+            if (action.user.stream) {
+                enableVideo(action.user.stream, true);
+            }
 
             return {
                 ...state,
-                mainStream: action.user.stream,
-                localStream: action.user.local
+                selectedUser: action.user
             }
         }
         case types.CHAT_CONNECT: {

@@ -24,10 +24,17 @@ class UserList extends React.Component {
   }
 
   onClick(user) {
-      let stream = user.stream;
+      //let stream = user.stream;
       this.props.dispatch(chatSelectUser(user));
       this.props.dispatch(viewsUpdateLeft(<VideoView />));
-      this.props.dispatch(viewsSetMediaUrl(stream));
+      let url = 'janus://' + user.display;
+      let type = user.videoType || 'webrtc';
+
+      if (user.display.match(/[Dd]rone/)) {
+          type = 'webrtc-drone';
+      }
+
+      this.props.dispatch(viewsSetMediaUrl(url, type));
   }
 
   render () {

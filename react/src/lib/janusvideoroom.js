@@ -590,8 +590,26 @@ export default class JanusVideoRoom {
         return this.options.videoType;
     }
 
+    /**
+     * Sends a text message
+     *
+     * @param {string} msg - text message
+     */
     sendTextMessage(msg) {
         this._sendMessage("chatMsg", msg);
+    }
+
+    /**
+     * Find a stream given a username
+     *
+     * @param {string} username - username
+     */
+    getStream(username) {
+        if (username === 'me') {
+            return this.me.stream;
+        }
+        let info = _.find(this.publishers, {'display': username});
+        return _.get(info, 'stream');
     }
 
     // private

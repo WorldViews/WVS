@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 // import { connect } from 'react-redux';
 import styles from './styles.scss'
 
+import Tooltip from 'react-tooltip'
+import io from 'socket.io-client'
+
+let socket = io.connect('https://sd6.dcpfs.net:6443/');
+
 export default class VideoView extends React.Component { // eslint-disable-line react/prefer-stateless-function
   static propTypes = {
     className: PropTypes.string,
@@ -30,28 +35,25 @@ export default class VideoView extends React.Component { // eslint-disable-line 
     //   this.refs.video.src = URL.createObjectURL(stream);
   }
 
-  update() {
-    if (this.props.stream) {
-      this.attachStream(this.props.stream);
+  update(props) {
+    if (props.stream) {
+      this.attachStream(props.stream);
     }
-    if (this.props.url) {
-      this.video.src = this.props.url;
+    if (props.url) {
+      this.video.src = props.url;
     }
   }
 
   componentDidMount() {
-    this.update();
+    this.update(this.props);
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   if (nextProps) {
-  //       this.attachStream(nextProps.stream);
-  //   }
-  //   return true;
-  // }
+  componentWillUpdate(nextProps, nextState) {
+    this.update(nextProps);
+  }
 
-  componentWillUpdate() {
-    this.update();
+  onDroneChange(command) {
+    socket.emit('command', 'up');
   }
 
   render () {
@@ -59,13 +61,24 @@ export default class VideoView extends React.Component { // eslint-disable-line 
       <div className={styles.mainview}>
         <video ref={(v) => { this.video = v; }} controls="1" />
         <canvas ref={(c) => { this.canvas = c; }} />
-        <div className="drone form-group">
+          {}
+        <div className={"drone form-group" + (this.props.type !== 'drone' ? ' hidden' : '')} >
+          <Tooltip place="right" type="info" effect="solid"/>
           <a className="btn btn-up btn-primary btn-sm"
-            onClick={() => this.onDroneChange('up') }>Up</a>
+            data-tip="Move drone camera up"
+            onClick={() => this.onDroneChange('up') }>
+              <i className="glyphicon glyphicon-chevron-up"/>
+            </a>
           <a className="btn btn-center btn-primary btn-sm"
-            onClick={() => this.onDroneChange('center') }>Center</a>
+            data-tip="Center drone camera"
+            onClick={() => this.onDroneChange('reset') }>
+            <i className="glyphicon glyphicon glyphicon-stop"/>
+            </a>
           <a className="btn btn-down btn-primary btn-sm"
-            onClick={() => this.onDroneChange('down') }>Down</a>
+          data-tip="Move drone camera down"
+            onClick={() => this.onDroneChange('down') }>
+              <i className="glyphicon glyphicon-chevron-down"/>
+            </a>
         </div>
       </div>
     )

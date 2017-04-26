@@ -4,14 +4,14 @@ import { connect } from 'react-redux';
 
 import YoutubeViewer from './youtube';
 import VideoViewer from './video';
-import _ from 'lodash'
+// import _ from 'lodash';
 import styles from './styles.scss'
+import { janusClient } from 'actions/chat';
 
 class Viewer extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    track: PropTypes.object,
-    mediaUrl: PropTypes.object,
+    mediaUrl: PropTypes.string,
     mediaType: PropTypes.string
   };
 
@@ -23,12 +23,11 @@ class Viewer extends React.Component {
   static stateToProps(state) {
     return {
       mediaUrl: state.views.mediaUrl,
-      mediaType: state.views.mediaType,
-      track: state.map.selectedTrack
+      mediaType: state.views.mediaType
     }
   }
 
-  youtubeUrlParser(url){
+  static youtubeUrlParser(url){
     if (typeof url === 'string') {
       let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
       let  match = url.match(regExp);
@@ -37,7 +36,15 @@ class Viewer extends React.Component {
     return false;
   }
 
-  parseUrl(url, props) {
+  static janusUrlParser(url) {
+    let regExp = /^janus:\/\/([^#\&\?]*)/;
+    let match = url.match(regExp);
+    let username = (match && match[1]);
+    let stream = janusClient.getStream(username);
+    return stream;
+  }
+
+  /*parseUrl(url, props) {
     if (props.track) {
       return 'youtube';
     }
@@ -51,7 +58,7 @@ class Viewer extends React.Component {
       }
     } if (typeof url === 'object') {
       // media stream url
-      switch (props.mediaType) {
+      switch (this.props.mediaType) {
         case '360':
           return 'webrtc-360';
         case 'drone':
@@ -62,13 +69,15 @@ class Viewer extends React.Component {
     }
     return null;
   }
+  */
 
   update(props) {
     let url = props.mediaUrl;
-    let type = this.parseUrl(url, props);
+    let type = props.mediaType;
+    let stream = null;
     switch (type) {
       case 'youtube': {
-        let ytid = this.youtubeUrlParser(url, props) || _.get(props, 'track.track.desc.youtubeId');
+        let ytid = Viewer.youtubeUrlParser(url);
         this.element = <YoutubeViewer className={this.props.className} id={ytid} />;
         break;
       }
@@ -76,16 +85,19 @@ class Viewer extends React.Component {
         this.element = <VideoViewer className={this.props.className} url={url} />;
         break;
       }
+      case 'webrtc': {
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type={type} />;
+        break;
+      }
       case 'webrtc-360': {
-        this.element = <VideoViewer className={this.props.className} stream={url} type="360" />;
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type="360" />;
         break;
       }
       case 'webrtc-drone': {
-        this.element = <VideoViewer className={this.props.className} stream={url} type="drone" />;
-        break;
-      }
-      case 'webrtc': {
-        this.element = <VideoViewer className={this.props.className} stream={url} />;
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type="drone" />;
         break;
       }
       default:
