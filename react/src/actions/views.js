@@ -7,3 +7,4 @@ export const viewsSetMediaUrl = (mediaUrl, mediaType) => ({ type: types.VIEWS_SE
 // panel should be 'left' or 'right'
 export const viewsMaximizePanel = (panel) => ({ type: types.VIEWS_MAXIMIZE_PANEL, panel });
 export const viewsResetPanels = () => ({ type: types.VIEWS_RESET_PANELS });
+export const viewsSetType = (viewType) => ({ type: types.VIEWS_SET_TYPE, viewType });

@@ -184,12 +184,14 @@ def xlefletjs_tour():
     return render_template("xtour.html")
 
 @app.route('/react')
+@app.route('/cherryblossom')
 def react_view():
     webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
         bundle=webpack_manifest.get('app.js', 'app.bundle.js'))
 
 @app.route('/chat')
+@app.route('/toyokawa')
 def videochat_view():
     webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
