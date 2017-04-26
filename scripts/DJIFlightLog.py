@@ -1,6 +1,7 @@
 
 
 import csv, json
+import os
 
 MIN_DELTA_T = 0.5
 
@@ -62,9 +63,18 @@ class FlightLog:
                }
         file(jsonPath, "w").write(json.dumps(obj, indent=3));
 
-        
+
+def processDir(dir):
+    names = os.listdir(dir)
+    for name in names:
+        path = os.path.join(dir, name)
+        if path[-4:] == ".csv":
+            log = FlightLog(path)
+            log.saveTrack()
+
 def test():
     #path = "c:/GitHub/WorldViews/wvs/play/DJI_ASSISTANT_EXPORT_FILE_2017-04-20_15-05-56.FLY092.csv"
+    """
     paths = [
         "c:/GitHub/WorldViews/wvs/play/flightLogs/FLY091.csv",
         "c:/GitHub/WorldViews/wvs/play/flightLogs/FLY092.csv",
@@ -75,10 +85,22 @@ def test():
         "c:/GitHub/WorldViews/wvs/play/flightLogs/FLY102.csv",
         "c:/GitHub/WorldViews/wvs/play/flightLogs/FLY103.csv",
         ]
+    """
+    paths = [
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY091.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY092.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY094.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY098.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY100.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY101.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY102.csv",
+        "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/FLY103.csv",
+        ]
     for path in paths:
         log = FlightLog(path)
         log.saveTrack()
     
 if __name__ == '__main__':
-    test()
-    
+    #test()
+    dir = "c:/GitHub/WorldViews/wvs/play/flightLogs/MemPark_2017.04.25/"
+    processDir(dir)
