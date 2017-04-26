@@ -1,0 +1,32 @@
+:local(.mainview) {
+    // width: auto;
+    // height: 100%;
+    width: 100%;
+    height: 100%;
+
+    video {
+        width: 100%;
+        height: 100%;
+    }
+
+    .drone {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 50px;
+        .btn {
+            margin: 5px;
+        }
+    }
+
+}
+
+:local(.novideo) {
+    text-align: center;
+    background-color: #222d32;
+    h1 {
+        color: #ccc;
+        flex: 1;
+        height: 100%;
+    }
+}

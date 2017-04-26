@@ -29,6 +29,7 @@ class Toolbar extends React.Component {
     enableAudio: PropTypes.bool,
     enableVideo: PropTypes.bool,
     showTextChat: PropTypes.bool,
+    viewType: PropTypes.string,
     dispatch: PropTypes.func
   }
 
@@ -37,7 +38,8 @@ class Toolbar extends React.Component {
         connected: state.chat.connected,
         enableAudio: state.chat.enableAudio,
         enableVideo: state.chat.enableVideo,
-        showTextChat: state.chat.showTextChat
+        showTextChat: state.chat.showTextChat,
+        viewType: state.views.viewType
     };
   }
 
@@ -85,27 +87,30 @@ class Toolbar extends React.Component {
         <Icon icon={bars}
             className="icon icon-padding" onClick={this.onMenuToggle.bind(this)}/>
 
-        <Icon
-            data-tip={this.props.connected ?  "Disconnect" : "Connect"}
-            icon={this.props.connected ?  phoneHangUp : phoneSquare}
-            className="icon"
-            onClick={this.onConnectToggle.bind(this)}/>
+        { (this.props.viewType === 'private') ? (
+        <div>
+            <Icon
+                data-tip={this.props.connected ?  "Disconnect" : "Connect"}
+                icon={this.props.connected ?  phoneHangUp : phoneSquare}
+                className="icon"
+                onClick={this.onConnectToggle.bind(this)}/>
 
-        <Icon icon={videoCamera}
-            data-tip={this.props.enableVideo ?  "Disable Camera" : "Enable Camera"}
-            className={"icon" + ((this.props.enableVideo) ? "" : " disabled")}
-            onClick={this.onVideoToggle.bind(this)}/>
+            <Icon icon={videoCamera}
+                data-tip={this.props.enableVideo ?  "Disable Camera" : "Enable Camera"}
+                className={"icon" + ((this.props.enableVideo) ? "" : " disabled")}
+                onClick={this.onVideoToggle.bind(this)}/>
 
-        <Icon icon={microphone}
-            data-tip={this.props.enableAudio ?  "Disable Microphone" : "Enable Microphone"}
-            className={"icon" + ((this.props.enableAudio) ? "" : " disabled")}
-            onClick={this.onAudioToggle.bind(this)}/>
+            <Icon icon={microphone}
+                data-tip={this.props.enableAudio ?  "Disable Microphone" : "Enable Microphone"}
+                className={"icon" + ((this.props.enableAudio) ? "" : " disabled")}
+                onClick={this.onAudioToggle.bind(this)}/>
 
-        <Icon icon={comments}
-            data-tip={this.props.showTextChat ?  "Hide Text Chat" : "Show Text Chat"}
-            className="icon icon-padding"
-            onClick={this.onToggleTextChat.bind(this)}/>
-
+            <Icon icon={comments}
+                data-tip={this.props.showTextChat ?  "Hide Text Chat" : "Show Text Chat"}
+                className="icon icon-padding"
+                onClick={this.onToggleTextChat.bind(this)}/>
+        </div>
+        ) : null}
 
 
         <Icon icon={youtubePlay}

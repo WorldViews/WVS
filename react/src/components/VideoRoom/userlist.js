@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { chatSelectUser } from 'actions/chat'
-import { viewsUpdateLeft } from 'actions/views'
+import { viewsUpdateLeft, viewsSetMediaUrl } from 'actions/views'
 import styles from './styles.scss'
-import VideoView from './videoview'
+import VideoView from 'components/Viewer'
 import Icon from 'react-icons-kit';
 import { ic_face } from 'react-icons-kit/md/ic_face';
 
@@ -24,9 +24,17 @@ class UserList extends React.Component {
   }
 
   onClick(user) {
-      console.log('click')
+      //let stream = user.stream;
       this.props.dispatch(chatSelectUser(user));
-      this.props.dispatch(viewsUpdateLeft(<VideoView />))
+      this.props.dispatch(viewsUpdateLeft(<VideoView />));
+      let url = 'janus://' + user.display;
+      let type = user.videoType || 'webrtc';
+
+      if (user.display.match(/[Dd]rone/)) {
+          type = 'webrtc-drone';
+      }
+
+      this.props.dispatch(viewsSetMediaUrl(url, type));
   }
 
   render () {

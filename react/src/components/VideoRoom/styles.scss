@@ -62,19 +62,6 @@
   }
 }
 
-:local(.mainview) {
-    // width: auto;
-    // height: 100%;
-    width: 100%;
-    height: auto;
-    position: absolute;
-    left: 50%; /* % of surrounding element */
-    top: 50%;
-    transform: translate(-50%, -50%); /* % of current element */
-
-}
-
-
 @mixin max {
     position: absolute;
     right: 0;

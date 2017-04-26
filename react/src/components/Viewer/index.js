@@ -1,63 +1,125 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import WVYT from 'WVYT2'
-import WVL from 'Leaflet/WVLeaflet'
+import YoutubeViewer from './youtube';
+import VideoViewer from './video';
+// import _ from 'lodash';
+import styles from './styles.scss'
+import { janusClient } from 'actions/chat';
 
-export default class Viewer extends React.Component {
+class Viewer extends React.Component {
   static propTypes = {
-    className: PropTypes.string
+    className: PropTypes.string,
+    mediaUrl: PropTypes.string,
+    mediaType: PropTypes.string
   };
 
-  watchYTStat (stat) {
-    if (!WVL.currentTrack) {
-            // console.log("watchYTStat No current track");
-      return
+  constructor(props) {
+    super(props);
+    this.element = (<div>No Viewer</div>);
+  }
+
+  static stateToProps(state) {
+    return {
+      mediaUrl: state.views.mediaUrl,
+      mediaType: state.views.mediaType
     }
-    var desc = WVL.currentTrack.desc
-        // console.log("watchYTStat desc: "+JSON.stringify(desc));
-    var vt = stat.t
-    var trailTime = vt - desc.youtubeDeltaT
-        // console.log("watchYTStat vt: "+vt+"   trailTime: "+trailTime);
-    WVL.setPlayTime(trailTime)
   }
 
-  watchTrackEvent (track, trec, e) {
-    console.log('----------------------')
-    console.log('trec: ' + trec)
-    var t = trec.rt
-    console.log('t: ' + t)
-    var desc = track.desc
-    var videoId = desc.youtubeId
-    var deltaT = desc.youtubeDeltaT
-    WVL.setCurrentTrack(track)
-    WVL.setPlayTime(t)
-    var vt = t + deltaT
-    if (vt < 0) { vt = 0 }
-    console.log('vt: ' + vt)
-    WVYT.playVideo(videoId, {t: vt})
-        //   WVYT.setPlayTime(vt);
+  static youtubeUrlParser(url){
+    if (typeof url === 'string') {
+      let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
+      let  match = url.match(regExp);
+      return (match && match[7].length==11)? match[7] : false;
+    }
+    return false;
   }
 
-  componentWillUnmount() {
-    WVYT.player.stopVideo();
-    WVYT.player.destroy();
-    WVYT.player = null;
+  static janusUrlParser(url) {
+    let regExp = /^janus:\/\/([^#\&\?]*)/;
+    let match = url.match(regExp);
+    let username = (match && match[1]);
+    let stream = janusClient.getStream(username);
+    return stream;
   }
 
-  componentDidMount () {
-    var youtubeId = 'f5e_4iIFzU8'
-    WVYT.videoId = youtubeId
-    WVYT.divId = 'youtube'
+  /*parseUrl(url, props) {
+    if (props.track) {
+      return 'youtube';
+    }
 
-    WVL.registerTrackWatcher((track, trec, e) => this.watchTrackEvent(track, trec, e))
-    WVYT.registerWatcher((stat) => this.watchYTStat(stat))
-    WVYT.start()
+    if (typeof url === 'string') {
+      let ytid = this.youtubeUrlParser(url);
+      if (ytid) {
+        return 'youtube';
+      } else {
+        return 'video';
+      }
+    } if (typeof url === 'object') {
+      // media stream url
+      switch (this.props.mediaType) {
+        case '360':
+          return 'webrtc-360';
+        case 'drone':
+          return 'webrtc-drone';
+        default:
+          return 'webrtc'
+      }
+    }
+    return null;
+  }
+  */
+
+  update(props) {
+    let url = props.mediaUrl;
+    let type = props.mediaType;
+    let stream = null;
+    switch (type) {
+      case 'youtube': {
+        let ytid = Viewer.youtubeUrlParser(url);
+        this.element = <YoutubeViewer className={this.props.className} id={ytid} />;
+        break;
+      }
+      case 'video': {
+        this.element = <VideoViewer className={this.props.className} url={url} />;
+        break;
+      }
+      case 'webrtc': {
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type={type} />;
+        break;
+      }
+      case 'webrtc-360': {
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type="360" />;
+        break;
+      }
+      case 'webrtc-drone': {
+        stream = Viewer.janusUrlParser(url);
+        this.element = <VideoViewer className={this.props.className} stream={stream} type="drone" />;
+        break;
+      }
+      default:
+        this.element = <div className={[this.props.className, styles.novideo].join(' ')}>
+          <h1>Please select a track</h1>
+        </div>;
+        break;
+    }
   }
 
-  render () {
-    return (
-        <div id="youtube" className={this.props.className}></div>
-    )
+  componentWillMount() {
+    this.update(this.props);
+  }
+
+
+  componentWillUpdate(props) {
+    this.update(props);
+  }
+
+  render() {
+    return this.element;
   }
 }
+
+export default connect(Viewer.stateToProps)(Viewer);
