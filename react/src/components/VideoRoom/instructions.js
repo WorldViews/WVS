@@ -23,6 +23,12 @@ export default class Instructions extends React.Component {
                 is promoted through the annual Cherry Blossom Festival held every year on the
                 last weekend in April.</p>
 
+              <h3>Instructions</h3>
+
+              <p>Click anywhere on a trail on the map on the right to see video from that trail displayed
+                in the left.  Additional layers can be selected by clicking the layers icon in the top 
+                right.</p>
+              <h3>Links</h3> 
               <ul>
                 <li><a href="http://www.cupertinotoyokawa.org/">Cupertino-Toyokawa Sister City Program</a></li>
                 <li><a href="http://cupertino.org/index.aspx?page=1079">City of Cupertino Cherry Blossom</a></li>
