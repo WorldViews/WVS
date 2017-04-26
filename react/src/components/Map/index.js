@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import WVL from 'Leaflet/WVLeaflet'
 import { chatSelectUser } from 'actions/chat';
 import { viewsUpdateLeft, viewsSetMediaUrl } from 'actions/views';
+import { mapSelectTrack } from 'actions/map';
 import { connect } from 'react-redux';
 import Config from 'config';
 import TrackViewer from 'components/Viewer';
@@ -79,6 +80,7 @@ class MapView extends React.Component {
     let ytid = _.get(track, 'desc.youtubeId');
     if (ytid) {
       let url = 'https://www.youtube.com/watch?v=' + ytid;
+      this.props.dispatch(mapSelectTrack(track, trec));
       this.props.dispatch(viewsSetMediaUrl(url, 'youtube'));
       this.props.dispatch(viewsUpdateLeft(<TrackViewer/>));
     }

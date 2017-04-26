@@ -141,6 +141,7 @@ WVYT.stopVideo = function() {
 WVYT.playVideo = function(id, rec)
 {
     if (!WVYT.ready) {
+        WVYT.requestedStartTime = rec.t;
         return;
     }
 

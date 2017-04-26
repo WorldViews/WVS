@@ -3,14 +3,24 @@ import PropTypes from 'prop-types';
 
 import WVYT from 'WVYT2'
 import WVL from 'Leaflet/WVLeaflet'
+import { connect } from 'react-redux';
 
-export default class YoutubeViewer extends React.Component {
+class YoutubeViewer extends React.Component {
   static propTypes = {
     className: PropTypes.string,
-    id: PropTypes.string
+    id: PropTypes.string,
+    track: PropTypes.object,
+    trec: PropTypes.object
   };
 
-  watchYTStat (stat) {
+  static stateToProps(state, props) {
+      return {
+          track: state.map.selectedTrack,
+          trec: state.map.selectedTrec
+      }
+  }
+
+  onWatchYTStat (stat) {
     if (!WVL.currentTrack) {
             // console.log("watchYTStat No current track");
       return
@@ -23,7 +33,7 @@ export default class YoutubeViewer extends React.Component {
     WVL.setPlayTime(trailTime)
   }
 
-  watchTrackEvent (track, trec, e) {
+  onWatchTrackEvent (track, trec, e) {
     console.log('----------------------')
     console.log('trec: ' + trec)
     var t = trec.rt
@@ -51,9 +61,13 @@ export default class YoutubeViewer extends React.Component {
     WVYT.videoId = this.props.id;
     WVYT.divId = 'youtube';
 
-    WVL.registerTrackWatcher((track, trec, e) => this.watchTrackEvent(track, trec, e))
-    WVYT.registerWatcher((stat) => this.watchYTStat(stat))
-    WVYT.start()
+    WVL.registerTrackWatcher((track, trec, e) => this.onWatchTrackEvent(track, trec, e))
+    WVYT.registerWatcher((stat) => this.onWatchYTStat(stat))
+    WVYT.start();
+
+    if (this.props.track && this.props.trec) {
+        this.onWatchTrackEvent(this.props.track, this.props.trec);
+    }
   }
 
   componentWillUpdate() {
@@ -65,3 +79,6 @@ export default class YoutubeViewer extends React.Component {
     )
   }
 }
+
+
+export default connect(YoutubeViewer.stateToProps)(YoutubeViewer);
