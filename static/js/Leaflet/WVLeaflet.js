@@ -31,6 +31,7 @@ WVL.homeLatLng = null;
 WVL.homeBounds = null;
 WVL.homeZoom = 10;
 WVL.trackWatchers = [];
+WVL.deviceClickWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/tours_data.json";
 WVL.indoorMaps = {};
@@ -198,6 +199,14 @@ WVL.ImageLayer.prototype.dump = function()
 // watcher(track, trec, event)
 WVL.registerTrackWatcher = function(fun) {
     WVL.trackWatchers.push(fun);
+}
+
+// A watcher function has signature
+// watcher(deviceId, deviceType, msg)
+// where msg is the most recent status (position)
+// message that came from the device.
+WVL.registerDeviceClickWatcher = function(fun) {
+    WVL.deviceClickWatchers.push(fun);
 }
 
 /*
@@ -401,9 +410,8 @@ WVL.initmap = function(latlng, bounds) {
 	maxZoom: 20,
 	subdomains:['mt0','mt1','mt2','mt3']
     });    
-    // start the map in South-East England
     //map.setView(new L.LatLng(latlng.lat, latlng.lng),18);
-    map.setView(new L.LatLng(latlng.lat, latlng.lng),10);
+    map.setView(new L.LatLng(latlng.lat, latlng.lng),17);
     map.addLayer(osm);
     //map.addLayer(googleSat);
 
@@ -580,6 +588,11 @@ WVL.handleSIOMessage = function(msg)
     var marker = WVL.clientMarkers[clientId];
     var lat = msg.position[0];
     var lng = msg.position[1];
+    //report("*** lat: "+lat+"   lng: "+lng);
+    if (lat == -180 && lng == -180) {
+	report("*** ignoring bogus position ***");
+	return;
+    }
     if (marker) {
         console.log("AdjustMarker "+clientId);
         //clientMarkers[clientId].setLatLng(L.latLng(lat,lng));
@@ -598,10 +611,18 @@ WVL.handleSIOMessage = function(msg)
 	var myIcon = L.icon(iconOpts);
         var opts = {'title': clientId, icon: myIcon};
         var marker = L.marker([lat, lng],opts).addTo(WVL.map);
-	marker.bindPopup(clientId);
-	marker.openPopup();
+	//marker.bindPopup(clientId);
+	//marker.openPopup();
+        marker.on('click', e => { WVL.clickOnDeviceMarker(e,clientId, clientType, marker); });
         WVL.clientMarkers[clientId] = marker;
     }
+    marker.mostRecentMessage = msg;
+}
+
+WVL.clickOnDeviceMarker = function(e, clientId, clientType, marker)
+{
+    report("WVL.clickOnDeviceMarker "+clientId+" "+clientType);
+    WVL.deviceClickWatchers.forEach(w => { w(clientId, clientType, marker.mostRecentMessage); });
 }
 
 WVL.watchPositions = function()

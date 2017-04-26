@@ -19,7 +19,8 @@
 <p>
 <div>
 ClientId: <input id="clientId" type="text" value="client1"><br>
-ClientType: <input id="clientType" type="text" value="test">
+ClientType: <input id="clientType" type="text" value="test"><br>
+VideoType: <input id="videoType" type="text" value="normal"><br>
 </div>
 <p>
 <div id="log" style="overflow-y:auto;height:30%"><div>
@@ -51,11 +52,13 @@ function sendPosition(pos, text)
 {
    var clientId = $("#clientId").val();
    var clientType = $("#clientType").val();
+   var videoType = $("#videoType").val();
    var msg = {
       msgType: 'position',
       version: 0.1,
       clientType: clientType,
       clientId: clientId,
+      videoType: videoType,
       t: WVL.getClockTime(),
       position: pos,
       coordSys: "geo"
@@ -108,10 +111,16 @@ handleLocation = function(position) {
     sendPosition(pos, "Initial WebPage location");
 }
 
+function myDeviceClickWatcher(devId, devType, msg)
+{
+    console.log("myDeviceWatcher devId: "+devId+" devType: "+devType);
+    console.log(" msg: "+JSON.stringify(msg));
+}
 
 $(document).ready(function()
 {
     WVL.watchPositions();
+    WVL.registerDeviceClickWatcher(myDeviceClickWatcher);
     getOurLocation();
 });
 

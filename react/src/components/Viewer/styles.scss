@@ -1,0 +1,21 @@
+:local(.mainview) {
+    // width: auto;
+    // height: 100%;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    left: 50%; /* % of surrounding element */
+    top: 50%;
+    transform: translate(-50%, -50%); /* % of current element */
+
+}
+
+:local(.novideo) {
+    text-align: center;
+    background-color: #222d32;
+    h1 {
+        color: #ccc;
+        flex: 1;
+        height: 100%;
+    }
+}
