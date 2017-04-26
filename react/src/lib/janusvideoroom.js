@@ -524,6 +524,7 @@ export default class JanusVideoRoom {
                     "request": "join",
                     "room": roomid,
                     "ptype": "publisher",
+                    "bitrate": self.options.bitrate,
                     "display": self.options.username
                 };
                 self.publisherHandle.send({

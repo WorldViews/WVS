@@ -30,3 +30,4 @@ export const CHAT_CLEAR_TEXT_MESSAGES = "CHAT_CLEAR_TEXT_MESSAGES"
 export const CONFIG_JANUS_URL = 'wss://sd6.dcpfs.net:8989/janus'
 // export const CONFIG_JANUS_URL = 'ws://localhost:8188/janus'
 export const CONFIG_JANUS_ROOM = 9000
+export const CONFIG_JANUS_BITRATE = 128000

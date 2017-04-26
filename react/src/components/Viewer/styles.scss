@@ -11,12 +11,21 @@
 
     .drone {
         position: absolute;
-        top: 10px;
-        left: 10px;
+        top: 5px;
+        left: 5px;
         width: 50px;
         .btn {
-            margin: 5px;
+            margin: 2px;
         }
+    }
+
+    .info360 {
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        width: 100%;
+        text-align: center;
+        text-shadow: 1px 1px 2px #000;
     }
 
 }

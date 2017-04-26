@@ -4,6 +4,7 @@ import store from 'containers/VideoChatApp/store';
 import _ from 'lodash';
 
 export let janusClient = new JanusVideoRoom({
+    bitrate: types.CONFIG_JANUS_BITRATE,
     url: types.CONFIG_JANUS_URL
     // url: 'ws://localhost:8188/janus'
 });

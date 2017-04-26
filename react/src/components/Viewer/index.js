@@ -1,12 +1,14 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-import YoutubeViewer from './youtube';
-import VideoViewer from './video';
-// import _ from 'lodash';
+import YoutubeViewer from './youtube'
+import VideoViewer from './video'
+import Video360Viewer from './video360'
+import VideoDroneViewer from './videodrone'
+
 import styles from './styles.scss'
-import { janusClient } from 'actions/chat';
+import { janusClient } from 'actions/chat'
 
 class Viewer extends React.Component {
   static propTypes = {
@@ -88,16 +90,17 @@ class Viewer extends React.Component {
       case 'webrtc': {
         stream = Viewer.janusUrlParser(url);
         this.element = <VideoViewer className={this.props.className} stream={stream} type={type} />;
+        // this.element = <Video360Viewer className={this.props.className} stream={stream} />
         break;
       }
       case 'webrtc-360': {
         stream = Viewer.janusUrlParser(url);
-        this.element = <VideoViewer className={this.props.className} stream={stream} type="360" />;
+        this.element = <Video360Viewer className={this.props.className} stream={stream} />;
         break;
       }
       case 'webrtc-drone': {
         stream = Viewer.janusUrlParser(url);
-        this.element = <VideoViewer className={this.props.className} stream={stream} type="drone" />;
+        this.element = <VideoDroneViewer className={this.props.className} stream={stream} />;
         break;
       }
       default:
