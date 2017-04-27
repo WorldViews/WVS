@@ -21,13 +21,12 @@ export default class VideoView extends React.Component { // eslint-disable-line 
       }
 
       if (stream) {
-        this.video.srcObject = stream;
-        this.video.muted = true;
-        this.video.play();
+          this.video.srcObject = stream;
+          this.video.muted = true;
+          this.video.play();
       } else {
         this.video.srcObject = null;
       }
-    //   this.refs.video.src = URL.createObjectURL(stream);
   }
 
   update(props) {
