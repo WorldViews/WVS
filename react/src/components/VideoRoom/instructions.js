@@ -60,6 +60,7 @@ class Instructions extends React.Component {
             <ul>
               <li><a href="http://www.cupertinotoyokawa.org/">Cupertino-Toyokawa Sister City Program</a></li>
               <li><a href="http://cupertino.org/index.aspx?page=1079">City of Cupertino Cherry Blossom</a></li>
+              <li><a href="https://www.youtube.com/watch?v=BHkVcrcOg4U">Panoramic scenes of Toyokawa</a></li>
             </ul>
           </div>
         </div>
