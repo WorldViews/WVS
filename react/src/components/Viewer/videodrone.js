@@ -5,7 +5,7 @@ import Tooltip from 'react-tooltip'
 import io from 'socket.io-client'
 import VideoViewer from './video'
 
-let socket = io.connect('https://sd6.dcpfs.net:6443/');
+let socket = io.connect('https://worldviews.org/');
 
 export default class VideoDroneView extends VideoViewer { // eslint-disable-line react/prefer-stateless-function
 
