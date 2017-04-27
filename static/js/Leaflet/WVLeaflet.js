@@ -672,12 +672,13 @@ WVL.handleSIOMessage = function(msg)
     var clientId = msg.clientId;
     var clientType = msg.clientType;
     var marker = WVL.clientMarkers[clientId];
-    if (!msg.position) {
-	report("*** no position available ***");
-	return;
+    var lat = 0;
+    var lng = 0;
+    if (!msg.position || msg.position.length < 2) {
+        return
     }
-    var lat = msg.position[0];
-    var lng = msg.position[1];
+    lat = msg.position[0];
+    lng = msg.position[1];
     //report("*** lat: "+lat+"   lng: "+lng);
     if (lat == -180 && lng == -180) {
 	report("*** ignoring bogus position ***");
