@@ -20,6 +20,18 @@ class NamePromptDialog extends React.Component {
         errorMessage: null
     }
 
+    componentDidUpdate() {
+        if (this.input)
+            this.input.focus();
+    }
+
+    onKeyPress(e) {
+        if (e.key === 'Enter') {
+            this.onConnect();
+        }
+    }
+
+
     onClose() {
         this.props.dispatch(chatPromptUsername(false));
     }
@@ -67,8 +79,10 @@ class NamePromptDialog extends React.Component {
                         </div>}
                         <div className="form-group">
                             <input className="form-control"
+                                ref={(i) => { this.input = i; }}
                                 value={this.state.username}
                                 onChange={this.onChange.bind(this)}
+                                onKeyPress={this.onKeyPress.bind(this) }
                                 placeholder="Username" name="username"/>
                         </div>
                         <div className="form-group">
