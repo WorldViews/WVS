@@ -36,6 +36,18 @@ function handleDisconnect(socket)
     }
 }
 
+function handleCommand(msg) {
+    report("got command "+JSON.stringify(msg));
+    activeSockets.forEach(s => {
+	try {
+	    s.emit('command', msg);
+	}
+	catch (e) {
+	    report("failed to send to socket "+s);
+	}
+    });
+}
+
 function handlePosition(msg)
 {
     report("got position "+JSON.stringify(msg));
@@ -55,6 +67,7 @@ io.on('connection', function(socket) {
     report("got connection "+socket);
     activeSockets.push(socket);
     socket.on('position', handlePosition);
+    socket.on('command', handleCommand);
     socket.on('disconnect', obj => handleDisconnect(socket, obj));
 });
 
