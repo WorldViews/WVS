@@ -188,14 +188,20 @@ def xlefletjs_tour():
 def react_view():
     webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
-        bundle=webpack_manifest.get('app.js', 'app.bundle.js'))
+        bundle=webpack_manifest.get('app.js', 'app.bundle.js'),
+        vendor=webpack_manifest.get('vendor.js', 'vendor.bundle.js'),
+        manifest=webpack_manifest.get('manifest.js', 'manifest.bundle.js')
+        )
 
 @app.route('/chat')
 @app.route('/toyokawa')
 def videochat_view():
     webpack_manifest = get_webpack_manifest()
     return render_template('react.html',
-        bundle=webpack_manifest.get('videochat.js', 'videochat.bundle.js'))
+        bundle=webpack_manifest.get('videochat.js', 'videochat.bundle.js'),
+        vendor=webpack_manifest.get('vendor.js', 'vendor.bundle.js'),
+        manifest=webpack_manifest.get('manifest.js', 'manifest.bundle.js')
+        )
 
 """
 This is used by SharedCam to register itself with us.

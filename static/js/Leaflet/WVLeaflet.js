@@ -12,7 +12,7 @@ if (typeof WV == "undefined") {
         require('leaflet-geometryutil');
         require('leaflet-easybutton');
         require('leaflet-imageoverlay-rotated');
-	var io = require('socket.io-1.4.5');
+        var io = require('socket.io-client');
     }
 }
 

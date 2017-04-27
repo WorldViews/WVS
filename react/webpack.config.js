@@ -9,7 +9,8 @@ const host = process.env['HOST'] || 'localhost';
 const flask_port = process.env['FLASK_PORT'] || 7000;
 
 module.exports = (env) => {
-  const production = env === 'prod';
+  const production = (env === 'prod' || env === 'analyze');
+  const analyze = env === 'analyze';
 
   let config = {
     devtool: 'source-map',
@@ -104,6 +105,15 @@ module.exports = (env) => {
       //new BundleAnalyzerPlugin(),
       new ManifestPlugin({
         writeToFileEmit: true
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+          name: 'vendor',
+          minChunks: function (module) {
+              return module.context && module.context.indexOf('node_modules') !== -1;
+          }
+      }),
+      new webpack.optimize.CommonsChunkPlugin({
+          name: 'manifest'
       })
     ],
     externals: {
@@ -142,6 +152,12 @@ module.exports = (env) => {
     });
 
     config.devtool = 'source-map';
+  }
+
+  if (analyze) {
+    config.plugins.push(
+      new BundleAnalyzerPlugin()
+    );
   }
 
   return config;
