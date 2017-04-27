@@ -1,10 +1,28 @@
 import React from 'react'
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { chatConnect } from 'actions/chat';
 
-export default class Instructions extends React.Component {
+class Instructions extends React.Component {
   static propTypes = {
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    viewType: PropTypes.string,
+    connected: PropTypes.bool,
+    dispatch: PropTypes.func
+  }
+
+  static stateToProp(state) {
+    return {
+      connected: state.chat.connected,
+      viewType: state.views.viewType
+    };
+  }
+
+  onJoin() {
+    if (!this.props.connected) {
+        this.props.dispatch(chatConnect());
+    }
   }
 
   render () {
@@ -28,7 +46,18 @@ export default class Instructions extends React.Component {
               <p>Click anywhere on a trail on the map on the right to see video from that trail displayed
                 in the left.  Additional layers can be selected by clicking the layers icon in the top 
                 right.</p>
-              <h3>Links</h3> 
+
+              {(this.props.viewType === 'private') &&
+                <div>
+                  <h3>Join our live video chat</h3>
+                  <p>To join the live video chat click the join video chat button below:</p>
+                  <div className="form-group text-center">
+                    <a className="btn btn-info btn-lg btn-join" onClick={this.onJoin.bind(this)}>Join Video Chat</a>
+                  </div>
+                </div>
+              }
+
+              <h3>Links</h3>
               <ul>
                 <li><a href="http://www.cupertinotoyokawa.org/">Cupertino-Toyokawa Sister City Program</a></li>
                 <li><a href="http://cupertino.org/index.aspx?page=1079">City of Cupertino Cherry Blossom</a></li>
@@ -39,3 +68,6 @@ export default class Instructions extends React.Component {
         )
   }
 }
+
+
+export default connect(Instructions.stateToProp)(Instructions)
