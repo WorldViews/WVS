@@ -10,7 +10,7 @@ let socket = io.connect('https://worldviews.org/');
 export default class VideoDroneView extends VideoViewer { // eslint-disable-line react/prefer-stateless-function
 
   onDroneChange(command) {
-    socket.emit('command', 'up');
+    socket.emit('command', command);
   }
 
   render () {
