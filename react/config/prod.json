@@ -1,3 +1,4 @@
 {
-  "mapSocketioUrl": "/"
+  "mapSocketioUrl": "/",
+  "janusRoomId": 1235
 }
