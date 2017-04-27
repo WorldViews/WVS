@@ -17,7 +17,7 @@ class VideoRoom extends React.Component {
     className: PropTypes.string,
     leftView: PropTypes.node,
     maximizePanel: PropTypes.string,
-    promptUsername: PropTypes.string
+    promptUsername: PropTypes.bool
   }
 
   static stateToProps(state, props) {

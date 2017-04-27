@@ -732,7 +732,9 @@ export default class JanusVideoRoom {
             local: true,
             display: 'me',
             status: {
-                picture: null
+                picture: null,
+                // uncomment this to test 360 view for local stream
+                // videoType: '360'
             }
         };
 

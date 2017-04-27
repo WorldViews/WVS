@@ -7,8 +7,12 @@ import { chatPromptUsername, chatConnect} from 'actions/chat'
 class NamePromptDialog extends React.Component {
     static propTypes = {
         className: PropTypes.string,
-        show: PropTypes.boolean,
+        show: PropTypes.bool,
         dispatch: PropTypes.func
+    }
+
+    static stateToProps(state) {
+        return {}
     }
 
     state = {
@@ -78,4 +82,4 @@ class NamePromptDialog extends React.Component {
     }
 }
 
-export default connect()(NamePromptDialog);
+export default connect(NamePromptDialog.stateToProps)(NamePromptDialog);

@@ -117,7 +117,16 @@ module.exports = (env) => {
       })
     ],
     externals: {
-      'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json'))
+      'config': JSON.stringify(production ? require('./config/prod.json') : require('./config/dev.json')),
+      'jquery': 'jQuery',
+      'leaflet': 'L',
+      'three': 'THREE',
+      'bluebird': 'Promise',
+      'lodash': '_',
+      'immutable': 'Immutable',
+      'webrtc-adapter': 'adapter',
+      'dynamics': 'dynamics',
+      'socket.io-client': 'io'
     }
   }
 
