@@ -85,7 +85,7 @@ class Toolbar extends React.Component {
       <section className={styles}>
         <Tooltip place="right" type="info" effect="solid"/>
         <Icon icon={bars}
-            className="icon icon-padding" onClick={this.onMenuToggle.bind(this)}/>
+            className="icon-header icon-padding" onClick={this.onMenuToggle.bind(this)}/>
 
         { (this.props.viewType === 'private') ? (
         <div>
