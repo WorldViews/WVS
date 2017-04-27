@@ -58,6 +58,9 @@
   .instructions {
       color: #eee;
       padding: 20px;
+      overflow: auto;
+      width: 100%;
+      height: 100%;
       hr {
           border: 1px solid  #eee;
       }

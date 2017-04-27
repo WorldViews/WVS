@@ -7,7 +7,7 @@ const defaultState = {
     enableAudio: true,
     enableVideo: true,
     showTextChat: false,
-    promptUsername: true,
+    promptUsername: false,
     username: "",
     users: [],
     messages: []
