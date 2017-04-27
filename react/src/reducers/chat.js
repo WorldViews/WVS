@@ -88,8 +88,9 @@ export default function reducer(state = defaultState, action) {
             if (!_.get(state, 'selectedUser.local')) {
                 enableVideo(prevStream, false);
             }
-            if (action.user.stream) {
-                enableVideo(action.user.stream, true);
+            let stream = _.get(action, 'user.stream');
+            if (stream) {
+                enableVideo(stream, true);
             }
 
             return {
