@@ -18,6 +18,8 @@ if (typeof WV == "undefined") {
 
 var WVL = {};
 window.WVL = WVL;
+//WVL.homeSite = "Memorial Park";
+WVL.homeSite = null;
 WVL.showSitePlacemarks = true;
 WVL.showTrackPlacemarks = false;
 WVL.sites = {};
@@ -32,6 +34,9 @@ WVL.homeBounds = null;
 WVL.homeZoom = 17;
 WVL.trackWatchers = [];
 WVL.deviceClickWatchers = [];
+WVL.poiEditable = true;
+WVL.pois = [];
+WVL.markWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 //WVL.toursUrl = "/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/cherry_blossom_data.json";
@@ -195,6 +200,62 @@ WVL.ImageLayer.prototype.dump = function()
     report("map: "+JSON.stringify(obj));
 }
 
+WVL.zoom = function(e)
+{
+    var z = WVL.map.getZoom();
+    report("***WVL.zoom z: "+z);
+    WVL.pois.forEach(function(poi) {
+	if (z < poi.minZoomLevel)
+	    poi.mark.remove();
+	else
+	    poi.mark.addTo(WVL.map);
+    });
+}
+
+WVL.openURL = function(url)
+{
+    window.open(url);
+}
+
+WVL.handleDragPOI = function(e, poi)
+{
+    report("drag "+poi.name+"  latLng: "+e.latlng);
+}
+
+WVL.POI = function(rec)
+{
+    report("******** new POI **********");
+    var inst = this;
+    this.lat = rec.lat;
+    this.lng = rec.lon;
+    this.label = rec.label;
+    this.url = rec.url;
+    var opts = {'title': this.label};
+    if (WVL.poiEditable) {
+	opts.draggable = true;
+    }
+    if (rec.icon) {
+	opts.icon = L.icon(rec.icon);
+    }
+    this.mark =  L.marker([this.lat, this.lng], opts);
+    this.mark.addTo(WVL.map);
+    this.mark.on('click', function(e) { WVL.openURL(inst.url); });
+    this.mark.on('drag', function(e) { WVL.handleDragPOI(e, inst); });
+    this.minZoomLevel = 18;
+}
+
+WVL.addPOI = function(rec)
+{
+    var poi = new WVL.POI(rec);
+    WVL.pois.push(poi);
+    return poi;
+}
+
+// A mark watcher function has signature
+// watcher(url, rec, event)
+WVL.registerMarkWatcher = function(fun) {
+    WVL.markWatchers.push(fun);
+}
 
 // A watcher function has signature
 // watcher(track, trec, event)
@@ -257,7 +318,8 @@ WVL.setPlayTime = function(t)
 WVL.setViewHome = function()
 {
     var ll = WVL.homeLatLng;
-    WVL.map.setView(new L.LatLng(ll.lat, ll.lng), WVL.homeZoom);
+    //WVL.map.setView(new L.LatLng(ll.lat, ll.lng), WVL.homeZoom);
+    WVL.map.flyTo(new L.LatLng(ll.lat, ll.lng), WVL.homeZoom);
 }
 
 WVL.distanceSquared = function(pt1, pt2)
@@ -340,7 +402,8 @@ WVL.clickOnTrack = function(e, track) {
 }
 
 WVL.clickOnPlacemark = function (e, trackDesc, gpos) {
-    WVL.map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true, duration: 0.5});
+    //WVL.map.setView(new L.LatLng(gpos[0], gpos[1]),18, {animate: true, duration: 0.5});
+    WVL.map.flyTo(new L.LatLng(gpos[0], gpos[1]),18);
 };
 
 var E;
@@ -421,6 +484,7 @@ WVL.initmap = function(latlng, bounds) {
     WVL.homeLatLng = latlng;
     WVL.homeBounds = bounds;
     map.on('click', WVL.clickOnMap);
+    map.on('zoom', WVL.zoom);
     
     // create the tile layer with correct attribution
     var osmUrl='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -608,6 +672,10 @@ WVL.handleSIOMessage = function(msg)
     var clientId = msg.clientId;
     var clientType = msg.clientType;
     var marker = WVL.clientMarkers[clientId];
+    if (!msg.position) {
+	report("*** no position available ***");
+	return;
+    }
     var lat = msg.position[0];
     var lng = msg.position[1];
     //report("*** lat: "+lat+"   lng: "+lng);
@@ -659,7 +727,15 @@ WVL.match = function(s1,s2) { return s1.toLowerCase() == s2.toLowerCase() };
 WVL.handleLayerRecs = function(tours, url, map)
 {
     report("got tours data from "+url);
-    tours.records.forEach(function (trackDesc) {
+    tours.records.forEach(function (rec) {
+	var trackDesc = rec;
+	if (WVL.match(rec.recType, "GeoRecords")) {
+	    WVL.loadTracksFromFile(rec.url);
+	    return;
+	}
+	if (WVL.match(rec.recType, "POI")) {
+	    WVL.addPOI(rec);
+	}
 	if (WVL.match(trackDesc.recType, "IndoorMap")) {
 	    report("**** indoor map "+JSON.stringify(trackDesc));
 	    var imap = trackDesc;
@@ -696,6 +772,9 @@ WVL.handleLayerRecs = function(tours, url, map)
 	}
 	report("tour.tourId: "+trackId);
 	var dataUrl = trackDesc.dataUrl;
+	if (WVL.homeSite && siteName != WVL.homeSite) {
+	    return;
+	}
 	WVL.loadTrackFromFile(trackDesc, dataUrl, map);
     });
 }
