@@ -117,10 +117,16 @@ function myDeviceClickWatcher(devId, devType, msg)
     console.log(" msg: "+JSON.stringify(msg));
 }
 
+function myPOIWatcher(poi, e)
+{
+    console.log("POI click url: "+poi.url);
+}
+
 $(document).ready(function()
 {
     WVL.watchPositions();
     WVL.registerDeviceClickWatcher(myDeviceClickWatcher);
+    WVL.registerPOIWatcher(myPOIWatcher);
     getOurLocation();
 });
 

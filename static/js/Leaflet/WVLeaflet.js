@@ -36,7 +36,7 @@ WVL.trackWatchers = [];
 WVL.deviceClickWatchers = [];
 WVL.poiEditable = true;
 WVL.pois = [];
-WVL.markWatchers = [];
+WVL.poiWatchers = [];
 //WVL.toursUrl = "https://worldviews.org/static/data/tours_data.json";
 //WVL.toursUrl = "/static/data/tours_data.json";
 WVL.toursUrl = "/static/data/cherry_blossom_data.json";
@@ -212,9 +212,16 @@ WVL.zoom = function(e)
     });
 }
 
-WVL.openURL = function(url)
+WVL.openURL = function(url, winName)
 {
-    window.open(url);
+    window.open(url, winName);
+}
+
+WVL.handleClickOnPOI = function(e, poi)
+{
+    if (poi.window)
+	WVL.openURL(poi.url, poi.window);
+    WVL.poiWatchers.forEach(function(w) { w(poi, e); });
 }
 
 WVL.handleDragPOI = function(e, poi)
@@ -230,6 +237,8 @@ WVL.POI = function(rec)
     this.lng = rec.lon;
     this.label = rec.label;
     this.url = rec.url;
+    this.window = rec.window;
+    this.minZoomLevel = rec.minZoomLevel || 0;
     var opts = {'title': this.label};
     if (WVL.poiEditable) {
 	opts.draggable = true;
@@ -238,10 +247,11 @@ WVL.POI = function(rec)
 	opts.icon = L.icon(rec.icon);
     }
     this.mark =  L.marker([this.lat, this.lng], opts);
-    this.mark.addTo(WVL.map);
-    this.mark.on('click', function(e) { WVL.openURL(inst.url); });
+    var z = WVL.map.getZoom();
+    if (this.minZoomLevel < z)
+	this.mark.addTo(WVL.map);
+    this.mark.on('click', function(e) { WVL.handleClickOnPOI(e, inst); });
     this.mark.on('drag', function(e) { WVL.handleDragPOI(e, inst); });
-    this.minZoomLevel = 18;
 }
 
 WVL.addPOI = function(rec)
@@ -252,9 +262,9 @@ WVL.addPOI = function(rec)
 }
 
 // A mark watcher function has signature
-// watcher(url, rec, event)
-WVL.registerMarkWatcher = function(fun) {
-    WVL.markWatchers.push(fun);
+// watcher(poi, rec, event)
+WVL.registerPOIWatcher = function(fun) {
+    WVL.poiWatchers.push(fun);
 }
 
 // A watcher function has signature

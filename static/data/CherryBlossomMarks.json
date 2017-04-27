@@ -7,14 +7,16 @@
 	   "icon": {"iconUrl": "/static/img/FXPAL_logo.png",
 		    "iconSize": [36,36]},
            "label": "FXPAL Booth",
-           "lat": 37.325,
-           "lon":  -122.043,
-           "url": "http://fxpal.com"
+           "lat": 37.32593,
+           "lon": -122.04247,
+           "xxxwindow": "helper",
+           "url": "http://fxpal.com",
+	   "minZoomLevel": 19
        },
        {
           "id": "quinlan_path_1",
           "site": "Memorial Park",
-          "recType": "robotTrail",
+          "recType": "xrobotTrail",
           "robotType": "wheelchair",
           "layerName": "Wheelchair",
           "description": "Walkaround Memorial Park.",

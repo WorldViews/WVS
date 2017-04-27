@@ -2,7 +2,7 @@
     "name": "hikes",
     "records": [
        {
-          "recType": "xxxGeoRecords",
+          "recType": "GeoRecords",
 	   "url": "/static/data/CherryBlossomMarks.json"
        },
        {
