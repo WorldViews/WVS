@@ -13,12 +13,14 @@ class UserList extends React.Component {
   static propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
+    selectedUser: PropTypes.object,
     users: PropTypes.array,
     dispatch: PropTypes.func
   };
 
   static stateToProps(state, props) {
     return {
+        selectedUser: state.chat.selectedUser,
         users: state.chat.users
      };
   }
@@ -40,6 +42,12 @@ class UserList extends React.Component {
       }
 
       this.props.dispatch(viewsSetMediaUrl(url, type));
+  }
+
+  componentWillUpdate(props) {
+      if (!props.selectedUser && props.users.length > 0) {
+        this.onClick(props.users[0]);
+      }
   }
 
   render () {

@@ -50,7 +50,7 @@ class Instructions extends React.Component {
               {(this.props.viewType === 'private') &&
                 <div>
                   <h3>Join our live video chat</h3>
-                  <p>To join the live video chat click the join video chat button below:</p>
+                  <p>To join the live festivities click the join button below.</p>
                   <div className="form-group text-center">
                     <a className="btn btn-info btn-lg btn-join" onClick={this.onJoin.bind(this)}>Join Video Chat</a>
                   </div>
