@@ -46,6 +46,14 @@
 	  "heading": 44.0
        },
        {
+          "recType": "CoordinateSystem",
+          "coordSys": "Quinlan",
+           "lat": 37.3258179,
+           "lon":  -122.0425,
+	   "alt": 0.0,
+	   "heading": 90.0
+       },
+       {
 	   "id": "Hiller_Aviation_Museum",
            "recType": "IndoorMap",
 	   "name": "Hiller Aviation Museum",
@@ -279,7 +287,7 @@
        {
           "id": "mempark_2017_4_12_path4",
           "site": "Memorial Park",
-          "recType": "robotTrail",
+          "recType": "xrobotTrail",
           "robotType": "wheelchair",
           "layerName": "Wheelchair",
           "description": "Walkaround Memorial Park.",
@@ -289,6 +297,36 @@
 	  "youtubeDeltaT": -25.83,
 	  "coordSys": "GEO",
 	  "height": 1.0
+       },
+       {
+          "id": "quinlan_path_1",
+          "site": "Memorial Park",
+          "recType": "robotTrail",
+          "robotType": "wheelchair",
+          "layerName": "Wheelchair",
+          "description": "Walkaround Memorial Park.",
+	  "tourName": "memorial_park_tour_5",
+          "dataUrl": "/static/data/paths/MemorialPark/quinlan_path_1.json",
+          "youtubeId": "RoUTzQAB1PE",
+	  "youtubeDeltaT": -25.83,
+	  "coordSys": "Quinlan",
+	  "height": 1.0
+       },
+       {
+          "id": "mempark_flight_1",
+          "site": "Memorial Park",
+          "layerName": "Drone",
+          "recType": "dronePath",
+          "robotType": "Mavic",
+          "description": "Flight around Memorial Park.",
+	  "tourName": "mempark_flight_1",
+	  "dataUrl": "/static/data/flights/FLY125.json",
+	  "youtubeId": "s31gq0tgC50",
+	  "youtubeDeltaT": 0,
+	  "videoDur": 90,
+	  "coordSys": "GEO",
+	  "height": 100.0,
+          "xurl": "https://fxpal.com"
        },
        {
           "id": "VasonaWalk1",
