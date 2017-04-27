@@ -95,17 +95,10 @@ export default class JanusVideoRoom {
         _.forEach(stream.getAudioTracks(), stopTrack);
     }
 
-    _createThumbnail(userid) {
+    _createThumbnail() {
         let self = this;
-        if (userid) {
-            let user = _.get(this, 'publishers[userid].stream', {});
-            this.video.srcObject = user.stream;
-            setTimeout(() => {
-                self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
-                user.picture = self.canvas.toDataURL('image/jpeg', 0.3);
-            }, 1000);
-        } else {
-            _.forEach(this.localStreams, (stream) => {
+        _.forEach(this.localStreams, (stream) => {
+            if (stream.getVideoTracks().length > 0) {
                 self.video.srcObject = stream;
                 setTimeout(() => {
                     self.canvasContext.drawImage(self.video, 0, 0, self.video.videoWidth, self.video.videoHeight, 0, 0, 100, 100);
@@ -114,8 +107,10 @@ export default class JanusVideoRoom {
                     self._sendStatus();
                     self.emit('thumbnailUpdate', self.me);
                 }, 1000);
-            });
-        }
+            } else {
+                self._sendStatus();
+            }
+        });
     }
 
     /**

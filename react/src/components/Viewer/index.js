@@ -9,6 +9,7 @@ import VideoDroneViewer from './videodrone'
 
 import styles from './styles.scss'
 import { janusClient } from 'actions/chat'
+import NoVideo from './novideo'
 
 class Viewer extends React.Component {
   static propTypes = {
@@ -46,32 +47,12 @@ class Viewer extends React.Component {
     return stream;
   }
 
-  /*parseUrl(url, props) {
-    if (props.track) {
-      return 'youtube';
-    }
-
-    if (typeof url === 'string') {
-      let ytid = this.youtubeUrlParser(url);
-      if (ytid) {
-        return 'youtube';
-      } else {
-        return 'video';
+  streamHasVideo(stream) {
+      if (stream) {
+          return stream.getVideoTracks().length > 0;
       }
-    } if (typeof url === 'object') {
-      // media stream url
-      switch (this.props.mediaType) {
-        case '360':
-          return 'webrtc-360';
-        case 'drone':
-          return 'webrtc-drone';
-        default:
-          return 'webrtc'
-      }
-    }
-    return null;
+      return false;
   }
-  */
 
   update(props) {
     let url = props.mediaUrl;
@@ -89,18 +70,26 @@ class Viewer extends React.Component {
       }
       case 'webrtc': {
         stream = Viewer.janusUrlParser(url);
-        this.element = <VideoViewer className={this.props.className} stream={stream} type={type} />;
-        // this.element = <Video360Viewer className={this.props.className} stream={stream} />
+        if (this.streamHasVideo(stream))
+            this.element = <VideoViewer className={this.props.className} stream={stream} type={type} />;
+        else
+            this.element = <NoVideo className={this.props.className} />
         break;
       }
       case 'webrtc-360': {
         stream = Viewer.janusUrlParser(url);
-        this.element = <Video360Viewer className={this.props.className} stream={stream} />;
+        if (this.streamHasVideo(stream))
+          this.element = <Video360Viewer className={this.props.className} stream={stream} />;
+        else
+          this.element = <NoVideo className={this.props.className} />
         break;
       }
       case 'webrtc-drone': {
         stream = Viewer.janusUrlParser(url);
-        this.element = <VideoDroneViewer className={this.props.className} stream={stream} />;
+        if (this.streamHasVideo(stream))
+          this.element = <VideoDroneViewer className={this.props.className} stream={stream} />;
+        else
+          this.element = <NoVideo className={this.props.className} />
         break;
       }
       default:
