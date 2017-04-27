@@ -46,7 +46,10 @@ class UserList extends React.Component {
 
   componentWillUpdate(props) {
       if (!props.selectedUser && props.users.length > 0) {
-        this.onClick(props.users[0]);
+          let user = _.find(props.users, {display: 'me'});
+          if (user) {
+            this.onClick(user);
+          }
       }
   }
 

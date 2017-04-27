@@ -3,12 +3,12 @@ import _ from 'lodash';
 
 const defaultState = {
     connected: false,
-    // mainStream: undefined,
-    // localStream: false,
     selectedUser: undefined,
     enableAudio: true,
     enableVideo: true,
     showTextChat: false,
+    promptUsername: true,
+    username: "",
     users: [],
     messages: []
 };
@@ -106,6 +106,7 @@ export default function reducer(state = defaultState, action) {
         case types.CHAT_DISCONNECT: {
             return {
                 ...state,
+                selectedUser: undefined,
                 mainStream: undefined,
                 connected: false,
                 users: [],
@@ -146,6 +147,12 @@ export default function reducer(state = defaultState, action) {
             return {
                 ...state,
                 messages: []
+            }
+        }
+        case types.CHAT_PROMPT_USERNAME: {
+            return {
+                ...state,
+                promptUsername: action.show
             }
         }
         default:

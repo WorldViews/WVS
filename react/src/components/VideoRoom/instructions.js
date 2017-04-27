@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { chatConnect } from 'actions/chat';
+import { chatPromptUsername } from 'actions/chat';
 
 class Instructions extends React.Component {
   static propTypes = {
@@ -21,7 +21,7 @@ class Instructions extends React.Component {
 
   onJoin() {
     if (!this.props.connected) {
-        this.props.dispatch(chatConnect());
+        this.props.dispatch(chatPromptUsername(true));
     }
   }
 

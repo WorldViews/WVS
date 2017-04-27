@@ -15,6 +15,7 @@ export const chatUserUpdate = (users) => ({ type: types.CHAT_USER_UPDATE, users 
 export const chatSelectUser = (user) => ({ type: types.CHAT_SELECT_USER, user });
 export const chatShowTextChat = (show) => ({ type: types.CHAT_SHOW_TEXT_CHAT, show })
 export const chatClearTextMessages = () => ({ type: types.CHAT_CLEAR_TEXT_MESSAGES })
+export const chatPromptUsername = (show) => ({ type: types.CHAT_PROMPT_USERNAME, show })
 export const chatSendTextMessage = (text) => {
     let msg = {
         user: janusClient.username(),
@@ -27,8 +28,9 @@ export const chatSendTextMessage = (text) => {
 export const chatAddTextMessage = (msg) => {
     return { type: types.CHAT_ADD_TEXT_MESSAGE, message: msg };
 }
-export const chatConnect = (roomid = types.CONFIG_JANUS_ROOM) => {
+export const chatConnect = (name, roomid = types.CONFIG_JANUS_ROOM) => {
     return (dispatch) => {
+        janusClient.username(name);
         janusClient.connect().then(() => {
             return janusClient.join(roomid);
         }).then(() => {

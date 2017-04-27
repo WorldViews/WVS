@@ -9,6 +9,7 @@ import UserList from './userlist'
 import Toolbar from 'components/Toolbar'
 import Instructions from './instructions'
 import TextChatView from 'components/TextChatView'
+import NamePromptDialog from 'components/Dialog/nameprompt'
 
 class VideoRoom extends React.Component {
   static propTypes = {
@@ -16,12 +17,14 @@ class VideoRoom extends React.Component {
     className: PropTypes.string,
     leftView: PropTypes.node,
     maximizePanel: PropTypes.string,
+    promptUsername: PropTypes.string
   }
 
   static stateToProps(state, props) {
     return {
         leftView: state.views.leftView,
-        maximizePanel: state.views.maximizePanel
+        maximizePanel: state.views.maximizePanel,
+        promptUsername: state.chat.promptUsername
      };
   }
 
@@ -48,6 +51,7 @@ class VideoRoom extends React.Component {
                 <UserList/>
                 <Map className="fill"/>
             </div>
+            <NamePromptDialog show={this.props.promptUsername} />
         </content>
         )
   }
