@@ -63,7 +63,7 @@ WVYT.trackerTick = function()
     var t = WVYT.player.getCurrentTime();
     var status = {t: t, playing: playing}
     //report("stat: "+JSON.stringify(status));
-    WVYT.watchers.forEach(watcher => {
+    WVYT.watchers.forEach(function (watcher) {
 	try {
 	    watcher(status);
 	}

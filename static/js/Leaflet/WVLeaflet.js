@@ -65,7 +65,7 @@ WVL.Site.prototype.addPlacemark = function(trackDesc)
     //placemark.bindPopup(label).openPopup();
     this.placemark.addTo(WVL.map);
     this.placemark.on('click',
-		      e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
+		      function(e) { WVL.clickOnPlacemark(e,trackDesc,gpos);});
 }
 
 WVL.Site.prototype.addTrack = function(trackDesc)
@@ -115,11 +115,11 @@ WVL.ImageLayer.prototype.edit = function()
     var inst = this;
     if (!this.marker1) {
 	this.marker1 = L.marker(this.point1, {draggable: true} ).addTo(this.map);
-	this.marker1.on('drag dragend', () => {inst.handleTranslate()});
+	this.marker1.on('drag dragend', function() {inst.handleTranslate()});
     }
     if (!this.marker2) {
 	this.marker2 = L.marker(this.point2, {draggable: true} ).addTo(this.map);
-	this.marker2.on('drag dragend', () => {inst.handleRotate()});
+	this.marker2.on('drag dragend', function() {inst.handleRotate()});
     }
     this.marker1._bringToFront();
     this.marker2._bringToFront();
@@ -336,7 +336,7 @@ WVL.clickOnTrack = function(e, track) {
     //WVL.setPlayTime(trec.rt);
     var latLng = [trec.pos[0], trec.pos[1]];
     WVL.setPoint(latLng);
-    WVL.trackWatchers.forEach(w => { w(track, trec, e); })
+    WVL.trackWatchers.forEach(function (w) { w(track, trec, e); })
 }
 
 WVL.clickOnPlacemark = function (e, trackDesc, gpos) {
@@ -509,9 +509,9 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
 	//placemark.bindPopup(label).openPopup();
 	placemark.addTo(map);
 	placemark.on('click',
-		     e => { WVL.clickOnPlacemark(e,trackDesc,gpos);});
+		     function(e) { WVL.clickOnPlacemark(e,trackDesc,gpos);});
 	placemark.on('drag dragend',
-		     e => { WVL.dragPlacemark(e,trackDesc,gpos);});
+		     function(e) { WVL.dragPlacemark(e,trackDesc,gpos);});
     }
 }
 
@@ -565,7 +565,7 @@ WVL.loadTracksFromAPI = function(map)
 		  "youtubeId": "iJ9V3WVmRgc",
 		  "youtubeDeltaT": -282.0
 		 }];
-    trackDescs.forEach(trackDesc => { WVL.loadTrackFromAPI(trackDesc, map); });
+    trackDescs.forEach(function (trackDesc) { WVL.loadTrackFromAPI(trackDesc, map); });
 }
 
 WVL.loadTrackFromFile = function(trackDesc, url, map)
@@ -635,7 +635,7 @@ WVL.handleSIOMessage = function(msg)
         var marker = L.marker([lat, lng],opts).addTo(WVL.map);
 	//marker.bindPopup(clientId);
 	//marker.openPopup();
-        marker.on('click', e => { WVL.clickOnDeviceMarker(e,clientId, clientType, marker); });
+        marker.on('click', function(e) { WVL.clickOnDeviceMarker(e,clientId, clientType, marker); });
         WVL.clientMarkers[clientId] = marker;
     }
     marker.mostRecentMessage = msg;
@@ -644,7 +644,7 @@ WVL.handleSIOMessage = function(msg)
 WVL.clickOnDeviceMarker = function(e, clientId, clientType, marker)
 {
     report("WVL.clickOnDeviceMarker "+clientId+" "+clientType);
-    WVL.deviceClickWatchers.forEach(w => { w(clientId, clientType, marker.mostRecentMessage); });
+    WVL.deviceClickWatchers.forEach(function (w) { w(clientId, clientType, marker.mostRecentMessage); });
 }
 
 WVL.watchPositions = function()
@@ -659,7 +659,7 @@ WVL.match = function(s1,s2) { return s1.toLowerCase() == s2.toLowerCase() };
 WVL.handleLayerRecs = function(tours, url, map)
 {
     report("got tours data from "+url);
-    tours.records.forEach(trackDesc => {
+    tours.records.forEach(function (trackDesc) {
 	if (WVL.match(trackDesc.recType, "IndoorMap")) {
 	    report("**** indoor map "+JSON.stringify(trackDesc));
 	    var imap = trackDesc;
