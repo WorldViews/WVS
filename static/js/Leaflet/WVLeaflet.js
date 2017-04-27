@@ -664,6 +664,10 @@ WVL.iconOpts = {
 	'iconUrl': '/static/img/icons/360cam.png',
 	'iconSize': [32,32]
     },
+    'android': {
+	'iconUrl': '/static/img/billboards/hiking.png',
+	'iconSize': [32,32],
+    },
     'test': {
 	'iconUrl': '/static/img/billboards/hiking.png',
 	'iconSize': [32,32],
