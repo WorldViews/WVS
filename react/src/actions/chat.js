@@ -45,7 +45,18 @@ export const chatConnect = (name, roomid = types.CONFIG_JANUS_ROOM) => {
                 console.log(' ::::  published local stream');
             });
         }).catch((e) => {
-            alert('Unable to find a camera.  Try reconnect the camera and reboot the computer.');
+            // alert('Unable to find a camera.  Try reconnect the camera and reboot the computer.');
+            let constraints = {
+                video: false,
+                audio: true
+            }
+            navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+                return janusClient.publish(stream).then(() => {
+                    console.log(' ::::  published local stream');
+                }).catch((e) => {
+                    alert('Unable to find a camera.  Try reconnect the camera or microphone and reboot the computer.');
+                });
+            });
         });
     }
 };
