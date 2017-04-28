@@ -16,14 +16,15 @@
        {
           "id": "quinlan_path_1",
           "site": "Memorial Park",
-          "recType": "xrobotTrail",
+          "recType": "robotTrail",
           "robotType": "wheelchair",
           "layerName": "Wheelchair",
           "description": "Walkaround Memorial Park.",
 	  "tourName": "memorial_park_tour_5",
-          "dataUrl": "/static/data/paths/MemorialPark/quinlan_path_1.json",
+          "dataUrl": "/static/data/paths/MemorialPark/quinlan_path_1tweak.json",
           "youtubeId": "RoUTzQAB1PE",
-	  "youtubeDeltaT": -25.83,
+	  "xxyoutubeDeltaT": -25.83,
+	  "youtubeDeltaT": 0.0,
 	  "coordSys": "Quinlan",
 	  "height": 1.0
        }
