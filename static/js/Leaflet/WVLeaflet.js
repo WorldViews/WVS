@@ -521,6 +521,8 @@ WVL.initmap = function(latlng, bounds) {
     WVL.getCursor();
     WVL.setPlayTime(0)
     setTimeout(WVL.timerFun, 500);
+    setInterval(WVL.pruneOldClientMarkers, 3000);
+
     WVL.addLayerControl();
 /*
     //var point1 = L.latLng(40.52256691873593, -3.7743186950683594);
@@ -722,6 +724,31 @@ WVL.handleSIOMessage = function(msg)
         WVL.clientMarkers[clientId] = marker;
     }
     marker.mostRecentMessage = msg;
+    marker.mostRecentTime = WVL.getClockTime();
+}
+
+WVL.pruneOldClientMarkers = function()
+{
+    //report("pruneOldClientMarkers");
+    var t = WVL.getClockTime();
+    var deadIds = [];
+    Object.keys(WVL.clientMarkers).forEach(function(id) {
+	//report("pruneOldClientMarkers "+id);
+	var marker = WVL.clientMarkers[id];
+	var dt = t - marker.mostRecentTime;
+	if (dt > 10) {
+	    marker.setOpacity(.2);
+	}
+	if (dt > 30) {
+	    deadIds.push(id);
+	}
+    });
+    deadIds.forEach(function(id) {
+	report("deleting old client marker "+id);
+	var marker = WVL.clientMarkers[id];
+	marker.remove();
+	delete WVL.clientMarkers[id];
+    });
 }
 
 WVL.clickOnDeviceMarker = function(e, clientId, clientType, marker)
