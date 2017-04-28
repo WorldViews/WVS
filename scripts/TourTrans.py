@@ -9,7 +9,7 @@ def tourTrans(inPath, outPath):
     for rec in tour['recs']:
         x,y,z = rec['pos']
         x = 1.6*x - 1
-        y = 1.8*y - 4
+        y = 1.8*y - 2
         rec['pos'] = [x,y,z]
     json.dump(tour, file(outPath, "w"), indent=4)
 
