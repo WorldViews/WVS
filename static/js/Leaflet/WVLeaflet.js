@@ -489,7 +489,8 @@ WVL.initmap = function(latlng, bounds) {
     var map = new L.Map('map');
     WVL.map = map;
     WVL.trackLayer = L.layerGroup();
-    WVL.layers['Trails'] = WVL.trackLayer;
+    //WVL.layers['Trails'] = WVL.trackLayer;
+    WVL.layers['Main Trail'] = WVL.trackLayer;
     WVL.trackLayer.addTo(map);
     WVL.homeLatLng = latlng;
     WVL.homeBounds = bounds;
@@ -556,12 +557,15 @@ WVL.handleTrack = function(trackDesc, trackData, url, map)
     //trackData.trail.addTo(map);
     var trackLayerName = trackDesc.layerName;
     if (!trackLayerName)
-	trackLayerName = "Trails";
+	//trackLayerName = "Trails";
+	trackLayerName = "Main Trail";
     var trackLayer = WVL.layers[trackLayerName];
     if (!trackLayer) {
         report("***************************");
 	trackLayer = L.layerGroup();
 	WVL.layers[trackLayerName] = trackLayer;
+	if (trackLayerName == "Drone")
+	    trackLayer.addTo(WVL.map);
 	//L.control.layers(null, WVL.layers).addTo(WVL.map);
 	if (WVL.layerControl)
 	    WVL.layerControl.addOverlay(trackLayer, trackLayerName);
