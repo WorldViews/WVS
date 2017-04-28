@@ -18,7 +18,14 @@ const render = Component => {
   )
 }
 
-render(App)
+// stop pre-loader animation
+document.body.className += ' loaded';
+
+// render App
+setTimeout(() => {
+  root.className += ' fadeIn';
+  render(App)
+}, 700)
 
 if (module.hot) {
   module.hot.accept('./containers/App', () => { render(App) })
