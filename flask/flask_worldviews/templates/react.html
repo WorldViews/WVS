@@ -8,14 +8,28 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css" />
+    <link rel="stylesheet" href="/static/css/loader.css"
 
-    <!--<link rel="shortcut icon" type="image/png" href="./src/images/favicon.png"/>-->
     <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
 
 </head>
 
 <body>
-<div id="root"></div>
+
+<div id="loader-wrapper">
+<div class="instructions text-center">
+    <h1>Loading...</h1>
+    <div>Please contact <a href="#">help@worldviews.org</a> if you encounter problems</div>
+</div>
+<div id="loader"></div>
+<div class="loader-section section-left"></div>
+<div class="loader-section section-right"></div>
+</div>
+
+
+<div id="root" class="animated"></div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>

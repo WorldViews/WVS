@@ -8,6 +8,8 @@ import App from './containers/VideoChatApp'
 import store from './containers/VideoChatApp/store'
 import { Provider } from 'react-redux';
 
+let root = document.getElementById('root');
+
 const render = Component => {
   ReactDOM.render(
     <Provider store={store}>
@@ -19,7 +21,14 @@ const render = Component => {
   )
 }
 
-render(App)
+// stop pre-loader animation
+document.body.className += ' loaded';
+
+// render App
+setTimeout(() => {
+  root.className += ' fadeIn';
+  render(App)
+}, 700)
 
 if (module.hot) {
   module.hot.accept('./containers/VideoChatApp', () => { render(App) })
