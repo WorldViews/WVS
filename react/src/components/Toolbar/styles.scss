@@ -1,7 +1,9 @@
+@import '~sass-flex-mixin/flex';
+
 :local(.styles) {
-  display: flex;
-  flex-flow: column;
-  flex: 0 0 auto;
+  @include flexbox;
+  @include flex-flow(column);
+  @include flex(0, 0, auto);
   padding-top: 10px;
   text-align: center;
   background-color: #263238;

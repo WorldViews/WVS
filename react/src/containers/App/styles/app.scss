@@ -2,6 +2,7 @@
 @import 'fonts/roboto';
 @import 'typography';
 @import 'links';
+@import '~sass-flex-mixin/flex';
 
 :global(body) {
   position: relative;
@@ -17,7 +18,7 @@
 }
 
 :local(.box) {
-  display: flex;
-  flex-flow: column;
+  @import flexbox;
+  @import flex-flow(column);
   height: 100%;
 }
