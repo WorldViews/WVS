@@ -1,5 +1,7 @@
+@import '~sass-flex-mixin/flex';
+
 :local(.styles) {
-  flex: 0 1 auto;
+  @import flexbox(0, 1, auto);
   padding-top: 10px;
   text-align: center;
   background-color: #E0F2F1;

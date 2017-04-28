@@ -1,6 +1,8 @@
+@import '~sass-flex-mixin/flex';
+
 :local(.messages) {
-    display: flex;
-    flex-direction: column;
+    @include flexbox;
+    @include flex-flow(column);
     transition: left .2s ease-in 0s;
     position: absolute;
     top: 0;
@@ -13,12 +15,12 @@
     z-index: 50;
 
     .form-group {
-        flex: 0;
+        @include flex(0);
         height: 50px;
     }
 
     .messages {
-        flex: 1;
+        @include flex(1);
         overflow: auto;
     }
 }
@@ -48,14 +50,14 @@
 }
 
 :local(.textinput) {
-    display: flex;
-    flex-direction: row;
+    @include flexbox;
+    @include flex-flow(row);
     input[type=text] {
-        flex: 1;
+        @include flex(1);
         margin-right: 5px;
     }
     a.btn {
-        flex: 0 1;
+        @include flex(0, 1);
         margin-right: 5px;
     }
     a.btn:last-child {

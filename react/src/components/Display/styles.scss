@@ -1,8 +1,10 @@
+@import '~sass-flex-mixin/flex';
+
 :local(.styles) {
-  flex: 1 1 auto;
+  @include flexbox(1, 1, auto);
   position: relative;
   .left {
-    flex: 1;
+    @include flex(1);
     position: absolute;
     top: 0;
     left: 0;
@@ -12,7 +14,7 @@
     overflow: hidden;
   }
   .right {
-    flex: 1;
+    @include flex(1);
     position: absolute;
     left: 50%;
     width: 50%;
