@@ -16,13 +16,15 @@ class MapView extends React.Component {
     className: PropTypes.string,
     dispatch: PropTypes.func,
     maximizePanel: PropTypes.string,
-    users: PropTypes.array
+    users: PropTypes.array,
+    viewType: PropTypes.string
   };
 
   static stateToProps(state, props) {
     return {
         maximizePanel: state.views.maximizePanel,
-        users: state.chat.users
+        users: state.chat.users,
+        viewType: state.views.viewType
     }
   }
 
@@ -53,6 +55,11 @@ class MapView extends React.Component {
   }
 
   onDeviceClickWatcher(clientId, clientType, info) {
+    // live events from devices are only available for private
+    if (this.props.viewType !== 'private') {
+      return;
+    }
+
     let type = 'webrtc';
     let url = 'janus://' + clientId;
     if (clientId === 'drone' || clientId === 'Drone') {
