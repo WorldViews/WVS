@@ -1,0 +1,77 @@
+<html>
+<head>
+    <title>Capture Camera Image</title>
+</head>
+<body>
+<h1>Capture Camera Image</h1>
+<hr>
+<div id="size">?x?</div>
+<button id="snap">Snap Photo</button>
+<button id="download">Download Image</button>
+<hr>
+<video id="video" autoplay></video>
+<canvas id="canvas"></canvas>
+
+<script>
+// Grab elements, create settings, etc.
+var video = document.getElementById('video');
+var width = 100;
+var height = 100;
+
+// Elements for taking the snapshot
+var canvas = document.getElementById('canvas');
+var context = canvas.getContext('2d');
+var video = document.getElementById('video');
+var size = document.getElementById('size');
+
+function updateSize(w,h) {
+    width = w;
+    height = h;
+    video.setAttribute("width", width);
+    video.setAttribute("height", height);
+    canvas.setAttribute("width", width);
+    canvas.setAttribute("height", height);
+    size.innerText = width + 'x' + height;
+}
+
+video.addEventListener('loadedmetadata', function() {
+    updateSize(video.videoWidth, video.videoHeight);
+});
+
+// Get access to the camera!
+if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+    // Not adding `{ audio: true }` since we only want video now
+    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+        video.src = window.URL.createObjectURL(stream);
+        video.play();
+    });
+}
+
+// Trigger photo take
+document.getElementById("snap").addEventListener("click", function() {
+	context.drawImage(video, 0, 0, width, height);
+});
+
+function downloadURI(uri, name) {
+  var link = document.createElement("a");
+  link.target = '_blank';
+  link.download = name;
+  link.href = uri;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  delete link;
+}
+
+
+document.getElementById("download").addEventListener("click", function() {
+    var image = canvas.toDataURL("image/png")
+        .replace("image/png", "application/octet-stream");
+        // document.location.href = image;
+    downloadURI(image, 'capture-image-' + Date.now() + '.png');
+});
+
+</script>
+
+</body>
+</html>
