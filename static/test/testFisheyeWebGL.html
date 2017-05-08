@@ -42,18 +42,19 @@ uniform sampler2D u_image;
 
 // the texCoords passed in from the vertex shader.
 varying vec2 v_texCoord;
+uniform vec2 u_resolution;
 uniform mat3 tilt;
 
 const float M_PI = 3.14159265358979;
 const float M_PI2 = M_PI / 2.0;
 const float M_2PI = M_PI*2.0;
 
-vec2 fisheye2equirect(vec2 textureCoordinate) {
+vec2 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
   const float PI = 3.14159265358979;
   const float radius = 0.443;
-  const vec4 uvOffset = vec4(0, 0, 0, 0);
+  const vec4 uvOffset = vec4(0, 0.002, 0, 0);
   //const float _THETA_S_Y_SCALE = (640.0 / 720.0);
-  const float _THETA_S_Y_SCALE = (1920.0/ 2.0 / 960.0);
+  float _THETA_S_Y_SCALE = (imageSize.x/ 2.0) / imageSize.y;
 
     lowp vec2 revUV = v_texCoord.st;
     if (v_texCoord.x <= 0.5) {
@@ -91,9 +92,10 @@ vec2 fisheye2equirect(vec2 textureCoordinate) {
 }
 
 void main() {
-    vec2 st = fisheye2equirect(v_texCoord);
-    gl_FragColor = texture2D(u_image, st);
     //gl_FragColor = texture2D(u_image, v_texCoord);
+    //vec2 v_imageSize = vec2(1920, 960);
+    vec2 st = fisheye2equirect(v_texCoord, u_resolution);
+    gl_FragColor = texture2D(u_image, st);
 }
 </script>
 
@@ -131,15 +133,6 @@ function render(image) {
   var texcoordLocation = gl.getAttribLocation(program, "a_texCoord");
 
   var M_PI = 3.14159265358979;
-  var normalMatrix = mat3.create();
-  mat3.identity(normalMatrix);
-  //mat3.rotate(normalMatrix, normalMatrix, -0);
-  mat3.rotate(normalMatrix, normalMatrix, -M_PI*0.5);
-  mat3.scale(normalMatrix, normalMatrix, [1.1, 1.1]);
-  // normalMatrix[0] = 1;
-  // normalMatrix[4] = 1;
-  // normalMatrix[8] = 1;
-  var tilt = gl.getUniformLocation(program, "tilt");
 
   // Create a buffer to put three 2d clip space points in
   var positionBuffer = gl.createBuffer();
@@ -188,8 +181,6 @@ function render(image) {
 
   // Tell it to use our program (pair of shaders)
   gl.useProgram(program);
-
-  gl.uniformMatrix3fv(tilt, false, normalMatrix);
 
   // Turn on the position attribute
   gl.enableVertexAttribArray(positionLocation);
