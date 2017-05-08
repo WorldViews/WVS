@@ -49,15 +49,15 @@ const float M_PI = 3.14159265358979;
 const float M_PI2 = M_PI / 2.0;
 const float M_2PI = M_PI*2.0;
 
-vec2 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
+vec4 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
   const float PI = 3.14159265358979;
   const float radius = 0.443;
   const vec4 uvOffset = vec4(0, 0.002, 0, 0);
   //const float _THETA_S_Y_SCALE = (640.0 / 720.0);
   float _THETA_S_Y_SCALE = (imageSize.x/ 2.0) / imageSize.y;
 
-    lowp vec2 revUV = v_texCoord.st;
-    if (v_texCoord.x <= 0.5) {
+    lowp vec2 revUV = textureCoordinate.st;
+    if (textureCoordinate.x <= 0.5) {
         revUV.x = revUV.x * 2.0;
     } else {
         revUV.x = (revUV.x - 0.5) * 2.0;
@@ -75,7 +75,7 @@ vec2 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
     st *= radius;
     st += 0.5;
 
-    if (v_texCoord.x <= 0.5) {
+    if (textureCoordinate.x <= 0.5) {
         st.x *= 0.5;
         st.x += 0.5;
         st.y = 1.0 - st.y;
@@ -88,14 +88,13 @@ vec2 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
 
     st.y = st.y * _THETA_S_Y_SCALE;
 
-    return st;
+    return texture2D(u_image, st);
 }
 
 void main() {
     //gl_FragColor = texture2D(u_image, v_texCoord);
     //vec2 v_imageSize = vec2(1920, 960);
-    vec2 st = fisheye2equirect(v_texCoord, u_resolution);
-    gl_FragColor = texture2D(u_image, st);
+    gl_FragColor = fisheye2equirect(v_texCoord, u_resolution);
 }
 </script>
 
@@ -106,13 +105,59 @@ void main() {
 <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
 <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
 <script>
-function main() {
+var main = main2;
+
+function main1() {
   // var image = document.getElementById('image');
     var image = document.createElement('img');
     image.src = './test360.png';
 //   image.src = "https://webglfundamentals.org/webgl/resources/leaves.jpg";  // MUST BE SAME DOMAIN!!!
   image.onload = function() {
     render(image);
+  }
+}
+
+function main2() {
+  // Get access to the camera!
+  var video = document.createElement('video');
+  document.body.appendChild(video);
+  function update() {
+		if( video.readyState === video.HAVE_ENOUGH_DATA ) {
+      render(video);
+    }
+    requestAnimationFrame(update);
+  }
+  //var requestAnimationFrame = window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame;
+  requestAnimationFrame(update);
+
+  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.enumerateDevices().then(function(devices) {
+      // Not adding `{ audio: true }` since we only want video now
+      var videoSourceId = null;
+      devices.forEach(function(d) {
+        if (d.label.match("RICOH THETA S FullHD") && d.kind == 'videoinput') {
+          videoSourceId = d.deviceId;
+        }
+      });
+      var constraints = {
+        video: {
+          mandatory: {
+            minWidth: 320,
+            maxWidth: 1920,
+            minHeight: 180,
+            maxHeight: 1080,
+            minFrameRate: 15
+          }
+        }
+      };
+      if (videoSourceId) {
+          constraints.video.optional = [{sourceId: videoSourceId}];
+      }
+      navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+          video.src = window.URL.createObjectURL(stream);
+          video.play();
+      });
+      });
   }
 }
 
@@ -140,7 +185,7 @@ function render(image) {
   // Bind it to ARRAY_BUFFER (think of it as ARRAY_BUFFER = positionBuffer)
   gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
   // Set a rectangle the same size as the image.
-  setRectangle(gl, 0, 0, image.width, image.height);
+  setRectangle(gl, 0, 0, image.width || image.videoWidth, image.height || image.videoHeight);
 
   // provide texture coordinates for the rectangle.
   var texcoordBuffer = gl.createBuffer();
