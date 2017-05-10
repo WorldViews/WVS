@@ -5,6 +5,7 @@
 <!--<hr>
 <img id='image' src="./test360.png" style="" />-->
 <hr>
+<div id="container"></div>
 <div><canvas id="canvas" /></div>
 </div><video id="video" style="display:block"/></div>
 
@@ -47,49 +48,95 @@ uniform vec2 u_resolution;
 uniform mat3 tilt;
 
 const float M_PI = 3.14159265358979;
-const float M_PI2 = M_PI / 2.0;
+const float M_PI2 = M_PI * 0.5;
 const float M_2PI = M_PI*2.0;
+const float PI = 3.14159265358979;
+const float radius = 0.443;
+const vec4 uvOffset = vec4(0, 0.002, 0, 0);
+
+vec2 fisheye2left(vec2 textureCoordinate, vec2 imageSize) {
+  float Y_SCALE = (imageSize.x * 0.5) / imageSize.y;
+
+  lowp vec2 revUV = textureCoordinate.st;
+  revUV.x = revUV.x * 2.0;
+
+  revUV *= PI;
+
+  lowp vec3 p = vec3(cos(revUV.x), cos(revUV.y), sin(revUV.x));
+  p.xz *= sqrt(1.0 - p.y * p.y);
+
+  lowp float r = 1.0 - asin(p.z) / M_PI2;
+  lowp vec2 st = vec2(p.y, p.x);
+
+  st *= r / sqrt(1.0 - p.z * p.z);
+  st *= radius;
+  st += 0.5;
+
+  st.x *= 0.5;
+  st.x += 0.5;
+  st.y = 1.0 - st.y;
+  st.xy += uvOffset.wz;
+
+  st.y = st.y * Y_SCALE;
+
+  return st;
+}
+vec2 fisheye2right(vec2 textureCoordinate, vec2 imageSize) {
+  float Y_SCALE = (imageSize.x * 0.5) / imageSize.y;
+
+  lowp vec2 revUV = textureCoordinate.st;
+  revUV.x = (revUV.x - 0.5) * 2.0;
+
+  revUV *= PI;
+
+  lowp vec3 p = vec3(cos(revUV.x), cos(revUV.y), sin(revUV.x));
+  p.xz *= sqrt(1.0 - p.y * p.y);
+
+  lowp float r = 1.0 - asin(p.z) / M_PI2;
+  lowp vec2 st = vec2(p.y, p.x);
+
+  st *= r / sqrt(1.0 - p.z * p.z);
+  st *= radius;
+  st += 0.5;
+
+  st.x = 1.0 - st.x;
+  st.x *= 0.5;
+  st.xy += uvOffset.yx;
+
+  st.y = st.y * Y_SCALE;
+  return st;
+}
+
+// x 0 -> 1
+vec4 blend(vec2 st1, vec2 st2, float alpha) {
+    vec4 colA = texture2D(u_image, st1);
+    vec4 colB = texture2D(u_image, st2);
+    colA.a = 1.0;
+    colB.a = 1.0;
+
+    return (colA*(1.0 - alpha) + colB*alpha);
+}
 
 vec4 fisheye2equirect(vec2 textureCoordinate, vec2 imageSize) {
-  const float PI = 3.14159265358979;
-  const float radius = 0.443;
-  const vec4 uvOffset = vec4(0, 0.002, 0, 0);
-  //const float _THETA_S_Y_SCALE = (640.0 / 720.0);
-  float _THETA_S_Y_SCALE = (imageSize.x/ 2.0) / imageSize.y;
+    vec2 st_left = fisheye2left(textureCoordinate, imageSize);
+    vec2 st_right = fisheye2right(textureCoordinate, imageSize);
+    const float offset = 0.01;
 
-    lowp vec2 revUV = textureCoordinate.st;
-    if (textureCoordinate.x <= 0.5) {
-        revUV.x = revUV.x * 2.0;
-    } else {
-        revUV.x = (revUV.x - 0.5) * 2.0;
+    if (textureCoordinate.x > 1.0 - offset || textureCoordinate.x < offset) {
+      float blend_factor = 1.0 + textureCoordinate.x/offset;
+      if (textureCoordinate.x > offset) {
+        blend_factor = ((textureCoordinate.x - (1.0 - offset))/offset);
+      }
+      blend_factor *= 0.5;
+      return blend(st_right, st_left, blend_factor);
+    } else if (textureCoordinate.x <= 0.5 - offset) {
+      return texture2D(u_image, st_left);
+    } else if (textureCoordinate.x <= 0.5 + offset) {
+      float blend_factor = ((textureCoordinate.x - (0.5 - offset)) / (offset*2.0));
+      return blend(st_left, st_right, blend_factor);
+    } else  {
+      return texture2D(u_image, st_right);
     }
-
-    revUV *= PI;
-
-    lowp vec3 p = vec3(cos(revUV.x), cos(revUV.y), sin(revUV.x));
-    p.xz *= sqrt(1.0 - p.y * p.y);
-
-    lowp float r = 1.0 - asin(p.z) / (PI / 2.0);
-    lowp vec2 st = vec2(p.y, p.x);
-
-    st *= r / sqrt(1.0 - p.z * p.z);
-    st *= radius;
-    st += 0.5;
-
-    if (textureCoordinate.x <= 0.5) {
-        st.x *= 0.5;
-        st.x += 0.5;
-        st.y = 1.0 - st.y;
-        st.xy += uvOffset.wz;
-    } else {
-        st.x = 1.0 - st.x;
-        st.x *= 0.5;
-        st.xy += uvOffset.yx;
-    }
-
-    st.y = st.y * _THETA_S_Y_SCALE;
-
-    return texture2D(u_image, st);
 }
 
 void main() {
@@ -104,17 +151,17 @@ void main() {
 <script src="https://webglfundamentals.org/webgl/resources/webgl-utils.js"></script>
 <script src="https://webglfundamentals.org/webgl/resources/webgl-lessons-helper.js"></script>
 <script>
-var main = main2;
+var main = main_camera;
 
-function main1() {
+function main_static() {
   var image = document.createElement('img');
   image.src = './test360.png';
   image.onload = function() {
-    render(image);
+    renderImage(image);
   }
 }
 
-function main2() {
+function main_camera() {
   // Get access to the camera!
   var video = document.getElementById('video');
   document.body.appendChild(video);
@@ -122,8 +169,9 @@ function main2() {
   // render loop
   function update() {
     if (video.readyState === video.HAVE_ENOUGH_DATA) {
-      render(video);
+      renderImage(video);
     }
+    //animate();
     requestAnimationFrame(update);
   }
   requestAnimationFrame(update);
@@ -154,8 +202,13 @@ function main2() {
       navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
           video.src = window.URL.createObjectURL(stream);
           video.play();
+
+          // var canvas = document.getElementById("canvas");
+          // var container = document.getElementById("container");
+          // init(canvas, container);
+
       });
-      });
+    });
   }
 }
 
@@ -197,7 +250,7 @@ var texture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, texture);
 
 
-function render(image) {
+function renderImage(image) {
   // Set a rectangle the same size as the image.
   var width = image.width || image.videoWidth;
   var height = image.height || image.videoHeight;
