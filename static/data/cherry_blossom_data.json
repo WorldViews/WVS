@@ -160,6 +160,21 @@
           "xurl": "https://fxpal.com"
        },
        {
+          "id": "mempark_adam_path_2",
+          "site": "Memorial Park",
+          "layerName": "Festival",
+          "recType": "robotTrail",
+          "robotType": "minipro",
+          "description": "Drone ride around Memorial Park durring festival.",
+	  "tourName": "mempark_adam_path_2",
+          "dataUrl": "/static/data/paths/mempark_30_Apr_2017_12-20-01.json",
+          "youtubeId": "7x--DKW5mDE",
+	  "youtubeDeltaT": -382,
+	  "videoDur": 90,
+	  "coordSys": "GEO",
+	  "height": 1.0
+       },
+       {
 	   "id": "Hiller_Aviation_Museum",
            "recType": "IndoorMap",
 	   "name": "Hiller Aviation Museum",
