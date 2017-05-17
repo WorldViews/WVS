@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en"> 
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+</head>
+<body>
+<script>
+    function onClickX(e) {
+        report("click");
+        WS.sendMessage({'msgType':'text', 'text': 'hello'})
+    }
+</script>
+
+<div class="main">
+<h2>Watching Compass</h2>
+<canvas id="canvas1" width="200" height="200" style="width: 200px; height: 200px">
+</canvas>
+<table>
+    <td>orientation</td><td id="orientation"></td>
+</table>
+<p>
+<button onclick="onClickX();">hello</button>
+</div>
+
+<script src="GetWebSock.js"></script>
+<script type="text/javascript">
+  
+WS = GetWebSock({'orientation': handleOrientation } );
+
+function handleOrientation(msg) {
+   report("msg: "+JSON.stringify(msg));
+   showHeading(msg.yaw);
+}
+
+function showHeading(h)
+{
+   var canvas=document.getElementById("canvas1");
+   var dc=canvas.getContext("2d");
+   
+   var cw = 200;
+   var ch = 200;
+   var cx = cw/2;
+   var cy = ch/2;
+   var r= .8*(cw/2);
+   var rb = 8;
+   var PI2 = 2*Math.PI;
+   dc.clearRect(0,0,cw,ch);
+   dc.fillStyle='black';
+   var a = PI2*h/360;
+   var x = cx + r*Math.cos(a);
+   var y = cy + r*Math.sin(a);
+   dc.beginPath();
+   dc.arc(x,y,rb,0,PI2,false);
+   dc.fill();
+}
+
+showHeading(0);
+
+</script>
+  
+</body>
+</html>
