@@ -51,7 +51,7 @@ node_modules/
 rethinkdb_data/
 
 # Cesium
-Cesium/
+#Cesium/
 
 # External tool builders
 .externalToolBuilders/

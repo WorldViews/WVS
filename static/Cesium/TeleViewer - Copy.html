@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version (or Chrome Frame if pre-IE11). -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>WorldViews Viewer</title>
+  <!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+<link rel="shortcut icon"
+ href="/static/img/favicon.ico" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-80828450-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  <script src="js/socket.io-1.4.5.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <script src="/static/Cesium/Cesium.js"></script>
+  <style>
+      @import url(/static/Cesium/Widgets/widgets.css);
+  </style>
+  <link rel="stylesheet" type="text/css" href="css/televiewer.css">
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <div class="toolbar-left" id="layersDiv" style="color:white;">
+     <span id="layersLabel">Hide Layers</span>
+  </div>
+  <div class="video-window" id="ytplayer" style="color:white;"></div>
+  <div id="toolbar"></div>
+  <div id="notesLayerDiv"></div>
+
+<script src="js/WV.js"></script>
+<script src="js/WVUtil.js"></script>
+<script src="js/WVLayer.js"></script>
+<script src="js/WVFloatingWidget.js"></script>
+<script src="js/WVBillboards.js"></script>
+<script src="js/WVWidget.js"></script>
+<script src="js/WVYT.js"></script>
+
+<script src="js/WVNote.js"></script>
+<script src="js/WVCom.js"></script>
+<script src="js/WVChat.js"></script>
+<script src="js/WVShareCam.js"></script>
+<script src="js/WVLiveUsers.js"></script>
+<script src="js/WVIndoorMaps.js"></script>
+<script src="js/WVTrails.js"></script>
+<!--
+<script src="js/WVCraigslist.js"></script>
+<script src="js/WVRobots.js"></script>
+-->
+<script src="js/math3d.js"></script>
+<script src="js/WVCoordSys.js"></script>
+<script src="js/YTS.js"></script>
+<script src="js/WVDynYouTube.js"></script>
+<script src="js/WVDynWiki.js"></script>
+<script src="js/kdTree.js"></script>
+<script>
+// You could specify a different layers url if you want
+//WV.layersUrl = "data/myLayers.json";
+WV.useSocketIO = true;
+WV.statusInterval = 500;
+</script>
+</body>
+</html>
