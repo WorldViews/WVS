@@ -1,6 +1,6 @@
 
 import sys, json
-import urllib2
+import urllib.request as urllib2
 import requests
 import feedparser
 import codecs
@@ -12,16 +12,16 @@ def scrapeBlog(feedUrl,opath):
     d = feedparser.parse(feedUrl)
     #d = feedparser.parse("https://gobeyondthefence.com/feed")
     #d = feedparser.parse("https://irishsea-mark-videos.blogspot.com/feeds/posts/default")
-    print d.feed.title
-    print "n:", len(d.entries)
+    print((d.feed.title))
+    print(("n:", len(d.entries)))
     recs = []
     id = 0
     for entry in d.entries:
-        print entry.title
+        print((entry.title))
         #print entry.link
         url = entry.link
-        print "url:", url
-        uos = urllib2.urlopen(url)
+        print(("url:", url))
+        uos = urllib.request.urlopen(url)
         str = uos.read()
         idx = str.find("https://www.google.com/maps/place/")
         if idx > 0:
@@ -33,7 +33,7 @@ def scrapeBlog(feedUrl,opath):
             lat = float(parts[0])
             lon = float(parts[1])
             title = entry.title
-            print "lat:", lat, "lon:", lon
+            print(("lat:", lat, "lon:", lon))
             rec = {'title': title,
                    'id': id,
                    'lat': lat,
@@ -41,7 +41,7 @@ def scrapeBlog(feedUrl,opath):
                    'url': url
                   }
         else:
-            print "no location found"
+            print ("no location found")
             continue
         recs.append(rec)
     obj = {'type': 'html',
@@ -59,7 +59,7 @@ def scrapeBlog(feedUrl,opath):
         print "keys(entry):", entry.keys()
         #print "entry:\n", entry
         """
-    print "I'm done now"
+    print ("I'm done now")
     
 scrapeBlog('https://gobeyondthefence.com/feed','Enocks_Blog_data.json')
 scrapeBlog('https://irishsea-mark-videos.blogspot.com/feeds/posts/default', 'Marks_Blog_data.json')

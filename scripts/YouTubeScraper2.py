@@ -13,8 +13,8 @@ from apiclient.errors import HttpError
 # tab of
 #   https://cloud.google.com/console
 # Please ensure that you have enabled the YouTube Data API for your project.
-#DEVELOPER_KEY = "REPLACE_ME"
-exec file("../config/YOUTUBE_DEV_KEY.txt").read()
+DEVELOPER_KEY = "AIzaSyBJIJTsPrzkqEL-cJ2-49aGm7vhjCTfJLM"
+#exec(file("../config/YOUTUBE_DEV_KEY.txt").read())
 
 YOUTUBE_API_SERVICE_NAME = "youtube"
 #YOUTUBE_API_SERVICE_NAME = "WVVidWatch"
@@ -60,14 +60,14 @@ class YouTubeScraper:
          part="contentDetails"
          ).execute()
 
-      print json.dumps(channels_response, indent=True)
+      print((json.dumps(channels_response, indent=True)))
 
       for channel in channels_response["items"]:
          # From the API response, extract the playlist ID that identifies the list
          # of videos uploaded to the authenticated user's channel.
          uploads_list_id = channel["contentDetails"]["relatedPlaylists"]["uploads"]
 
-         print "Videos in list %s" % uploads_list_id
+         print(("Videos in list %s" % uploads_list_id))
 
          # Retrieve the list of videos uploaded to the authenticated user's channel.
          playlistitems_list_request = self.youtube.playlistItems().list(
@@ -84,21 +84,21 @@ class YouTubeScraper:
             for playlist_item in playlistitems_list_response["items"]:
                title = playlist_item["snippet"]["title"]
                video_id = playlist_item["snippet"]["resourceId"]["videoId"]
-               print "%s (%s)" % (title, video_id)
+               print(("%s (%s)" % (title, video_id)))
                if 0:
-                  print json.dumps(playlist_item, indent=4, sort_keys=True)
-                  print
+                  print((json.dumps(playlist_item, indent=4, sort_keys=True)))
+                  print()
                videoIds.append(video_id)
                playlistitems_list_request = self.youtube.playlistItems().list_next(
                   playlistitems_list_request, playlistitems_list_response)
       video_ids = ",".join(videoIds)
-      print "video_ids:", video_ids
+      print(("video_ids:", video_ids))
       self.processIds(video_ids)
       self.saveRecs(fname)
 
    def getLocs(self, latMin, lonMin, latMax, lonMax, dlat, dlon):
-      print "getting locs from %s to %s lat in steps of %s and %s to %s lon in steps of %s" % \
-                   (latMin, latMax, dlat, lonMin, lonMax, dlon)
+      print(("getting locs from %s to %s lat in steps of %s and %s to %s lon in steps of %s" % \
+                   (latMin, latMax, dlat, lonMin, lonMax, dlon)))
       locs = []
       for lat in range(latMin,latMax+dlat,dlat):
          for lon in range(lonMin,lonMax+dlon,dlon):
@@ -107,7 +107,7 @@ class YouTubeScraper:
             if (lat==-90 or lat==90) and lon != 0:
                continue
             locs.append("%.1f,%.1f" % (lat,lon))
-      print "Got %d specific points" % len(locs)
+      print(("Got %d specific points" % len(locs)))
       return locs
 
    def fetch(self, name, query=None, locs=None, dimension="any", username=None, channelId=None):
@@ -117,11 +117,11 @@ class YouTubeScraper:
          channelId = self.getChannelId(username)
       fname = "%s_data.json" % name
       if locs == None:
-         print "Search witout location specified"
+         print ("Search witout location specified")
          try:
             self.search(query=query, location=None, dimension=dimension, channelId=channelId)
-         except HttpError, e:
-            print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+         except HttpError as e:
+            print(("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)))
          except:
             traceback.print_exc()
          self.saveRecs(fname)
@@ -131,7 +131,7 @@ class YouTubeScraper:
       These choices are experimental and not very well worked
       out yet.
       """
-      if type(locs) in [type("str"), type(u"str")]:
+      if type(locs) in [type("str"), type("str")]:
          if locs.lower() == "global":
             locs = self.getLocs(-90, -180, 90, 180, 4, 4)
          elif locs.lower() == "us":
@@ -139,8 +139,8 @@ class YouTubeScraper:
       for loc in locs:
          try:
             self.search(query=query, location=loc, dimension=dimension, channelId=channelId)
-         except HttpError, e:
-            print "An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)
+         except HttpError as e:
+            print(("An HTTP error %d occurred:\n%s" % (e.resp.status, e.content)))
          except:
             traceback.print_exc()
          self.saveRecs(fname)
@@ -151,18 +151,18 @@ class YouTubeScraper:
       maxNumPages = 100
       while 1:
          numPages += 1
-         print "Getting page", numPages
+         print(("Getting page", numPages))
          pageToken = self.search_(query, location, max_results, location_radius,
                                   dimension, channelId, pageToken)
-         print "pageToken:", pageToken
+         print(("pageToken:", pageToken))
          if numPages > maxNumPages or not pageToken:
             return
          
 
    def search_(self, query, location, max_results=50, location_radius="1000km", dimension="any", channelId=None, pageToken=None):
-      print "query:", query
-      print "location:", location
-      print "location_radius:", location_radius
+      print(("query:", query))
+      print(("location:", location))
+      print(("location_radius:", location_radius))
       self.query = query
       """
       youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,
@@ -211,7 +211,7 @@ class YouTubeScraper:
 
 
       # Merge video ids
-      print "pageInfo", search_response["pageInfo"]
+      print(("pageInfo", search_response["pageInfo"]))
       search_videos = []
       for search_result in search_response.get("items", []):
          search_videos.append(search_result["id"]["videoId"])
@@ -223,7 +223,7 @@ class YouTubeScraper:
          return None
 
    def processIds(self, video_ids):
-      print "processIds video_ids:", video_ids
+      print(("processIds video_ids:", video_ids))
       # Call the videos.list method to retrieve location details for each video.
       video_response = self.youtube.videos().list(
          id=video_ids,
@@ -232,7 +232,7 @@ class YouTubeScraper:
 
       # Add each result to the list, and then display the list of matching videos.
       items = video_response.get("items", [])
-      print "Got %d items" % len(items)
+      print(("Got %d items" % len(items)))
       for video_result in items:
          """
          if "recordingDetails" not in video_result:
@@ -251,7 +251,7 @@ class YouTubeScraper:
             lon = video_result["recordingDetails"]["location"]["longitude"]
             title = video_result["snippet"]["title"]
          except:
-            print "Cannot get location data from record for", video_result["id"]
+            print(("Cannot get location data from record for", video_result["id"]))
             continue
          self.VIDNUM += 1
          id = video_result["id"]
@@ -268,16 +268,16 @@ class YouTubeScraper:
    def saveRecs(self, jsonPath):
       t0 = time.time()
       recs = []
-      for id in self.recs.keys():
+      for id in list(self.recs.keys()):
          recs.append(self.recs[id])
       UTF8Writer = codecs.getwriter('utf8')
-      f = UTF8Writer(file(jsonPath, "w"))
+      f = UTF8Writer(open(jsonPath, "wb"))
       obj = {'query': self.query,
              'time': time.time(),
              'records': recs}
       f.write(json.dumps(obj, indent=4, sort_keys=True))
       t1 = time.time()
-      print "Wrote %d recs to %s in %.3fs" % (len(recs), jsonPath, t1-t0)
+      print(("Wrote %d recs to %s in %.3fs" % (len(recs), jsonPath, t1-t0)))
 
 
 #argparser.add_argument("--location-radius", help="Location radius", default="1000km")
@@ -296,16 +296,16 @@ def fetchLive(name, query=None, loc="global", dimension="any", username=None):
 def getMetaData(id=None, opath=None):
     ys = YouTubeScraper()
     ys.processIds(id)
-    print ys.recs
+    print((ys.recs))
     if opath:
        ys.saveRecs(opath)
 
 def testGetMetaData():
-   print "-----------------------------------"
+   print ("-----------------------------------")
    getMetaData("JYk0qa8D4JY")
-   print "-----------------------------------"
+   print ("-----------------------------------")
    getMetaData("cFtySuUNCcQ")
-   print "-----------------------------------"
+   print ("-----------------------------------")
    ids = "JYk0qa8D4JY,cFtySuUNCcQ"
    getMetaData(ids, "testMetaData.json")
    
@@ -317,12 +317,12 @@ def testChannels():
    ys = YouTubeScraper()
    usernames = ["enockglidden"]
    for username in usernames:
-      print "username:", username
+      print(("username:", username))
       id = ys.getChannelId(username)
-      print "id:", id
+      print(("id:", id))
       ys.getChannelVideosForUser(username)
-      print
-   print
+      print()
+   print()
 
 if __name__ == "__main__":
 #   fetch("hiking")
