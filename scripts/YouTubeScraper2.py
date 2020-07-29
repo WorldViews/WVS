@@ -23,7 +23,7 @@ YOUTUBE_API_VERSION = "v3"
 #LIVE = False
 
 class YouTubeScraper:
-   def __init__(self, useUTF8=True):
+   def __init__(self, useUTF8=False):
       if useUTF8:
          UTF8Writer = codecs.getwriter('utf8')
          sys.stdout = UTF8Writer(sys.stdout)
@@ -97,8 +97,12 @@ class YouTubeScraper:
       self.saveRecs(fname)
 
    def getLocs(self, latMin, lonMin, latMax, lonMax, dlat, dlon):
-      print(("getting locs from %s to %s lat in steps of %s and %s to %s lon in steps of %s" % \
-                   (latMin, latMax, dlat, lonMin, lonMax, dlon)))
+      #print(("getting locs from %s to %s lat in steps of %s and %s to %s lon in steps of %s" % \
+      #            (latMin, latMax, dlat, lonMin, lonMax, dlon)))
+      print("latMin", latMin)
+      print("latMax", latMax)
+      print("getting locs", 
+                   (latMin, latMax, dlat, lonMin, lonMax, dlon))
       locs = []
       for lat in range(latMin,latMax+dlat,dlat):
          for lon in range(lonMin,lonMax+dlon,dlon):
@@ -111,6 +115,7 @@ class YouTubeScraper:
       return locs
 
    def fetch(self, name, query=None, locs=None, dimension="any", username=None, channelId=None):
+      print("fetch", name, query)
       if query == None:
          query = name
       if username != None:
@@ -336,6 +341,7 @@ if __name__ == "__main__":
 #   saveEnocksVideoLayer()
    #testGetMetaData()
 #   fetchLive("live", "")
+   print("Starting")
    fetch("earth day")
 
 
